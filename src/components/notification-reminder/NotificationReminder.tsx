@@ -13,10 +13,17 @@ type OwnProps = {
   isSignedIn: boolean
 }
 
-const NotificationReminder = ({ webRef, isSignedIn }: OwnProps) => {
+const NotificationReminderWrapper = ({ webRef, isSignedIn }: OwnProps) => {
+  if (isSignedIn) {
+    return <NotificationReminder webRef={webRef} />
+  }
+  return null
+}
+
+const NotificationReminder = ({ webRef }: { webRef: RefObject<MessagePostingWebView> }) => {
     
   const remindUserToTurnOnNotifications = useCallback((count: number) => {
-    if (webRef.current && isSignedIn) {
+    if (webRef.current) {
       checkNotifications().then(({status}) => {
         switch (status) {
           case RESULTS.UNAVAILABLE:
@@ -49,11 +56,11 @@ const NotificationReminder = ({ webRef, isSignedIn }: OwnProps) => {
         console.error(error)
       })
     }
-  }, [webRef, isSignedIn])
+  }, [webRef])
 
   useSessionCount(remindUserToTurnOnNotifications, REMINDER_EVERY_N_SESSIONS)
   // No UI component
   return null
 }
 
-export default NotificationReminder
+export default NotificationReminderWrapper
