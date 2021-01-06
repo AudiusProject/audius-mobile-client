@@ -30,7 +30,6 @@ import NotificationReminder from '../notification-reminder/NotificationReminder'
 import {postMessage as postMessageUtil} from '../../utils/postMessage'
 
 const USE_LOCALHOST_APP = Config.USE_LOCALHOST_APP
-const LOCALHOST_APP_URL = 'http://localhost:3000/feed'
 const STATIC_PORT = Config.STATIC_SERVER_PORT
 export const URL_SCHEME = 'audius://'
 
@@ -436,7 +435,7 @@ const WebApp = ({
     setAtTop(navState.nativeEvent.contentOffset.y <= 1)
   }
 
-  const uri = USE_LOCALHOST_APP ? LOCALHOST_APP_URL : url
+  const uri = USE_LOCALHOST_APP ? `http://localhost:${STATIC_PORT}` : url
   if (!uri) return null
   return (
     <>
