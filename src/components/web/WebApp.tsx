@@ -450,6 +450,9 @@ const WebApp = ({
         onRefresh={() => setAtTop(false)}
       >
         <WebView
+          // WebView tries to manage the status bar,
+          // randomly setting to the wrong color at times.
+          // See: https://github.com/react-native-webview/react-native-webview/issues/735
           autoManageStatusBarEnabled={false}
           key={key}
           ref={webRef}
@@ -457,7 +460,6 @@ const WebApp = ({
           decelerationRate='normal' // Default iOS inertial scrolling
           onShouldStartLoadWithRequest={handleShouldStartLoadWithRequest}
           javaScriptEnabled
-          // allowsBackForwardNavigationGestures
           allowFileAccess
           originWhitelist={[
             'https://*',
