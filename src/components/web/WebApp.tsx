@@ -3,7 +3,8 @@ import {
   NativeSyntheticEvent,
   AppState as RNState,
   Linking,
-  BackHandler
+  BackHandler,
+  StatusBar,
 } from 'react-native'
 import React, { useRef, useState, useEffect, RefObject, useCallback } from 'react'
 import Config from "react-native-config"
@@ -141,6 +142,10 @@ const WebApp = ({
       return false
     }
   }, [url])
+
+  useEffect(() => {
+    StatusBar.setHidden(true)
+  }, [])
 
   useEffect(() => {
     const asyncEffect = async () => {
@@ -445,6 +450,7 @@ const WebApp = ({
         onRefresh={() => setAtTop(false)}
       >
         <WebView
+          autoManageStatusBarEnabled={false}
           key={key}
           ref={webRef}
           source={{ uri }}
