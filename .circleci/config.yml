@@ -13,15 +13,17 @@ jobs:
       - run:
           name: copy staging env
           command: |
+            cp .env.stage.tmpl .env.stage
             echo "FCM_SENDER_ID=$FCM_SENDER_ID" >> .env.stage
             echo "SEGMENT_IOS_WRITE_KEY=$SEGMENT_IOS_WRITE_KEY_STAGING" >> .env.stage
             echo "SEGMENT_ANDROID_WRITE_KEY=$SEGMENT_ANDROID_WRITE_KEY_STAGING" >> .env.stage
       - run:
           name: copy production env
           command: |
+            cp .env.prod.tmpl .env.prod
             echo "FCM_SENDER_ID=$FCM_SENDER_ID" >> .env.prod
             echo "SEGMENT_IOS_WRITE_KEY=$SEGMENT_IOS_WRITE_KEY" >> .env.prod
-            echo "SEGMENT_ANDROID_WRITE_KEY=$SEGMENT_ANDROID_WRITE_KEY" >> .env.prod
+            echo "SEGMENT_ANDROID_WRITE_KEY=$SEGMENT_ANDROID_WRITE_KEY" >> .env.prod 
       - run:
           name: update-npm
           command: 'sudo npm install -g npm@latest'
@@ -277,17 +279,17 @@ workflows:
           context: Audius Mobile Client
           requires:
             - init
-          filters:
-            branches:
-              only: /^master$/
+          # filters:
+          #   branches:
+          #     only: /^master$/
 
       - upload-staging-ios:
           context: Audius Mobile Client
           requires:
             - pull-staging-web-app
-          filters:
-            branches:
-              only: /^master$/
+          # filters:
+          #   branches:
+          #     only: /^master$/
 
       - upload-staging-android:
           context: Audius Mobile Client
