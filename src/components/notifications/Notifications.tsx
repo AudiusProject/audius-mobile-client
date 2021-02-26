@@ -248,6 +248,7 @@ const Notifications = ({
     pathname === '/feed' ||
     pathname === '/trending' ||
     pathname === '/explore' ||
+    pathname === '/favorites' ||
     pathname.startsWith('/search')
   )
   const isFromNativeNotifications = state?.fromNativeNotifications ?? false
