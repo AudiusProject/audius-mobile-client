@@ -266,17 +266,19 @@ const Notifications = ({
     backgroundColor: 'background'
   })
 
+  const panProps = canShowNotifications ? panResponder.panHandlers : {}
+
   return (
     <>
       {/* animated drawer */}
       <Animated.View
-        {...panResponder.panHandlers}
+        {...panProps}
         style={[
           styles.animator,
           {
             transform: [
               {
-                translateX: canShowNotifications ? translationAnim : initialPosition
+                translateX: translationAnim
               }
             ]
           }
@@ -298,7 +300,7 @@ const Notifications = ({
         style={[
           styles.background,
           {
-            opacity: canShowNotifications ? backgroundAnim : 0
+            opacity: backgroundAnim
           }
         ]}
       />
