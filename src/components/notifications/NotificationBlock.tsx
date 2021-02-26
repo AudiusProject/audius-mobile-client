@@ -66,8 +66,6 @@ const styles = StyleSheet.create({
   body: {
     marginLeft: 46,
   },
-  content: {
-  },
   timestamp: {
     fontFamily: 'AvenirNextLTPro-Regular',
     fontSize: 12,

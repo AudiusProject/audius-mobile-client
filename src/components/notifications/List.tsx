@@ -83,6 +83,7 @@ const List = ({
     return <Empty />
   }
   const refreshColor = useColor('neutralLight6')
+  const spinnerColor = useColor('neutralLight4')
 
   return (
     <FlatList
@@ -115,11 +116,11 @@ const List = ({
               colorFilters={[
                 {
                   keypath: 'Shape Layer 1',
-                  color: '#C2C0CC'
+                  color: spinnerColor
                 },
                 {
                   keypath: 'Shape Layer 2',
-                  color: '#C2C0CC'
+                  color: spinnerColor
                 }
               ]}
             />

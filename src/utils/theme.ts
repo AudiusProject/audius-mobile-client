@@ -7,7 +7,8 @@ import { getTheme } from "../store/theme/selectors"
 export enum Theme {
   DEFAULT = 'default',
   DARK = 'dark',
-  AUTO = 'auto'
+  AUTO = 'auto',
+  MATRIX = 'matrix'
 }
 
 
@@ -116,38 +117,68 @@ export const darkTheme = {
   shadow: '#35364F'
 }
 
-const useDark = () => {
+const matrixTheme = {
+  background: '#1A1818',
+  primary: '#0CF10C',
+  primaryDark1: '#0CF10C',
+  primaryDark2: '#0CF10C',
+  primaryLight1: '#0CF10C',
+  primaryLight2: '#0CF10C',
+  secondary: '#184F17',
+  secondaryTransparent: '#184F17',
+  secondaryDark1: '#184F17',
+  secondaryDark2: '#184F17',
+  secondaryLight1: '#184F17',
+  secondaryLight2: '#184F17',
+  neutral: '#21B404',
+  neutralDark1: '#21B404',
+  neutralDark2: '#21B404',
+  neutralDark3: '#21B404',
+  neutralLight1: '#20A406',
+  neutralLight2: '#1F9508',
+  neutralLight3: '#1F850A',
+  neutralLight4: '#1D660E',
+  neutralLight5: '#1D5E0F',
+  neutralLight6: '#1C5610',
+  neutralLight7: '#1B3714',
+  neutralLight8: '#1A2F15',
+  neutralLight9: '#202A1D',
+  neutralLight10: '#1D211B',
+  white: '#1F211F',
+}
+
+const useThemeVariant = () => {
   const theme = useSelector(state => getTheme(state))
   const isSystemDarkMode = useDarkMode()
 
-  let showDark = false
   switch (theme) {
     case Theme.DEFAULT:
-      break
+      return defaultTheme
     case Theme.DARK:
-      showDark = true
-      break
+      return darkTheme
+    case Theme.MATRIX:
+      return matrixTheme
     case Theme.AUTO:
       if (isSystemDarkMode) {
-        showDark = true
+        return darkTheme
       }
-      break
+      return defaultTheme
   }
-  return showDark
 }
 
 export const useColor = (color: string) => {
-  const showDark = useDark()
-  return (showDark ? darkTheme : defaultTheme)[color]
+  const theme = useThemeVariant()
+  return (theme as any)[color]
 }
 
 export const useTheme = (baseStyles: object, toTheme: object) => {
-  const showDark = useDark()
-  const themeStyles = showDark ? darkTheme : defaultTheme
+  const themeStyles = useThemeVariant()
 
   const newStyles = {}
   Object.keys(toTheme).forEach(key => {
+    // @ts-ignore
     if (toTheme[key] in themeStyles) {
+      // @ts-ignore
       newStyles[key] = themeStyles[toTheme[key]]
     }
   })

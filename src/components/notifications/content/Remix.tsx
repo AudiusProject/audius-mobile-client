@@ -17,13 +17,13 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 8,
+    marginBottom: 8,
     flexWrap: 'wrap'
   },
   bodyText: {
     fontFamily: 'AvenirNextLTPro-Medium',
     fontSize: 16,
     color: '#858199',
-    paddingBottom: 10,
     marginLeft: 4
   }
 })

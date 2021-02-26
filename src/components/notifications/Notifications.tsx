@@ -1,6 +1,6 @@
 import React, { RefObject, useCallback, useEffect, useRef, useState } from 'react'
 import { Dispatch } from 'redux'
-import { connect } from 'react-redux'
+import { connect, useSelector } from 'react-redux'
 import {
   StyleSheet,
   Animated,
@@ -13,12 +13,14 @@ import { AppState } from '../../store'
 import { MessagePostingWebView } from '../../types/MessagePostingWebView'
 import { getIsOpen } from '../../store/notifications/selectors'
 import * as notificationsActions from '../../store/notifications/actions'
+import { getIsSignedIn } from '../../store/lifecycle/selectors'
 import TopBar from './TopBar'
 import List from './List'
 import { postMessage } from '../../utils/postMessage'
 import { MessageType } from '../../message'
 import { useTheme } from '../../utils/theme'
 import useAppState from '../../utils/useAppState'
+import useLocation from '../../utils/useLocation'
 
 const INITIAL_OFFSET = 10
 const MAX_BG_OPACITY = 0.3
@@ -71,6 +73,7 @@ type NotificationsProps =
  */
 const Notifications = ({
   webRef,
+  isSignedIn,
   isOpen,
   open,
   close,
@@ -133,11 +136,14 @@ const Notifications = ({
         useNativeDriver: true
       }).start()
     close()
-    markAsViewed()
-  }, [initialPosition, close, markAsViewed])
+  }, [initialPosition, close, markAsViewed, webRef])
 
   useAppState(null, () => {
-    slideOut()
+    if (isOpen) {
+      slideIn()
+    } else {
+      slideOut()
+    }
   })
 
   const panResponder = PanResponder.create({
@@ -213,12 +219,6 @@ const Notifications = ({
     },
   })
 
-  useEffect(() => {
-    if (isOpen) {
-      slideIn()
-    }
-  }, [isOpen, slideIn])
-
   const onGoToRoute = useCallback((route: string) => {
     if (webRef.current) {
       postMessage(webRef.current, {
@@ -230,9 +230,41 @@ const Notifications = ({
     slideOut()
   }, [webRef, slideOut])
 
+  const [anchorRoute, setAnchorRoute] = useState<string | null>(null)
+  const onClickTopBarClose = useCallback(() => {
+    if (webRef.current) {
+      postMessage(webRef.current, {
+        type: MessageType.PUSH_ROUTE,
+        route: anchorRoute || '/',
+        isAction: true
+      })
+      setAnchorRoute(null)
+    }
+    slideOut()
+  }, [webRef, slideOut, anchorRoute])
+
+  const { pathname, state } = useLocation() || {}
+  const isMainRoute = pathname && (
+    pathname === '/feed' ||
+    pathname === '/trending' ||
+    pathname === '/explore' ||
+    pathname.startsWith('/search')
+  )
+  const isFromNativeNotifications = state?.fromNativeNotifications ?? false
+  const canShowNotifications = (isMainRoute || isFromNativeNotifications) && isSignedIn
+
+  useEffect(() => {
+    if (isOpen) {
+      slideIn()
+      if (!anchorRoute) {
+        setAnchorRoute(pathname)
+      }
+    }
+  }, [isOpen, slideIn, setAnchorRoute])
+
   const containerStyle = useTheme(styles.container, {
     backgroundColor: 'background'
-  })  
+  })
 
   return (
     <>
@@ -244,14 +276,14 @@ const Notifications = ({
           {
             transform: [
               {
-                translateX: translationAnim
+                translateX: canShowNotifications ? translationAnim : initialPosition
               }
             ]
           }
         ]}
       >
         <View style={containerStyle}>
-          <TopBar onClose={slideOut} />
+          <TopBar onClose={onClickTopBarClose} />
           <List
             onLoadMore={onLoadMore}
             onRefresh={onRefresh}
@@ -266,7 +298,7 @@ const Notifications = ({
         style={[
           styles.background,
           {
-            opacity: backgroundAnim,
+            opacity: canShowNotifications ? backgroundAnim : 0
           }
         ]}
       />
@@ -275,7 +307,8 @@ const Notifications = ({
 }
 
 const mapStateToProps = (state: AppState) => ({
-  isOpen: getIsOpen(state)
+  isOpen: getIsOpen(state),
+  isSignedIn: getIsSignedIn(state)
 })
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   open: () => dispatch(notificationsActions.open()),

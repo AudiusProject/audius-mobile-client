@@ -12,12 +12,12 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
     alignItems: 'center',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    marginBottom: 8
   },
   textWrapper: {
     fontFamily: 'AvenirNextLTPro-Medium',
     fontSize: 16,
-    paddingBottom: 10,
     marginLeft: 4
   }
 })

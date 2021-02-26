@@ -64,14 +64,6 @@ const getTrendingTrackText = (notification: TrendingTrack) => {
   return { link, text }
 }
 
-const getTwitterHandleByUserHandle = async (userHandle: string) => {
-  return 'blah'
-  // const { twitterHandle } = await AudiusBackend.getCreatorSocialHandle(
-  //   userHandle
-  // )
-  // return twitterHandle || ''
-}
-
 const getRemixCreateText = async (notification: RemixCreate) => {
   const track = notification.entities.find(
     (t: any) => t.track_id === notification.parentTrackId
@@ -79,9 +71,7 @@ const getRemixCreateText = async (notification: RemixCreate) => {
   if (!track) return
   const link = getEntityRoute(track, Entity.Track, true)
 
-  let twitterHandle = await getTwitterHandleByUserHandle(
-    notification.user.handle
-  )
+  let twitterHandle = notification.user.twitterHandle
   if (!twitterHandle) twitterHandle = notification.user.name
   else twitterHandle = `@${twitterHandle}`
 
@@ -106,9 +96,7 @@ const getRemixCosignText = async (
 
   if (!parentTrack || !childtrack) return { text: '', link: '' }
 
-  let twitterHandle = await getTwitterHandleByUserHandle(
-    notification.user.handle
-  )
+  let twitterHandle = notification.user.twitterHandle
   if (!twitterHandle) twitterHandle = notification.user.name
   else twitterHandle = `@${twitterHandle}`
 

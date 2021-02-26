@@ -102,6 +102,7 @@ export enum MessageType {
   ON_FIRST_PAGE = 'nav-on-first-page',
   NOT_ON_FIRST_PAGE = 'nav-not-on-first-page',
   GO_BACK = 'nav-go-back',
+  CHANGED_PAGE = 'nav-changed-page',
 
   // Analytics
   ANALYTICS_IDENTIFY = 'analytics-identify',
@@ -230,7 +231,7 @@ export const handleMessage = async (
     case MessageType.BACKEND_SETUP:
       return dispatch(lifecycleActions.backendLoaded())
     case MessageType.SIGNED_IN:
-      return dispatch(lifecycleActions.signedIn())
+      return dispatch(lifecycleActions.signedIn(message.account))
     case MessageType.REQUEST_NETWORK_CONNECTED:
       const isConnected = checkConnectivity(Connectivity.netInfo)
       postMessage({
@@ -298,6 +299,9 @@ export const handleMessage = async (
     }
     case MessageType.NOT_ON_FIRST_PAGE: {
       return dispatch(lifecycleActions.notOnFirstPage())
+    }
+    case MessageType.CHANGED_PAGE: {
+      return dispatch(lifecycleActions.changedPage(message.location))
     }
     case MessageType.LOGGING: {
       handleWebAppLog(message.level, message.message)
