@@ -1,7 +1,7 @@
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
 import IconRemove from '../../assets/images/iconRemove.svg'
 import React from 'react'
-import { useTheme } from '../../utils/theme'
+import { useSpecialColor, useTheme } from '../../utils/theme'
 
 const messages = {
   notifications: 'NOTIFICATIONS'
@@ -24,8 +24,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontFamily: 'AvenirNextLTPro-Heavy',
-    fontSize: 18,
-    color: '#FFFFFF'
+    fontSize: 18
   },
   spacer: {
     width: 30
@@ -39,6 +38,8 @@ type TopBarProps = {
 const TopBar = ({
   onClose
 }: TopBarProps) => {
+  const color = useSpecialColor('staticWhite', 'white')
+  console.log(color)
   const topBarStyle = useTheme(styles.topBar, {
     backgroundColor: 'secondary',
   })
@@ -54,10 +55,12 @@ const TopBar = ({
           <IconRemove
             width={30}
             height={30}
-            fill={'#FFFFFF'}
+            fill={color}
           />
         </TouchableOpacity>
-        <Text style={styles.text}>
+        <Text style={[styles.text, {
+          color
+        }]}>
           {messages.notifications}
         </Text>
         <View style={styles.spacer} />

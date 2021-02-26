@@ -74,7 +74,8 @@ export const defaultTheme = {
   accentOrangeDark1: '#F28100',
   accentOrangeLight1: '#FFA70F',
   accentPurple: '#8E51CF',
-  shadow: '#E3E3E3'
+  shadow: '#E3E3E3',
+  staticWhite: '#FFFFFF'
 }
 
 export const darkTheme = {
@@ -114,7 +115,8 @@ export const darkTheme = {
   accentOrangeDark1: '#F28100',
   accentOrangeLight1: '#FFA70F',
   accentPurple: '#8E51CF',
-  shadow: '#35364F'
+  shadow: '#35364F',
+  staticWhite: '#FFFFFF'
 }
 
 const matrixTheme = {
@@ -145,6 +147,7 @@ const matrixTheme = {
   neutralLight9: '#202A1D',
   neutralLight10: '#1D211B',
   white: '#1F211F',
+  staticWhite: '#FFFFFF'
 }
 
 const useThemeVariant = () => {
@@ -169,6 +172,16 @@ const useThemeVariant = () => {
 export const useColor = (color: string) => {
   const theme = useThemeVariant()
   return (theme as any)[color]
+}
+
+// Uses normalColor when in light/dark mode, but "special color" when in other mode
+export const useSpecialColor = (normalColor: string, specialColor: string) => {
+  const theme = useSelector(state => getTheme(state))
+  const themeVariant = useThemeVariant()
+  if (theme === Theme.MATRIX) {
+    return (themeVariant as any)[specialColor]
+  }
+  return (themeVariant as any)[normalColor]
 }
 
 export const useTheme = (baseStyles: object, toTheme: object) => {
