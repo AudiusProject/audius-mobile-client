@@ -416,7 +416,6 @@ const WebApp = ({
 
     // Otherwise, if it's not a eventUrl we control, open it
     // in the native browser.
-    console.log('HERE', eventUrl)
     const matches = eventUrl.match(URL_INTERCEPT_PATTERN)
     if (!matches || !matches.length) {
       // Prevent double encoding of url, this is a problem w/ twitter b/c of the '#' character
