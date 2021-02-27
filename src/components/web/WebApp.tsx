@@ -35,7 +35,7 @@ const STATIC_PORT = Config.STATIC_SERVER_PORT || 3100
 export const URL_SCHEME = 'audius://'
 
 // Intercept localhost://, file:///, or audius://
-const URL_INTERCEPT_PATTERN = /^(http:\/\/localhost|file:\/\/\/|audius:\/\/)/
+const URL_INTERCEPT_PATTERN = /^(http:\/\/localhost|file:\/\/\/|audius:\/\/|.*recaptcha.*)/
 const AUDIUS_SITE_PREFIX = /^(https|http):\/\/audius.co\//
 const AUDIUS_REDIRECT_SITE_PREFIX = /^(https|http):\/\/redirect.audius.co\/app-redirect\//
 const AUDIUS_PORT_INCLUDE_PATTERN = /(:3100|:3101)/
@@ -416,6 +416,7 @@ const WebApp = ({
 
     // Otherwise, if it's not a eventUrl we control, open it
     // in the native browser.
+    console.log('HERE', eventUrl)
     const matches = eventUrl.match(URL_INTERCEPT_PATTERN)
     if (!matches || !matches.length) {
       // Prevent double encoding of url, this is a problem w/ twitter b/c of the '#' character
