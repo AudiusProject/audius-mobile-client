@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
-import { Platform, Text, View } from 'react-native'
+import { Platform } from 'react-native'
 
 import createRootReducer from './store'
 import WebApp from './components/web/WebApp'
