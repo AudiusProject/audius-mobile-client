@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
-import { Platform } from 'react-native'
+import { Platform, Text, View } from 'react-native'
 
 import createRootReducer from './store'
 import WebApp from './components/web/WebApp'
@@ -50,8 +50,13 @@ const App = () => {
 
   return <Provider store={store}>
     <GoogleCast webRef={webRef} />
-    <Notifications webRef={webRef} />
     <WebApp webRef={webRef} />
+    {/*
+      Note: it is very important that Notifications is rendered after WebApp.
+      On Android, regardless of position: absolute, WebApp will steal all of Notifications
+      touch targets and onPress will not work.
+    */}
+    <Notifications webRef={webRef} />
     <Audio webRef={webRef} />
     <OAuth webRef={webRef} />
     <Airplay webRef={webRef} />
