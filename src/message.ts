@@ -1,17 +1,12 @@
 import { Dispatch } from 'redux'
-import {
-  NativeModules,
-  Linking,
-  Platform,
-  BackHandler
-} from 'react-native'
+import { NativeModules, Linking, Platform, BackHandler } from 'react-native'
 import NetInfo, { NetInfoState } from '@react-native-community/netinfo'
 import * as audioActions from './store/audio/actions'
 import * as oauthActions from './store/oauth/actions'
-import * as lifecycleActions  from './store/lifecycle/actions'
+import * as lifecycleActions from './store/lifecycle/actions'
 import * as notificationsActions from './store/notifications/actions'
 import * as themeActions from './store/theme/actions'
-import { showCastPicker }  from './store/googleCast/controller'
+import { showCastPicker } from './store/googleCast/controller'
 import * as webActions from './store/web/actions'
 import { AppState } from './store'
 import * as haptics from './haptics'
@@ -173,38 +168,34 @@ export const handleMessage = async (
       break
 
     // Notifications
-    case MessageType.ENABLE_PUSH_NOTIFICATIONS:
-      {
-        PushNotifications.requestPermission()
-        const info = await PushNotifications.getToken()
-        postMessage({
-          type: message.type,
-          id: message.id,
-          ...info
-        })
-        break
-      }
-    case MessageType.DISABLE_PUSH_NOTIFICATIONS:
-      {
-        const info = await PushNotifications.getToken()
-        PushNotifications.deregister()
-        postMessage({
-          type: message.type,
-          id: message.id,
-          ...info
-        })
-        break
-      }
-    case MessageType.RESET_NOTIFICATIONS_BADGE_COUNT:
-      {
-        PushNotifications.setBadgeCount(0)
-        break
-      }
-    case MessageType.PROMPT_PUSH_NOTIFICATION_REMINDER:
-      {
-        remindUserToTurnOnNotifications(postMessage)
-        break
-      }
+    case MessageType.ENABLE_PUSH_NOTIFICATIONS: {
+      PushNotifications.requestPermission()
+      const info = await PushNotifications.getToken()
+      postMessage({
+        type: message.type,
+        id: message.id,
+        ...info
+      })
+      break
+    }
+    case MessageType.DISABLE_PUSH_NOTIFICATIONS: {
+      const info = await PushNotifications.getToken()
+      PushNotifications.deregister()
+      postMessage({
+        type: message.type,
+        id: message.id,
+        ...info
+      })
+      break
+    }
+    case MessageType.RESET_NOTIFICATIONS_BADGE_COUNT: {
+      PushNotifications.setBadgeCount(0)
+      break
+    }
+    case MessageType.PROMPT_PUSH_NOTIFICATION_REMINDER: {
+      remindUserToTurnOnNotifications(postMessage)
+      break
+    }
     case MessageType.OPEN_NOTIFICATIONS:
       dispatch(notificationsActions.open())
       postMessage({
@@ -213,10 +204,14 @@ export const handleMessage = async (
       })
       return
     case MessageType.FETCH_NOTIFICATIONS_SUCCESS:
-      dispatch(notificationsActions.append(Status.SUCCESS, message.notifications))
+      dispatch(
+        notificationsActions.append(Status.SUCCESS, message.notifications)
+      )
       return
     case MessageType.FETCH_NOTIFICATIONS_REPLACE:
-      dispatch(notificationsActions.replace(Status.SUCCESS, message.notifications))
+      dispatch(
+        notificationsActions.replace(Status.SUCCESS, message.notifications)
+      )
       return
     case MessageType.FETCH_NOTIFICATIONS_FAILURE:
       return dispatch(notificationsActions.append(Status.FAILURE, []))

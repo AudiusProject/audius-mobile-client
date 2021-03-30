@@ -2,26 +2,31 @@ import Config from 'react-native-config'
 import Collection from '../../models/Collection'
 import Track from '../../models/Track'
 import User from '../../models/User'
-import { Achievement, Entity, Notification, NotificationType } from '../../store/notifications/types'
+import {
+  Achievement,
+  Entity,
+  Notification,
+  NotificationType
+} from '../../store/notifications/types'
 
 const AUDIUS_URL = Config.AUDIUS_URL
 
-export const getTrackRoute = (track: Track, fullUrl: boolean = false) => {
+export const getTrackRoute = (track: Track, fullUrl = false) => {
   const route = `/${track.route_id}-${track.track_id}`
   return fullUrl ? `${AUDIUS_URL}${route}` : route
 }
 
-export const getUserRoute = (user: User, fullUrl: boolean = false) => {
+export const getUserRoute = (user: User, fullUrl = false) => {
   const route = `/${user.handle}`
   return fullUrl ? `${AUDIUS_URL}${route}` : route
 }
 
-export const getCollectionRoute = (collection: Collection, fullUrl: boolean = false) => {
+export const getCollectionRoute = (collection: Collection, fullUrl = false) => {
   const route = `/${collection.playlist_id}`
   return fullUrl ? `${AUDIUS_URL}${route}` : route
 }
 
-export const getUserListRoute = (notification, fullUrl: boolean = false) => {
+export const getUserListRoute = (notification, fullUrl = false) => {
   const route = `/notification/${notification.id}/users`
   return fullUrl ? `${AUDIUS_URL}${route}` : route
 }
@@ -29,7 +34,7 @@ export const getUserListRoute = (notification, fullUrl: boolean = false) => {
 export const getEntityRoute = (
   entity: any,
   entityType: Entity,
-  fullUrl: boolean = false
+  fullUrl = false
 ) => {
   switch (entityType) {
     case Entity.Track:
@@ -52,7 +57,7 @@ export const getNotificationRoute = (notification: Notification) => {
       if (isMultiUser) {
         return getUserListRoute(notification)
       }
-      const firstUser = (notification).users[0]
+      const firstUser = notification.users[0]
       return getUserRoute(firstUser)
     case NotificationType.UserSubscription:
       return getEntityRoute(notification.entities[0], notification.entityType)

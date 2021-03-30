@@ -5,7 +5,7 @@ import {
 } from './actions'
 
 export type WebState = {
-  isEnabled: boolean,
+  isEnabled: boolean
   messageId: string | null
 }
 

@@ -22,7 +22,7 @@ type Uri = string
 type GoogleCastStatus = CastStatus
 
 export type GoogleCastState = {
-  status: CastStatus,
+  status: CastStatus
   startPosition: number
 }
 

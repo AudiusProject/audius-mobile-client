@@ -71,4 +71,4 @@ const reducer = (
   }
 }
 
-export default reducer 
+export default reducer
