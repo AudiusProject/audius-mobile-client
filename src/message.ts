@@ -1,6 +1,5 @@
 import { Dispatch } from 'redux'
-import { NativeModules, Linking, Platform, BackHandler } from 'react-native'
-import NetInfo, { NetInfoState } from '@react-native-community/netinfo'
+import { NativeModules, Linking, Platform } from 'react-native'
 import * as audioActions from './store/audio/actions'
 import * as oauthActions from './store/oauth/actions'
 import * as lifecycleActions from './store/lifecycle/actions'
@@ -20,7 +19,7 @@ import { checkConnectivity, Connectivity } from './utils/connectivity'
 import { Provider } from './store/oauth/reducer'
 import { handleWebAppLog } from './utils/logging'
 import { remindUserToTurnOnNotifications } from './components/notification-reminder/NotificationReminder'
-import { handleThemeChange, Theme } from './utils/theme'
+import { handleThemeChange } from './utils/theme'
 import { Status } from './types/status'
 
 let sentInitialTheme = false
@@ -157,10 +156,11 @@ export const handleMessage = async (
     case MessageType.GOOGLE_CAST:
       showCastPicker()
       break
-    case MessageType.AIRPLAY:
+    case MessageType.AIRPLAY: {
       const airplay = NativeModules.AirplayViewManager
       airplay.click()
       break
+    }
 
     // Haptics
     case MessageType.HAPTIC_FEEDBACK:
@@ -227,7 +227,7 @@ export const handleMessage = async (
       return dispatch(lifecycleActions.backendLoaded())
     case MessageType.SIGNED_IN:
       return dispatch(lifecycleActions.signedIn(message.account))
-    case MessageType.REQUEST_NETWORK_CONNECTED:
+    case MessageType.REQUEST_NETWORK_CONNECTED: {
       const isConnected = checkConnectivity(Connectivity.netInfo)
       postMessage({
         type: MessageType.IS_NETWORK_CONNECTED,
@@ -235,9 +235,10 @@ export const handleMessage = async (
         isAction: true
       })
       break
+    }
 
     // Version
-    case MessageType.GET_VERSION:
+    case MessageType.GET_VERSION: {
       const version = VersionNumber.appVersion
       postMessage({
         type: message.type,
@@ -245,6 +246,7 @@ export const handleMessage = async (
         version
       })
       break
+    }
 
     // Android specific
     case MessageType.ENABLE_PULL_TO_REFRESH:
@@ -254,7 +256,7 @@ export const handleMessage = async (
       if (isIos) return
       return dispatch(webActions.disablePullToRefresh(message))
 
-    case MessageType.PREFERS_COLOR_SCHEME:
+    case MessageType.PREFERS_COLOR_SCHEME: {
       let prefers
       if (!sentInitialTheme) {
         prefers = getInitialDarkModePreference()
@@ -268,6 +270,7 @@ export const handleMessage = async (
         prefersDarkMode: prefers
       })
       break
+    }
 
     case MessageType.SHARE:
       if (isIos) return

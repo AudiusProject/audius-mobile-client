@@ -66,7 +66,7 @@ const UserImage = ({ source }: { source: ImageSourcePropType }) => {
           : source
       }
       // TODO: Gracefully handle error and select secondary node
-      onError={({ nativeEvent: { error } }: any) => setDidError(true)}
+      onError={() => setDidError(true)}
     />
   )
 }

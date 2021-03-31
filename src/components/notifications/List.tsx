@@ -1,13 +1,7 @@
-import React, {
-  RefObject,
-  useCallback,
-  useEffect,
-  useRef,
-  useState
-} from 'react'
+import React, { useCallback } from 'react'
 import { Dispatch } from 'redux'
 import { connect } from 'react-redux'
-import { StyleSheet, FlatList, View, Text, RefreshControl } from 'react-native'
+import { StyleSheet, FlatList, View, RefreshControl } from 'react-native'
 import LottieView from 'lottie-react-native'
 
 import { AppState } from '../../store'
@@ -66,7 +60,7 @@ const List = ({
       setStatus(Status.LOADING)
       onLoadMore()
     }
-  }, [status, setStatus, onLoadMore])
+  }, [status, setStatus, onLoadMore, endReached])
 
   const onPullRefresh = useCallback(() => {
     haptics.light()
@@ -106,7 +100,7 @@ const List = ({
         </View>
       )}
       ListFooterComponent={() =>
-        status === Status.LOADING && (
+        status === Status.LOADING ? (
           <View style={styles.footer}>
             <LottieView
               source={require('../../assets/animations/loadingSpinner.json')}
@@ -124,7 +118,7 @@ const List = ({
               ]}
             />
           </View>
-        )
+        ) : null
       }
       onEndReached={onEndReached}
       onEndReachedThreshold={0.8}

@@ -152,7 +152,7 @@ const OAuth = ({ url, isOpen, messageId, webRef, provider, close }: Props) => {
       })
     }
     close()
-  }, [close, provider])
+  }, [webRef, messageId, close, provider])
 
   const injected =
     provider === Provider.INSTAGRAM ? INSTAGRAM_POLLER : TWITTER_POLLER

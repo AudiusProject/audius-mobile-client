@@ -46,6 +46,7 @@ module.exports = {
     semi: ['error', 'never'],
     'no-undef': 'off',
     'no-empty': 'off',
+    'no-shadow': 'off',
     'arrow-parens': 'off',
     'padded-blocks': 'off',
 

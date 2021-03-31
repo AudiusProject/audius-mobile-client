@@ -6,14 +6,13 @@ import React, {
   useState
 } from 'react'
 import { Dispatch } from 'redux'
-import { connect, useSelector } from 'react-redux'
+import { connect } from 'react-redux'
 import {
   StyleSheet,
   Animated,
   Dimensions,
   PanResponder,
-  View,
-  Text
+  View
 } from 'react-native'
 
 import { AppState } from '../../store'
@@ -122,7 +121,7 @@ const Notifications = ({
       duration: 300,
       useNativeDriver: true
     }).start()
-  }, [])
+  }, [backgroundAnim, translationAnim])
 
   const slideOut = useCallback(() => {
     Animated.spring(translationAnim, {
@@ -138,15 +137,18 @@ const Notifications = ({
     }).start()
     close()
     markAsViewed()
-  }, [initialPosition, close, markAsViewed, webRef])
+  }, [initialPosition, close, markAsViewed, backgroundAnim, translationAnim])
 
-  useAppState(null, () => {
-    if (isOpen) {
-      slideIn()
-    } else {
-      slideOut()
+  useAppState(
+    () => {},
+    () => {
+      if (isOpen) {
+        slideIn()
+      } else {
+        slideOut()
+      }
     }
-  })
+  )
 
   const panResponder = PanResponder.create({
     onStartShouldSetPanResponder: () => true,
@@ -277,7 +279,7 @@ const Notifications = ({
         setAnchorRoute(pathname)
       }
     }
-  }, [isOpen, slideIn, setAnchorRoute])
+  }, [isOpen, slideIn, anchorRoute, pathname, setAnchorRoute])
 
   const containerStyle = useTheme(styles.container, {
     backgroundColor: 'background'

@@ -39,7 +39,7 @@ const SplashScreen = ({ dappLoaded }: SplashScreenProps) => {
         })
       ])
     ).start()
-  }, [])
+  }, [scaleAnim])
 
   const onAnimationFinish = useCallback(() => {
     setAnimationFinished(true)

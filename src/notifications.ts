@@ -1,13 +1,8 @@
-import { Platform } from 'react-native'
+import { Platform, PushNotificationPermissions } from 'react-native'
 // https://dev.to/edmondso006/react-native-local-ios-and-android-notifications-2c58
 import PushNotification from 'react-native-push-notification'
-import PushNotificationIOS from '@react-native-community/push-notification-ios'
 import AsyncStorage from '@react-native-community/async-storage'
-import WebView from 'react-native-webview'
 
-import { MessageType } from './message'
-import { URL_SCHEME } from 'components/web/WebApp'
-import { postMessage } from './utils/postMessage'
 import { RefObject } from 'react'
 import { MessagePostingWebView } from './types/MessagePostingWebView'
 import Config from 'react-native-config'
@@ -124,7 +119,9 @@ class PushNotifications {
     PushNotification.requestPermissions()
   }
 
-  checkPermission(callback: (permissions: { alert: 0 | 1 }) => void) {
+  checkPermission(
+    callback: (permissions: PushNotificationPermissions) => void
+  ) {
     return PushNotification.checkPermissions(callback)
   }
 
@@ -142,6 +139,8 @@ class PushNotifications {
 
   async getToken() {
     // Wait until the device token and OS are persisted to async storage
+    // isRegistering modified as global
+    // eslint-disable-next-line no-unmodified-loop-condition
     while (isRegistering) {
       await new Promise(resolve => setTimeout(resolve, 100))
     }

@@ -1,18 +1,6 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  RefObject,
-  useCallback
-} from 'react'
+import React, { useEffect, RefObject, useCallback } from 'react'
 import { Dispatch } from 'redux'
 import { connect } from 'react-redux'
-import {
-  requireNativeComponent,
-  NativeEventEmitter,
-  NativeModules
-} from 'react-native'
-import WebView from 'react-native-webview'
 import { MessageType } from '../../message'
 import { postMessage } from '../../utils/postMessage'
 import { MessagePostingWebView } from '../../types/MessagePostingWebView'
@@ -49,7 +37,7 @@ const Cast = ({
   track,
   googleCastStatus,
   webRef,
-  udpateCastStatus,
+  updateCastStatus,
   seek,
   playing,
   play,
@@ -57,15 +45,15 @@ const Cast = ({
   startPosition,
   setCastPlayPosition
 }: CastProps) => {
-  const listenerRef = useRef<any>(null)
-
   const isCasting = useCallback(
     (isActive: boolean) => {
-      postMessage(webRef.current, {
-        type: MessageType.IS_CASTING,
-        isCasting: isActive,
-        isAction: true
-      })
+      if (webRef.current) {
+        postMessage(webRef.current, {
+          type: MessageType.IS_CASTING,
+          isCasting: isActive,
+          isAction: true
+        })
+      }
     },
     [webRef]
   )
@@ -73,12 +61,12 @@ const Cast = ({
   useEffect(() => {
     // Establishing connection to Chromecast
     GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_STARTING, () => {
-      udpateCastStatus(googleCastActions.CastStatus.Connecting)
+      updateCastStatus(googleCastActions.CastStatus.Connecting)
     })
 
     // Connection established
     GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_STARTED, () => {
-      udpateCastStatus(googleCastActions.CastStatus.Connected)
+      updateCastStatus(googleCastActions.CastStatus.Connected)
       isCasting(true)
     })
 
@@ -86,19 +74,20 @@ const Cast = ({
     GoogleCast.EventEmitter.addListener(
       GoogleCast.SESSION_START_FAILED,
       error => {
-        udpateCastStatus(googleCastActions.CastStatus.NotConnected)
+        updateCastStatus(googleCastActions.CastStatus.NotConnected)
         isCasting(false)
+        console.error(error)
       }
     )
 
     // Attempting to reconnect
     GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_RESUMING, () => {
-      udpateCastStatus(googleCastActions.CastStatus.Connecting)
+      updateCastStatus(googleCastActions.CastStatus.Connecting)
     })
 
     // Reconnected
     GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_RESUMED, () => {
-      udpateCastStatus(googleCastActions.CastStatus.Connected)
+      updateCastStatus(googleCastActions.CastStatus.Connected)
       isCasting(true)
     })
 
@@ -109,8 +98,9 @@ const Cast = ({
 
     // Disconnected (error provides explanation if ended forcefully)
     GoogleCast.EventEmitter.addListener(GoogleCast.SESSION_ENDED, error => {
-      udpateCastStatus(googleCastActions.CastStatus.NotConnected)
+      updateCastStatus(googleCastActions.CastStatus.NotConnected)
       isCasting(false)
+      console.error(error)
     })
 
     // Status of the media has changed. The `mediaStatus` object contains the new status.
@@ -144,7 +134,7 @@ const Cast = ({
     return () => {
       GoogleCast.endSession()
     }
-  }, [isCasting])
+  }, [webRef, isCasting, pause, play, updateCastStatus])
 
   const isConnected =
     googleCastStatus === googleCastActions.CastStatus.Connected
@@ -163,7 +153,7 @@ const Cast = ({
       })
       setCastPlayPosition(0)
     }
-  }, [trackUid, isConnected])
+  }, [trackUid, isConnected, setCastPlayPosition, startPosition, track])
 
   useEffect(() => {
     if (trackUid && isConnected) {
@@ -187,7 +177,6 @@ const Cast = ({
       style={{
         width: 0,
         height: 0,
-        border: 'none',
         display: 'none',
         position: 'absolute',
         zIndex: -1,
@@ -212,7 +201,7 @@ const mapStateToProps = (state: AppState) => ({
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   play: () => dispatch(audioActions.play()),
   pause: () => dispatch(audioActions.pause()),
-  udpateCastStatus: (castStatus: googleCastActions.CastStatus) =>
+  updateCastStatus: (castStatus: googleCastActions.CastStatus) =>
     dispatch(googleCastActions.updateCastStatus(castStatus)),
   setCastPlayPosition: (position: number) =>
     dispatch(googleCastActions.setPlayPosition(position))

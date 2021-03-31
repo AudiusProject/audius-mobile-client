@@ -127,7 +127,7 @@ const PullToRefresh = ({
     hasReachedTop.current = false
   }
 
-  if (Platform.OS === 'ios') return children
+  if (Platform.OS === 'ios') return <>{children}</>
 
   return (
     <View

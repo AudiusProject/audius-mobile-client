@@ -51,7 +51,7 @@ export const getNotificationRoute = (notification: Notification) => {
   switch (notification.type) {
     case NotificationType.Announcement:
       return null
-    case NotificationType.Follow:
+    case NotificationType.Follow: {
       const users = notification.users
       const isMultiUser = !!users && users.length > 1
       if (isMultiUser) {
@@ -59,6 +59,7 @@ export const getNotificationRoute = (notification: Notification) => {
       }
       const firstUser = notification.users[0]
       return getUserRoute(firstUser)
+    }
     case NotificationType.UserSubscription:
       return getEntityRoute(notification.entities[0], notification.entityType)
     case NotificationType.Favorite:
@@ -70,16 +71,18 @@ export const getNotificationRoute = (notification: Notification) => {
         return getUserRoute(notification.user)
       }
       return getEntityRoute(notification.entity, notification.entityType)
-    case NotificationType.RemixCosign:
+    case NotificationType.RemixCosign: {
       const original = notification.entities.find(
         (track: Track) => track.owner_id === notification.parentTrackUserId
       )
       return getEntityRoute(original, Entity.Track)
-    case NotificationType.RemixCreate:
+    }
+    case NotificationType.RemixCreate: {
       const remix = notification.entities.find(
         (track: Track) => track.track_id === notification.childTrackId
       )
       return getEntityRoute(remix, Entity.Track)
+    }
     case NotificationType.TrendingTrack:
       return getEntityRoute(notification.entity, notification.entityType)
   }

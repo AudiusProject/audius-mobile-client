@@ -74,6 +74,7 @@
     "@types/jest": "^24.0.18",
     "@types/node": "^12.12.17",
     "@types/react-native": "^0.60.22",
+    "@types/react-native-push-notification": "^7.2.0",
     "@types/react-test-renderer": "16.9.0",
     "@typescript-eslint/eslint-plugin": "^2.30.0",
     "@typescript-eslint/parser": "^2.30.0",

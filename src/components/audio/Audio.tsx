@@ -11,7 +11,6 @@ import { Platform, StyleSheet, View } from 'react-native'
 import MusicControl from 'react-native-music-control'
 import Video, { OnProgressData } from 'react-native-video'
 import { Command } from 'react-native-music-control/lib/types'
-import WebView from 'react-native-webview'
 
 import { AppState } from '../../store'
 import * as audioActions from '../../store/audio/actions'
@@ -30,6 +29,14 @@ import { MessageType } from '../../message'
 import { logListen } from './listens'
 import { postMessage } from '../../utils/postMessage'
 import { MessagePostingWebView } from '../../types/MessagePostingWebView'
+
+declare global {
+  interface Global {
+    progress: {
+      currentTime: number
+    }
+  }
+}
 
 const RECORD_LISTEN_SECONDS = 1
 
@@ -80,7 +87,7 @@ const Audio = ({
   const elapsedTime = useRef(0)
   // It is important for duration to be null when it isn't set
   // to the correct value or else MusicControl gets confused.
-  const [duration, setDuration] = useState(null)
+  const [duration, setDuration] = useState<number | null>(null)
 
   const [listenLoggedForTrack, setListenLoggedForTrack] = useState(false)
 
@@ -114,7 +121,7 @@ const Audio = ({
       index: index,
       isAction: true
     })
-  }, [index])
+  }, [webRef, track, index])
 
   useEffect(() => {
     isPlaying.current = playing
@@ -165,7 +172,7 @@ const Audio = ({
       }
       pause()
     })
-  }, [next, previous, play, pause])
+  }, [webRef, next, previous, play, pause])
 
   // Playing handler
   useEffect(() => {
@@ -213,7 +220,7 @@ const Audio = ({
         MusicControl.handleAudioInterruptions(false)
       }
     }
-  }, [track, index, duration])
+  }, [webRef, track, index, duration])
 
   // Next and Previous handler
   useEffect(() => {
@@ -243,7 +250,7 @@ const Audio = ({
     if (listenLoggedForTrack) {
       setListenLoggedForTrack(false)
     }
-  }, [track])
+  }, [track, listenLoggedForTrack, setListenLoggedForTrack])
 
   const [isCastConnecting, setIsCastConnecting] = useState(false)
 
@@ -255,7 +262,15 @@ const Audio = ({
     } else if (googleCastStatus !== CastStatus.Connecting) {
       setIsCastConnecting(false)
     }
-  }, [googleCastStatus, elapsedTime, playing, isCastConnecting])
+  }, [
+    googleCastStatus,
+    elapsedTime,
+    playing,
+    pause,
+    setCastPlayPosition,
+    setIsCastConnecting,
+    isCastConnecting
+  ])
 
   const handleError = (e: any) => {
     console.error('err ' + JSON.stringify(e))

@@ -42,7 +42,7 @@ const useSessionCount = (
       }
     }
     work()
-  }, [callback, calledAtCount, setCalledAtCount])
+  }, [callback, calledAtCount, setCalledAtCount, frequency, startAt])
 }
 
 export default useSessionCount

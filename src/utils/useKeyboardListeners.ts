@@ -28,7 +28,7 @@ export const useKeyboardListeners = (webRef: React.Ref<WebView>) => {
       didShowListener.remove()
       didHideListener.remove()
     }
-  }, [])
+  }, [webRef])
 }
 
 export default useKeyboardListeners
