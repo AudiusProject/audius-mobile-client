@@ -1,8 +1,5 @@
-app_identifier("co.audius.audiusmusic") # The bundle identifier of your app
-apple_id("admin@audius.co") # Your Apple email address
+app_identifier("co.audius.audiusmusic,co.audius.audiusmusic.bounce")
+apple_id("admin@audius.co")
 
-itc_team_id("120153007") # App Store Connect Team ID
-team_id("LRFCG93S85") # Developer Portal Team ID
-
-# For more information about the Appfile, see:
-#     https://docs.fastlane.tools/advanced/#appfile
+itc_team_id("120153007")
+team_id("LRFCG93S85")
