@@ -76,7 +76,7 @@ export const track = async ({ eventName, properties }: Track) => {
     ...properties,
     mobileClientVersion: version
   }
-  // console.info('Analytics track', eventName, propertiesWithContext)
+  console.info('Analytics track', eventName, propertiesWithContext)
   analytics.track(eventName, propertiesWithContext)
 }
 
