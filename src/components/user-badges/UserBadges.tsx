@@ -67,7 +67,7 @@ const UserBadges: React.FC<UserBadgesProps> = ({
   style = {},
   nameStyle = {}
 }) => {
-  const tier = 'silver' // getBadgeTier(user)
+  const tier = getBadgeTier(user)
   const tierMap = useSVGTiers ? audioTierMapSVG : audioTierMapPng
   const tierElement = tierMap[tier]
   return (
