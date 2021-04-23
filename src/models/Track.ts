@@ -48,7 +48,12 @@ export type RemixOf = {
   tracks: Remix[]
 }
 
-export type TrackMetadata = {
+export type TrackImage = {
+  cover_art: Nullable<CID>
+  cover_art_sizes: Nullable<CID>
+}
+
+export type TrackMetadata = TrackImage & {
   blocknumber: number
   activity_timestamp?: string
   is_delete: boolean
@@ -75,8 +80,6 @@ export type TrackMetadata = {
   title: string
   route_id: string
   track_segments: TrackSegment[]
-  cover_art: Nullable<CID>
-  cover_art_sizes: Nullable<CID>
   is_unlisted: boolean
   field_visibility?: FieldVisibility
   listenCount?: number
