@@ -121,6 +121,7 @@ const SearchHistory = () => {
           <SearchHistoryItem key={item} text={item} />
         ) : (
           <TouchableHighlight
+            key={'clear'}
             onPress={clearHistory}
             style={styles.clearTouchable}
             underlayColor={backgroundColor}
