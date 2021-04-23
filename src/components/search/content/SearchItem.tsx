@@ -103,8 +103,7 @@ const UserSearchResult = ({ item: user }: UserSearchResultProps) => {
       <UserBadges
         style={styles.badgeContainer}
         nameStyle={nameStyle}
-        name={user.name}
-        isVerified={user.is_verified}
+        user={user}
       />
     </ItemContainer>
   )
@@ -130,8 +129,7 @@ const TrackSearchResult = ({ item: track }: TrackSearchResultProps) => {
         <UserBadges
           style={styles.badgeContainer}
           nameStyle={userNameStyle}
-          name={track.user.name}
-          isVerified={track.user.is_verified}
+          user={track.user}
         />
       </View>
     </ItemContainer>
@@ -146,7 +144,7 @@ const PlaylistSearchResult = ({ item: playlist }: PlaylistSearchResultProps) => 
 
   const pushRoute = usePushSearchRoute()
   const onPress = useCallback(() => {
-    const collectionRoute = getCollectionRoute(playlist)
+    const collectionRoute = getCollectionRoute(playlist as any)
     pushRoute(collectionRoute, 'search')
   }, [playlist, pushRoute])
 
@@ -158,8 +156,7 @@ const PlaylistSearchResult = ({ item: playlist }: PlaylistSearchResultProps) => 
         <UserBadges
           style={styles.badgeContainer}
           nameStyle={userNameStyle}
-          name={playlist.user.name}
-          isVerified={playlist.user.is_verified}
+          user={playlist.user}
         />
       </View>
     </ItemContainer>
@@ -174,7 +171,7 @@ const AlbumSearchResult = ({ item: playlist }: AlbumSearchResultProps) => {
 
   const pushRoute = usePushSearchRoute()
   const onPress = useCallback(() => {
-    const collectionRoute = getCollectionRoute(playlist)
+    const collectionRoute = getCollectionRoute(playlist as any)
     pushRoute(collectionRoute, 'search')
   }, [playlist, pushRoute])
 
@@ -186,8 +183,7 @@ const AlbumSearchResult = ({ item: playlist }: AlbumSearchResultProps) => {
         <UserBadges
           style={styles.badgeContainer}
           nameStyle={userNameStyle}
-          name={playlist.user.name}
-          isVerified={playlist.user.is_verified}
+          user={playlist.user}
         />
       </View>
     </ItemContainer>

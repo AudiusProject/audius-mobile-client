@@ -1,8 +1,9 @@
-import { TrackImage } from "../../models/Track"
+import { TrackImage, TrackId } from "../../models/Track"
 import { CollectionImage } from "../../models/Collection"
-import { UserImage, UserMultihash } from "../../models/User"
+import { UserImage, UserMultihash, UserBalance, UserName, UserVerified } from "../../models/User"
 
-export type SearchUser = UserMultihash & UserImage & {
+export type SearchUser = UserMultihash & UserImage & 
+  UserBalance & UserName & UserVerified & {
   album_count: null
   bio: string
   followee_count: null
@@ -14,8 +15,6 @@ export type SearchUser = UserMultihash & UserImage & {
   playlist_count: null
   repost_count: null
   track_count: null
-  balance: null
-  associated_wallets_balance: null
   blocknumber: number
   wallet: string
   created_at: string
@@ -28,7 +27,7 @@ export type SearchUser = UserMultihash & UserImage & {
   user_id: number
 }
 
-export type SearchTrack = TrackImage & {
+export type SearchTrack = TrackImage & TrackId &  {
   description: string | null
   genre: string
   mood: string
@@ -70,7 +69,10 @@ export type SearchTrack = TrackImage & {
   track_id: number
   owner_id: number
   followee_saves: []
-  save_count: null
+  save_count: null,
+  track_segments: { duration: number, multihash: string }[]
+  followee_favorites: null
+  user_id: number
 }
 
 export type SearchPlaylist = CollectionImage & {

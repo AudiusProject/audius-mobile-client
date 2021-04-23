@@ -1,7 +1,7 @@
 import Color from './common/Color'
 import { CID, ID } from './common/Identifiers'
 import { CoverPhotoSizes, ProfilePictureSizes } from './common/ImageSizes'
-import { Nullable } from 'utils/typeUtils'
+import { Nullable } from '../utils/typeUtils'
 import Timestamped from './common/Timestamped'
 
 export type UserImage = {
@@ -22,7 +22,21 @@ export type UserHandle = {
   handle: string
 }
 
-export type UserMetadata = UserHandle & {
+export type UserName = {
+  name: string
+}
+
+export type UserVerified = {
+  is_verified: boolean
+}
+
+export type UserBalance = {
+  associated_wallets_balance: string
+  balance: string
+}
+
+export type UserMetadata = UserName & UserHandle & 
+  UserBalance & UserVerified & {
   album_count: number
   bio: string | null
   cover_photo: Nullable<CID>
@@ -33,9 +47,7 @@ export type UserMetadata = UserHandle & {
   follower_count: number
   handle_lc: string
   is_creator: boolean
-  is_verified: boolean
   location: Nullable<string>
-  name: string
   playlist_count: number
   profile_picture: Nullable<CID>
   repost_count: number

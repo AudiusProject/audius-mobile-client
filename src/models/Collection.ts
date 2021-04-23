@@ -5,7 +5,7 @@ import User, { UserMetadata } from './User'
 import Favorite from './Favorite'
 import { ReactNode } from 'react'
 import { UserTrackMetadata } from './Track'
-import { Nullable } from 'utils/typeUtils'
+import { Nullable } from '../utils/typeUtils'
 
 export enum Variant {
   USER_GENERATED = 'user-generated',
