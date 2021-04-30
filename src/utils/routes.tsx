@@ -67,3 +67,18 @@ export const getSearchRoute = (
   const route = `/search/${encodeUrlName(query)}`
   return fullUrl ? `${AUDIUS_URL}${route}` : route
 }
+
+export const getTagSearchRoute = (
+  query: string,
+  fullUrl = false
+) => {
+  const route = `/search/#${encodeUrlName(query)}`
+  return fullUrl ? `${AUDIUS_URL}${route}` : route
+}
+
+export const getEmptyPageRoute = (
+  fullUrl = false
+) => {
+  const route = `/empty_page`
+  return fullUrl ? `${AUDIUS_URL}${route}` : route
+}
