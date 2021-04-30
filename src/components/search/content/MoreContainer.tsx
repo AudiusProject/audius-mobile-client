@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import {
   StyleSheet,
-  View,
+  Animated,
   Text,
   TouchableOpacity,
 } from 'react-native'
@@ -51,14 +51,50 @@ const MoreContainer = () => {
     pushWebRoute(getSearchRoute(searchResultQuery), 'search')
   }, [pushWebRoute, searchResultQuery])
 
+  const [shrinkAnim] = useState(new Animated.Value(1))
+  const onPressIn = useCallback(() => {
+    Animated.timing(shrinkAnim, {
+      toValue: 0,
+      duration: 70,
+      useNativeDriver: true
+    }).start()
+  }, [])
+
+  const onPressOut = useCallback(() => {
+    Animated.timing(shrinkAnim, {
+      toValue: 1,
+      duration: 70,
+      useNativeDriver: true
+    }).start()
+  }, [])
+
   return (
     <TouchableOpacity
       onPress={onClickMore}
-      delayPressIn={50}
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
       activeOpacity={0.8}
     >
-      <View
-        style={moreContainerStyles}
+      <Animated.View
+        style={[
+          moreContainerStyles,
+          {
+            transform: [
+              {
+              scaleX: shrinkAnim.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0.97, 1]
+              })
+            },
+            {
+              scaleY: shrinkAnim.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [0.97, 1]
+              })
+            }
+            ]
+          }
+        ]}
       >
         <Text style={moreTextStyles}>
           {messages.more}
@@ -68,7 +104,7 @@ const MoreContainer = () => {
           width={24}
           fill={color}
         />
-      </View>
+      </Animated.View>
     </TouchableOpacity>
   )
 }
