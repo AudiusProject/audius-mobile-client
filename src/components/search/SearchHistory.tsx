@@ -15,6 +15,10 @@ import { useDispatchWebAction } from '../../hooks/useWebAction'
 import { MessageType } from '../../message'
 import EmptySearch from './content/EmptySearch'
 import IconArrow from '../../assets/images/iconArrow.svg'
+import { usePushSearchRoute } from './utils'
+import {
+  getTagSearchRoute
+} from '../../utils/routes'
 
 const messages = {
   clear: 'Clear Recent Searches',
@@ -38,6 +42,9 @@ const styles = StyleSheet.create({
     height: 40,
     borderBottomWidth: 1
   },
+  itemTextContainer: {
+    flex: 1
+  },
   itemText: {
     fontSize: 14,
     fontFamily: 'AvenirNextLTPro-Regular'
@@ -48,9 +55,7 @@ const styles = StyleSheet.create({
   },
   clearTouchable: {
     marginTop: 12,
-    marginBottom: 12,
-    marginLeft: 24,
-    marginRight: 24,
+    marginBottom: 32
   },
   clearContainer: {
     padding: 12,
@@ -74,14 +79,19 @@ const SearchHistoryItem = ({ text }: SearchHistoryItemProps) => {
   const itemContainerStyles = useTheme(styles.itemContainer, { borderBottomColor: 'neutralLight8' })
   const dispatch = useDispatch()
   const dispatchWeb = useDispatchWebAction()
+  const pushRoute = usePushSearchRoute()
 
   const onPress = useCallback(() => {
     dispatch(submitQuery(text))
-    dispatchWeb({
-      type: MessageType.SUBMIT_SEARCH_QUERY,
-      query: text,
-      isAction: true
-    })
+    if (text.startsWith('#')) {
+      pushRoute(getTagSearchRoute(text.substring(1)), 'search', true)
+    } else {
+      dispatchWeb({
+        type: MessageType.SUBMIT_SEARCH_QUERY,
+        query: text,
+        isAction: true
+      })
+    }
   }, [dispatch, text])
 
   return (
@@ -91,7 +101,9 @@ const SearchHistoryItem = ({ text }: SearchHistoryItemProps) => {
       onPress={onPress}
     >
       <View style={itemContainerStyles}>
-        <Text style={itemTextStyles}>{text}</Text>
+        <View style={styles.itemTextContainer}>
+          <Text numberOfLines={1} style={itemTextStyles}>{text}</Text>
+        </View>
         <IconArrow style={styles.arrow} fill={color} />
       </View>
     </TouchableHighlight>
