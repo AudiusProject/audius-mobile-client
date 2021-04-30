@@ -1,15 +1,6 @@
-import React, {
-  useCallback,
-  useEffect,
-  useRef,
-  useState
-} from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  StyleSheet,
-  Animated,
-  View
-} from 'react-native'
+import { StyleSheet, Animated, View } from 'react-native'
 
 import {
   getIsOpen,
@@ -122,7 +113,7 @@ const Search = () => {
     } else {
       close()
     }
-  }, [setAnchorRoute, anchorRoute])
+  }, [setAnchorRoute, anchorRoute, pushWebRoute, close])
 
   const containerStyle = useTheme(styles.container, {
     backgroundColor: 'white'
@@ -131,12 +122,14 @@ const Search = () => {
   const searchQuery = useSelector(getSearchQuery)
   const searchResultQuery = useSelector(getSearchResultQuery)
   const searchResults = useSelector(getSearchResults)
-  const hasResults = Object.values(searchResults).some(result => result && result.length > 0)
+  const hasResults = Object.values(searchResults).some(
+    result => result && result.length > 0
+  )
   let body = null
   if (!!searchQuery && hasResults) {
-    body = (<SearchResults />)
+    body = <SearchResults />
   } else if (!!searchQuery && !!searchResultQuery && !hasResults) {
-    body = (<EmptySearch query={searchResultQuery} />)
+    body = <EmptySearch query={searchResultQuery} />
   } else {
     body = <SearchHistory />
   }

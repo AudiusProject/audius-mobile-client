@@ -1,13 +1,8 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  StyleSheet,
-  Animated,
-  Text,
-  TouchableOpacity,
-} from 'react-native'
+import { StyleSheet, Animated, Text, TouchableOpacity } from 'react-native'
 
-import { useColor, useSpecialColor, useTheme } from '../../../utils/theme'
+import { useColor, useTheme } from '../../../utils/theme'
 import { getSearchRoute } from '../../../utils/routes'
 import { usePushWebRoute } from '../../../hooks/useWebAction'
 import * as searchActions from '../../../store/search/actions'
@@ -40,7 +35,9 @@ const styles = StyleSheet.create({
 
 const MoreContainer = () => {
   const color = useColor('staticWhite')
-  const moreContainerStyles = useTheme(styles.moreContainer, { backgroundColor: 'primary' })
+  const moreContainerStyles = useTheme(styles.moreContainer, {
+    backgroundColor: 'primary'
+  })
   const moreTextStyles = useTheme(styles.moreText, { color: 'staticWhite' })
   const dispatch = useDispatch()
   const onClose = useCallback(() => dispatch(searchActions.close()), [dispatch])
@@ -58,7 +55,7 @@ const MoreContainer = () => {
       duration: 70,
       useNativeDriver: true
     }).start()
-  }, [])
+  }, [shrinkAnim])
 
   const onPressOut = useCallback(() => {
     Animated.timing(shrinkAnim, {
@@ -66,7 +63,7 @@ const MoreContainer = () => {
       duration: 70,
       useNativeDriver: true
     }).start()
-  }, [])
+  }, [shrinkAnim])
 
   return (
     <TouchableOpacity
@@ -81,29 +78,23 @@ const MoreContainer = () => {
           {
             transform: [
               {
-              scaleX: shrinkAnim.interpolate({
+                scaleX: shrinkAnim.interpolate({
                   inputRange: [0, 1],
                   outputRange: [0.97, 1]
-              })
-            },
-            {
-              scaleY: shrinkAnim.interpolate({
+                })
+              },
+              {
+                scaleY: shrinkAnim.interpolate({
                   inputRange: [0, 1],
                   outputRange: [0.97, 1]
-              })
-            }
+                })
+              }
             ]
           }
         ]}
       >
-        <Text style={moreTextStyles}>
-          {messages.more}
-        </Text>
-        <IconArrow
-          height={24}
-          width={24}
-          fill={color}
-        />
+        <Text style={moreTextStyles}>{messages.more}</Text>
+        <IconArrow height={24} width={24} fill={color} />
       </Animated.View>
     </TouchableOpacity>
   )

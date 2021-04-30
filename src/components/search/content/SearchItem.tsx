@@ -1,13 +1,5 @@
 import React, { useCallback } from 'react'
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableHighlight
-} from 'react-native'
-import { useDispatch } from 'react-redux'
-import { usePushWebRoute } from '../../../hooks/useWebAction'
-import * as searchActions from '../../../store/search/actions'
+import { StyleSheet, View, Text, TouchableHighlight } from 'react-native'
 import IconArrow from '../../../assets/images/iconArrow.svg'
 import { useColor, useTheme } from '../../../utils/theme'
 import {
@@ -19,7 +11,7 @@ import UserImage from '../../image/UserImage'
 import TrackImage from '../../image/TrackImage'
 import PlaylistImage from '../../image/PlaylistImage'
 import UserBadges from '../../user-badges/UserBadges'
-import { 
+import {
   SearchPlaylist,
   SearchTrack,
   SearchUser,
@@ -64,17 +56,20 @@ const styles = StyleSheet.create({
   }
 })
 
-type ItemContainerProps = { isLast: boolean, onPress: () => void }
-const ItemContainer: React.FunctionComponent<ItemContainerProps> = ({ isLast, onPress, children }) => {
+type ItemContainerProps = { isLast: boolean; onPress: () => void }
+const ItemContainer: React.FunctionComponent<ItemContainerProps> = ({
+  isLast,
+  onPress,
+  children
+}) => {
   const color = useColor('neutralLight4')
   const backgroundColor = useColor('neutralLight8')
-  const containerStyle = useTheme(styles.container, { borderBottomColor: 'neutralLight8' })
+  const containerStyle = useTheme(styles.container, {
+    borderBottomColor: 'neutralLight8'
+  })
   const viewStyle = isLast ? styles.container : containerStyle
   return (
-    <TouchableHighlight
-      underlayColor={backgroundColor}
-      onPress={onPress}
-    >
+    <TouchableHighlight underlayColor={backgroundColor} onPress={onPress}>
       <View style={viewStyle}>
         {children}
         <IconArrow fill={color} height={18} width={18} />
@@ -83,11 +78,12 @@ const ItemContainer: React.FunctionComponent<ItemContainerProps> = ({ isLast, on
   )
 }
 
-
-type UserSearchResultProps = { isLast: boolean, item: SearchUser }
+type UserSearchResultProps = { isLast: boolean; item: SearchUser }
 const UserSearchResult = ({ isLast, item: user }: UserSearchResultProps) => {
   const nameStyle = useTheme(styles.name, { color: 'neutral' })
-  const imageStyle = useTheme(styles.userImage, { backgroundColor: 'neutralLight4' })
+  const imageStyle = useTheme(styles.userImage, {
+    backgroundColor: 'neutralLight4'
+  })
   const pushRoute = usePushSearchRoute()
   const { appendSearchItem } = useSearchHistory()
   const onPress = useCallback(() => {
@@ -112,7 +108,9 @@ type TrackSearchResultProps = { isLast: boolean; item: SearchTrack }
 const TrackSearchResult = ({ isLast, item: track }: TrackSearchResultProps) => {
   const nameStyle = useTheme(styles.name, { color: 'neutral' })
   const userNameStyle = useTheme(styles.name, { color: 'neutralLight4' })
-  const squareImageStyles = useTheme(styles.squareImage, { backgroundColor: 'neutralLight4' })
+  const squareImageStyles = useTheme(styles.squareImage, {
+    backgroundColor: 'neutralLight4'
+  })
 
   const pushRoute = usePushSearchRoute()
   const { appendSearchItem } = useSearchHistory()
@@ -120,13 +118,19 @@ const TrackSearchResult = ({ isLast, item: track }: TrackSearchResultProps) => {
     appendSearchItem(track.title)
     const trackRoute = getTrackRoute(track)
     pushRoute(trackRoute, 'search')
-  }, [track, pushRoute,appendSearchItem])
+  }, [track, pushRoute, appendSearchItem])
 
   return (
     <ItemContainer isLast={isLast} onPress={onPress}>
-      <TrackImage track={track} user={track.user} imageStyle={squareImageStyles} />
+      <TrackImage
+        track={track}
+        user={track.user}
+        imageStyle={squareImageStyles}
+      />
       <View style={styles.nameContainer}>
-        <Text numberOfLines={1} style={nameStyle}>{track.title}</Text>
+        <Text numberOfLines={1} style={nameStyle}>
+          {track.title}
+        </Text>
         <UserBadges
           style={styles.badgeContainer}
           nameStyle={userNameStyle}
@@ -138,10 +142,15 @@ const TrackSearchResult = ({ isLast, item: track }: TrackSearchResultProps) => {
 }
 
 type PlaylistSearchResultProps = { isLast: boolean; item: SearchPlaylist }
-const PlaylistSearchResult = ({ isLast, item: playlist }: PlaylistSearchResultProps) => {
+const PlaylistSearchResult = ({
+  isLast,
+  item: playlist
+}: PlaylistSearchResultProps) => {
   const nameStyle = useTheme(styles.name, { color: 'neutral' })
   const userNameStyle = useTheme(styles.name, { color: 'neutralLight4' })
-  const squareImageStyles = useTheme(styles.squareImage, { backgroundColor: 'neutralLight4' })
+  const squareImageStyles = useTheme(styles.squareImage, {
+    backgroundColor: 'neutralLight4'
+  })
 
   const pushRoute = usePushSearchRoute()
   const { appendSearchItem } = useSearchHistory()
@@ -153,9 +162,15 @@ const PlaylistSearchResult = ({ isLast, item: playlist }: PlaylistSearchResultPr
 
   return (
     <ItemContainer isLast={isLast} onPress={onPress}>
-      <PlaylistImage playlist={playlist} user={playlist.user} imageStyle={squareImageStyles} />
+      <PlaylistImage
+        playlist={playlist}
+        user={playlist.user}
+        imageStyle={squareImageStyles}
+      />
       <View style={styles.nameContainer}>
-        <Text numberOfLines={1} style={nameStyle}>{playlist.playlist_name}</Text>
+        <Text numberOfLines={1} style={nameStyle}>
+          {playlist.playlist_name}
+        </Text>
         <UserBadges
           style={styles.badgeContainer}
           nameStyle={userNameStyle}
@@ -167,24 +182,35 @@ const PlaylistSearchResult = ({ isLast, item: playlist }: PlaylistSearchResultPr
 }
 
 type AlbumSearchResultProps = { isLast: boolean; item: SearchPlaylist }
-const AlbumSearchResult = ({ isLast, item: playlist }: AlbumSearchResultProps) => {
+const AlbumSearchResult = ({
+  isLast,
+  item: playlist
+}: AlbumSearchResultProps) => {
   const nameStyle = useTheme(styles.name, { color: 'neutral' })
   const userNameStyle = useTheme(styles.name, { color: 'neutralLight4' })
-  const squareImageStyles = useTheme(styles.squareImage, { backgroundColor: 'neutralLight4' })
+  const squareImageStyles = useTheme(styles.squareImage, {
+    backgroundColor: 'neutralLight4'
+  })
 
   const pushRoute = usePushSearchRoute()
   const { appendSearchItem } = useSearchHistory()
   const onPress = useCallback(() => {
     appendSearchItem(playlist.playlist_name)
     const collectionRoute = getCollectionRoute(playlist as any)
-    pushRoute(collectionRoute, 'search', true)
+    pushRoute(collectionRoute, 'search')
   }, [playlist, pushRoute, appendSearchItem])
 
   return (
     <ItemContainer isLast={isLast} onPress={onPress}>
-      <PlaylistImage playlist={playlist} user={playlist.user} imageStyle={squareImageStyles} />
+      <PlaylistImage
+        playlist={playlist}
+        user={playlist.user}
+        imageStyle={squareImageStyles}
+      />
       <View style={styles.nameContainer}>
-        <Text numberOfLines={1} style={nameStyle}>{playlist.playlist_name}</Text>
+        <Text numberOfLines={1} style={nameStyle}>
+          {playlist.playlist_name}
+        </Text>
         <UserBadges
           style={styles.badgeContainer}
           nameStyle={userNameStyle}
@@ -195,22 +221,26 @@ const AlbumSearchResult = ({ isLast, item: playlist }: AlbumSearchResultProps) =
   )
 }
 
-
-type SearchItemProps = { isLast: boolean; type: SectionHeader; item: SearchUser | SearchTrack | SearchPlaylist}
+type SearchItemProps = {
+  isLast: boolean
+  type: SectionHeader
+  item: SearchUser | SearchTrack | SearchPlaylist
+}
 const SearchItem = ({ isLast, type, item }: SearchItemProps) => {
   switch (type) {
     case 'users':
-      return <UserSearchResult isLast={isLast} item={item as SearchUser} />;
+      return <UserSearchResult isLast={isLast} item={item as SearchUser} />
     case 'tracks':
-      return <TrackSearchResult isLast={isLast} item={item as SearchTrack} />;
+      return <TrackSearchResult isLast={isLast} item={item as SearchTrack} />
     case 'playlists':
-      return <PlaylistSearchResult isLast={isLast} item={item as SearchPlaylist} />;
+      return (
+        <PlaylistSearchResult isLast={isLast} item={item as SearchPlaylist} />
+      )
     case 'albums':
-      return <AlbumSearchResult isLast={isLast} item={item as SearchPlaylist} />;
+      return <AlbumSearchResult isLast={isLast} item={item as SearchPlaylist} />
     default:
       return null
   }
 }
 
 export default SearchItem
-

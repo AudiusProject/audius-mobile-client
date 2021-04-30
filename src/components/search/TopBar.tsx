@@ -1,8 +1,7 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react'
+import React, { useEffect, useRef, useCallback } from 'react'
 import {
   StyleSheet,
   View,
-  Text,
   TextInput,
   TouchableOpacity,
   Platform
@@ -15,19 +14,20 @@ import IconRemove from '../../assets/images/iconRemove.svg'
 import { useColor, useTheme } from '../../utils/theme'
 import { useDispatchWebAction } from '../../hooks/useWebAction'
 import { MessageType } from '../../message'
+import { getTagSearchRoute } from '../../utils/routes'
 import {
-  getTagSearchRoute
-} from '../../utils/routes'
-import { getSearchQuery, getSearchResultQuery } from '../../store/search/selectors'
+  getSearchQuery,
+  getSearchResultQuery
+} from '../../store/search/selectors'
 import { updateQuery } from '../../store/search/actions'
 import useSearchHistory from '../../store/search/hooks'
 import { usePushSearchRoute } from './utils'
-
 
 const IS_IOS = Platform.OS === 'ios'
 
 const styles = StyleSheet.create({
   topBar: {
+    // height + border width should be 87
     height: IS_IOS ? 86 : 55,
     borderBottomWidth: 1
   },
@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     height: 30,
     paddingLeft: 0,
-    paddingRight: 16,
+    paddingRight: 16
   },
   caretContainer: {
     paddingBottom: 6,
@@ -84,10 +84,7 @@ type TopBarProps = {
   onClose: () => void
 }
 
-const TopBar = ({
-  onClose,
-  isOpen
-}: TopBarProps) => {
+const TopBar = ({ onClose, isOpen }: TopBarProps) => {
   const color = useColor('neutralLight4')
   const topBarStyle = useTheme(styles.topBar, {
     backgroundColor: color,
@@ -110,36 +107,44 @@ const TopBar = ({
   const { appendSearchItem } = useSearchHistory()
   const query = useSelector(getSearchQuery)
   const dispatch = useDispatch()
-  const setQuery = useCallback((text: string) => {
-    dispatch(updateQuery(text))
-  }, [dispatch])
+  const setQuery = useCallback(
+    (text: string) => {
+      dispatch(updateQuery(text))
+    },
+    [dispatch]
+  )
 
   const pushRoute = usePushSearchRoute()
 
-  const onSubmit = useCallback(({ nativeEvent: { text } }) => {
-    appendSearchItem(text)
-    if (text.startsWith('#')) {
-      pushRoute(getTagSearchRoute(text.substring(1)), 'search')
-    } else {
-      dispatchWeb({
-        type: MessageType.UPDATE_SEARCH_QUERY,
-        query: text
-      })
-    }
-  }, [dispatchWeb, pushRoute, appendSearchItem])
+  const onSubmit = useCallback(
+    ({ nativeEvent: { text } }) => {
+      appendSearchItem(text)
+      if (text.startsWith('#')) {
+        pushRoute(getTagSearchRoute(text.substring(1)), 'search')
+      } else {
+        dispatchWeb({
+          type: MessageType.UPDATE_SEARCH_QUERY,
+          query: text
+        })
+      }
+    },
+    [dispatchWeb, pushRoute, appendSearchItem]
+  )
 
-
-  const onChangeText = useCallback((text: string) => {
-    setQuery(text)
-    if (!text.startsWith('#')) {
+  const onChangeText = useCallback(
+    (text: string) => {
       setQuery(text)
-      dispatchWeb({
-        type: MessageType.UPDATE_SEARCH_QUERY,
-        query: text,
-        isAction: true
-      })
-    }
-  }, [dispatchWeb, setQuery])
+      if (!text.startsWith('#')) {
+        setQuery(text)
+        dispatchWeb({
+          type: MessageType.UPDATE_SEARCH_QUERY,
+          query: text,
+          isAction: true
+        })
+      }
+    },
+    [dispatchWeb, setQuery]
+  )
 
   const clearSearch = useCallback(() => {
     setQuery('')
@@ -155,14 +160,23 @@ const TopBar = ({
   return (
     <View style={topBarStyle}>
       <View style={styles.container}>
-        <TouchableOpacity activeOpacity={0.7} onPress={onClose} style={styles.caretContainer}>
-          <IconCaretRight width={28} height={28} fill={color} style={styles.caret} />
+        <TouchableOpacity
+          activeOpacity={0.7}
+          onPress={onClose}
+          style={styles.caretContainer}
+        >
+          <IconCaretRight
+            width={28}
+            height={28}
+            fill={color}
+            style={styles.caret}
+          />
         </TouchableOpacity>
         <TextInput
           ref={textRef}
           value={query}
           onChangeText={onChangeText}
-          underlineColorAndroid="transparent"
+          underlineColorAndroid='transparent'
           style={inputStyles}
           autoCompleteType={'off'}
           autoCorrect={false}
@@ -189,7 +203,11 @@ const TopBar = ({
           </View>
         )}
         {hasText && !isLoading && (
-          <TouchableOpacity activeOpacity={0.7} onPress={clearSearch} style={styles.removeIcon}>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={clearSearch}
+            style={styles.removeIcon}
+          >
             <IconRemove width={24} height={24} fill={color} />
           </TouchableOpacity>
         )}
@@ -199,4 +217,3 @@ const TopBar = ({
 }
 
 export default TopBar
-

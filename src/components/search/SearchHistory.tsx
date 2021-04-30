@@ -16,9 +16,7 @@ import { MessageType } from '../../message'
 import EmptySearch from './content/EmptySearch'
 import IconArrow from '../../assets/images/iconArrow.svg'
 import { usePushSearchRoute } from './utils'
-import {
-  getTagSearchRoute
-} from '../../utils/routes'
+import { getTagSearchRoute } from '../../utils/routes'
 
 const messages = {
   clear: 'Clear Recent Searches',
@@ -33,7 +31,7 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     display: 'flex',
-    flexDirection: "row",
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
     width: '100%',
@@ -76,7 +74,9 @@ const SearchHistoryItem = ({ text }: SearchHistoryItemProps) => {
   const backgroundColor = useColor('neutralLight8')
   const color = useColor('neutralLight4')
   const itemTextStyles = useTheme(styles.itemText, { color: 'neutral' })
-  const itemContainerStyles = useTheme(styles.itemContainer, { borderBottomColor: 'neutralLight8' })
+  const itemContainerStyles = useTheme(styles.itemContainer, {
+    borderBottomColor: 'neutralLight8'
+  })
   const dispatch = useDispatch()
   const dispatchWeb = useDispatchWebAction()
   const pushRoute = usePushSearchRoute()
@@ -84,7 +84,7 @@ const SearchHistoryItem = ({ text }: SearchHistoryItemProps) => {
   const onPress = useCallback(() => {
     dispatch(submitQuery(text))
     if (text.startsWith('#')) {
-      pushRoute(getTagSearchRoute(text.substring(1)), 'search', true)
+      pushRoute(getTagSearchRoute(text.substring(1)), 'search')
     } else {
       dispatchWeb({
         type: MessageType.SUBMIT_SEARCH_QUERY,
@@ -92,7 +92,7 @@ const SearchHistoryItem = ({ text }: SearchHistoryItemProps) => {
         isAction: true
       })
     }
-  }, [dispatch, text])
+  }, [dispatch, text, pushRoute, dispatchWeb])
 
   return (
     <TouchableHighlight
@@ -102,7 +102,9 @@ const SearchHistoryItem = ({ text }: SearchHistoryItemProps) => {
     >
       <View style={itemContainerStyles}>
         <View style={styles.itemTextContainer}>
-          <Text numberOfLines={1} style={itemTextStyles}>{text}</Text>
+          <Text numberOfLines={1} style={itemTextStyles}>
+            {text}
+          </Text>
         </View>
         <IconArrow style={styles.arrow} fill={color} />
       </View>
@@ -111,19 +113,16 @@ const SearchHistoryItem = ({ text }: SearchHistoryItemProps) => {
 }
 
 const SearchHistory = () => {
-  const {
-    searchHistory,
-    clearHistory
-  } = useSearchHistory()
+  const { searchHistory, clearHistory } = useSearchHistory()
 
   const backgroundColor = useColor('neutralLight8')
-  const containerStyles = useTheme(styles.container, { borderTopColor: 'neutralLight8' })
+  const containerStyles = useTheme(styles.container, {
+    borderTopColor: 'neutralLight8'
+  })
   const clearTextStyle = useTheme(styles.clearText, { color: 'neutralLight4' })
 
   if (!searchHistory || searchHistory.length === 0) {
-    return (
-      <EmptySearch />
-    )
+    return <EmptySearch />
   }
 
   return (
@@ -132,21 +131,23 @@ const SearchHistory = () => {
         keyboardShouldPersistTaps={'always'}
         data={searchHistory.concat('clear')}
         keyExtractor={(item, idx) => `${item}-${idx}`}
-        renderItem={({ item }) => item !== 'clear' ? (
-          <SearchHistoryItem key={item} text={item} />
-        ) : (
-          <TouchableHighlight
-            key={'clear'}
-            onPress={clearHistory}
-            style={styles.clearTouchable}
-            underlayColor={backgroundColor}
-            activeOpacity={0.8}
-          >
-            <View style={styles.clearContainer}>
-              <Text style={clearTextStyle}>{messages.clear}</Text>
-            </View>
-          </TouchableHighlight>
-        )}
+        renderItem={({ item }) =>
+          item !== 'clear' ? (
+            <SearchHistoryItem key={item} text={item} />
+          ) : (
+            <TouchableHighlight
+              key={'clear'}
+              onPress={clearHistory}
+              style={styles.clearTouchable}
+              underlayColor={backgroundColor}
+              activeOpacity={0.8}
+            >
+              <View style={styles.clearContainer}>
+                <Text style={clearTextStyle}>{messages.clear}</Text>
+              </View>
+            </TouchableHighlight>
+          )
+        }
       />
     </View>
   )
