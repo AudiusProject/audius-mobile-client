@@ -27,6 +27,7 @@ import SearchHistory from './SearchHistory'
 import SearchResults from './SearchResults'
 import Header from '../header/Header'
 import EmptySearch from './content/EmptySearch'
+import { getEmptyPageRoute } from '../../utils/routes'
 
 const FADE_DURATION = 80
 
@@ -37,7 +38,9 @@ const styles = StyleSheet.create({
     left: 0,
     top: 0,
     width: '100%',
-    height: '100%'
+    height: '100%',
+    elevation: 1,
+    zIndex: 2
   },
   container: {
     flex: 1,
@@ -45,7 +48,8 @@ const styles = StyleSheet.create({
     left: 0,
     top: 0,
     width: '100%',
-    height: '100%'
+    height: '100%',
+    zIndex: 3
   }
 })
 
@@ -60,6 +64,7 @@ const Search = () => {
 
   const { pathname } = useLocation() || {}
 
+  const pushWebRouteNoClose = usePushWebRoute()
   const fadeAnim = useRef(new Animated.Value(0)).current
   const fadeIn = useCallback(() => {
     setViewDisplay('flex')
@@ -67,14 +72,18 @@ const Search = () => {
       toValue: 1,
       duration: FADE_DURATION,
       useNativeDriver: true
-    }).start(() => {
-      setDidOpen(true)
+    }).start(({ finished }) => {
+      if (finished) {
+        setDidOpen(true)
+        pushWebRouteNoClose(getEmptyPageRoute(), 'search')
+      }
     })
-  }, [fadeAnim, setViewDisplay, setDidOpen])
+  }, [fadeAnim, setViewDisplay, setDidOpen, pushWebRouteNoClose])
 
   const fadeOut = useCallback(() => {
     Animated.timing(fadeAnim, {
       toValue: 0,
+      delay: 80,
       duration: FADE_DURATION,
       useNativeDriver: true
     }).start(() => {
@@ -130,6 +139,10 @@ const Search = () => {
     body = (<EmptySearch query={searchResultQuery} />)
   } else {
     body = <SearchHistory />
+  }
+
+  if (!isOpen && !didOpen) {
+    return null
   }
 
   return (
