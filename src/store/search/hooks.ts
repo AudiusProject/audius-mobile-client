@@ -53,7 +53,9 @@ const useSearchHistory = () => {
   }, [dispatch])  
 
   const appendSearchItem = useCallback(async (query: string) => {
-    const updatedHistory = [query, ...searchHistory]
+    const trimmedQuery = query.trim()
+    if (trimmedQuery === '') return
+    const updatedHistory = [trimmedQuery, ...searchHistory]
     dispatch(searchActions.setSearchHistory(updatedHistory))
     await setSearchHistory(updatedHistory)
   }, [searchHistory, dispatch])  
