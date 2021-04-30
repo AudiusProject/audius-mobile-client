@@ -21,9 +21,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   text: {
-    fontWeight: "900",
     fontSize: 24,
-    fontFamily: 'AvenirNextLTPro-Medium',
+    fontFamily: 'AvenirNextLTPro-Heavy',
     textShadowColor: 'rgba(126, 27, 204, 0.15)',
     textShadowOffset: { width: 0, height: 1 },
     textShadowRadius: 3
