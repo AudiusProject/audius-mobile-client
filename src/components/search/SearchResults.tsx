@@ -58,7 +58,9 @@ const SearchResults = () => {
           else if ('user_id' in item) return `user-${item.user_id}`
           return `playlist-${item.playlist_id}`
         }}
-        renderItem={({ section: { title }, item }) => <SearchItem type={title as SectionHeader} item={item} />}
+        renderItem={({ section: { title, data }, item, index }) =>
+          <SearchItem isLast={index===(data.length-1)}type={title as SectionHeader} item={item} />
+        }
         renderSectionHeader={({ section: { title } }) => title === 'more' ? (
           <MoreContainer />
         ) : (
