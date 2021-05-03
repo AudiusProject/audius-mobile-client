@@ -114,12 +114,11 @@ const SearchHistoryItem = ({ text }: SearchHistoryItemProps) => {
 
 const SearchHistory = () => {
   const { searchHistory, clearHistory, hasFetched } = useSearchHistory()
-  const [displayHistory, setDisplayHistory] = useState(searchHistory)
+  const [displayHistory, setDisplayHistory] = useState(searchHistory.current)
 
   // Only update history on component load and clearing of search history
   useEffect(() => {
-    if (hasFetched) setDisplayHistory(searchHistory)
-    // @ts-ignore do not reset on searchHistory update.
+    if (hasFetched) setDisplayHistory(searchHistory.current)
   }, [hasFetched, setDisplayHistory])
 
   const onClearHistory = useCallback(() => {
