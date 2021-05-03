@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage'
-import { useCallback, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import * as searchActions from './actions'
 import { getSearchHistory } from './selectors'
@@ -30,14 +30,16 @@ export const setSearchHistory = async (history: string[]) => {
 const useSearchHistory = () => {
   const searchHistory = useSelector(getSearchHistory)
   const dispatch = useDispatch()
+  const [hasFetched, setHasFetched] = useState(false)
 
   useEffect(() => {
     const work = async () => {
       const history = await fetchSearchHistory()
       dispatch(searchActions.setSearchHistory(history))
+      setHasFetched(true)
     }
     work()
-  }, [dispatch])
+  }, [dispatch, setHasFetched])
 
   const clearHistory = useCallback(async () => {
     dispatch(searchActions.setSearchHistory([]))
@@ -59,7 +61,8 @@ const useSearchHistory = () => {
   return {
     searchHistory,
     clearHistory,
-    appendSearchItem
+    appendSearchItem,
+    hasFetched
   }
 }
 

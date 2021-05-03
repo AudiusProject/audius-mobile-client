@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import {
   StyleSheet,
@@ -113,7 +113,19 @@ const SearchHistoryItem = ({ text }: SearchHistoryItemProps) => {
 }
 
 const SearchHistory = () => {
-  const { searchHistory, clearHistory } = useSearchHistory()
+  const { searchHistory, clearHistory, hasFetched } = useSearchHistory()
+  const [displayHistory, setDisplayHistory] = useState(searchHistory)
+
+  // Only update history on component load and clearing of search history
+  useEffect(() => {
+    if (hasFetched) setDisplayHistory(searchHistory)
+    // @ts-ignore do not reset on searchHistory update.
+  }, [hasFetched, setDisplayHistory])
+
+  const onClearHistory = useCallback(() => {
+    setDisplayHistory([])
+    clearHistory()
+  }, [clearHistory, setDisplayHistory])
 
   const backgroundColor = useColor('neutralLight8')
   const containerStyles = useTheme(styles.container, {
@@ -121,7 +133,7 @@ const SearchHistory = () => {
   })
   const clearTextStyle = useTheme(styles.clearText, { color: 'neutralLight4' })
 
-  if (!searchHistory || searchHistory.length === 0) {
+  if (!displayHistory || displayHistory.length === 0) {
     return <EmptySearch />
   }
 
@@ -129,7 +141,7 @@ const SearchHistory = () => {
     <View style={containerStyles} onTouchStart={Keyboard.dismiss}>
       <FlatList
         keyboardShouldPersistTaps={'always'}
-        data={searchHistory.concat('clear')}
+        data={displayHistory.concat('clear')}
         keyExtractor={(item, idx) => `${item}-${idx}`}
         renderItem={({ item }) =>
           item !== 'clear' ? (
@@ -137,7 +149,7 @@ const SearchHistory = () => {
           ) : (
             <TouchableHighlight
               key={'clear'}
-              onPress={clearHistory}
+              onPress={onClearHistory}
               style={styles.clearTouchable}
               underlayColor={backgroundColor}
               activeOpacity={0.8}
