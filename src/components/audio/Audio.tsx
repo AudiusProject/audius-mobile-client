@@ -30,6 +30,7 @@ import {
 import { MessageType } from '../../message'
 import { logListen } from './listens'
 import { postMessage } from '../../utils/postMessage'
+import { Genre } from '../../utils/genres'
 import { MessagePostingWebView } from '../../types/MessagePostingWebView'
 import { RepeatMode } from '../../store/audio/reducer'
 
@@ -157,6 +158,28 @@ const Audio = ({
     MusicControl.on(Command.previousTrack, () => {
       previous()
     })
+    MusicControl.on(Command.skipForward, () => {
+      if (videoRef.current) {
+        elapsedTime.current = elapsedTime.current + 15
+        videoRef.current.seek(elapsedTime.current)
+        // @ts-ignore
+        global.progress.currentTime = elapsedTime.current
+        MusicControl.updatePlayback({
+          elapsedTime: elapsedTime.current
+        })
+      }
+    })
+    MusicControl.on(Command.skipBackward, () => {
+      if (videoRef.current) {
+        elapsedTime.current = elapsedTime.current - 15
+        videoRef.current.seek(elapsedTime.current)
+        // @ts-ignore
+        global.progress.currentTime = elapsedTime.current
+        MusicControl.updatePlayback({
+          elapsedTime: elapsedTime.current
+        })
+      }
+    })
     MusicControl.on(Command.play, () => {
       if (webRef.current) {
         postMessage(webRef.current, {
@@ -177,7 +200,7 @@ const Audio = ({
       }
       pause()
     })
-  }, [webRef, next, previous, play, pause])
+  }, [webRef, videoRef, seek, next, previous, play, pause])
 
   // Playing handler
   useEffect(() => {
@@ -242,13 +265,23 @@ const Audio = ({
         isPreviousEnabled = index > 0
         isNextEnabled = index < queueLength - 1
       }
-      MusicControl.enableControl('previousTrack', isPreviousEnabled)
-      MusicControl.enableControl('nextTrack', isNextEnabled)
+      if (track.genre === Genre.PODCASTS) {
+        MusicControl.enableControl('previousTrack', false)
+        MusicControl.enableControl('nextTrack', false)
+        MusicControl.enableControl('skipBackward', true, { interval: 15 })
+        MusicControl.enableControl('skipForward', true, { interval: 15 })
+      } else {
+        MusicControl.enableControl('skipBackward', false, { interval: 15 })
+        MusicControl.enableControl('skipForward', false, { interval: 15 })
+        MusicControl.enableControl('previousTrack', isPreviousEnabled)
+        MusicControl.enableControl('nextTrack', isNextEnabled)
+      }
     }
   }, [
     playing,
     hasPlayedOnce,
     index,
+    track,
     queueLength,
     repeatMode,
     isShuffleOn,
