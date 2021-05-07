@@ -34,6 +34,8 @@ import { Genre } from '../../utils/genres'
 import { MessagePostingWebView } from '../../types/MessagePostingWebView'
 import { RepeatMode } from '../../store/audio/reducer'
 
+const SKIP_DURATION_SEC = 15
+
 declare global {
   interface Global {
     progress: {
@@ -160,7 +162,7 @@ const Audio = ({
     })
     MusicControl.on(Command.skipForward, () => {
       if (videoRef.current) {
-        elapsedTime.current = elapsedTime.current + 15
+        elapsedTime.current = elapsedTime.current + SKIP_DURATION_SEC
         videoRef.current.seek(elapsedTime.current)
         // @ts-ignore
         global.progress.currentTime = elapsedTime.current
@@ -171,7 +173,7 @@ const Audio = ({
     })
     MusicControl.on(Command.skipBackward, () => {
       if (videoRef.current) {
-        elapsedTime.current = elapsedTime.current - 15
+        elapsedTime.current = elapsedTime.current - SKIP_DURATION_SEC
         videoRef.current.seek(elapsedTime.current)
         // @ts-ignore
         global.progress.currentTime = elapsedTime.current
