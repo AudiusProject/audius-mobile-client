@@ -8,7 +8,8 @@ import {
   getUrl,
   getIsOpen,
   getMessageId,
-  getAuthProvider
+  getAuthProvider,
+  getMessageType
 } from '../../store/oauth/selectors'
 import { AppState } from '../../store'
 import { closePopup } from '../../store/oauth/actions'
@@ -16,7 +17,7 @@ import { Provider } from '../../store/oauth/reducer'
 import { WebViewMessage } from 'react-native-webview/lib/WebViewTypes'
 import { MessageType } from '../../message'
 import { MessagePostingWebView } from '../../types/MessagePostingWebView'
-import { postMessage } from '../../utils/postMessage'
+import { MessageSender, postMessage } from '../../utils/postMessage'
 
 const TWITTER_POLLER = `
 (function() {
@@ -93,6 +94,44 @@ const INSTAGRAM_POLLER = `
 })();
 `
 
+const TIKTOK_POLLER = `
+(function() {
+  const exit = () => {
+    window.ReactNativeWebView.postMessage(
+      JSON.stringify({})
+    )
+  }
+
+  setInterval(async () => {
+    try {
+      if (
+        !window.location.hostname.includes('tiktok.com') &&
+        window.location.hostname !== '' &&
+        window.location.search
+      ) {
+        const query = new URLSearchParams(window.location.search)
+
+        const authorizationCode = query.get('code')
+        const csrfState = query.get('state')
+        const error = query.get('error')
+        if (authorizationCode && csrfState) {
+          window.ReactNativeWebView.postMessage(
+            JSON.stringify({
+              authorizationCode,
+              csrfState,
+            })
+          )
+        } else {
+          exit()
+        }
+      }
+    } catch {
+      exit()
+    }
+  }, 500)
+})();
+`
+
 type OwnProps = {
   webRef: RefObject<MessagePostingWebView>
 }
@@ -101,61 +140,68 @@ type Props = OwnProps &
   ReturnType<typeof mapStateToProps> &
   ReturnType<typeof mapDispatchToProps>
 
-const OAuth = ({ url, isOpen, messageId, webRef, provider, close }: Props) => {
+const OAuth = ({
+  url,
+  isOpen,
+  messageId,
+  messageType,
+  webRef,
+  provider,
+  close
+}: Props) => {
   // Handle messages coming from the web view
   const onMessageHandler = (event: NativeSyntheticEvent<WebViewMessage>) => {
+    console.log(event.nativeEvent)
     if (event.nativeEvent.data && webRef.current) {
-      const message = JSON.parse(event.nativeEvent.data)
-      if (provider === Provider.TWITTER) {
-        if (message.oauthToken && message.oauthVerifier) {
-          postMessage(webRef.current, {
-            type: MessageType.REQUEST_TWITTER_AUTH,
-            id: messageId,
-            oauthToken: message.oauthToken,
-            oauthVerifier: message.oauthVerifier
-          })
-        } else {
-          postMessage(webRef.current, {
-            type: MessageType.REQUEST_TWITTER_AUTH,
-            id: messageId
-          })
-        }
-      } else if (provider === Provider.INSTAGRAM) {
-        if (message.instagramCode) {
-          postMessage(webRef.current, {
-            type: MessageType.REQUEST_INSTAGRAM_AUTH,
-            id: messageId,
-            code: message.instagramCode
-          })
-        } else {
-          postMessage(webRef.current, {
-            type: MessageType.REQUEST_INSTAGRAM_AUTH,
-            id: messageId
-          })
-        }
+      const payloadByProvider = {
+        [Provider.TWITTER]: (message: any) =>
+          message.oauthToken && message.oauthVerifier
+            ? {
+                oauthToken: message.oauthToken,
+                oauthVerifier: message.oauthVerifier
+              }
+            : {},
+        [Provider.INSTAGRAM]: (message: any) =>
+          message.instagramCode
+            ? {
+                code: message.instagramCode
+              }
+            : {},
+        [Provider.TIKTOK]: (message: any) =>
+          message.authorizationCode && message.csrfState
+            ? {
+                authorizationCode: message.authorizationCode,
+                csrfState: message.csrfState
+              }
+            : {}
       }
+
+      postMessage(webRef.current, {
+        type: messageType,
+        id: messageId,
+        ...payloadByProvider[provider as Provider](
+          JSON.parse(event.nativeEvent.data)
+        )
+      })
     }
     close()
   }
   const onClose = useCallback(() => {
-    if (provider === Provider.TWITTER && webRef.current) {
+    if (webRef.current) {
       postMessage(webRef.current, {
-        type: MessageType.REQUEST_TWITTER_AUTH,
-        id: messageId
-      })
-    }
-
-    if (provider === Provider.INSTAGRAM && webRef.current) {
-      postMessage(webRef.current, {
-        type: MessageType.REQUEST_INSTAGRAM_AUTH,
+        type: messageType,
         id: messageId
       })
     }
     close()
-  }, [webRef, messageId, close, provider])
+  }, [webRef, messageId, messageType, close])
 
-  const injected =
-    provider === Provider.INSTAGRAM ? INSTAGRAM_POLLER : TWITTER_POLLER
+  const injected = {
+    [Provider.TWITTER]: TWITTER_POLLER,
+    [Provider.INSTAGRAM]: INSTAGRAM_POLLER,
+    [Provider.TIKTOK]: TIKTOK_POLLER
+  }[provider as Provider]
+
   return (
     <Modal
       animationType='slide'
@@ -194,6 +240,7 @@ const mapStateToProps = (state: AppState) => ({
   url: getUrl(state),
   isOpen: getIsOpen(state),
   messageId: getMessageId(state),
+  messageType: getMessageType(state),
   provider: getAuthProvider(state)
 })
 
