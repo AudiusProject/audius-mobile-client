@@ -15,15 +15,18 @@ import { AppState } from '../../store'
 import { closePopup } from '../../store/oauth/actions'
 import { Provider } from '../../store/oauth/reducer'
 import { WebViewMessage } from 'react-native-webview/lib/WebViewTypes'
-import { MessageType } from '../../message'
 import { MessagePostingWebView } from '../../types/MessagePostingWebView'
-import { MessageSender, postMessage } from '../../utils/postMessage'
+import { postMessage } from '../../utils/postMessage'
+
+const AUTH_RESPONSE = 'auth-response'
 
 const TWITTER_POLLER = `
 (function() {
   const exit = () => {
     window.ReactNativeWebView.postMessage(
-      JSON.stringify({})
+      JSON.stringify({
+        type: ${AUTH_RESPONSE}
+      })
     )
   }
 
@@ -42,6 +45,7 @@ const TWITTER_POLLER = `
 
           window.ReactNativeWebView.postMessage(
             JSON.stringify({
+              type: ${AUTH_RESPONSE},
               oauthToken,
               oauthVerifier
             })
@@ -63,7 +67,9 @@ const INSTAGRAM_POLLER = `
 (function() {
   const exit = () => {
     window.ReactNativeWebView.postMessage(
-      JSON.stringify({})
+      JSON.stringify({
+        type: ${AUTH_RESPONSE}
+      })
     )
   }
 
@@ -79,7 +85,10 @@ const INSTAGRAM_POLLER = `
           if (!instagramCode) exit()
 
           window.ReactNativeWebView.postMessage(
-            JSON.stringify({ instagramCode })
+            JSON.stringify({ 
+              type: ${AUTH_RESPONSE},
+              instagramCode
+            })
           )
         } else {
           exit()
@@ -98,11 +107,13 @@ const TIKTOK_POLLER = `
 (function() {
   const exit = () => {
     window.ReactNativeWebView.postMessage(
-      JSON.stringify({})
+      JSON.stringify({
+        type: ${AUTH_RESPONSE}
+      })
     )
   }
 
-  setInterval(async () => {
+  setInterval(() => {
     try {
       if (
         !window.location.hostname.includes('tiktok.com') &&
@@ -117,6 +128,7 @@ const TIKTOK_POLLER = `
         if (authorizationCode && csrfState) {
           window.ReactNativeWebView.postMessage(
             JSON.stringify({
+              type: ${AUTH_RESPONSE},
               authorizationCode,
               csrfState,
             })
@@ -151,40 +163,41 @@ const OAuth = ({
 }: Props) => {
   // Handle messages coming from the web view
   const onMessageHandler = (event: NativeSyntheticEvent<WebViewMessage>) => {
-    console.log(event.nativeEvent)
     if (event.nativeEvent.data && webRef.current) {
-      const payloadByProvider = {
-        [Provider.TWITTER]: (message: any) =>
-          message.oauthToken && message.oauthVerifier
-            ? {
-                oauthToken: message.oauthToken,
-                oauthVerifier: message.oauthVerifier
-              }
-            : {},
-        [Provider.INSTAGRAM]: (message: any) =>
-          message.instagramCode
-            ? {
-                code: message.instagramCode
-              }
-            : {},
-        [Provider.TIKTOK]: (message: any) =>
-          message.authorizationCode && message.csrfState
-            ? {
-                authorizationCode: message.authorizationCode,
-                csrfState: message.csrfState
-              }
-            : {}
-      }
+      const data = JSON.parse(event.nativeEvent.data)
 
-      postMessage(webRef.current, {
-        type: messageType,
-        id: messageId,
-        ...payloadByProvider[provider as Provider](
-          JSON.parse(event.nativeEvent.data)
-        )
-      })
+      if (data.type === AUTH_RESPONSE) {
+        const payloadByProvider = {
+          [Provider.TWITTER]: (message: any) =>
+            message.oauthToken && message.oauthVerifier
+              ? {
+                  oauthToken: message.oauthToken,
+                  oauthVerifier: message.oauthVerifier
+                }
+              : {},
+          [Provider.INSTAGRAM]: (message: any) =>
+            message.instagramCode
+              ? {
+                  code: message.instagramCode
+                }
+              : {},
+          [Provider.TIKTOK]: (message: any) =>
+            message.authorizationCode && message.csrfState
+              ? {
+                  authorizationCode: message.authorizationCode,
+                  csrfState: message.csrfState
+                }
+              : {}
+        }
+
+        postMessage(webRef.current, {
+          type: messageType,
+          id: messageId,
+          ...payloadByProvider[provider as Provider](data)
+        })
+        close()
+      }
     }
-    close()
   }
   const onClose = useCallback(() => {
     if (webRef.current) {
