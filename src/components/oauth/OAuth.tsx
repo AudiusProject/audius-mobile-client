@@ -221,16 +221,11 @@ const OAuth = ({
       presentationStyle='overFullScreen'
       hardwareAccelerated
     >
-      <View style={{ flex: 1, marginTop: 20 }}>
+      <View style={{ flex: 1, marginTop: 40 }}>
         <View
           style={{
-            height: 40,
-            flexDirection: 'row',
-            justifyContent: 'flex-start',
-            paddingTop: 6,
-            paddingLeft: 6,
-            paddingBottom: 6,
-            marginTop: 10
+            width: 75,
+            marginLeft: 8
           }}
         >
           <Button onPress={onClose} title='Close' />
