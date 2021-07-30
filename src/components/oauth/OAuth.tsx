@@ -25,7 +25,7 @@ const TWITTER_POLLER = `
   const exit = () => {
     window.ReactNativeWebView.postMessage(
       JSON.stringify({
-        type: ${AUTH_RESPONSE}
+        type: 'auth-response'
       })
     )
   }
@@ -45,7 +45,7 @@ const TWITTER_POLLER = `
 
           window.ReactNativeWebView.postMessage(
             JSON.stringify({
-              type: ${AUTH_RESPONSE},
+              type:  'auth-response',
               oauthToken,
               oauthVerifier
             })
@@ -68,7 +68,7 @@ const INSTAGRAM_POLLER = `
   const exit = () => {
     window.ReactNativeWebView.postMessage(
       JSON.stringify({
-        type: ${AUTH_RESPONSE}
+        type: 'auth-response'
       })
     )
   }
@@ -86,7 +86,7 @@ const INSTAGRAM_POLLER = `
 
           window.ReactNativeWebView.postMessage(
             JSON.stringify({ 
-              type: ${AUTH_RESPONSE},
+              type:  'auth-response',
               instagramCode
             })
           )
@@ -108,7 +108,7 @@ const TIKTOK_POLLER = `
   const exit = () => {
     window.ReactNativeWebView.postMessage(
       JSON.stringify({
-        type: ${AUTH_RESPONSE}
+        type: 'auth-response'
       })
     )
   }
@@ -116,11 +116,9 @@ const TIKTOK_POLLER = `
   setInterval(() => {
     try {
       if (
-        !window.location.hostname.includes('tiktok.com') &&
-        window.location.hostname !== '' &&
-        window.location.search
+        !window.location.hostname.includes('tiktok.com')
       ) {
-        const query = new URLSearchParams(window.location.search)
+        const query = new URLSearchParams(window.location.search || '')
 
         const authorizationCode = query.get('code')
         const csrfState = query.get('state')
@@ -128,7 +126,7 @@ const TIKTOK_POLLER = `
         if (authorizationCode && csrfState) {
           window.ReactNativeWebView.postMessage(
             JSON.stringify({
-              type: ${AUTH_RESPONSE},
+              type: 'auth-response',
               authorizationCode,
               csrfState,
             })
