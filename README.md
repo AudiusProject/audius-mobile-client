@@ -1,16 +1,40 @@
 # Audius Mobile Client
 
 The Audius React Native mobile client.
-It can be run against a local client or against a production build.
+
+This project is a React Native wrapper around the Audius web client, and requires a web client to be running.
+The native project can be built & run against a local client (serving at localhost) or against a vendored staging/production build.
 
 ## Setup
 
-Copy the environment variables and replace missing values (you will need an FCM sender id as well as a Segment write key)
+Copy the environment variables and replace missing values. (You will need an FCM sender id as well as a Segment write key for those services to work properly, but any value will suffice if the data is not important to you.)
 
 ```bash
 cp .env.dev.tmpl .env.dev
 cp .env.stage.tmpl .env.stage
 cp .env.prod.tmpl .env.prod
+```
+
+### iOS
+
+```bash
+# install cocoapods
+sudo gem install cocoapods
+# install local dependencies
+npm install
+
+cd ios
+pod install
+cd ..
+
+# Create main.jsbundle
+npm run bundle:ios
+```
+### Android
+
+```bash
+# install local dependencies
+npm install
 ```
 
 ## Running against localhost
@@ -22,6 +46,10 @@ URL_OVERRIDE=http://localhost:3001
 ```
 
 > The WebView will be pointed at the url contained in `URL_OVERRIDE`
+
+This URL should be a serving a mobile audius-client with either
+
+`npm run start:mobile-stage` or `npm run start:mobile-prod`
 
 ## Running against a local static build
 
@@ -62,15 +90,6 @@ npm run copy:remote-production
 ## iOS
 
 ```bash
-# install cocoapods
-sudo gem install cocoapods
-# install local dependencies
-npm install
-
-cd ios
-pod install
-cd ..
-
 # Run a simulator pointed at a static build
 npm run ios
 # Run a simulator pointed at localhost
