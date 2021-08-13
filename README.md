@@ -39,7 +39,7 @@ npm install
 
 ## Running against localhost
 
-To run against localhost, specify `URL_OVERRIDE` in `.env.dev`:
+To run against localhost, specify `URL_OVERRIDE` in the `.env` file you intend to use.
 
 ```
 URL_OVERRIDE=http://localhost:3001
@@ -90,10 +90,13 @@ npm run copy:remote-production
 ## iOS
 
 ```bash
-# Run a simulator pointed at a static build
+# Run a simulator using a prod configuration
 npm run ios
-# Run a simulator pointed at localhost
+# Run a simulator using a stage configuration
+npm run ios:bounce
+# Run a simulator using a dev configuration
 npm run ios:dev
+
 # Run the app on a device
 npm run ios:device "Raymond's iPhone"
 # To see available devices
@@ -103,9 +106,11 @@ xcrun xctrace list devices
 ## Android
 
 ```bash
-# Run a simulator pointed at a static build
+# Run a simulator using a prod configuration
 npm run android
-# Run a simulator pointed at localhost
+# Run a simulator using a stage configuration
+npm run android:bounce
+# Run a simulator using a dev configuration
 npm run android:dev
 
 # Look at android devices
