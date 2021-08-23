@@ -390,6 +390,8 @@ PODS:
     - React-Core
   - RNSVG (12.1.0):
     - React
+  - SRSRadialGradient (1.0.8):
+    - React
   - Yoga (1.14.0)
 
 DEPENDENCIES:
@@ -444,6 +446,7 @@ DEPENDENCIES:
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReactNativeHapticFeedback (from `../node_modules/react-native-haptic-feedback`)
   - RNSVG (from `../node_modules/react-native-svg`)
+  - SRSRadialGradient (from `../node_modules/react-native-radial-gradient/ios`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
@@ -559,6 +562,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-haptic-feedback"
   RNSVG:
     :path: "../node_modules/react-native-svg"
+  SRSRadialGradient:
+    :path: "../node_modules/react-native-radial-gradient/ios"
   Yoga:
     :path: "../node_modules/react-native/ReactCommon/yoga"
 
@@ -626,8 +631,9 @@ SPEC CHECKSUMS:
   RNPermissions: 99dd8d4a30ff13509b949ca63cd1f69edc461775
   RNReactNativeHapticFeedback: 653a8c126a0f5e88ce15ffe280b3ff37e1fbb285
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
+  SRSRadialGradient: 71378a83e52b616c40367c37ee7cb6865f9f7c6e
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: eccf41122579be6e5622396a6a8ba730a4536046
+PODFILE CHECKSUM: abbae8a582c78f77c2ac4c45c1cc2eec60295ea5
 
-COCOAPODS: 1.10.2
+COCOAPODS: 1.10.1

@@ -48,6 +48,9 @@ export enum MessageType {
   // Google Cast
   GOOGLE_CAST = 'show-google-cast-picker',
 
+  // Sign On
+  SUBMIT_SIGNIN = 'submit-signin',
+
   // Notifications
   ENABLE_PUSH_NOTIFICATIONS = 'enable-push-notifications',
   DISABLE_PUSH_NOTIFICATIONS = 'disable-push-notifications',
