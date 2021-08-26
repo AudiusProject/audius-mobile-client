@@ -1,4 +1,4 @@
-import React, {useCallback, useState, useEffect, useRef} from "react"
+import React, {useState, useRef, useEffect} from "react"
 import { 
   Animated, 
   ImageBackground, 
@@ -8,9 +8,12 @@ import {
   Image, 
   TextInput, 
   TouchableOpacity, 
-  Dimensions
+  Dimensions,
+  TouchableWithoutFeedback,
+  Keyboard
  } from "react-native"
-import { useDispatch } from 'react-redux'
+import { Dispatch } from 'redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useDispatchWebAction } from '../../hooks/useWebAction'
 import { MessageType } from '../../message'
 
@@ -20,6 +23,9 @@ import audiusLogoHorizontal from '../../assets/images/Horizontal-Logo-Full-Color
 import signupCTA from '../../assets/images/signUpCTA.png'
 import IconArrow from '../../assets/images/iconArrow.svg'
 import LottieView from 'lottie-react-native'
+import  * as SignOnActions from '../../store/signon/actions'
+import { getIsSigninError } from '../../store/signon/selectors'
+import { getIsSignedIn } from '../../store/lifecycle/selectors'
 
 const image = backgImage;
 
@@ -70,20 +76,20 @@ const styles = StyleSheet.create({
     zIndex: 5
   },
   title: {
-    color: "#7E1BCC",
+    color: '#7E1BCC',
     fontSize: 18,
     fontFamily: 'AvenirNextLTPro-Bold',
     lineHeight: 22,
-    textAlign: "center",
+    textAlign: 'center',
     paddingTop: 32,
     paddingBottom: 6
   },
   header: {
-    color: "#7E1BCC",
+    color: '#7E1BCC',
     fontSize: 14,
     lineHeight: 16,
     fontFamily: 'AvenirNextLTPro-regular',
-    textAlign: "center",
+    textAlign: 'center',
     paddingTop: 3,
     paddingBottom: 3
   },
@@ -103,10 +109,11 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
     borderWidth: 1,
-    borderColor: "#F7F7F9",
-    backgroundColor: "#FCFCFC",
+    borderColor: '#F7F7F9',
+    backgroundColor: '#FCFCFC',
     borderRadius: 4,
     padding: 10,
+    color: '#858199'
   },
   inputPass: {
     height: 40,
@@ -114,11 +121,12 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
     borderWidth: 1,
-    borderColor: "#F7F7F9",
-    backgroundColor: "#FCFCFC",
+    borderColor: '#F7F7F9',
+    backgroundColor: '#FCFCFC',
     borderRadius: 4,
     marginTop: 16,
     padding: 10,
+    color: '#858199'
   },
   formBtn: {
     flexDirection: 'row',
@@ -127,8 +135,8 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     padding: 10,
-    justifyContent: "center",
-    backgroundColor: "#CC0FE0",
+    justifyContent: 'center',
+    backgroundColor: '#CC0FE0',
     borderRadius: 4,
   },
   formButtonTitleContainer: {
@@ -136,7 +144,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   formButtonTitle: {
-    color: "white",
+    color: 'white',
     fontSize: 18,
     fontFamily: 'AvenirNextLTPro-Bold'
   },
@@ -155,8 +163,13 @@ const styles = StyleSheet.create({
     margin: 38
   },
   switchFormBtnTitle: {
-    color: "white",
+    color: 'white',
     fontSize: 14,
+    fontFamily: 'AvenirNextLTPro-regular',
+  },
+  errorText: {
+    color: 'red',
+    fontSize: 12,
     fontFamily: 'AvenirNextLTPro-regular',
   }
 });
@@ -185,7 +198,7 @@ const signInErrorMessages = {
 var fadeInDuration = 200
 var fadeInDelay = 3000
 
-const FadeInView = (props) => {
+const FadeInView = (props: { style: any; children: any }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current
    
   React.useEffect(() => {
@@ -240,7 +253,7 @@ const MainBtnTitle = ({isSignin, isWorking}: {isSignin: boolean, isWorking: bool
     return (
       <Animated.View style={[styles.formButtonTitleContainer, { opacity }]}>
         <Text style={styles.formButtonTitle}> { isSignin ? messages.signIn:messages.signUp } </Text>
-        <IconArrow style={styles.arrow} fill="white" />
+        <IconArrow style={styles.arrow} fill='white' />
       </Animated.View>
     )
   }
@@ -281,6 +294,37 @@ const SignOn = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isSignin, setisSignIn] = useState(false);
+  const [emailBorderColor, setEmailBorderColor] = useState('#F7F7F9');
+  const [passBorderColor, setPassBorderColor] = useState('#F7F7F9')
+
+  const isSigninError = useSelector(getIsSigninError);
+  const signedIn = useSelector(getIsSignedIn);
+
+  useEffect(() => {
+    if (isSigninError) {
+      if (isWorking) {
+        setisWorking(false)
+      }
+    }
+  }, [isSigninError])
+
+  useEffect(() => {
+    if (signedIn) {
+      setisWorking(false)
+    }
+  }, [signedIn])
+  
+  const errorView = ({isSigninError, isWorking}: {isSigninError: boolean, isWorking: boolean}) => {
+    if (isSigninError) {
+      return (
+      <Text style={styles.errorText}> {signInErrorMessages.default} </Text>
+      )
+    } else {
+      return (
+        <Text></Text>
+        )
+    }
+  }
   
   const formSwitchBtnTitle = () => {
     if (isSignin) {
@@ -298,11 +342,13 @@ const SignOn = () => {
     if (isSignin) {
       return (
         <TextInput
-          style={styles.inputPass}
+          style={[styles.inputPass, {borderColor: passBorderColor}]}
+          placeholderTextColor= '#C2C0CC'
           underlineColorAndroid='transparent'
           placeholder="Password"
           autoCompleteType="off"
           autoCorrect={false}
+          autoCapitalize='none'
           //clearTextOnFocus={true}
           enablesReturnKeyAutomatically={true}
           maxLength={100}
@@ -311,92 +357,105 @@ const SignOn = () => {
           onChangeText={(newText) => {
             setPassword(newText)
           }}
+          onFocus={() => {setPassBorderColor('#7E1BCC')}}
+          onBlur={() => {setPassBorderColor('#F7F7F9')}}
         />
       )
     }
   }
 
-  // useEffect(() => {
-  //   // new Message(...)
-  //   // message.send()
-  // }, [signInButtonEnabled])
-
-  // const sendRequest = () => {...}
-  // const sendRequest = useCallback(() => {
-
-  // }, [signInButtonEnabled])
-
   const dispatchWeb = useDispatchWebAction()
+  const dispatch = useDispatch()
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.containerBack}>
-        <RadialGradient style={styles.gradient}
-                          colors={['rgba(91, 35, 225, 0.8)','rgba(113, 41, 230, 0.640269)','rgba(162, 47, 235, 0.5)']}
-                          stops={[0.1,0.67,1]}
-                          radius={Dimensions.get('window').width/1.3}>
-        </RadialGradient>
-        <ImageBackground source={image} resizeMode="cover" style={styles.image} />
-      </View>
-      <View style={styles.containerForm}>
-        <Image source={audiusLogoHorizontal} style={styles.audiusLogoHorizontal} />
-          <FormTitle isSignin={isSignin}></FormTitle>
-          <TextInput
-          style={styles.input}
-          underlineColorAndroid='transparent'
-          placeholder="Email"
-          keyboardType="email-address"
-          autoCompleteType="off"
-          autoCorrect={false}
-          enablesReturnKeyAutomatically={true}
-          maxLength={100}
-          textContentType="username"
-          onChangeText={(newText) => {
-            setUsername(newText)
-          }}
-          />
+  // console.log('signedIn:' + signedIn)
 
-          {passField()}
+  if (signedIn) {
+    return null
+  } else {
+    return (
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <View style={styles.container}>
+        <View style={styles.containerBack}>
+          <RadialGradient style={styles.gradient}
+                            colors={['rgba(91, 35, 225, 0.8)','rgba(113, 41, 230, 0.640269)','rgba(162, 47, 235, 0.5)']}
+                            stops={[0.1,0.67,1]}
+                            radius={Dimensions.get('window').width/1.3}>
+          </RadialGradient>
+          <ImageBackground source={image} resizeMode="cover" style={styles.image} />
+        </View>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <View style={styles.containerForm}>
+            <Image source={audiusLogoHorizontal} style={styles.audiusLogoHorizontal} />
+            <FormTitle isSignin={isSignin}></FormTitle>
+            <TextInput
+            style={[styles.input, {borderColor: emailBorderColor}]}
+            placeholderTextColor= '#C2C0CC'
+            underlineColorAndroid='transparent'
+            placeholder="Email"
+            keyboardType="email-address"
+            autoCompleteType="off"
+            autoCorrect={false}
+            autoCapitalize='none'
+            enablesReturnKeyAutomatically={true}
+            maxLength={100}
+            textContentType="username"
+            onChangeText={(newText) => {
+              setUsername(newText)
+            }}
+            onFocus={() => {setEmailBorderColor('#7E1BCC')}}
+            onBlur={() => {setEmailBorderColor('#F7F7F9')}}
+            />
 
-          <TouchableOpacity
-          style={styles.formBtn}
-          onPress={() => {
-            if (!isWorking && username!='' && ((isSignin && password!='') || !isSignin)) {
-              //if (username!='' && ((isSignin && password!='') || !isSignin)) {
-              setisWorking(!isWorking);
-              if (isSignin) {
-                console.log('Signin: sending message to client')
-                dispatchWeb({
-                  type: MessageType.SUBMIT_SIGNIN,
-                  username: username,
-                  password: password,
-                  isAction: true
-                })
-              } else {
-                console.log('Sign Up')
+            {passField()}
+
+            {errorView({isSigninError, isWorking})}
+
+            <TouchableOpacity
+            style={styles.formBtn}
+            onPress={() => {
+              Keyboard.dismiss()
+              if (!isWorking && username!='' && ((isSignin && password!='') || !isSignin)) {
+                setisWorking(true);
+                dispatch(SignOnActions.signinFailedReset());
+                if (isSignin) {
+                  //console.log('Signin: sending message to client')
+                  dispatchWeb({
+                    type: MessageType.SUBMIT_SIGNIN,
+                    username: username,
+                    password: password,
+                    isAction: true
+                  })
+                } else {
+                  console.log('Sign Up')
+                  setisWorking(false);
+                }
               }
-            }
-          }}
-          >
-            <MainBtnTitle isWorking={isWorking} isSignin={isSignin}></MainBtnTitle>
+            }}
+            >
+              <MainBtnTitle isWorking={isWorking} isSignin={isSignin}></MainBtnTitle>
+            </TouchableOpacity>
+          </View>
+        </TouchableWithoutFeedback>
+        <FadeInView style={styles.containerCTA}>
+        {Dimensions.get('window').height < 790 ? <Text></Text> : <Image source={signupCTA} style={styles.signupCTA} />}
+          
+          <TouchableOpacity
+            style={styles.switchFormBtn}
+            onPress={() => {
+              if (!isWorking) {
+                setisSignIn(!isSignin)
+                dispatch(SignOnActions.signinFailedReset())
+                Keyboard.dismiss()
+              }
+            }}
+            >
+            {formSwitchBtnTitle()}
           </TouchableOpacity>
+        </FadeInView>
       </View>
-      <FadeInView style={styles.containerCTA}>
-      {Dimensions.get('window').height < 790 ? <Text></Text> : <Image source={signupCTA} style={styles.signupCTA} />}
-        
-        <TouchableOpacity
-          style={styles.switchFormBtn}
-          onPress={() => {
-            if (!isWorking) {
-              setisSignIn(!isSignin)
-            }
-          }}
-          >
-          {formSwitchBtnTitle()}
-        </TouchableOpacity>
-      </FadeInView>
-    </View>
-  )
+      </TouchableWithoutFeedback>
+    )
+  }
 };
 
 export default SignOn;

@@ -6,6 +6,7 @@ import {
   ON_FIRST_PAGE,
   NOT_ON_FIRST_PAGE,
   SIGNED_IN,
+  SIGNED_OUT,
   CHANGED_PAGE
 } from './actions'
 
@@ -59,6 +60,12 @@ const reducer = (
       return {
         ...state,
         signedIn: true,
+        account: action.account
+      }
+    case SIGNED_OUT:
+      return {
+        ...state,
+        signedIn: false,
         account: action.account
       }
     default:

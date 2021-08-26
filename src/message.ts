@@ -3,6 +3,7 @@ import { NativeModules, Linking, Platform } from 'react-native'
 import * as audioActions from './store/audio/actions'
 import * as oauthActions from './store/oauth/actions'
 import * as lifecycleActions from './store/lifecycle/actions'
+import * as signonActions from './store/signon/actions'
 import * as notificationsActions from './store/notifications/actions'
 import * as searchActions from './store/search/actions'
 import * as themeActions from './store/theme/actions'
@@ -50,6 +51,7 @@ export enum MessageType {
 
   // Sign On
   SUBMIT_SIGNIN = 'submit-signin',
+  SIGN_IN_FAILURE = 'sign-in-failure',
 
   // Notifications
   ENABLE_PUSH_NOTIFICATIONS = 'enable-push-notifications',
@@ -93,6 +95,7 @@ export enum MessageType {
   REQUEST_NETWORK_CONNECTED = 'request-network-connected',
   IS_NETWORK_CONNECTED = 'is-network-connected',
   SIGNED_IN = 'signed-in',
+  SIGNED_OUT = 'signed-out',
 
   KEYBOARD_VISIBLE = 'keyboard-visible',
   KEYBOARD_HIDDEN = 'keyboard-hidden',
@@ -232,6 +235,12 @@ export const handleMessage = async (
     case MessageType.FETCH_NOTIFICATIONS_FAILURE:
       return dispatch(notificationsActions.append(Status.FAILURE, []))
 
+    // Signon
+    case MessageType.SIGN_IN_FAILURE: 
+      console.log('Signin: got failure message from client')
+      dispatch(signonActions.signinFailed(message.error))
+      return
+
     // Search
     case MessageType.OPEN_SEARCH:
       dispatch(searchActions.open(message.reset))
@@ -263,6 +272,8 @@ export const handleMessage = async (
       return dispatch(lifecycleActions.backendLoaded())
     case MessageType.SIGNED_IN:
       return dispatch(lifecycleActions.signedIn(message.account))
+    case MessageType.SIGNED_OUT:
+      return dispatch(lifecycleActions.signedOut(message.account))
     case MessageType.REQUEST_NETWORK_CONNECTED: {
       const isConnected = checkConnectivity(Connectivity.netInfo)
       postMessage({
