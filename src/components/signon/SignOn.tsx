@@ -22,6 +22,7 @@ import backgImage from '../../assets/images/2-DJ-4-3.jpg'
 import audiusLogoHorizontal from '../../assets/images/Horizontal-Logo-Full-Color.png'
 import signupCTA from '../../assets/images/signUpCTA.png'
 import IconArrow from '../../assets/images/iconArrow.svg'
+import ValidationIconX from '../../assets/images/iconValidationX.svg'
 import LottieView from 'lottie-react-native'
 import  * as SignOnActions from '../../store/signon/actions'
 import { getIsSigninError } from '../../store/signon/selectors'
@@ -168,9 +169,22 @@ const styles = StyleSheet.create({
     fontFamily: 'AvenirNextLTPro-regular',
   },
   errorText: {
-    color: 'red',
+    flex:2,
+    color: '#E03D51',
     fontSize: 12,
     fontFamily: 'AvenirNextLTPro-regular',
+  },
+  errorIcon: {
+    flex:1,
+    width: 12,
+    height: 12,
+    marginRight: 6
+  },
+  errorContainer: {
+    flexDirection: 'row',
+    paddingTop: 4,
+    paddingLeft: 18,
+    margin: 0
   }
 });
 
@@ -317,7 +331,10 @@ const SignOn = () => {
   const errorView = ({isSigninError, isWorking}: {isSigninError: boolean, isWorking: boolean}) => {
     if (isSigninError) {
       return (
-      <Text style={styles.errorText}> {signInErrorMessages.default} </Text>
+        <View style={styles.errorContainer} >
+          <ValidationIconX style={styles.errorIcon} />
+          <Text style={styles.errorText}> {signInErrorMessages.default} </Text>
+        </View>
       )
     } else {
       return (
