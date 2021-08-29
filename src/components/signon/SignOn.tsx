@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   },
   formBtn: {
     flexDirection: 'row',
-    marginTop: 35,
+    marginTop: 32,
     height: 48,
     width: '100%',
     alignItems: 'center',
@@ -321,7 +321,8 @@ const SignOn = () => {
   const [password, setPassword] = useState('');
   const [isSignin, setisSignIn] = useState(false);
   const [emailBorderColor, setEmailBorderColor] = useState('#F7F7F9');
-  const [passBorderColor, setPassBorderColor] = useState('#F7F7F9')
+  const [passBorderColor, setPassBorderColor] = useState('#F7F7F9');
+  const [formButtonMarginTop, setFormButtonMarginTop] = useState(32);
 
   const isSigninError = useSelector(getIsSigninError);
   const signedIn = useSelector(getIsSignedIn);
@@ -385,7 +386,9 @@ const SignOn = () => {
       )
     } else {
       return (
-        <Text></Text>
+        <View style={styles.errorContainer} >
+        <ValidationIconX style={[styles.errorIcon, {opacity: 0}]} />
+        </View>
         )
     }
   }
@@ -403,6 +406,12 @@ const SignOn = () => {
   }
 
   const switchForm = () => {
+    if (!isSignin) {
+      setFormButtonMarginTop(20)
+    } else {
+      setFormButtonMarginTop(32)
+    }
+    setShowInvalidEmailError(false)
     if (!isWorking) {
       const doValidateEmail = isSignin
       setisSignIn(!isSignin)
@@ -450,8 +459,6 @@ const SignOn = () => {
       isAction: true
     })
   }
-
-  // console.log('signedIn:' + signedIn)
 
   if (hideSignon) {
       return null
@@ -501,7 +508,7 @@ const SignOn = () => {
             {errorView({isSigninError, emailIsAvailable, showInvalidEmailError})}
 
             <TouchableOpacity
-            style={styles.formBtn}
+            style={[styles.formBtn, {marginTop: formButtonMarginTop}]}
             onPress={() => {
               Keyboard.dismiss()
               if (!isWorking && username!='' && ((isSignin && password!='') || !isSignin)) {
