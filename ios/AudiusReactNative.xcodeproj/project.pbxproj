@@ -228,9 +228,9 @@
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = LRFCG93S85;
+						DevelopmentTeam = 5XFTL85ZZP;
 						LastSwiftMigration = 1130;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -406,10 +406,12 @@
 				BUNDLE_ID_SUFFIX = "";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "AudiusReactNative/Audius Music.entitlements";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 180;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = LRFCG93S85;
-				EXCLUDED_ARCHS = arm64;
+				DEVELOPMENT_TEAM = 5XFTL85ZZP;
+				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = AudiusReactNative/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -419,9 +421,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = co.audius.audiusmusic;
+				PRODUCT_BUNDLE_IDENTIFIER = com.citruslab.audiusmusic;
 				PRODUCT_NAME = "Audius Music";
-				PROVISIONING_PROFILE_SPECIFIER = "match Development co.audius.audiusmusic";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "AudiusReactNative-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -438,10 +440,11 @@
 				BUNDLE_ID_SUFFIX = "";
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "AudiusReactNative/Audius Music.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 180;
-				DEVELOPMENT_TEAM = LRFCG93S85;
-				EXCLUDED_ARCHS = arm64;
+				DEVELOPMENT_TEAM = 5XFTL85ZZP;
+				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = AudiusReactNative/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -451,9 +454,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = co.audius.audiusmusic;
+				PRODUCT_BUNDLE_IDENTIFIER = com.citruslab.audiusmusic;
 				PRODUCT_NAME = "Audius Music";
-				PROVISIONING_PROFILE_SPECIFIER = "match Development co.audius.audiusmusic";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "AudiusReactNative-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -634,11 +637,12 @@
 				BUNDLE_ID_SUFFIX = .bounce;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "AudiusReactNative/Audius Music.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 180;
 				DEAD_CODE_STRIPPING = NO;
-				DEVELOPMENT_TEAM = LRFCG93S85;
-				EXCLUDED_ARCHS = arm64;
+				DEVELOPMENT_TEAM = 5XFTL85ZZP;
+				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = AudiusReactNative/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -648,9 +652,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = co.audius.audiusmusic.bounce;
+				PRODUCT_BUNDLE_IDENTIFIER = com.citruslab.audiusmusic.bounce;
 				PRODUCT_NAME = "Audius Bounce Music";
-				PROVISIONING_PROFILE_SPECIFIER = "match Development co.audius.audiusmusic.bounce";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "AudiusReactNative-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -718,10 +722,11 @@
 				BUNDLE_ID_SUFFIX = .bounce;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = "AudiusReactNative/Audius Music.entitlements";
-				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 180;
-				DEVELOPMENT_TEAM = LRFCG93S85;
-				EXCLUDED_ARCHS = arm64;
+				DEVELOPMENT_TEAM = 5XFTL85ZZP;
+				EXCLUDED_ARCHS = "";
 				INFOPLIST_FILE = AudiusReactNative/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -731,9 +736,9 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = co.audius.audiusmusic.bounce;
+				PRODUCT_BUNDLE_IDENTIFIER = com.citruslab.audiusmusic.bounce;
 				PRODUCT_NAME = "Audius Bounce Music";
-				PROVISIONING_PROFILE_SPECIFIER = "match Development co.audius.audiusmusic.bounce";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "AudiusReactNative-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

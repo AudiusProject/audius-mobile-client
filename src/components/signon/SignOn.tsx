@@ -25,7 +25,7 @@ import IconArrow from '../../assets/images/iconArrow.svg'
 import ValidationIconX from '../../assets/images/iconValidationX.svg'
 import LottieView from 'lottie-react-native'
 import  * as SignOnActions from '../../store/signon/actions'
-import { getIsSigninError } from '../../store/signon/selectors'
+import { getIsSigninError, getEmailIsAvailable, getEmailIsValid } from '../../store/signon/selectors'
 import { getIsSignedIn } from '../../store/lifecycle/selectors'
 
 const image = backgImage;
@@ -169,22 +169,34 @@ const styles = StyleSheet.create({
     fontFamily: 'AvenirNextLTPro-regular',
   },
   errorText: {
-    flex:2,
+    flex: 1,
     color: '#E03D51',
     fontSize: 12,
     fontFamily: 'AvenirNextLTPro-regular',
+    alignSelf: 'center'
   },
   errorIcon: {
-    flex:1,
+    flex: 1,
     width: 12,
     height: 12,
-    marginRight: 6
+    marginRight: 6,
+    alignSelf: 'center'
+  },
+  errorArrow: {
+    height: 12,
+    width: 12,
+    alignSelf: 'center',
   },
   errorContainer: {
     flexDirection: 'row',
     paddingTop: 4,
     paddingLeft: 18,
     margin: 0
+  },
+  errorButton: {
+    padding: 0,
+    margin: 0,
+    width: '100%'
   }
 });
 
@@ -210,7 +222,7 @@ const signInErrorMessages = {
 }
 
 var fadeInDuration = 200
-var fadeInDelay = 3000
+var fadeInDelay = 1500
 
 const FadeInView = (props: { style: any; children: any }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current
@@ -313,6 +325,19 @@ const SignOn = () => {
 
   const isSigninError = useSelector(getIsSigninError);
   const signedIn = useSelector(getIsSignedIn);
+  const [hideSignon, setHideSignOn] = useState(false);
+
+  const emailIsAvailable = useSelector(getEmailIsAvailable);
+  const emailIsValid = useSelector(getEmailIsValid);
+  const [showInvalidEmailError, setShowInvalidEmailError] = useState(false);
+
+  useEffect(() => {
+    if (isSigninError) {
+      if (isWorking) {
+        setisWorking(false)
+      }
+    }
+  }, [isSigninError])
 
   useEffect(() => {
     if (isSigninError) {
@@ -324,16 +349,38 @@ const SignOn = () => {
 
   useEffect(() => {
     if (signedIn) {
-      setisWorking(false)
+      setTimeout (() => {
+        setHideSignOn(true)
+        setisWorking(false)
+      }, 1500);
+    } else {
+      setHideSignOn(false)
     }
   }, [signedIn])
   
-  const errorView = ({isSigninError, isWorking}: {isSigninError: boolean, isWorking: boolean}) => {
-    if (isSigninError) {
+  const errorView = ({isSigninError, emailIsAvailable, showInvalidEmailError}: {isSigninError: boolean, emailIsAvailable:boolean, showInvalidEmailError: boolean}) => {
+    if (isSignin && isSigninError) {
       return (
         <View style={styles.errorContainer} >
           <ValidationIconX style={styles.errorIcon} />
           <Text style={styles.errorText}> {signInErrorMessages.default} </Text>
+        </View>
+      )
+    } else if (!isSignin && !emailIsAvailable) {
+      return (
+        <TouchableOpacity style={styles.errorButton} onPress={() => {switchForm()}}>
+        <View style={styles.errorContainer} >
+          <ValidationIconX style={styles.errorIcon} />
+          <Text style={[styles.errorText, {flex: 0, textDecorationLine: 'underline'}]}> {errorMessages.inUse} </Text>
+          <Text style={[styles.errorText, {fontSize: 13}]}> ➔</Text>
+        </View>
+        </TouchableOpacity>
+      )
+    } else if (showInvalidEmailError) {
+      return (
+        <View style={styles.errorContainer} >
+          <ValidationIconX style={styles.errorIcon} />
+          <Text style={styles.errorText}> {errorMessages.characters} </Text>
         </View>
       )
     } else {
@@ -352,6 +399,18 @@ const SignOn = () => {
       return (
         <Text style={styles.switchFormBtnTitle}> {messages.oldUser} </Text>
       )
+    }
+  }
+
+  const switchForm = () => {
+    if (!isWorking) {
+      const doValidateEmail = isSignin
+      setisSignIn(!isSignin)
+      dispatch(SignOnActions.signinFailedReset())
+      Keyboard.dismiss()
+      if (doValidateEmail) {
+        validateEmail(username)
+      }
     }
   }
 
@@ -384,10 +443,18 @@ const SignOn = () => {
   const dispatchWeb = useDispatchWebAction()
   const dispatch = useDispatch()
 
+  const validateEmail = (email: string) => {
+    dispatchWeb({
+      type: MessageType.SIGN_UP_VALIDATE_EMAIL,
+      email: email,
+      isAction: true
+    })
+  }
+
   // console.log('signedIn:' + signedIn)
 
-  if (signedIn) {
-    return null
+  if (hideSignon) {
+      return null
   } else {
     return (
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
@@ -418,24 +485,30 @@ const SignOn = () => {
             textContentType="username"
             onChangeText={(newText) => {
               setUsername(newText)
+              if (showInvalidEmailError) {
+                setShowInvalidEmailError(false)
+              }
+              // console.log('Signup: sending validate to client:' + newText)
+              if (!isSignin) {
+                validateEmail(newText)
+              }
             }}
             onFocus={() => {setEmailBorderColor('#7E1BCC')}}
             onBlur={() => {setEmailBorderColor('#F7F7F9')}}
             />
 
             {passField()}
-
-            {errorView({isSigninError, isWorking})}
+            {errorView({isSigninError, emailIsAvailable, showInvalidEmailError})}
 
             <TouchableOpacity
             style={styles.formBtn}
             onPress={() => {
               Keyboard.dismiss()
               if (!isWorking && username!='' && ((isSignin && password!='') || !isSignin)) {
-                setisWorking(true);
                 dispatch(SignOnActions.signinFailedReset());
                 if (isSignin) {
                   //console.log('Signin: sending message to client')
+                  setisWorking(true);
                   dispatchWeb({
                     type: MessageType.SUBMIT_SIGNIN,
                     username: username,
@@ -443,8 +516,12 @@ const SignOn = () => {
                     isAction: true
                   })
                 } else {
-                  console.log('Sign Up')
-                  setisWorking(false);
+                  if (!emailIsValid) {
+                    setShowInvalidEmailError(true)
+                  } else if (emailIsAvailable) {
+                    console.log('Sign Up')
+                    setisWorking(false);
+                  }
                 }
               }
             }}
@@ -458,13 +535,7 @@ const SignOn = () => {
           
           <TouchableOpacity
             style={styles.switchFormBtn}
-            onPress={() => {
-              if (!isWorking) {
-                setisSignIn(!isSignin)
-                dispatch(SignOnActions.signinFailedReset())
-                Keyboard.dismiss()
-              }
-            }}
+            onPress={() => {switchForm()}}
             >
             {formSwitchBtnTitle()}
           </TouchableOpacity>

@@ -52,6 +52,9 @@ export enum MessageType {
   // Sign On
   SUBMIT_SIGNIN = 'submit-signin',
   SIGN_IN_FAILURE = 'sign-in-failure',
+  SIGN_UP_VALIDATE_EMAIL= 'sign-up-validate-email',
+  SIGN_UP_VALIDATE_EMAIL_SUCCESS = 'sign-up-validate-email-success',
+  SIGN_UP_VALIDATE_EMAIL_FAILURE = 'sign-up-validate-email-failure',
 
   // Notifications
   ENABLE_PUSH_NOTIFICATIONS = 'enable-push-notifications',
@@ -237,8 +240,18 @@ export const handleMessage = async (
 
     // Signon
     case MessageType.SIGN_IN_FAILURE: 
-      console.log('Signin: got failure message from client')
+      //console.log('Signin: got failure message from client')
       dispatch(signonActions.signinFailed(message.error))
+      return
+
+    case MessageType.SIGN_UP_VALIDATE_EMAIL_FAILURE:
+      //console.log('Signin: got email validate failure message from client')
+      dispatch(signonActions.signupValidateEmailFailed(message.error))
+      return
+    
+    case MessageType.SIGN_UP_VALIDATE_EMAIL_SUCCESS:
+      //console.log('Signun: got email validate success message from client')
+      dispatch(signonActions.signupValidateEmailSuceeded(message.available))
       return
 
     // Search
