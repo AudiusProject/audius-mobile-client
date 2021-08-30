@@ -353,7 +353,9 @@ const SignOn = () => {
       setTimeout (() => {
         setHideSignOn(true)
         setisWorking(false)
-      }, 1500);
+        setUsername('')
+        setPassword('')
+      }, 500);
     } else {
       setHideSignOn(false)
     }
@@ -367,7 +369,7 @@ const SignOn = () => {
           <Text style={styles.errorText}> {signInErrorMessages.default} </Text>
         </View>
       )
-    } else if (!isSignin && !emailIsAvailable) {
+    } else if (!isSignin && !emailIsAvailable && username != "") {
       return (
         <TouchableOpacity style={styles.errorButton} onPress={() => {switchForm()}}>
         <View style={styles.errorContainer} >

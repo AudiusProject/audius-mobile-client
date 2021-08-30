@@ -45,6 +45,7 @@ const reducer = (
       console.log("VALIDATE_EMAIL_FAILED")
       return {
         ...state,
+        emailIsAvailable: true,
         emailIsValid : false
       }
     default:
