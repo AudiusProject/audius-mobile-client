@@ -10,7 +10,7 @@ import {
   TouchableOpacity, 
   Dimensions,
   TouchableWithoutFeedback,
-  Keyboard
+  Keyboard,
  } from "react-native"
 import { Dispatch } from 'redux'
 import { useSelector, useDispatch } from 'react-redux'
@@ -45,7 +45,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     alignItems: 'center',
     borderRadius: 40,
-    padding: 38
+    padding: 28,
+    paddingBottom: 38,
+    paddingTop: 38
   },
   
   containerCTA: {
