@@ -30,8 +30,6 @@ import { getIsSignedIn } from '../../store/lifecycle/selectors'
 
 const image = backgImage;
 
-const {width, height} = Dimensions.get('window');
-
 const styles = StyleSheet.create({
   container: {
     width: '100%',
@@ -104,7 +102,7 @@ const styles = StyleSheet.create({
     height: 222
   },
   input: {
-    height: 40,
+    height: 42,
     width: '100%',
     marginTop: 32,
     paddingLeft: 16,
@@ -114,10 +112,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#FCFCFC',
     borderRadius: 4,
     padding: 10,
-    color: '#858199'
+    color: '#858199',
+    fontFamily: 'AvenirNextLTPro-regular',
+    fontSize: 16
   },
   inputPass: {
-    height: 40,
+    height: 42,
     width: '100%',
     paddingLeft: 16,
     paddingRight: 16,
@@ -127,7 +127,9 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     marginTop: 16,
     padding: 10,
-    color: '#858199'
+    color: '#858199',
+    fontFamily: 'AvenirNextLTPro-regular',
+    fontSize: 16
   },
   formBtn: {
     flexDirection: 'row',
@@ -171,7 +173,7 @@ const styles = StyleSheet.create({
   errorText: {
     flex: 1,
     color: '#E03D51',
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: 'AvenirNextLTPro-regular',
     alignSelf: 'center'
   },
@@ -179,7 +181,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: 12,
     height: 12,
-    marginRight: 6,
+    marginRight: 10,
     alignSelf: 'center'
   },
   errorArrow: {
@@ -189,8 +191,8 @@ const styles = StyleSheet.create({
   },
   errorContainer: {
     flexDirection: 'row',
-    paddingTop: 4,
-    paddingLeft: 18,
+    paddingTop: 16,
+    paddingLeft: 10,
     margin: 0
   },
   errorButton: {
@@ -289,7 +291,6 @@ const FormTitle = ({isSignin}: {isSignin: boolean}) => {
   var opacity = new Animated.Value(1);
   
   if (lastIsSignin != isSignin) {
-    //Alert.alert("cambio")
     opacity = new Animated.Value(0);
     Animated.timing(opacity, {
       toValue: 1,
@@ -322,7 +323,7 @@ const SignOn = () => {
   const [isSignin, setisSignIn] = useState(false);
   const [emailBorderColor, setEmailBorderColor] = useState('#F7F7F9');
   const [passBorderColor, setPassBorderColor] = useState('#F7F7F9');
-  const [formButtonMarginTop, setFormButtonMarginTop] = useState(32);
+  const [formButtonMarginTop, setFormButtonMarginTop] = useState(28);
 
   const isSigninError = useSelector(getIsSigninError);
   const signedIn = useSelector(getIsSignedIn);
@@ -390,6 +391,7 @@ const SignOn = () => {
       return (
         <View style={styles.errorContainer} >
         <ValidationIconX style={[styles.errorIcon, {opacity: 0}]} />
+        <Text style={styles.errorText}> </Text>
         </View>
         )
     }
@@ -408,13 +410,13 @@ const SignOn = () => {
   }
 
   const switchForm = () => {
-    if (!isSignin) {
-      setFormButtonMarginTop(20)
-    } else {
-      setFormButtonMarginTop(32)
-    }
-    setShowInvalidEmailError(false)
     if (!isWorking) {
+      if (!isSignin) {
+        setFormButtonMarginTop(14)
+      } else {
+        setFormButtonMarginTop(28)
+      }
+      setShowInvalidEmailError(false)
       const doValidateEmail = isSignin
       setisSignIn(!isSignin)
       dispatch(SignOnActions.signinFailedReset())
@@ -466,6 +468,7 @@ const SignOn = () => {
       return null
   } else {
     return (
+      // SignIn - SignUp
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View style={styles.container}>
         <View style={styles.containerBack}>
@@ -493,13 +496,13 @@ const SignOn = () => {
             maxLength={100}
             textContentType="username"
             onChangeText={(newText) => {
-              setUsername(newText)
+              setUsername(newText.trim())
               if (showInvalidEmailError) {
                 setShowInvalidEmailError(false)
               }
               // console.log('Signup: sending validate to client:' + newText)
               if (!isSignin) {
-                validateEmail(newText)
+                validateEmail(newText.trim())
               }
             }}
             onFocus={() => {setEmailBorderColor('#7E1BCC')}}
@@ -511,6 +514,7 @@ const SignOn = () => {
 
             <TouchableOpacity
             style={[styles.formBtn, {marginTop: formButtonMarginTop}]}
+            disabled={isWorking}
             onPress={() => {
               Keyboard.dismiss()
               if (!isWorking && username!='' && ((isSignin && password!='') || !isSignin)) {
