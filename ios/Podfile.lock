@@ -299,6 +299,8 @@ PODS:
     - React-Core
   - react-native-netinfo (5.9.10):
     - React-Core
+  - react-native-safe-area-context (3.3.1):
+    - React-Core
   - react-native-static-server (0.5.0):
     - GCDWebServer (~> 3.0)
     - React
@@ -388,6 +390,9 @@ PODS:
     - React-Core
   - RNReactNativeHapticFeedback (1.11.0):
     - React-Core
+  - RNScreens (3.6.0):
+    - React-Core
+    - React-RCTImage
   - RNSVG (12.1.0):
     - React
   - SRSRadialGradient (1.0.8):
@@ -423,6 +428,7 @@ DEPENDENCIES:
   - react-native-google-cast/NoBluetooth (from `../node_modules/react-native-google-cast/ios/`)
   - react-native-music-control (from `../node_modules/react-native-music-control`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
+  - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - react-native-static-server (from `../node_modules/react-native-static-server`)
   - react-native-version-number (from `../node_modules/react-native-version-number`)
   - react-native-video (from `../node_modules/react-native-video`)
@@ -445,6 +451,7 @@ DEPENDENCIES:
   - RNFS (from `../node_modules/react-native-fs`)
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReactNativeHapticFeedback (from `../node_modules/react-native-haptic-feedback`)
+  - RNScreens (from `../node_modules/react-native-screens`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - SRSRadialGradient (from `../node_modules/react-native-radial-gradient/ios`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -516,6 +523,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-music-control"
   react-native-netinfo:
     :path: "../node_modules/@react-native-community/netinfo"
+  react-native-safe-area-context:
+    :path: "../node_modules/react-native-safe-area-context"
   react-native-static-server:
     :path: "../node_modules/react-native-static-server"
   react-native-version-number:
@@ -560,6 +569,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-permissions"
   RNReactNativeHapticFeedback:
     :path: "../node_modules/react-native-haptic-feedback"
+  RNScreens:
+    :path: "../node_modules/react-native-screens"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   SRSRadialGradient:
@@ -608,6 +619,7 @@ SPEC CHECKSUMS:
   react-native-google-cast: 9ead682d0026c857318efa8ea9c6f58b6142651a
   react-native-music-control: 93b521377efdf2e49b46ccade8457f9503359b38
   react-native-netinfo: 30fb89fa913c342be82a887b56e96be6d71201dd
+  react-native-safe-area-context: ca9f3b49266e56b1d841ccdde7cfe2e076f529b6
   react-native-static-server: 201b2a945a35096be3ae7f43e367c65bcbd61343
   react-native-version-number: b415bbec6a13f2df62bf978e85bc0d699462f37f
   react-native-video: 7ab0c942f1ba25304eff755d5fc1bfed8fa52bfe
@@ -630,6 +642,7 @@ SPEC CHECKSUMS:
   RNFS: 2bd9eb49dc82fa9676382f0585b992c424cd59df
   RNPermissions: 99dd8d4a30ff13509b949ca63cd1f69edc461775
   RNReactNativeHapticFeedback: 653a8c126a0f5e88ce15ffe280b3ff37e1fbb285
+  RNScreens: eb0dfb2d6b21d2d7f980ad46b14eb306d2f1062e
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   SRSRadialGradient: 71378a83e52b616c40367c37ee7cb6865f9f7c6e
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6

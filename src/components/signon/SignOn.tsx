@@ -12,7 +12,7 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
  } from "react-native"
-import { Dispatch } from 'redux'
+
 import { useSelector, useDispatch } from 'react-redux'
 import { useDispatchWebAction } from '../../hooks/useWebAction'
 import { MessageType } from '../../message'
@@ -317,7 +317,7 @@ const FormTitle = ({isSignin}: {isSignin: boolean}) => {
   }
 }
 
-const SignOn = () => {
+const SignOn = ({ navigation }: { navigation: any }) => {
   
   const [isWorking, setisWorking] = useState(false);
   const [username, setUsername] = useState('');
@@ -329,7 +329,6 @@ const SignOn = () => {
 
   const isSigninError = useSelector(getIsSigninError);
   const signedIn = useSelector(getIsSignedIn);
-  const [hideSignon, setHideSignOn] = useState(false);
 
   const emailIsAvailable = useSelector(getEmailIsAvailable);
   const emailIsValid = useSelector(getEmailIsValid);
@@ -344,23 +343,12 @@ const SignOn = () => {
   }, [isSigninError])
 
   useEffect(() => {
-    if (isSigninError) {
-      if (isWorking) {
-        setisWorking(false)
-      }
-    }
-  }, [isSigninError])
-
-  useEffect(() => {
     if (signedIn) {
       setTimeout (() => {
-        setHideSignOn(true)
         setisWorking(false)
         setUsername('')
         setPassword('')
       }, 500);
-    } else {
-      setHideSignOn(false)
     }
   }, [signedIn])
   
@@ -466,99 +454,95 @@ const SignOn = () => {
     })
   }
 
-  if (hideSignon) {
-      return null
-  } else {
-    return (
-      // SignIn - SignUp
+  return (
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+    <View style={styles.container}>
+      <View style={styles.containerBack}>
+        <RadialGradient style={styles.gradient}
+                          colors={['rgba(91, 35, 225, 0.8)','rgba(113, 41, 230, 0.640269)','rgba(162, 47, 235, 0.5)']}
+                          stops={[0.1,0.67,1]}
+                          radius={Dimensions.get('window').width/1.3}>
+        </RadialGradient>
+        <ImageBackground source={image} resizeMode="cover" style={styles.image} />
+      </View>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <View style={styles.container}>
-        <View style={styles.containerBack}>
-          <RadialGradient style={styles.gradient}
-                            colors={['rgba(91, 35, 225, 0.8)','rgba(113, 41, 230, 0.640269)','rgba(162, 47, 235, 0.5)']}
-                            stops={[0.1,0.67,1]}
-                            radius={Dimensions.get('window').width/1.3}>
-          </RadialGradient>
-          <ImageBackground source={image} resizeMode="cover" style={styles.image} />
-        </View>
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={styles.containerForm}>
-            <Image source={audiusLogoHorizontal} style={styles.audiusLogoHorizontal} />
-            <FormTitle isSignin={isSignin}></FormTitle>
-            <TextInput
-            style={[styles.input, {borderColor: emailBorderColor}]}
-            placeholderTextColor= '#C2C0CC'
-            underlineColorAndroid='transparent'
-            placeholder="Email"
-            keyboardType="email-address"
-            autoCompleteType="off"
-            autoCorrect={false}
-            autoCapitalize='none'
-            enablesReturnKeyAutomatically={true}
-            maxLength={100}
-            textContentType="username"
-            onChangeText={(newText) => {
-              setUsername(newText.trim())
-              if (showInvalidEmailError) {
-                setShowInvalidEmailError(false)
-              }
-              // console.log('Signup: sending validate to client:' + newText)
-              if (!isSignin) {
-                validateEmail(newText.trim())
-              }
-            }}
-            onFocus={() => {setEmailBorderColor('#7E1BCC')}}
-            onBlur={() => {setEmailBorderColor('#F7F7F9')}}
-            />
+        <View style={styles.containerForm}>
+          <Image source={audiusLogoHorizontal} style={styles.audiusLogoHorizontal} />
+          <FormTitle isSignin={isSignin}></FormTitle>
+          <TextInput
+          style={[styles.input, {borderColor: emailBorderColor}]}
+          placeholderTextColor= '#C2C0CC'
+          underlineColorAndroid='transparent'
+          placeholder="Email"
+          keyboardType="email-address"
+          autoCompleteType="off"
+          autoCorrect={false}
+          autoCapitalize='none'
+          enablesReturnKeyAutomatically={true}
+          maxLength={100}
+          textContentType="username"
+          onChangeText={(newText) => {
+            setUsername(newText.trim())
+            if (showInvalidEmailError) {
+              setShowInvalidEmailError(false)
+            }
+            // console.log('Signup: sending validate to client:' + newText)
+            if (!isSignin) {
+              validateEmail(newText.trim())
+            }
+          }}
+          onFocus={() => {setEmailBorderColor('#7E1BCC')}}
+          onBlur={() => {setEmailBorderColor('#F7F7F9')}}
+          />
 
-            {passField()}
-            {errorView({isSigninError, emailIsAvailable, showInvalidEmailError})}
+          {passField()}
+          {errorView({isSigninError, emailIsAvailable, showInvalidEmailError})}
 
-            <TouchableOpacity
-            style={[styles.formBtn, {marginTop: formButtonMarginTop}]}
-            disabled={isWorking}
-            onPress={() => {
-              Keyboard.dismiss()
-              if (!isWorking && username!='' && ((isSignin && password!='') || !isSignin)) {
-                dispatch(SignOnActions.signinFailedReset());
-                if (isSignin) {
-                  //console.log('Signin: sending message to client')
-                  setisWorking(true);
-                  dispatchWeb({
-                    type: MessageType.SUBMIT_SIGNIN,
-                    username: username,
-                    password: password,
-                    isAction: true
-                  })
-                } else {
-                  if (!emailIsValid) {
-                    setShowInvalidEmailError(true)
-                  } else if (emailIsAvailable) {
-                    console.log('Sign Up')
-                    setisWorking(false);
-                  }
+          <TouchableOpacity
+          style={[styles.formBtn, {marginTop: formButtonMarginTop}]}
+          disabled={isWorking}
+          onPress={() => {
+            Keyboard.dismiss()
+            if (!isWorking && username!='' && ((isSignin && password!='') || !isSignin)) {
+              dispatch(SignOnActions.signinFailedReset());
+              if (isSignin) {
+                //console.log('Signin: sending message to client')
+                setisWorking(true);
+                dispatchWeb({
+                  type: MessageType.SUBMIT_SIGNIN,
+                  username: username,
+                  password: password,
+                  isAction: true
+                })
+              } else {
+                if (!emailIsValid) {
+                  setShowInvalidEmailError(true)
+                } else if (emailIsAvailable) {
+                  console.log('Sign Up')
+                  setisWorking(false);
+                  navigation.push('CreatePassword', { email: username })
                 }
               }
-            }}
-            >
-              <MainBtnTitle isWorking={isWorking} isSignin={isSignin}></MainBtnTitle>
-            </TouchableOpacity>
-          </View>
-        </TouchableWithoutFeedback>
-        <FadeInView style={styles.containerCTA}>
-        {Dimensions.get('window').height < 790 ? <Text></Text> : <Image source={signupCTA} style={styles.signupCTA} />}
-          
-          <TouchableOpacity
-            style={styles.switchFormBtn}
-            onPress={() => {switchForm()}}
-            >
-            {formSwitchBtnTitle()}
+            }
+          }}
+          >
+            <MainBtnTitle isWorking={isWorking} isSignin={isSignin}></MainBtnTitle>
           </TouchableOpacity>
-        </FadeInView>
-      </View>
+        </View>
       </TouchableWithoutFeedback>
-    )
-  }
+      <FadeInView style={styles.containerCTA}>
+      {Dimensions.get('window').height < 790 ? <Text></Text> : <Image source={signupCTA} style={styles.signupCTA} />}
+        
+        <TouchableOpacity
+          style={styles.switchFormBtn}
+          onPress={() => {switchForm()}}
+          >
+          {formSwitchBtnTitle()}
+        </TouchableOpacity>
+      </FadeInView>
+    </View>
+    </TouchableWithoutFeedback>
+  )
 };
 
 export default SignOn;

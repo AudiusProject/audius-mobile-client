@@ -15,7 +15,9 @@ import useConnectivity from './components/web/useConnectivity'
 import { incrementSessionCount } from './hooks/useSessionCount'
 import Notifications from './components/notifications/Notifications'
 import Search from './components/search/Search'
-import SignOn from './components/signon/SignOn'
+// import SignOn from './components/signon/CreatePassword'
+// import SignOn from './components/signon/SignOn'
+import SignOnNav from './components/signon/NavigationStack'
 import { WebRefContextProvider } from './components/web/WebRef'
 
 const store = createStore(
@@ -55,7 +57,7 @@ const App = () => {
       <WebRefContextProvider>
         <GoogleCast webRef={webRef} />
         <WebApp webRef={webRef} />
-        <SignOn />
+        <SignOnNav />
         <Search />
         {/*
         Note: it is very important that Notifications is rendered after WebApp.
