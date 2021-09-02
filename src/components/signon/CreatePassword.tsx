@@ -12,6 +12,8 @@ import {
   Keyboard,
   SafeAreaView
 } from "react-native"
+declare module 'fxa-common-password-list'
+import commonPasswordList from 'fxa-common-password-list'
 import LottieView from 'lottie-react-native'
 
 import HeaderLogo from '../../assets/images/audiusLogoHorizontal.svg'
@@ -281,6 +283,11 @@ const CreatePassword = ({ navigation, route }: { navigation: any, route: any }) 
       setMeetsNumberReq(true)
     } else if (meetsNumberReq) {
       setMeetsNumberReq(false)
+    }
+    if (!commonPasswordList.test(password) && password.length >= MIN_PASSWORD_LEN) {
+      setMeetsCommonReq(true)
+    } else {
+      setMeetsCommonReq(false)
     }
   }, [password, password2])
 

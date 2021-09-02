@@ -42,6 +42,7 @@
     "@types/react-native-video": "^3.1.5",
     "@types/react-redux": "^7.1.5",
     "bn.js": "^5.2.0",
+    "fxa-common-password-list": "^0.0.4",
     "lottie-ios": "^3.2.3",
     "lottie-react-native": "^4.0.3",
     "numeral": "^2.0.6",
