@@ -2,9 +2,16 @@ import React, {useState, useRef, useEffect} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { useSelector, useDispatch } from 'react-redux';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { View, StyleSheet } from "react-native";
+import { 
+  View,
+  StyleSheet,
+  SafeAreaView
+} from "react-native";
 import SignOn from './SignOn';
 import CreatePassword from './CreatePassword';
+import ProfileAuto from './ProfileAuto';
+import ProfileManual from './ProfileManual';
+import AllowNotifications from './AllowNotifications';
 import { getIsSignedIn } from '../../store/lifecycle/selectors'
 
 const styles = StyleSheet.create({
@@ -42,13 +49,12 @@ const SignOnNav = () => {
         <Stack.Navigator
           initialRouteName="SignOn"
           screenOptions={{
-            animationTypeForReplace: 'push',
-            animation: 'fade'
+            animationTypeForReplace: 'push'
           }}
         >
           <Stack.Screen name="SignOn" component={SignOn} options={{
             headerShown: false,
-            animation: 'fade'
+            animation: 'slide_from_right',
           }}
           />
           <Stack.Screen
@@ -56,7 +62,31 @@ const SignOnNav = () => {
             component={CreatePassword}
             options={{ 
               headerShown: false,
-              animation: 'fade'
+              animation: 'slide_from_right'
+            }}
+          />
+          <Stack.Screen
+            name="ProfileAuto"
+            component={ProfileAuto}
+            options={{ 
+              headerShown: false,
+              animation: 'slide_from_right'
+            }}
+          />
+          <Stack.Screen
+            name="ProfileManual"
+            component={ProfileManual}
+            options={{ 
+              headerShown: false,
+              animation: 'slide_from_right'
+            }}
+          />
+          <Stack.Screen
+            name="AllowNotifications"
+            component={AllowNotifications}
+            options={{ 
+              headerShown: false,
+              animation: 'slide_from_right'
             }}
           />
         </Stack.Navigator>

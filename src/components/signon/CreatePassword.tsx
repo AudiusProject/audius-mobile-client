@@ -10,18 +10,20 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   Keyboard,
-  SafeAreaView
+  SafeAreaView,
+  Linking
 } from "react-native"
+import SignupHeader from "./SignupHeader"
 declare module 'fxa-common-password-list'
 import commonPasswordList from 'fxa-common-password-list'
 import LottieView from 'lottie-react-native'
 
-import HeaderLogo from '../../assets/images/audiusLogoHorizontal.svg'
 import IconArrow from '../../assets/images/iconArrow.svg'
 import IconCheck from '../../assets/images/iconValidationCheck.svg'
 
 const styles = StyleSheet.create({
   container: {
+    top: -47,
     width: '100%',
     height: '100%',
     backgroundColor: 'white',
@@ -31,7 +33,6 @@ const styles = StyleSheet.create({
     left: 0,
     width: '100%',
     alignItems: 'center',
-    borderRadius: 40,
     padding: 38
   },
   title: {
@@ -40,7 +41,6 @@ const styles = StyleSheet.create({
     fontFamily: 'AvenirNextLTPro-Bold',
     lineHeight: 26,
     textAlign: 'center',
-    paddingTop: 32,
     paddingBottom: 6,
   },
   header: {
@@ -52,13 +52,6 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingBottom: 3
   },
-  audiusLogoHeader: {
-    position: 'absolute',
-    alignSelf: 'center',
-    top: 8,
-    marginBottom: 16
-  },
-
   input: {
     height: 40,
     width: '100%',
@@ -117,6 +110,12 @@ const styles = StyleSheet.create({
     marginRight: 13,
   },
   iconCheck: {
+    position: "absolute",
+    width: 16,
+    height: 16,
+    zIndex: 2
+  },
+  errorIcon: {
     position: "absolute",
     width: 16,
     height: 16,
@@ -291,18 +290,11 @@ const CreatePassword = ({ navigation, route }: { navigation: any, route: any }) 
     }
   }, [password, password2])
 
-  useEffect(() => {
-    if (meetsNumberReq) {
-      
-    }
-  }, [meetsNumberReq])
-
   return (
-    // SignIn - SignUp
     <SafeAreaView style={{ backgroundColor: 'white' }} >
+      <SignupHeader></SignupHeader>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.container}>
-          <HeaderLogo style={styles.audiusLogoHeader} fill='#C2C0CC' />
           <View style={styles.containerForm}>
             <FormTitle></FormTitle>
             <TextInput
@@ -347,12 +339,21 @@ const CreatePassword = ({ navigation, route }: { navigation: any, route: any }) 
             />
             {Checkbox({i:0, meetsReq: meetsNumberReq})}
             {Checkbox({i:1, meetsReq: meetsLengthReq})}
-            {Checkbox({i:2, meetsReq: meetsMatchReq})}
             {Checkbox({i:3, meetsReq: meetsCommonReq})}
+            {Checkbox({i:2, meetsReq: meetsMatchReq})}
             <Text style={styles.terms}>{messages.termsAndPrivacy}
-            <Text style={{color:'#CC0FE0'}}> {messages.terms}</Text>
+            <Text
+              style={{color:'#CC0FE0'}}
+              onPress={() => {
+                Linking.openURL('https://audius.co/legal/privacy-policy').catch((err) => console.error('An error occurred', err))
+              }}
+              > {messages.terms}</Text>
             <Text> {messages.and}</Text>
-            <Text style={{color:'#CC0FE0'}}> {messages.privacy}</Text>
+            <Text style={{color:'#CC0FE0'}}
+            onPress={() => {
+              Linking.openURL('https://audius.co/legal/privacy-policy').catch((err) => console.error('An error occurred', err))
+            }}
+            > {messages.privacy}</Text>
             </Text>
             <TouchableOpacity
             style={styles.formBtn}
@@ -360,9 +361,8 @@ const CreatePassword = ({ navigation, route }: { navigation: any, route: any }) 
             onPress={() => {
               Keyboard.dismiss()
               if (!isWorking && meetsLengthReq && meetsNumberReq && meetsMatchReq && meetsCommonReq) {
-                
                 console.log(route.params.email)
-
+                navigation.push('ProfileAuto', { email: route.params.email, password: password })
               }
             }}
             >
