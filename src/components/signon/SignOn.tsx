@@ -25,7 +25,7 @@ import IconArrow from '../../assets/images/iconArrow.svg'
 import ValidationIconX from '../../assets/images/iconValidationX.svg'
 import LottieView from 'lottie-react-native'
 import  * as SignOnActions from '../../store/signon/actions'
-import { getIsSigninError, getEmailIsAvailable, getEmailIsValid } from '../../store/signon/selectors'
+import { getIsSigninError, getEmailIsAvailable } from '../../store/signon/selectors'
 import { getIsSignedIn, getDappLoaded } from '../../store/lifecycle/selectors'
 
 const image = backgImage;
@@ -300,6 +300,11 @@ const FormTitle = ({isSignin}: {isSignin: boolean}) => {
   }
 }
 
+const isValidEmailString = (email: string) => {
+  const emailRe = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+  return emailRe.test(String(email).toLowerCase())
+}
+
 const SignOn = ({ navigation }: { navigation: any }) => {
   
   const [isWorking, setisWorking] = useState(false);
@@ -316,7 +321,6 @@ const SignOn = ({ navigation }: { navigation: any }) => {
   const signedIn = useSelector(getIsSignedIn);
 
   const emailIsAvailable = useSelector(getEmailIsAvailable);
-  const emailIsValid = useSelector(getEmailIsValid);
   const [showInvalidEmailError, setShowInvalidEmailError] = useState(false);
 
   useEffect(() => {
@@ -336,12 +340,6 @@ const SignOn = ({ navigation }: { navigation: any }) => {
       }, 500);
     }
   }, [signedIn])
-
-  useEffect(() => {
-    if (emailIsValid) {
-      setShowInvalidEmailError(false)
-    }
-  }, [emailIsValid])
 
   useEffect(() => {
     if (dappLoaded) {
@@ -544,7 +542,8 @@ const SignOn = ({ navigation }: { navigation: any }) => {
                   isAction: true
                 })
               } else {
-                if (!emailIsValid) {
+                
+                if (!isValidEmailString(username)) {
                   setShowInvalidEmailError(true)
                 } else if (emailIsAvailable) {
                   console.log('Sign Up')
