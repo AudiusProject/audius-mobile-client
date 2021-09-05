@@ -18,7 +18,7 @@ import { useDispatchWebAction } from '../../hooks/useWebAction'
 import { MessageType } from '../../message'
 
 import RadialGradient from 'react-native-radial-gradient'
-import backgImage from '../../assets/images/2-DJ-4-3.jpg'
+import backgImage from '../../assets/images/DJportrait.jpg'
 import audiusLogoHorizontal from '../../assets/images/Horizontal-Logo-Full-Color.png'
 import signupCTA from '../../assets/images/signUpCTA.png'
 import IconArrow from '../../assets/images/iconArrow.svg'
@@ -26,7 +26,7 @@ import ValidationIconX from '../../assets/images/iconValidationX.svg'
 import LottieView from 'lottie-react-native'
 import  * as SignOnActions from '../../store/signon/actions'
 import { getIsSigninError, getEmailIsAvailable, getEmailIsValid } from '../../store/signon/selectors'
-import { getIsSignedIn } from '../../store/lifecycle/selectors'
+import { getIsSignedIn, getDappLoaded } from '../../store/lifecycle/selectors'
 
 const image = backgImage;
 
@@ -39,28 +39,35 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly'
   },
   containerForm: {
+    position: 'absolute',
+    top: 0,
     left: 0,
     width: '100%',
-    zIndex: 4,
+    zIndex: 5,
     backgroundColor: 'white',
     alignItems: 'center',
-    borderRadius: 40,
+    borderBottomRightRadius: 40,
+    borderBottomLeftRadius: 40,
     padding: 28,
     paddingBottom: 38,
-    paddingTop: 38
+    paddingTop: 50
   },
   
   containerCTA: {
+    position: 'absolute',
+    bottom: 0,
     left: 0,
     width: '100%',
     zIndex: 4,
-    alignItems: 'center'
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+    paddingBottom: 20
   },
   containerBack: {
     flex: 1,
     position: 'absolute',
     left: 0,
-    top: '40%',
+    top: -100,
     bottom: 0,
     width: '100%',
     zIndex: 3,
@@ -73,7 +80,8 @@ const styles = StyleSheet.create({
   gradient: {
     position: 'absolute',
     width: '100%',
-    height: '100%',
+    bottom: 0,
+    top: '40%',
     zIndex: 5
   },
   title: {
@@ -228,10 +236,11 @@ const signInErrorMessages = {
 var fadeInDuration = 200
 var fadeInDelay = 1500
 
+var formContainerHeight = 0
 const FadeInView = (props: { style: any; children: any }) => {
   const fadeAnim = useRef(new Animated.Value(0)).current
    
-  React.useEffect(() => {
+  useEffect(() => {
     Animated.timing(
       fadeAnim,
       {
@@ -248,6 +257,7 @@ const FadeInView = (props: { style: any; children: any }) => {
       style={{
         ...props.style,
         opacity: fadeAnim,
+        height: Dimensions.get('window').height
       }}
     >
       {props.children}
@@ -326,8 +336,10 @@ const SignOn = ({ navigation }: { navigation: any }) => {
   const [emailBorderColor, setEmailBorderColor] = useState('#F7F7F9');
   const [passBorderColor, setPassBorderColor] = useState('#F7F7F9');
   const [formButtonMarginTop, setFormButtonMarginTop] = useState(28);
+  const [cpaContainerHeight, setcpaContainerHeight] = useState(0);
 
   const isSigninError = useSelector(getIsSigninError);
+  const dappLoaded = useSelector(getDappLoaded);
   const signedIn = useSelector(getIsSignedIn);
 
   const emailIsAvailable = useSelector(getEmailIsAvailable);
@@ -357,7 +369,35 @@ const SignOn = ({ navigation }: { navigation: any }) => {
       setShowInvalidEmailError(false)
     }
   }, [emailIsValid])
+
+  useEffect(() => {
+    if (dappLoaded) {
+      console.log('dappLOADED')
+      animateDrawer()
+      fadeCTA()
+    }
+  }, [dappLoaded])
   
+  const topDrawer = useRef(new Animated.Value(-800)).current
+  const animateDrawer = () => {
+      Animated.timing(topDrawer, {
+        toValue: 0,
+        duration: 700,
+        delay: 500,
+        useNativeDriver: false
+      }).start();
+  }
+
+  const opacityCTA = useRef(new Animated.Value(0)).current
+  const fadeCTA = () => {
+      Animated.timing(opacityCTA, {
+        toValue: 1,
+        duration: 500,
+        delay: 1200,
+        useNativeDriver: true
+      }).start();
+  }
+
   const errorView = ({isSigninError, emailIsAvailable, showInvalidEmailError}: {isSigninError: boolean, emailIsAvailable:boolean, showInvalidEmailError: boolean}) => {
     if (isSignin && isSigninError) {
       return (
@@ -460,6 +500,9 @@ const SignOn = ({ navigation }: { navigation: any }) => {
     })
   }
 
+
+  
+  
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
     <View style={styles.container}>
@@ -467,12 +510,19 @@ const SignOn = ({ navigation }: { navigation: any }) => {
         <RadialGradient style={styles.gradient}
                           colors={['rgba(91, 35, 225, 0.8)','rgba(113, 41, 230, 0.640269)','rgba(162, 47, 235, 0.5)']}
                           stops={[0.1,0.67,1]}
-                          radius={Dimensions.get('window').width/1.3}>
+                          radius={Dimensions.get('window').width/1.2}>
         </RadialGradient>
         <ImageBackground source={image} resizeMode="cover" style={styles.image} />
       </View>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={styles.containerForm}>
+        <Animated.View
+          style={[styles.containerForm, {top: topDrawer}]}
+          onLayout={(event) => {
+            formContainerHeight = event.nativeEvent.layout.height;
+            setcpaContainerHeight (Dimensions.get('window').height - formContainerHeight)
+            // console.log (formContainerHeight)
+          }}
+        >
           <Image source={audiusLogoHorizontal} style={styles.audiusLogoHorizontal} />
           <FormTitle isSignin={isSignin}></FormTitle>
           <TextInput
@@ -534,9 +584,9 @@ const SignOn = ({ navigation }: { navigation: any }) => {
           >
             <MainBtnTitle isWorking={isWorking} isSignin={isSignin}></MainBtnTitle>
           </TouchableOpacity>
-        </View>
+        </Animated.View>
       </TouchableWithoutFeedback>
-      <FadeInView style={styles.containerCTA}>
+      <Animated.View style={[styles.containerCTA, {height: cpaContainerHeight, opacity: opacityCTA}]}>
       {Dimensions.get('window').height < 790 ? <Text></Text> : <Image source={signupCTA} style={styles.signupCTA} />}
         
         <TouchableOpacity
@@ -545,7 +595,7 @@ const SignOn = ({ navigation }: { navigation: any }) => {
           >
           {formSwitchBtnTitle()}
         </TouchableOpacity>
-      </FadeInView>
+      </Animated.View>
     </View>
     </TouchableWithoutFeedback>
   )

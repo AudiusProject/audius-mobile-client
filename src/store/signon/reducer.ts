@@ -45,28 +45,28 @@ const reducer = (
       return {
         ...state,
         emailIsAvailable: action.available,
-        emailIsValid : true
+        emailIsValid: true
       }
     case VALIDATE_EMAIL_FAILED:
       console.log("VALIDATE_EMAIL_FAILED")
       return {
         ...state,
         emailIsAvailable: true,
-        emailIsValid : false
+        emailIsValid: false
       }
     case VALIDATE_HANDLE_SUCEEDED:
       console.log("VALIDATE_HANDLE_SUCEEDED")
       return {
         ...state,
         handleIsValid: true,
-        handleError : ''
+        handleError: ''
       }
     case VALIDATE_HANDLE_FAILED:
       console.log("VALIDATE_HANDLE_FAILED: " + action.error)
       return {
         ...state,
         handleIsValid: false,
-        handleError : action.error
+        handleError: action.error
       }
     default:
       return state
