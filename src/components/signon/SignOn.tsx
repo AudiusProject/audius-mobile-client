@@ -40,6 +40,9 @@ const styles = StyleSheet.create({
   },
   containerForm: {
     position: 'absolute',
+    transform: [{
+      translateY: 0
+    }],
     top: 0,
     left: 0,
     width: '100%',
@@ -233,37 +236,7 @@ const signInErrorMessages = {
   default: 'Invalid Credentials'
 }
 
-var fadeInDuration = 200
-var fadeInDelay = 1500
-
 var formContainerHeight = 0
-const FadeInView = (props: { style: any; children: any }) => {
-  const fadeAnim = useRef(new Animated.Value(0)).current
-   
-  useEffect(() => {
-    Animated.timing(
-      fadeAnim,
-      {
-        toValue: 1,
-        duration: fadeInDuration,
-        delay: fadeInDelay,
-        useNativeDriver: true
-      }
-    ).start();
-  }, [fadeAnim])
-
-  return (
-    <Animated.View
-      style={{
-        ...props.style,
-        opacity: fadeAnim,
-        height: Dimensions.get('window').height
-      }}
-    >
-      {props.children}
-    </Animated.View>
-  );
-}
 
 var lastIsSignin = false
 const MainBtnTitle = ({isSignin, isWorking}: {isSignin: boolean, isWorking: boolean}) => {
@@ -384,7 +357,7 @@ const SignOn = ({ navigation }: { navigation: any }) => {
         toValue: 0,
         duration: 700,
         delay: 500,
-        useNativeDriver: false
+        useNativeDriver: true
       }).start();
   }
 
@@ -516,7 +489,7 @@ const SignOn = ({ navigation }: { navigation: any }) => {
       </View>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <Animated.View
-          style={[styles.containerForm, {top: topDrawer}]}
+          style={[styles.containerForm, {transform: [{ translateY: topDrawer }]}]}
           onLayout={(event) => {
             formContainerHeight = event.nativeEvent.layout.height;
             setcpaContainerHeight (Dimensions.get('window').height - formContainerHeight)
