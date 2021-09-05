@@ -5,7 +5,6 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Dimensions,
   Keyboard,
   SafeAreaView
 } from "react-native"

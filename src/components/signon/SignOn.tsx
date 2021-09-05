@@ -351,6 +351,12 @@ const SignOn = ({ navigation }: { navigation: any }) => {
       }, 500);
     }
   }, [signedIn])
+
+  useEffect(() => {
+    if (emailIsValid) {
+      setShowInvalidEmailError(false)
+    }
+  }, [emailIsValid])
   
   const errorView = ({isSigninError, emailIsAvailable, showInvalidEmailError}: {isSigninError: boolean, emailIsAvailable:boolean, showInvalidEmailError: boolean}) => {
     if (isSignin && isSigninError) {

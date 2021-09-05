@@ -55,6 +55,9 @@ export enum MessageType {
   SIGN_UP_VALIDATE_EMAIL= 'sign-up-validate-email',
   SIGN_UP_VALIDATE_EMAIL_SUCCESS = 'sign-up-validate-email-success',
   SIGN_UP_VALIDATE_EMAIL_FAILURE = 'sign-up-validate-email-failure',
+  SIGN_UP_VALIDATE_HANDLE= 'sign-up-validate-handle',
+  SIGN_UP_VALIDATE_HANDLE_SUCCESS = 'sign-up-validate-handle-success',
+  SIGN_UP_VALIDATE_HANDLE_FAILURE = 'sign-up-validate-handle-failure',
 
   // Notifications
   ENABLE_PUSH_NOTIFICATIONS = 'enable-push-notifications',
@@ -243,15 +246,22 @@ export const handleMessage = async (
       //console.log('Signin: got failure message from client')
       dispatch(signonActions.signinFailed(message.error))
       return
-
     case MessageType.SIGN_UP_VALIDATE_EMAIL_FAILURE:
-      //console.log('Signin: got email validate failure message from client')
+      //console.log('Signup: got email validate failure message from client')
       dispatch(signonActions.signupValidateEmailFailed(message.error))
       return
-    
     case MessageType.SIGN_UP_VALIDATE_EMAIL_SUCCESS:
-      //console.log('Signun: got email validate success message from client')
+      //console.log('Signup: got email validate success message from client')
       dispatch(signonActions.signupValidateEmailSuceeded(message.available))
+      return
+    case MessageType.SIGN_UP_VALIDATE_HANDLE_FAILURE:
+      //console.log('Signup: got handle validate failure message from client')
+      dispatch(signonActions.signupValidateHandleFailed(message.error))
+      return
+    
+    case MessageType.SIGN_UP_VALIDATE_HANDLE_SUCCESS:
+      //console.log('Signup: got handle validate success message from client')
+      dispatch(signonActions.signupValidateHandleSuceeded())
       return
 
     // Search

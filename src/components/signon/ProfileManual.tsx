@@ -10,14 +10,20 @@ import {
   SafeAreaView,
   TextInput,
   KeyboardAvoidingView,
-  Platform
+  Platform,
+  Dimensions
 } from "react-native"
+import { useSelector, useDispatch } from 'react-redux'
+import { useDispatchWebAction } from '../../hooks/useWebAction'
 import LottieView from 'lottie-react-native'
+import { MessageType } from '../../message'
 import SignupHeader from "./SignupHeader"
 
 import IconArrow from '../../assets/images/iconArrow.svg'
 import IconCamera from '../../assets/images/iconCamera.svg'
 import NoPicture from '../../assets/images/nopicture.svg'
+import ValidationIconX from '../../assets/images/iconValidationX.svg'
+import { getHandleIsValid, getHandleError } from "../../store/signon/selectors"
 
 const styles = StyleSheet.create({
   container: {
@@ -87,7 +93,8 @@ const styles = StyleSheet.create({
   },
   profilePicContainer: {
     flex: 0,
-    alignContent: 'center'
+    alignContent: 'center',
+    marginBottom: -12
   },
   profilePic:{
     flex: 0,
@@ -127,11 +134,45 @@ const styles = StyleSheet.create({
     fontFamily: 'AvenirNextLTPro-Medium',
     marginLeft: 11
   },
+  errorText: {
+    flex: 1,
+    color: '#E03D51',
+    fontSize: 14,
+    fontFamily: 'AvenirNextLTPro-regular',
+    alignSelf: 'center'
+  },
+  errorIcon: {
+    flex: 1,
+    width: 12,
+    height: 12,
+    marginRight: 10,
+    alignSelf: 'center'
+  },
+  errorContainer: {
+    flexDirection: 'row',
+    paddingTop: 16,
+    paddingLeft: 10,
+    margin: 0
+  },
 });
 
 const messages = { 
   header: 'Tell Us About Yourself So Others Can Find You',
-  buttonTitle: 'Continue'
+  buttonTitle: 'Continue',
+  errors: [
+    'Sorry, handle is too long',
+    'Only use A-Z, 0-9, and underscores',
+    'That handle has already been taken',
+    'This verified Twitter handle is reserved.',
+    'This verified Instagram handle is reserved.'
+  ],
+  errorTypes: [
+    'tooLong',
+    'characters',
+    'inUse',
+    'twitterReserved',
+    'instagramReserved'
+  ]
 }
 
 var didAnimation = false
@@ -193,6 +234,9 @@ const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) =
   const [nameBorderColor, setNameBorderColor] = useState('#F7F7F9');
   const [handleBorderColor, setHandleBorderColor] = useState('#F7F7F9');
 
+  const handleIsValid = useSelector(getHandleIsValid);
+  const handleError = useSelector(getHandleError);
+
   const AddPhotoBtn = () => {
     return(
     <TouchableOpacity
@@ -211,6 +255,36 @@ const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) =
         </View>
     </TouchableOpacity>
     )
+  }
+
+  const dispatchWeb = useDispatchWebAction()
+  const dispatch = useDispatch()
+
+  const validateHandle = (handle: string) => {
+    dispatchWeb({
+      type: MessageType.SIGN_UP_VALIDATE_HANDLE,
+      handle: handle,
+      isAction: true,
+      onValidate: null
+    })
+  }
+
+  const errorView = ({handleIsValid, handleError,}: {handleIsValid: boolean, handleError:string}) => {
+    if (!handleIsValid && handleError != '') {
+      return (
+        <View style={styles.errorContainer} >
+          <ValidationIconX style={styles.errorIcon} />
+          <Text style={styles.errorText}> {messages.errors[messages.errorTypes.indexOf(handleError)]} </Text>
+        </View>
+      )
+    } else {
+      return (
+        <View style={styles.errorContainer} >
+        <ValidationIconX style={[styles.errorIcon, {opacity: 0}]} />
+        <Text style={styles.errorText}> </Text>
+        </View>
+        )
+    }
   }
   
   return (
@@ -235,13 +309,10 @@ const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) =
               autoCorrect={false}
               autoCapitalize='words'
               enablesReturnKeyAutomatically={true}
-              maxLength={100}
+              maxLength={32}
               textContentType='name'
               onChangeText={(newText) => {
                 setName(newText.trim())
-                // if (showInvalidEmailError) {
-                //   setShowInvalidEmailError(false)
-                // }
               }}
               onFocus={() => {setNameBorderColor('#7E1BCC')}}
               onBlur={() => {setNameBorderColor('#F7F7F9')}}
@@ -257,25 +328,28 @@ const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) =
               autoCorrect={false}
               autoCapitalize='none'
               enablesReturnKeyAutomatically={true}
-              maxLength={100}
+              maxLength={16}
               textContentType='nickname'
               onChangeText={(newText) => {
+                if (newText.length && newText[0] === '@') {
+                  newText = newText.substring(1);
+                }
+                // let newHandle = newText.replace('@', '')
                 setHandle(newText.trim())
-                // if (showInvalidEmailError) {
-                //   setShowInvalidEmailError(false)
-                // }
+                validateHandle(newText.trim())
               }}
               onFocus={() => {setHandleBorderColor('#7E1BCC')}}
               onBlur={() => {setHandleBorderColor('#F7F7F9')}}
               />
+              {errorView({handleIsValid, handleError})}
 
             <TouchableOpacity
             style={styles.formBtn}
             disabled={isWorking}
             onPress={() => {
               Keyboard.dismiss()
-              if (!isWorking) {
-                console.log(route.params.email + ' ' + route.params.password)
+              if (!isWorking && handleIsValid) {
+                console.log ( route.params.email + '|' + route.params.password + '|' + name + '|' +  handle )
                 navigation.push('AllowNotifications', { email: route.params.email, password: route.params.password, name: name, handle: handle })
               }
             }}
