@@ -11,7 +11,9 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
   SafeAreaView,
-  Linking
+  Linking,
+  KeyboardAvoidingView,
+  Platform
 } from "react-native"
 import SignupHeader from "./SignupHeader"
 declare module 'fxa-common-password-list'
@@ -20,6 +22,8 @@ import LottieView from 'lottie-react-native'
 
 import IconArrow from '../../assets/images/iconArrow.svg'
 import IconCheck from '../../assets/images/iconValidationCheck.svg'
+import ValidationIconX from '../../assets/images/iconValidationX.svg'
+import { showCastPicker } from "store/googleCast/actions"
 
 const styles = StyleSheet.create({
   container: {
@@ -202,28 +206,58 @@ var opacity1 = new Animated.Value(0);
 var opacity2 = new Animated.Value(0);
 var opacity3 = new Animated.Value(0);
 var opacity4 = new Animated.Value(0);
+var opacity1r = new Animated.Value(0);
+var opacity2r = new Animated.Value(0);
+var opacity3r = new Animated.Value(0);
+var opacity4r = new Animated.Value(0);
 
-const Checkbox = ({i, meetsReq}: {i: number, meetsReq: boolean}) => {
-  var opacityArr = [ opacity1, opacity2, opacity3, opacity4 ]
+const Checkbox = ({i, meetsReq, shouldShowRedErrors}: {
+  i: number,
+  meetsReq: boolean,
+  shouldShowRedErrors: boolean}) => {
+  const opacityArr = [ opacity1, opacity2, opacity3, opacity4 ]
+  const opacityArrR = [ opacity1, opacity2, opacity3, opacity4 ]
   const opacity = opacityArr[i]
+  const opacityRed = opacityArrR[i]
 
   if (meetsReq) {
-  Animated.timing(opacity, {
-    toValue: 1,
-    duration: 700,
-    easing: Easing.in(Easing.bounce),
-    useNativeDriver: true
-  }).start(({ finished }) => {
-    //
-  });
+    Animated.timing(opacity, {
+      toValue: 1,
+      duration: 700,
+      easing: Easing.in(Easing.bounce),
+      useNativeDriver: true
+    }).start(({ finished }) => {
+      //
+    });
+  } else if (shouldShowRedErrors) {
+    Animated.timing(opacityRed, {
+      toValue: 1,
+      duration: 700,
+      easing: Easing.in(Easing.bounce),
+      useNativeDriver: true
+    }).start(({ finished }) => {
+      //
+    });
   }
 
   const animatedStyles = [
     styles.iconCheck,
     {
-      opacity,
+      opacity: opacity,
       transform: [{
         scale: opacity.interpolate({
+          inputRange: [0, 1],
+          outputRange: [0, 1]
+        })
+      }]
+    }
+  ];
+  const animatedStylesR = [
+    styles.iconCheck,
+    {
+      opacity: opacityRed,
+      transform: [{
+        scale: opacityRed.interpolate({
           inputRange: [0, 1],
           outputRange: [0, 1]
         })
@@ -242,12 +276,24 @@ const Checkbox = ({i, meetsReq}: {i: number, meetsReq: boolean}) => {
       </View>
     )
   } else {
-    return (
-    <View style={styles.checkboxContainer}>
-      <View style={styles.unchecked}></View>
-      <Text style={[styles.uncheckedDescription, {alignSelf: 'center'}]}>{messages.checks[i]}</Text>
-    </View>
-    )
+    if (shouldShowRedErrors) {
+      return (
+      <View style={styles.checkboxContainer}>
+        <Animated.View style={ animatedStylesR }>
+          <ValidationIconX style={styles.iconCheck}></ValidationIconX>
+        </Animated.View>
+        <View style={styles.unchecked}></View>
+        <Text style={[styles.uncheckedDescription, {alignSelf: 'center', color: '#E03D51'}]}>{messages.checks[i]}</Text>
+      </View>
+      )
+    } else {
+      return (
+      <View style={styles.checkboxContainer}>
+        <View style={styles.unchecked}></View>
+        <Text style={[styles.uncheckedDescription, {alignSelf: 'center'}]}>{messages.checks[i]}</Text>
+      </View>
+      )
+    }
   }
 }
 
@@ -266,6 +312,7 @@ const CreatePassword = ({ navigation, route }: { navigation: any, route: any }) 
   const [meetsLengthReq, setMeetsLengthReq] = useState(false);
   const [meetsMatchReq, setMeetsMatchReq] = useState(false);
   const [meetsCommonReq, setMeetsCommonReq] = useState(false);
+  const [shouldShowRedErrors, setShouldShowRedErrors] = useState(false)
 
   useEffect(() => {
     if (password.length >= MIN_PASSWORD_LEN) {
@@ -290,9 +337,16 @@ const CreatePassword = ({ navigation, route }: { navigation: any, route: any }) 
     }
   }, [password, password2])
 
+  useEffect(() => {
+    if (meetsCommonReq && meetsLengthReq && meetsMatchReq && meetsNumberReq && password2 != '' && password != '') {
+      setPassBorderColor('#F7F7F9')
+    }
+  }, [meetsMatchReq])
+
   return (
-    <SafeAreaView style={{ backgroundColor: 'white' }} >
+    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? 'padding' : 'height'}>
       <SignupHeader></SignupHeader>
+    <SafeAreaView style={{ backgroundColor: 'white' }} > 
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View style={styles.container}>
           <View style={styles.containerForm}>
@@ -312,9 +366,25 @@ const CreatePassword = ({ navigation, route }: { navigation: any, route: any }) 
               secureTextEntry={true}
               onChangeText={(newText) => {
                 setPassword(newText)
+                if (newText == '') {
+                  setShouldShowRedErrors(false)
+                }
               }}
               onFocus={() => { setPassBorderColor('#7E1BCC') }}
-              onBlur={() => { setPassBorderColor('#F7F7F9') }}
+              onBlur={() => { 
+                setPassBorderColor('#F7F7F9')
+                if (password == '') {
+                  setShouldShowRedErrors(false)
+                } else {
+                  setShouldShowRedErrors(true)
+                  if (password != '' && (!meetsCommonReq || !meetsLengthReq || !meetsMatchReq || !meetsNumberReq )) {
+                    setPassBorderColor('#E03D51')
+                    if (password2 != '' && !meetsMatchReq) {
+                      setPassBorderColor2('#E03D51')
+                    }
+                  }
+                }
+              }}
               keyboardAppearance='dark'
             />
             <TextInput
@@ -334,13 +404,27 @@ const CreatePassword = ({ navigation, route }: { navigation: any, route: any }) 
                 setPassword2(newText)
               }}
               onFocus={() => { setPassBorderColor2('#7E1BCC') }}
-              onBlur={() => { setPassBorderColor2('#F7F7F9') }}
+              onBlur={() => { 
+                setPassBorderColor2('#F7F7F9')
+                if (password == '') {
+                  setShouldShowRedErrors(false)
+                } else {
+                  setShouldShowRedErrors(true)
+                }
+                if (password2 != '' && password != '' && !meetsMatchReq) {
+                  setPassBorderColor2('#E03D51')
+                  setPassBorderColor('#E03D51')
+                }
+                if (meetsMatchReq && meetsCommonReq && meetsLengthReq && meetsNumberReq) {
+                  setPassBorderColor('#F7F7F9')
+                }
+              }}
               keyboardAppearance='dark'
             />
-            {Checkbox({i:0, meetsReq: meetsNumberReq})}
-            {Checkbox({i:1, meetsReq: meetsLengthReq})}
-            {Checkbox({i:3, meetsReq: meetsCommonReq})}
-            {Checkbox({i:2, meetsReq: meetsMatchReq})}
+            {Checkbox({i:0, meetsReq: meetsNumberReq, shouldShowRedErrors: shouldShowRedErrors})}
+            {Checkbox({i:1, meetsReq: meetsLengthReq, shouldShowRedErrors: shouldShowRedErrors})}
+            {Checkbox({i:3, meetsReq: meetsCommonReq, shouldShowRedErrors: shouldShowRedErrors})}
+            {Checkbox({i:2, meetsReq: meetsMatchReq, shouldShowRedErrors: (password2.length >= 1) ? shouldShowRedErrors: false})}
             <Text style={styles.terms}>{messages.termsAndPrivacy}
             <Text
               style={{color:'#CC0FE0'}}
@@ -373,6 +457,7 @@ const CreatePassword = ({ navigation, route }: { navigation: any, route: any }) 
         </View>
       </TouchableWithoutFeedback>
     </SafeAreaView>
+    </KeyboardAvoidingView>
   )
 };
 

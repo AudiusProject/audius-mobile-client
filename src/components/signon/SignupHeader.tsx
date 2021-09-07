@@ -34,7 +34,7 @@ const SignupHeader = () => {
       <SafeAreaView  >
       </SafeAreaView>
       <View style={styles.header}>
-        <HeaderLogo style={styles.audiusLogoHeader} fill='#C2C0CC' />
+        <HeaderLogo style={styles.audiusLogoHeader} fill={'#C2C0CC'} />
       </View>
     </View>
   )
