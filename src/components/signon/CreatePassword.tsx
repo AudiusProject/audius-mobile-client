@@ -192,7 +192,7 @@ const MainBtnTitle = ({isWorking}: {isWorking: boolean}) => {
     return (
       <View style={styles.formButtonTitleContainer}>
         <Text style={styles.formButtonTitle}> { messages.buttonTitle } </Text>
-        <IconArrow style={styles.arrow} fill='white' />
+        <IconArrow style={styles.arrow} fill={'white'} />
       </View>
     )
   }
@@ -358,6 +358,7 @@ const CreatePassword = ({ navigation, route }: { navigation: any, route: any }) 
             <TouchableOpacity
             style={styles.formBtn}
             disabled={isWorking}
+            activeOpacity={0.6}
             onPress={() => {
               Keyboard.dismiss()
               if (!isWorking && meetsLengthReq && meetsNumberReq && meetsMatchReq && meetsCommonReq) {

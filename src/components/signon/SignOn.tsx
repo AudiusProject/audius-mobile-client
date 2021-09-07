@@ -266,7 +266,7 @@ const MainBtnTitle = ({isSignin, isWorking}: {isSignin: boolean, isWorking: bool
     return (
       <Animated.View style={[styles.formButtonTitleContainer, { opacity }]}>
         <Text style={styles.formButtonTitle}> { isSignin ? messages.signIn:messages.signUp } </Text>
-        <IconArrow style={styles.arrow} fill='white' />
+        <IconArrow style={styles.arrow} fill={'white'} />
       </Animated.View>
     )
   }
@@ -527,6 +527,7 @@ const SignOn = ({ navigation }: { navigation: any }) => {
 
           <TouchableOpacity
           style={[styles.formBtn, {marginTop: formButtonMarginTop}]}
+          activeOpacity={0.6}
           disabled={isWorking}
           onPress={() => {
             Keyboard.dismiss()
@@ -564,6 +565,7 @@ const SignOn = ({ navigation }: { navigation: any }) => {
         <TouchableOpacity
           style={styles.switchFormBtn}
           onPress={() => {switchForm()}}
+          activeOpacity={0.6}
           >
           {formSwitchBtnTitle()}
         </TouchableOpacity>

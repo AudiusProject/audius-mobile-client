@@ -12,6 +12,7 @@ import CreatePassword from './CreatePassword';
 import ProfileAuto from './ProfileAuto';
 import ProfileManual from './ProfileManual';
 import AllowNotifications from './AllowNotifications';
+import FirstFollows from './FirstFollows';
 import { getIsSignedIn } from '../../store/lifecycle/selectors'
 
 const styles = StyleSheet.create({
@@ -76,6 +77,14 @@ const SignOnNav = () => {
           <Stack.Screen
             name="ProfileManual"
             component={ProfileManual}
+            options={{ 
+              headerShown: false,
+              animation: 'slide_from_right'
+            }}
+          />
+          <Stack.Screen
+            name="FirstFollows"
+            component={FirstFollows}
             options={{ 
               headerShown: false,
               animation: 'slide_from_right'

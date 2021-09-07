@@ -10,8 +10,7 @@ import {
   SafeAreaView,
   TextInput,
   KeyboardAvoidingView,
-  Platform,
-  Dimensions
+  Platform
 } from "react-native"
 import { useSelector, useDispatch } from 'react-redux'
 import { useDispatchWebAction } from '../../hooks/useWebAction'
@@ -210,7 +209,7 @@ const MainBtnTitle = ({isWorking}: {isWorking: boolean}) => {
     return (
       <View style={styles.formButtonTitleContainer}>
         <Text style={styles.formButtonTitle}> { messages.buttonTitle } </Text>
-        <IconArrow style={styles.arrow} fill='white' />
+        <IconArrow style={styles.arrow} fill={'white'} />
       </View>
     )
   }
@@ -241,6 +240,7 @@ const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) =
     return(
     <TouchableOpacity
       style={styles.cameraBtn}
+      activeOpacity={0.6}
       disabled={isWorking}
       onPress={() => {
       }}
@@ -345,12 +345,13 @@ const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) =
 
             <TouchableOpacity
             style={styles.formBtn}
+            activeOpacity={0.6}
             disabled={isWorking}
             onPress={() => {
               Keyboard.dismiss()
               if (!isWorking && handleIsValid) {
                 console.log ( route.params.email + '|' + route.params.password + '|' + name + '|' +  handle )
-                navigation.push('AllowNotifications', { email: route.params.email, password: route.params.password, name: name, handle: handle })
+                navigation.push('FirstFollows', { email: route.params.email, password: route.params.password, name: name, handle: handle })
               }
             }}
             >

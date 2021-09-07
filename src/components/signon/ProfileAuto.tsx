@@ -6,7 +6,6 @@ import {
   View,
   TouchableOpacity,
   Dimensions,
-  Keyboard,
   SafeAreaView
 } from "react-native"
 import SignupHeader from "./SignupHeader"
@@ -161,7 +160,7 @@ const FormTitle = () => {
 const TwitterBtnTitle = () => {
   return (
     <View style={styles.formButtonTitleContainer}>
-      <IconTwitter style={styles.icon} fill='white' />
+      <IconTwitter style={styles.icon} fill={'white'} />
       <Text style={styles.formButtonTitle}> { messages.twitter } </Text>
     </View>
   )
@@ -170,7 +169,7 @@ const TwitterBtnTitle = () => {
 const InstagramBtnTitle = () => {
   return (
     <View style={styles.formButtonTitleContainer}>
-      <IconInstagram style={styles.icon} fill='white' />
+      <IconInstagram style={styles.icon} fill={'white'} />
       <Text style={styles.formButtonTitle}> { messages.instagram } </Text>
     </View>
   )
@@ -218,9 +217,9 @@ const ProfileAuto = ({ navigation, route }: { navigation: any, route: any }) => 
             
             <TouchableOpacity
             style={[styles.formBtn, {backgroundColor: '#1BA1F1'}]}
+            activeOpacity={0.6}
             onPress={() => {
-              Keyboard.dismiss()
-                
+              
                 console.log(route.params.email)
 
             }}
@@ -230,8 +229,8 @@ const ProfileAuto = ({ navigation, route }: { navigation: any, route: any }) => 
 
             <TouchableOpacity
             style={styles.formBtn}
+            activeOpacity={0.6}
             onPress={() => {
-              Keyboard.dismiss()
               
                 console.log(route.params.email + '-' + route.params.password)
 
@@ -257,6 +256,7 @@ const ProfileAuto = ({ navigation, route }: { navigation: any, route: any }) => 
             
             <TouchableOpacity
               style={styles.gotoManualBtn}
+              activeOpacity={0.6}
               onPress={() => {
                 navigation.push('ProfileManual', { email: route.params.email, password: route.params.password })
               }}

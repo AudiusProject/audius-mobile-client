@@ -5,7 +5,6 @@ import {
   Text,
   View,
   TouchableOpacity,
-  Keyboard,
   SafeAreaView
 } from "react-native"
 import SignupHeader from "./SignupHeader"
@@ -116,7 +115,7 @@ const FormTitle = () => {
 const NotificationBtnTitle = () => {
   return (
     <View style={styles.formButtonTitleContainer}>
-      <IconNotifications style={styles.icon} fill='white' />
+      <IconNotifications style={styles.icon} fill={'white'} />
       <Text style={styles.formButtonTitle}> { messages.allow } </Text>
     </View>
   )
@@ -140,15 +139,16 @@ const AllowNotifications = ({ navigation, route }: { navigation: any, route: any
             <Text style={[styles.instruction, {paddingLeft: 0, paddingRight: 0}]}>{messages.notice}</Text>
             <TouchableOpacity
             style={styles.formBtn}
+            activeOpacity={0.6}
             onPress={() => {
-              Keyboard.dismiss()
-
+              // ...
             }}
             >
               <NotificationBtnTitle></NotificationBtnTitle>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.skipBtn}
+              activeOpacity={0.6}
               onPress={() => {
                 console.log ( route.params.email + '|' + route.params.password + '|' + route.params.name + '|' +  route.params.handle )
               }}
