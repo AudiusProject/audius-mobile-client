@@ -56,6 +56,7 @@ const SignOnNav = () => {
           <Stack.Screen name="SignOn" component={SignOn} options={{
             headerShown: false,
             animation: 'slide_from_right',
+            gestureEnabled: false
           }}
           />
           <Stack.Screen
@@ -63,7 +64,8 @@ const SignOnNav = () => {
             component={CreatePassword}
             options={{ 
               headerShown: false,
-              animation: 'slide_from_right'
+              animation: 'slide_from_right',
+              gestureEnabled: false
             }}
           />
           <Stack.Screen
@@ -71,7 +73,8 @@ const SignOnNav = () => {
             component={ProfileAuto}
             options={{ 
               headerShown: false,
-              animation: 'slide_from_right'
+              animation: 'slide_from_right',
+              gestureEnabled: false
             }}
           />
           <Stack.Screen
@@ -79,7 +82,8 @@ const SignOnNav = () => {
             component={ProfileManual}
             options={{ 
               headerShown: false,
-              animation: 'slide_from_right'
+              animation: 'slide_from_right',
+              gestureEnabled: false
             }}
           />
           <Stack.Screen
@@ -87,7 +91,8 @@ const SignOnNav = () => {
             component={FirstFollows}
             options={{ 
               headerShown: false,
-              animation: 'slide_from_right'
+              animation: 'slide_from_right',
+              gestureEnabled: false
             }}
           />
           <Stack.Screen
@@ -95,7 +100,8 @@ const SignOnNav = () => {
             component={AllowNotifications}
             options={{ 
               headerShown: false,
-              animation: 'slide_from_right'
+              animation: 'slide_from_right',
+              gestureEnabled: false
             }}
           />
         </Stack.Navigator>

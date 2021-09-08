@@ -312,7 +312,9 @@ const CreatePassword = ({ navigation, route }: { navigation: any, route: any }) 
   const [meetsLengthReq, setMeetsLengthReq] = useState(false);
   const [meetsMatchReq, setMeetsMatchReq] = useState(false);
   const [meetsCommonReq, setMeetsCommonReq] = useState(false);
-  const [shouldShowRedErrors, setShouldShowRedErrors] = useState(false)
+  const [shouldShowRedErrors, setShouldShowRedErrors] = useState(false);
+  const [shouldShowRedMatchError, setShowRedMatchError] = useState(false);
+  const [focusedField, setFocusedField] = useState (0)
 
   useEffect(() => {
     if (password.length >= MIN_PASSWORD_LEN) {
@@ -322,6 +324,9 @@ const CreatePassword = ({ navigation, route }: { navigation: any, route: any }) 
     }
     if (password.length > 0 && password == password2) {
       setMeetsMatchReq(true)
+      if (focusedField == 1) {
+        setPassBorderColor2('#F7F7F9')
+      }
     } else if (meetsMatchReq) {
       setMeetsMatchReq(false)
     }
@@ -335,10 +340,13 @@ const CreatePassword = ({ navigation, route }: { navigation: any, route: any }) 
     } else {
       setMeetsCommonReq(false)
     }
+    if (focusedField == 2 && password2 == '' && meetsCommonReq && meetsLengthReq && meetsNumberReq) {
+      setPassBorderColor('#F7F7F9')
+    } 
   }, [password, password2])
 
   useEffect(() => {
-    if (meetsCommonReq && meetsLengthReq && meetsMatchReq && meetsNumberReq && password2 != '' && password != '') {
+    if (focusedField == 2 && meetsCommonReq && meetsLengthReq && meetsMatchReq && meetsNumberReq && password2 != '' && password != '') {
       setPassBorderColor('#F7F7F9')
     }
   }, [meetsMatchReq])
@@ -370,18 +378,22 @@ const CreatePassword = ({ navigation, route }: { navigation: any, route: any }) 
                   setShouldShowRedErrors(false)
                 }
               }}
-              onFocus={() => { setPassBorderColor('#7E1BCC') }}
+              onFocus={() => { 
+                setFocusedField(1)
+                setPassBorderColor('#7E1BCC')
+              }}
               onBlur={() => { 
                 setPassBorderColor('#F7F7F9')
                 if (password == '') {
                   setShouldShowRedErrors(false)
                 } else {
                   setShouldShowRedErrors(true)
-                  if (password != '' && (!meetsCommonReq || !meetsLengthReq || !meetsMatchReq || !meetsNumberReq )) {
+                  if (password != '' && (!meetsCommonReq || !meetsLengthReq || !meetsNumberReq )) {
                     setPassBorderColor('#E03D51')
-                    if (password2 != '' && !meetsMatchReq) {
-                      setPassBorderColor2('#E03D51')
-                    }
+                  }
+                  if (password != '' && password2 != '' && !meetsMatchReq) {
+                    setPassBorderColor('#E03D51')
+                    setPassBorderColor2('#E03D51')
                   }
                 }
               }}
@@ -403,13 +415,19 @@ const CreatePassword = ({ navigation, route }: { navigation: any, route: any }) 
               onChangeText={(newText) => {
                 setPassword2(newText)
               }}
-              onFocus={() => { setPassBorderColor2('#7E1BCC') }}
+              onFocus={() => { 
+                setFocusedField(2)
+                setPassBorderColor2('#7E1BCC')
+                setShowRedMatchError(false)
+              }}
               onBlur={() => { 
                 setPassBorderColor2('#F7F7F9')
+                
                 if (password == '') {
                   setShouldShowRedErrors(false)
                 } else {
                   setShouldShowRedErrors(true)
+                  setShowRedMatchError(true)
                 }
                 if (password2 != '' && password != '' && !meetsMatchReq) {
                   setPassBorderColor2('#E03D51')
@@ -424,7 +442,7 @@ const CreatePassword = ({ navigation, route }: { navigation: any, route: any }) 
             {Checkbox({i:0, meetsReq: meetsNumberReq, shouldShowRedErrors: shouldShowRedErrors})}
             {Checkbox({i:1, meetsReq: meetsLengthReq, shouldShowRedErrors: shouldShowRedErrors})}
             {Checkbox({i:3, meetsReq: meetsCommonReq, shouldShowRedErrors: shouldShowRedErrors})}
-            {Checkbox({i:2, meetsReq: meetsMatchReq, shouldShowRedErrors: (password2.length >= 1) ? shouldShowRedErrors: false})}
+            {Checkbox({i:2, meetsReq: meetsMatchReq, shouldShowRedErrors: (password2.length >= password.length || shouldShowRedMatchError) ? shouldShowRedErrors: false})}
             <Text style={styles.terms}>{messages.termsAndPrivacy}
             <Text
               style={{color:'#CC0FE0'}}
