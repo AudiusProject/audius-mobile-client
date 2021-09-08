@@ -10,11 +10,15 @@ import {
   SafeAreaView,
   TextInput,
   KeyboardAvoidingView,
-  Platform
+  Platform,
+  ActionSheetIOS,
+  Alert,
+  Image
 } from "react-native"
 import { useSelector, useDispatch } from 'react-redux'
 import { useDispatchWebAction } from '../../hooks/useWebAction'
 import LottieView from 'lottie-react-native'
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import { MessageType } from '../../message'
 import SignupHeader from "./SignupHeader"
 
@@ -95,13 +99,34 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     marginBottom: -12
   },
-  profilePic:{
+  profilePicEmpty:{
     flex: 0,
     shadowColor: '#858199',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
-    shadowRadius: 6,  
+    shadowRadius: 6,
+    width: 226,
+    height: 226,
     elevation: 5
+  },
+  profilePicShadow:{
+    marginTop: 8,
+    flex: 0,
+    shadowColor: '#858199',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 6,
+    width: 206,
+    height: 206,
+    marginBottom: 12
+  },
+  profilePic:{
+    flex: 0,
+    width: 206,
+    height: 206,
+    borderRadius: 113,
+    borderWidth: 3,
+    borderColor: '#FFFFFF'
   },
   cameraBtn: {
     position: 'absolute',
@@ -158,6 +183,8 @@ const styles = StyleSheet.create({
 const messages = { 
   header: 'Tell Us About Yourself So Others Can Find You',
   buttonTitle: 'Continue',
+  photoBtnAdd: 'Add',
+  photoBtnChange: 'Change',
   errors: [
     'Sorry, handle is too long',
     'Only use A-Z, 0-9, and underscores',
@@ -215,16 +242,6 @@ const MainBtnTitle = ({isWorking}: {isWorking: boolean}) => {
   }
 }
 
-const ProfileImage = () => {
-  return(
-  <NoPicture
-    height={226}
-    width={226}
-    style={styles.profilePic}
-  />
-  )
-}
-
 const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) => {
 
   const [isWorking, setisWorking] = useState(false);
@@ -235,6 +252,15 @@ const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) =
 
   const handleIsValid = useSelector(getHandleIsValid);
   const handleError = useSelector(getHandleError);
+  const [profileImage, setProfileImage] = useState({
+    height: 0,
+    width: 0,
+    name: '',
+    size: 0,
+    type: '',
+    uri: '',
+  });
+  const [imageSet, setImageSet] = useState(false)
 
   const AddPhotoBtn = () => {
     return(
@@ -243,6 +269,7 @@ const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) =
       activeOpacity={0.6}
       disabled={isWorking}
       onPress={() => {
+        PhotoMenu()
       }}
       >
         <View style={styles.cameraBtnTitleContainer}>
@@ -251,10 +278,134 @@ const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) =
           width={22}
           fill={'#7E1BCC'}
         />
-          <Text style={styles.cameraBtnTitle}> Add </Text>
+          <Text style={styles.cameraBtnTitle}>{!imageSet ? messages.photoBtnAdd : messages.photoBtnChange } </Text>
         </View>
     </TouchableOpacity>
     )
+  }
+  
+  const ProfileImage = () => {
+    if (!imageSet) {
+      return(
+        <NoPicture
+          height={226}
+          width={226}
+          style={styles.profilePicEmpty}
+        />
+      )
+    } else {
+      return(
+        <View style={styles.profilePicShadow}>
+        <Image
+          source={profileImage}
+          height={206}
+          width={206}
+          style={[styles.profilePic]}
+        />
+        </View>
+      )
+    }
+  }
+  
+  const selectPhotoFromLibrary = () => {
+    launchImageLibrary(
+      {
+        includeBase64: true,
+        maxWidth: 1440,
+        mediaType: 'photo',
+        quality: 0.9,
+        selectionLimit: 1
+      },
+      ({ assets }) => {
+        const response = assets?.[0]
+        if (response?.base64) {
+          const image = {
+            height: response.height ?? 0,
+            width: response.width ?? 0,
+            name: response.fileName ?? response.uri?.split('/').pop() ?? '',
+            size: response.fileSize ?? 0,
+            type: 'image',
+            uri: `data:image/*;base64,${response.base64}`
+          }
+          setProfileImage(image)
+          setImageSet(true)
+        }
+      }
+    )
+  }
+
+  const takePhoto = () => {
+    launchCamera(
+      {
+        includeBase64: true,
+        maxWidth: 1440,
+        mediaType: 'photo',
+        quality: 0.9,
+        saveToPhotos: true
+      },
+      ({ assets }) => {
+        const response = assets?.[0]
+        if (response?.base64) {
+          const image = {
+            height: response.height ?? 0,
+            width: response.width ?? 0,
+            name: response.fileName ?? response.uri?.split('/').pop() ?? '',
+            size: response.fileSize ?? 0,
+            type: 'image',
+            uri: `data:image/*;base64,${response.base64}`,
+          }
+          setProfileImage(image)
+          setImageSet(true)
+        }
+      }
+    )
+  }
+
+  const PhotoMenu = () => {
+    if (Platform.OS === "ios") {
+      // iOS ActionSheet
+      ActionSheetIOS.showActionSheetWithOptions(
+        {
+          options: ['Cancel', 'Photo Library', 'Take Photo'],
+          tintColor: '#7E1BCC',
+          cancelButtonIndex: 0
+        },
+        (buttonIndex) => {
+          if (buttonIndex === 1) {
+            selectPhotoFromLibrary()
+          } else if (buttonIndex === 2) {
+            takePhoto()
+          }
+        }
+      )
+    } else {
+      // Android Alert
+      Alert.alert(
+        "Profile Photo",
+        "",
+        [
+          {
+            text: 'Photo Library',
+            style: 'default',
+            onPress: () => selectPhotoFromLibrary(),
+          },
+          {
+            text: 'Take Photo',
+            style: 'default',
+            onPress: () => takePhoto(),
+          },
+          {
+            text: "Cancel",
+            style: "cancel",
+          },
+        ],
+        {
+          cancelable: true,
+          onDismiss: () =>
+            null
+        }
+      )
+    }
   }
 
   const dispatchWeb = useDispatchWebAction()

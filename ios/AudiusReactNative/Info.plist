@@ -50,6 +50,8 @@
 	</dict>
 	<key>NSCameraUsageDescription</key>
 	<string>This lets you take photos for uploading to Audius, including setting your profile picture and track cover art.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This lets you select photos for uploading to Audius, including setting your profile picture and track cover art.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string></string>
 	<key>UIAppFonts</key>

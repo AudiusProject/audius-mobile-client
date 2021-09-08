@@ -295,6 +295,8 @@ PODS:
     - react-native-google-cast/RNGoogleCast
   - react-native-google-cast/RNGoogleCast (3.4.1):
     - React
+  - react-native-image-picker (4.0.6):
+    - React-Core
   - react-native-music-control (1.4.0):
     - React-Core
   - react-native-netinfo (5.9.10):
@@ -426,6 +428,7 @@ DEPENDENCIES:
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-config (from `../node_modules/react-native-config`)
   - react-native-google-cast/NoBluetooth (from `../node_modules/react-native-google-cast/ios/`)
+  - react-native-image-picker (from `../node_modules/react-native-image-picker`)
   - react-native-music-control (from `../node_modules/react-native-music-control`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
@@ -519,6 +522,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-config"
   react-native-google-cast:
     :path: "../node_modules/react-native-google-cast/ios/"
+  react-native-image-picker:
+    :path: "../node_modules/react-native-image-picker"
   react-native-music-control:
     :path: "../node_modules/react-native-music-control"
   react-native-netinfo:
@@ -617,6 +622,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 58aef7155bc9a9683f5b60b35eccea8722a4f53a
   react-native-config: f2c2ae45625a068c35681a16b9bfb1ca58b0adc7
   react-native-google-cast: 9ead682d0026c857318efa8ea9c6f58b6142651a
+  react-native-image-picker: a6e56460d34905c849ada551db30897dc7f3d535
   react-native-music-control: 93b521377efdf2e49b46ccade8457f9503359b38
   react-native-netinfo: 30fb89fa913c342be82a887b56e96be6d71201dd
   react-native-safe-area-context: ca9f3b49266e56b1d841ccdde7cfe2e076f529b6
