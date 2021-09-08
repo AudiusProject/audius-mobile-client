@@ -4,6 +4,7 @@ import { remindUserToTurnOnNotifications } from '../../components/notification-r
 import { Status } from '../../types/status'
 
 import { MessageType, MessageHandlers } from '../types'
+import { dispatch } from 'App'
 
 export const messageHandlers: Partial<MessageHandlers> = {
   [MessageType.ENABLE_PUSH_NOTIFICATIONS]: async (message, _, postMessage) => {
@@ -37,11 +38,13 @@ export const messageHandlers: Partial<MessageHandlers> = {
       isAction: true
     })
   },
-  [MessageType.FETCH_NOTIFICATIONS_SUCCESS]: message => {
-    notificationsActions.append(Status.SUCCESS, message.notifications)
+  [MessageType.FETCH_NOTIFICATIONS_SUCCESS]: (message, dispatch) => {
+    dispatch(notificationsActions.append(Status.SUCCESS, message.notifications))
   },
-  [MessageType.FETCH_NOTIFICATIONS_REPLACE]: message => {
-    notificationsActions.replace(Status.SUCCESS, message.notifications)
+  [MessageType.FETCH_NOTIFICATIONS_REPLACE]: (message, dispatch) => {
+    dispatch(
+      notificationsActions.replace(Status.SUCCESS, message.notifications)
+    )
   },
   [MessageType.FETCH_NOTIFICATIONS_FAILURE]: (_, dispatch) => {
     dispatch(notificationsActions.append(Status.FAILURE, []))

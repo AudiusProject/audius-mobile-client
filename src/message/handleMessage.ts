@@ -11,6 +11,7 @@ import { messageHandlers as lifecycle } from './handlers/lifecycle'
 import { messageHandlers as oauth } from './handlers/oauth'
 import { messageHandlers as android } from './handlers/android'
 import { messageHandlers as global } from './handlers/global'
+import { messageHandlers as linking } from './handlers/linking'
 
 const isIos = Platform.OS === 'ios'
 
@@ -22,6 +23,7 @@ const messageHandlers: Partial<MessageHandlers> = {
   ...lifecycle,
   ...oauth,
   ...global,
+  ...linking,
   ...(isIos ? {} : android)
 }
 

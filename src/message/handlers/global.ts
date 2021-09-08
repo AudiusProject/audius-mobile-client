@@ -1,5 +1,4 @@
 import VersionNumber from 'react-native-version-number'
-import { Linking } from 'react-native'
 
 import * as themeActions from '../../store/theme/actions'
 import * as haptics from '../../haptics'
@@ -14,10 +13,7 @@ let sentInitialTheme = false
 
 import { MessageType, MessageHandlers } from '../types'
 
-export const messageHandlers: MessageHandlers = {
-  [MessageType.OPEN_LINK]: message => {
-    Linking.openURL(message.url)
-  },
+export const messageHandlers: Partial<MessageHandlers> = {
   [MessageType.LOGGING]: message => {
     handleWebAppLog(message.level, message.message)
   },
