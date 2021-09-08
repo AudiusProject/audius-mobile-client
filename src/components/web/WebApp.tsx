@@ -23,8 +23,7 @@ import StaticServer from 'react-native-static-server'
 import RNFS from 'react-native-fs'
 
 import PullToRefresh from './PullToRefresh'
-import { handleMessage } from '../../message/handleMessage'
-import { Message, MessageType } from '../../message/types'
+import { Message, MessageType, handleMessage } from '../../message'
 import {
   WebViewMessage,
   WebViewNavigation

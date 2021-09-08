@@ -13,4 +13,4 @@ export const messageHandlers: Partial<MessageHandlers> = {
   [MessageType.REQUEST_TIKTOK_AUTH]: (message, dispatch) => {
     return dispatch(oauthActions.openPopup(message, Provider.TIKTOK))
   }
-})
+}

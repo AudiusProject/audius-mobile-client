@@ -29,4 +29,4 @@ export const messageHandlers: Partial<MessageHandlers> = {
   [MessageType.SHUFFLE]: (message, dispatch) => {
     dispatch(audioActions.shuffle(message))
   }
-})
+}
