@@ -34,10 +34,8 @@ const SignOnNav = () => {
 
   useEffect(() => {
     if (signedIn && !onSignUp) {
-      setTimeout (() => {
-        console.log('signedin')
-        setHideSignOn(true)
-      }, 500);
+      console.log('signedin')
+      setHideSignOn(true)
     } else {
       setHideSignOn(false)
     }

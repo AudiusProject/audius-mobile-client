@@ -4,6 +4,7 @@ export const VALIDATE_EMAIL_FAILED = 'SIGN_ON/VALIDATE_EMAIL_FAILED'
 export const VALIDATE_EMAIL_SUCEEDED = 'SIGN_ON/VALIDATE_EMAIL_SUCCEEDED'
 export const VALIDATE_HANDLE_FAILED = 'SIGN_ON/VALIDATE_HANDLE_FAILED'
 export const VALIDATE_HANDLE_SUCEEDED = 'SIGN_ON/VALIDATE_HANDLE_SUCCEEDED'
+export const SIGN_UP_SUCCEEDED = 'SIGN_ON/SIGN_UP_SUCCEEDED'
 
 type SigninFailedAction = {
   type: typeof SIGN_IN_FAILED
@@ -33,6 +34,11 @@ type SignupValidateHandleSuceededAction = {
   type: typeof VALIDATE_HANDLE_SUCEEDED
 }
 
+type SignupSuceededAction = {
+  type: typeof SIGN_UP_SUCCEEDED
+  userId: number | null
+}
+
 export type SignonActions =
   | SigninFailedAction
   | SigninFailedResetAction
@@ -40,6 +46,7 @@ export type SignonActions =
   | SignupValidateEmailSuceededAction
   | SignupValidateHandleFailedAction
   | SignupValidateHandleSuceededAction
+  | SignupSuceededAction
 
 export const signinFailed = (error: string): SigninFailedAction => ({
   type: SIGN_IN_FAILED,
@@ -64,4 +71,8 @@ export const signupValidateHandleFailed = (error: string): SignupValidateHandleF
 })
 export const signupValidateHandleSuceeded = (): SignupValidateHandleSuceededAction => ({
   type: VALIDATE_HANDLE_SUCEEDED
+})
+export const signupSuceeded = (userId: number): SignupSuceededAction => ({
+  type: SIGN_UP_SUCCEEDED,
+  userId
 })

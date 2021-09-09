@@ -333,11 +333,9 @@ const SignOn = ({ navigation }: { navigation: any }) => {
 
   useEffect(() => {
     if (signedIn) {
-      setTimeout (() => {
         setisWorking(false)
         setUsername('')
         setPassword('')
-      }, 500);
     }
   }, [signedIn])
 

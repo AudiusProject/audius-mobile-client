@@ -520,7 +520,7 @@ const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) =
                 console.log ( username + '|' + password + '|' + name + '|' +  handle )
                 setisWorking(true);
                 signUp()
-                navigation.push('FirstFollows', { email: username, password: password, name: name, handle: handle })
+                navigation.push('FirstFollows', { email: username, password: password, name: name, handle: handle, profileImage: profileImage })
               }
             }}
             >

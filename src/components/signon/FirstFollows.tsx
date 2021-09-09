@@ -13,6 +13,7 @@ import { useDispatchWebAction } from '../../hooks/useWebAction'
 import { MessageType } from '../../message'
 import SignupHeader from "./SignupHeader"
 import { FollowArtistsCategory } from "../../store/signon/types"
+import { getUserId } from "../../store/signon/selectors"
 
 import IconArrow from '../../assets/images/iconArrow.svg'
 import IconWand from '../../assets/images/iconWand.svg'
@@ -279,6 +280,11 @@ const FirstFollows = ({ navigation, route }: { navigation: any, route: any }) =>
 
   const [isWorking, setisWorking] = useState(false);
   const [activeFilter, setActiveFilter] = useState(FollowArtistsCategory.FEATURED)
+  const userId = useSelector(getUserId);
+
+  useEffect(() => {
+    console.log('Received User ID: ' + userId)
+  }, [userId])
 
   const Pill = ({ category }: { category: FollowArtistsCategory }) => {
     const isActive = (activeFilter===category)

@@ -5,7 +5,8 @@ import {
   VALIDATE_EMAIL_SUCEEDED,
   VALIDATE_EMAIL_FAILED,
   VALIDATE_HANDLE_SUCEEDED,
-  VALIDATE_HANDLE_FAILED
+  VALIDATE_HANDLE_FAILED,
+  SIGN_UP_SUCCEEDED
 } from './actions'
 
 export type SigninState = {
@@ -13,7 +14,8 @@ export type SigninState = {
   emailIsAvailable: boolean,
   emailIsValid: boolean,
   handleIsValid: boolean,
-  handleError: string
+  handleError: string,
+  userId: number | null
 }
 
 const initialSigninState = {
@@ -21,7 +23,8 @@ const initialSigninState = {
   emailIsAvailable: true,
   emailIsValid: false,
   handleIsValid: false,
-  handleError: ''
+  handleError: '',
+  userId: 0
 }
 
 const reducer = (
@@ -67,6 +70,12 @@ const reducer = (
         ...state,
         handleIsValid: false,
         handleError: action.error
+      }
+    case SIGN_UP_SUCCEEDED:
+      console.log("SIGN_UP_SUCCEEDED: " + action.userId)
+      return {
+        ...state,
+        userId: action.userId
       }
     default:
       return state

@@ -60,6 +60,7 @@ export enum MessageType {
   SIGN_UP_VALIDATE_HANDLE_FAILURE = 'sign-up-validate-handle-failure',
   FETCH_ALL_FOLLOW_ARTISTS = 'fetch_all_follow_artists',
   SUBMIT_SIGNUP = 'submit-signup',
+  SIGN_UP_SUCCESS = 'sign-up-success',
 
   // Notifications
   ENABLE_PUSH_NOTIFICATIONS = 'enable-push-notifications',
@@ -264,6 +265,10 @@ export const handleMessage = async (
     case MessageType.SIGN_UP_VALIDATE_HANDLE_SUCCESS:
       //console.log('Signup: got handle validate success message from client')
       dispatch(signonActions.signupValidateHandleSuceeded())
+      return
+    case MessageType.SIGN_UP_SUCCESS:
+      //console.log('Signup: got succeeded message from client')
+      dispatch(signonActions.signupSuceeded(message.userId))
       return
 
     // Search
