@@ -20,6 +20,8 @@ import SignupHeader from "./SignupHeader"
 declare module 'fxa-common-password-list'
 import commonPasswordList from 'fxa-common-password-list'
 import LottieView from 'lottie-react-native'
+import { useDispatchWebAction } from '../../hooks/useWebAction'
+import { MessageType } from '../../message'
 
 import IconArrow from '../../assets/images/iconArrow.svg'
 import IconCheck from '../../assets/images/iconValidationCheck.svg'
@@ -220,7 +222,7 @@ const Checkbox = ({i, meetsReq, shouldShowRedErrors}: {
   meetsReq: boolean,
   shouldShowRedErrors: boolean}) => {
   const opacityArr = [ opacity1, opacity2, opacity3, opacity4 ]
-  const opacityArrR = [ opacity1, opacity2, opacity3, opacity4 ]
+  const opacityArrR = [ opacity1r, opacity2r, opacity3r, opacity4r ]
   const opacity = opacityArr[i]
   const opacityRed = opacityArrR[i]
 
@@ -327,6 +329,19 @@ const CreatePassword = ({ navigation, route }: { navigation: any, route: any }) 
     if (!onSignOn) {
     dispatch(LifecycleActions.onSignUp(true))
     }
+  }
+
+  const dispatchWeb = useDispatchWebAction()
+  const getSuggestedFollowArtists = () => {
+    dispatchWeb({
+      type: MessageType.FETCH_ALL_FOLLOW_ARTISTS,
+      isAction: true
+    })
+  }
+  const [didFetchArtists, setDidFetchArtists] = useState(false);
+  if (!didFetchArtists) {
+    setDidFetchArtists(true)
+    getSuggestedFollowArtists()
   }
 
   useEffect(() => {

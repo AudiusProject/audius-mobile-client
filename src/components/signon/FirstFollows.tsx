@@ -10,7 +10,6 @@ import {
 } from "react-native"
 import { useSelector, useDispatch } from 'react-redux'
 import { useDispatchWebAction } from '../../hooks/useWebAction'
-import { MessageType } from '../../message'
 import SignupHeader from "./SignupHeader"
 import { FollowArtistsCategory } from "../../store/signon/types"
 import { getUserId } from "../../store/signon/selectors"
@@ -260,7 +259,6 @@ const WandBtnTitle = () => {
     <View style={styles.formButtonTitleContainer}>
       <IconWand style={styles.wandIcon} fill={'#858199'} width={16} height={16} />
       <Text style={styles.wandButtonTitle}> { messages.pickForMe } </Text>
-      
     </View>
   )
 }
@@ -349,19 +347,6 @@ const FirstFollows = ({ navigation, route }: { navigation: any, route: any }) =>
 
   const dispatchWeb = useDispatchWebAction()
   const dispatch = useDispatch()
-
-  const getSuggestedFollowArtists = () => {
-    dispatchWeb({
-      type: MessageType.FETCH_ALL_FOLLOW_ARTISTS,
-      isAction: true
-    })
-  }
-  
-  const [didFetch, setDidFetch] = useState(false);
-  if (!didFetch) {
-    setDidFetch(true)
-    getSuggestedFollowArtists()
-  }
 
   return (
     <View style={styles.container}>
