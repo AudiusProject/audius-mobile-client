@@ -1,4 +1,5 @@
 import User from 'models/User'
+import { FollowArtistsCategory } from 'store/signon/types'
 import {
   LifecycleActions,
   BACKEND_LOADED,
@@ -7,7 +8,8 @@ import {
   NOT_ON_FIRST_PAGE,
   SIGNED_IN,
   SIGNED_OUT,
-  CHANGED_PAGE
+  CHANGED_PAGE,
+  ON_SIGN_UP
 } from './actions'
 
 export type LifecycleState = {
@@ -16,6 +18,7 @@ export type LifecycleState = {
   signedIn: boolean
   account: User | null
   location: any
+  onSignUp: boolean
 }
 
 const initialState = {
@@ -23,7 +26,8 @@ const initialState = {
   onFirstPage: true,
   signedIn: false,
   account: null,
-  location: null
+  location: null,
+  onSignUp: false,
 }
 
 const reducer = (
@@ -67,6 +71,11 @@ const reducer = (
         ...state,
         signedIn: false,
         account: action.account
+      }
+    case ON_SIGN_UP:
+      return {
+        ...state,
+        onSignUp: action.onSignUp
       }
     default:
       return state

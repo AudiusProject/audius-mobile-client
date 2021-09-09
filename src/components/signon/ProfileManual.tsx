@@ -245,6 +245,8 @@ const MainBtnTitle = ({isWorking}: {isWorking: boolean}) => {
 const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) => {
 
   const [isWorking, setisWorking] = useState(false);
+  const username = route.params.email
+  const password = route.params.password
   const [name, setName] = useState('');
   const [handle, setHandle] = useState('');
   const [nameBorderColor, setNameBorderColor] = useState('#F7F7F9');
@@ -420,6 +422,20 @@ const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) =
     })
   }
 
+  const signUp = () => {
+    if (username != '' && password != '' && name != '' && handle != '') {
+      dispatchWeb({
+        type: MessageType.SUBMIT_SIGNUP,
+        username: username,
+        password: password,
+        name: name,
+        handle: handle,
+        profileImage: profileImage,
+        isAction: true
+      })
+    }
+  }
+
   const errorView = ({handleIsValid, handleError,}: {handleIsValid: boolean, handleError:string}) => {
     if (!handleIsValid && handleError != '') {
       return (
@@ -500,9 +516,11 @@ const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) =
             disabled={isWorking}
             onPress={() => {
               Keyboard.dismiss()
-              if (!isWorking && handleIsValid) {
-                console.log ( route.params.email + '|' + route.params.password + '|' + name + '|' +  handle )
-                navigation.push('FirstFollows', { email: route.params.email, password: route.params.password, name: name, handle: handle })
+              if (!isWorking && handleIsValid && name != '') {
+                console.log ( username + '|' + password + '|' + name + '|' +  handle )
+                setisWorking(true);
+                signUp()
+                navigation.push('FirstFollows', { email: username, password: password, name: name, handle: handle })
               }
             }}
             >

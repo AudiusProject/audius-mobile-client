@@ -7,6 +7,7 @@ export const NOT_ON_FIRST_PAGE = 'LIFECYCLE/NOT_ON_FIRST_PAGE'
 export const CHANGED_PAGE = 'LIFECYCLE/CHANGED_PAGE'
 export const SIGNED_IN = 'LIFECYCLE/SIGNED_IN'
 export const SIGNED_OUT = 'LIFECYCLE/SIGNED_OUT'
+export const ON_SIGN_UP = 'LIFECYCLE/ON_SIGN_UP'
 
 type BackendLoadedAction = {
   type: typeof BACKEND_LOADED
@@ -37,6 +38,11 @@ type SignedOutAction = {
   account: User
 }
 
+type OnSignUpAction = {
+  type: typeof ON_SIGN_UP
+  onSignUp: boolean
+}
+
 export type LifecycleActions =
   | BackendLoadedAction
   | BackendTearDownAction
@@ -45,6 +51,7 @@ export type LifecycleActions =
   | ChangedPageAction
   | SignedInAction
   | SignedOutAction
+  | OnSignUpAction
 
 export const backendLoaded = (): BackendLoadedAction => ({
   type: BACKEND_LOADED
@@ -75,4 +82,9 @@ export const signedIn = (account: User): SignedInAction => ({
 export const signedOut = (account: User): SignedOutAction => ({
   type: SIGNED_OUT,
   account
+})
+
+export const onSignUp = (onSignUp: boolean): OnSignUpAction => ({
+  type: ON_SIGN_UP,
+  onSignUp
 })

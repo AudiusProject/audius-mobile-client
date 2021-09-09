@@ -13,7 +13,7 @@ import ProfileAuto from './ProfileAuto';
 import ProfileManual from './ProfileManual';
 import AllowNotifications from './AllowNotifications';
 import FirstFollows from './FirstFollows';
-import { getIsSignedIn } from '../../store/lifecycle/selectors'
+import { getIsSignedIn, getOnSignUp } from '../../store/lifecycle/selectors'
 
 const styles = StyleSheet.create({
   container: {
@@ -29,17 +29,19 @@ const Stack = createNativeStackNavigator();
 
 const SignOnNav = () => {
   const signedIn = useSelector(getIsSignedIn);
+  const onSignUp = useSelector(getOnSignUp);
   const [hideSignon, setHideSignOn] = useState(false);
 
   useEffect(() => {
-    if (signedIn) {
+    if (signedIn && !onSignUp) {
       setTimeout (() => {
+        console.log('signedin')
         setHideSignOn(true)
       }, 500);
     } else {
       setHideSignOn(false)
     }
-  }, [signedIn])
+  }, [signedIn, onSignUp])
 
   if (hideSignon) {
     return null

@@ -6,14 +6,16 @@ import {
   View,
   TouchableOpacity,
   SafeAreaView,
-  Easing
+  ScrollView
 } from "react-native"
+import { useSelector, useDispatch } from 'react-redux'
+import { useDispatchWebAction } from '../../hooks/useWebAction'
+import { MessageType } from '../../message'
 import SignupHeader from "./SignupHeader"
 import { FollowArtistsCategory } from "../../store/signon/types"
 
 import IconArrow from '../../assets/images/iconArrow.svg'
 import IconWand from '../../assets/images/iconWand.svg'
-import { Image } from "react-native-svg"
 
 const styles = StyleSheet.create({
   container: {
@@ -43,7 +45,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#F2F2F4',
     width: '100%',
     bottom: 0,
-    top: 0
+    top: 0,
+    paddingBottom: 180
   },
   containerCards: {
     flexDirection: 'row',
@@ -184,20 +187,22 @@ const styles = StyleSheet.create({
     elevation: 5,
     alignItems: 'center',
     flexDirection:'column',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   cardName: {
     color: '#858199',
     fontSize: 14,
     textAlign: 'center',
     fontFamily: 'AvenirNextLTPro-Bold',
-    marginBottom: 10
+    marginBottom: 10,
+    paddingHorizontal: 8
   },
   cardFollowers: {
     color: '#858199',
     fontSize: 12,
     textAlign: 'center',
     fontFamily: 'AvenirNextLTPro-Regular',
+    paddingHorizontal: 8
   },
   cardImage: {
     height: 80,
@@ -263,8 +268,8 @@ const Card = () => {
   return(
   <View style={styles.card}>
     <View style={styles.cardImage}></View>
-    <Text style={styles.cardName}>Abdjsd Ppsoofs</Text>
-    <Text style={styles.cardFollowers}>99,999 Followers</Text>
+    <Text style={styles.cardName} numberOfLines={1} >Abdjsd hgfhfhgfhf</Text>
+    <Text style={styles.cardFollowers} numberOfLines={1} >99,999 Followers</Text>
   </View>
   )
 }
@@ -336,62 +341,83 @@ const FirstFollows = ({ navigation, route }: { navigation: any, route: any }) =>
     }
   }
 
+  const dispatchWeb = useDispatchWebAction()
+  const dispatch = useDispatch()
+
+  const getSuggestedFollowArtists = () => {
+    dispatchWeb({
+      type: MessageType.FETCH_ALL_FOLLOW_ARTISTS,
+      isAction: true
+    })
+  }
+  
+  const [didFetch, setDidFetch] = useState(false);
+  if (!didFetch) {
+    setDidFetch(true)
+    getSuggestedFollowArtists()
+  }
+
   return (
-    <SafeAreaView style={{ backgroundColor: 'white' }} >
-        <View style={styles.container}>
-        <SignupHeader></SignupHeader>
-          <View style={styles.containerTop}>
-            <FormTitle></FormTitle>
-            <Text style={styles.instruction}>{messages.subTitle}</Text>
+    <View style={styles.container}>
+      <SignupHeader></SignupHeader>
+      <SafeAreaView style={{ backgroundColor: 'white'}} >
+        <ScrollView>
+          <View style={styles.container}>
+            <View style={styles.containerTop}>
+              <FormTitle></FormTitle>
+              <Text style={styles.instruction}>{messages.subTitle}</Text>
 
-            <View style={styles.pillsContainer}>
-              {Pill({category: FollowArtistsCategory.FEATURED})}
-              {Pill({category: FollowArtistsCategory.ALL_GENRES})}
-              {Pill({category: FollowArtistsCategory.ELECTRONIC})}
-              {Pill({category: FollowArtistsCategory.HIP_HOP_RAP})}
-              {Pill({category: FollowArtistsCategory.ALTERNATIVE})}
-              {Pill({category: FollowArtistsCategory.ROCK})}
+              <View style={styles.pillsContainer}>
+                {Pill({category: FollowArtistsCategory.FEATURED})}
+                {Pill({category: FollowArtistsCategory.ALL_GENRES})}
+                {Pill({category: FollowArtistsCategory.ELECTRONIC})}
+                {Pill({category: FollowArtistsCategory.HIP_HOP_RAP})}
+                {Pill({category: FollowArtistsCategory.ALTERNATIVE})}
+                {Pill({category: FollowArtistsCategory.ROCK})}
+              </View>
+            </View>
+            <View style={styles.cardsArea}>
+              <TouchableOpacity
+                  style={styles.wandBtn}
+                  activeOpacity={0.6}
+                  onPress={() => {
+                    // ...
+                  }}
+                >
+                <WandBtnTitle></WandBtnTitle>
+              </TouchableOpacity>
+              <View style={styles.containerCards}>
+                  
+                <Card></Card>
+                <Card></Card>
+                <Card></Card>
+                <Card></Card>
+                <Card></Card>
+                <Card></Card>
+
+              </View>
             </View>
           </View>
-          <View style={styles.cardsArea}>
-            <TouchableOpacity
-                style={styles.wandBtn}
-                activeOpacity={0.6}
-                onPress={() => {
-                  // ...
-                }}
-              >
-              <WandBtnTitle></WandBtnTitle>
-            </TouchableOpacity>
-            <View style={styles.containerCards}>
-                
-              <Card></Card>
-              <Card></Card>
-              <Card></Card>
-              <Card></Card>
-              <Card></Card>
-              <Card></Card>
-
-
-            </View>
-          </View>
-        </View>
+        </ScrollView>
+      </SafeAreaView>
+        
         <View style={styles.containerButton}>
-            <TouchableOpacity
-              style={styles.formBtn}
-              activeOpacity={0.6}
-              onPress={() => {
-                if (!isWorking) {
-                console.log ( route.params.email + '|' + route.params.password + '|' + route.params.name + '|' +  route.params.handle )
-                navigation.push('AllowNotifications', { email: route.params.email, password: route.params.password, name: route.params.name, handle: route.params.handle })
-                }
-              }}
-            >
-              <FormBtnTitle></FormBtnTitle>
-            </TouchableOpacity>
-            <Text style={styles.followCounter}>Following 0/3</Text>
-          </View>
-    </SafeAreaView>
+          <TouchableOpacity
+            style={styles.formBtn}
+            activeOpacity={0.6}
+            onPress={() => {
+              if (!isWorking) {
+              console.log ( route.params.email + '|' + route.params.password + '|' + route.params.name + '|' +  route.params.handle )
+              navigation.push('AllowNotifications', { email: route.params.email, password: route.params.password, name: route.params.name, handle: route.params.handle })
+              }
+            }}
+          >
+            <FormBtnTitle></FormBtnTitle>
+          </TouchableOpacity>
+          <Text style={styles.followCounter}>Following 0/3</Text>
+        </View>
+        </View>
+    
   )
 };
 

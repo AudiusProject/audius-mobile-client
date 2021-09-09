@@ -15,6 +15,7 @@ import {
   KeyboardAvoidingView,
   Platform
 } from "react-native"
+import { useSelector, useDispatch } from 'react-redux'
 import SignupHeader from "./SignupHeader"
 declare module 'fxa-common-password-list'
 import commonPasswordList from 'fxa-common-password-list'
@@ -23,7 +24,10 @@ import LottieView from 'lottie-react-native'
 import IconArrow from '../../assets/images/iconArrow.svg'
 import IconCheck from '../../assets/images/iconValidationCheck.svg'
 import ValidationIconX from '../../assets/images/iconValidationX.svg'
-import { showCastPicker } from "store/googleCast/actions"
+
+import * as LifecycleActions from '../../store/lifecycle/actions'
+import { getOnSignUp } from '../../store/lifecycle/selectors'
+import { on } from "process"
 
 const styles = StyleSheet.create({
   container: {
@@ -316,6 +320,15 @@ const CreatePassword = ({ navigation, route }: { navigation: any, route: any }) 
   const [shouldShowRedMatchError, setShowRedMatchError] = useState(false);
   const [focusedField, setFocusedField] = useState (0)
 
+  const dispatch = useDispatch()
+  // Set Lifecycle onSignUp(true) so signup flow isn't hidden even if signed-in.
+  const onSignOn = useSelector(getOnSignUp);
+  const setOnSignOn = () => {
+    if (!onSignOn) {
+    dispatch(LifecycleActions.onSignUp(true))
+    }
+  }
+
   useEffect(() => {
     if (password.length >= MIN_PASSWORD_LEN) {
       setMeetsLengthReq(true)
@@ -464,6 +477,7 @@ const CreatePassword = ({ navigation, route }: { navigation: any, route: any }) 
             onPress={() => {
               Keyboard.dismiss()
               if (!isWorking && meetsLengthReq && meetsNumberReq && meetsMatchReq && meetsCommonReq) {
+                setOnSignOn()
                 console.log(route.params.email)
                 navigation.push('ProfileAuto', { email: route.params.email, password: password })
               }
