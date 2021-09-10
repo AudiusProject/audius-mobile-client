@@ -2,7 +2,6 @@ import { Dispatch } from 'redux'
 import { AnalyticsMessage } from '../types/analytics'
 
 export enum MessageType {
-  TEST = 'test',
   LOADED = 'loaded',
   PLAY_TRACK = 'play-track',
   PAUSE_TRACK = 'pause-track',
