@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react'
 import {
   Animated,
   StyleSheet,
@@ -6,10 +6,10 @@ import {
   View,
   TouchableOpacity,
   SafeAreaView
-} from "react-native"
+} from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import * as LifecycleActions from '../../store/lifecycle/actions'
-import SignupHeader from "./SignupHeader"
+import SignupHeader from './SignupHeader'
 import { getOnSignUp } from '../../store/lifecycle/selectors'
 
 import IconNotifications from '../../assets/images/iconNotification.svg'
@@ -47,11 +47,11 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: 'center',
     backgroundColor: '#CC0FE0',
-    borderRadius: 4,
+    borderRadius: 4
   },
   formButtonTitleContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   formButtonTitle: {
     color: 'white',
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   icon: {
     height: 24,
     width: 24,
-    marginRight: 10,
+    marginRight: 10
   },
   instruction: {
     color: '#858199',
@@ -82,9 +82,9 @@ const styles = StyleSheet.create({
   skipBtnTitle: {
     color: '#7E1BCC',
     fontSize: 14,
-    fontFamily: 'AvenirNextLTPro-regular',
+    fontFamily: 'AvenirNextLTPro-regular'
   }
-});
+})
 
 const messages = {
   title: 'Can we send you Notifications?',
@@ -95,18 +95,18 @@ const messages = {
   skip: 'Skip for now'
 }
 
-var didAnimation = false
+let didAnimation = false
 const FormTitle = () => {
-  var opacity = new Animated.Value(1);
+  let opacity = new Animated.Value(1)
   if (!didAnimation) {
-    opacity = new Animated.Value(0);
+    opacity = new Animated.Value(0)
     Animated.timing(opacity, {
       toValue: 1,
       duration: 500,
       useNativeDriver: true
     }).start(({ finished }) => {
       didAnimation = true
-    });
+    })
   }
   return (
     <Animated.View style={{ opacity }}>
@@ -119,22 +119,25 @@ const NotificationBtnTitle = () => {
   return (
     <View style={styles.formButtonTitleContainer}>
       <IconNotifications style={styles.icon} fill={'white'} />
-      <Text style={styles.formButtonTitle}> { messages.allow } </Text>
+      <Text style={styles.formButtonTitle}> {messages.allow} </Text>
     </View>
   )
 }
 
 const skipBtnTitle = () => {
-  return (
-    <Text style={styles.skipBtnTitle}> {messages.skip} </Text>
-  )
+  return <Text style={styles.skipBtnTitle}> {messages.skip} </Text>
 }
 
-const AllowNotifications = ({ navigation, route }: { navigation: any, route: any }) => {
-
+const AllowNotifications = ({
+  navigation,
+  route
+}: {
+  navigation: any
+  route: any
+}) => {
   const dispatch = useDispatch()
   // Set Lifecycle onSignUp(falsr) to hide signup flow.
-  const onSignOn = useSelector(getOnSignUp);
+  const onSignOn = useSelector(getOnSignUp)
   const setOnSignOn = () => {
     if (onSignOn) {
       dispatch(LifecycleActions.onSignUp(false))
@@ -142,36 +145,48 @@ const AllowNotifications = ({ navigation, route }: { navigation: any, route: any
   }
 
   return (
-    <SafeAreaView style={{ backgroundColor: 'white' }} >
-      <SignupHeader></SignupHeader>
-        <View style={styles.container}>
-          <View style={styles.containerForm}>
-            <FormTitle></FormTitle>
-            <Text style={styles.instruction}>{messages.description}</Text>
-            <Text style={[styles.instruction, {paddingLeft: 0, paddingRight: 0}]}>{messages.notice}</Text>
-            <TouchableOpacity
+    <SafeAreaView style={{ backgroundColor: 'white' }}>
+      <SignupHeader />
+      <View style={styles.container}>
+        <View style={styles.containerForm}>
+          <FormTitle />
+          <Text style={styles.instruction}>{messages.description}</Text>
+          <Text
+            style={[styles.instruction, { paddingLeft: 0, paddingRight: 0 }]}
+          >
+            {messages.notice}
+          </Text>
+          <TouchableOpacity
             style={styles.formBtn}
             activeOpacity={0.6}
             onPress={() => {
               // ...
             }}
-            >
-              <NotificationBtnTitle></NotificationBtnTitle>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.skipBtn}
-              activeOpacity={0.6}
-              onPress={() => {
-                console.log ( route.params.email + '|' + route.params.password + '|' + route.params.name + '|' +  route.params.handle )
-                setOnSignOn()
-              }}
-              >
-              {skipBtnTitle()}
-            </TouchableOpacity>
-          </View>
+          >
+            <NotificationBtnTitle />
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.skipBtn}
+            activeOpacity={0.6}
+            onPress={() => {
+              console.log(
+                route.params.email +
+                  '|' +
+                  route.params.password +
+                  '|' +
+                  route.params.name +
+                  '|' +
+                  route.params.handle
+              )
+              setOnSignOn()
+            }}
+          >
+            {skipBtnTitle()}
+          </TouchableOpacity>
         </View>
+      </View>
     </SafeAreaView>
   )
-};
+}
 
-export default AllowNotifications;
+export default AllowNotifications

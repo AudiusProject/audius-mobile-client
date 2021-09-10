@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect } from 'react'
 import {
   Animated,
   StyleSheet,
@@ -14,11 +14,11 @@ import {
   ActionSheetIOS,
   Alert,
   Image
-} from "react-native"
+} from 'react-native'
 import { useSelector } from 'react-redux'
 import { useDispatchWebAction } from '../../hooks/useWebAction'
 import LottieView from 'lottie-react-native'
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker'
 import { MessageType } from '../../message'
 import SignupHeader from './SignupHeader'
 import PhotoBtn from './PhotoBtn'
@@ -26,7 +26,7 @@ import PhotoBtn from './PhotoBtn'
 import IconArrow from '../../assets/images/iconArrow.svg'
 import NoPicture from '../../assets/images/nopicture.svg'
 import ValidationIconX from '../../assets/images/iconValidationX.svg'
-import { getHandleIsValid, getHandleError } from "../../store/signon/selectors"
+import { getHandleIsValid, getHandleError } from '../../store/signon/selectors'
 
 const styles = StyleSheet.create({
   container: {
@@ -75,11 +75,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#CC0FE0',
-    borderRadius: 4,
+    borderRadius: 4
   },
   formButtonTitleContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   formButtonTitle: {
     color: 'white',
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     alignContent: 'center',
     marginBottom: -12
   },
-  profilePicEmpty:{
+  profilePicEmpty: {
     flex: 0,
     shadowColor: '#858199',
     shadowOffset: { width: 0, height: 2 },
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     height: 226,
     elevation: 5
   },
-  profilePicShadow:{
+  profilePicShadow: {
     marginTop: 8,
     flex: 0,
     shadowColor: '#858199',
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     height: 206,
     marginBottom: 12
   },
-  profilePic:{
+  profilePic: {
     flex: 0,
     width: 206,
     height: 206,
@@ -147,10 +147,10 @@ const styles = StyleSheet.create({
     paddingTop: 16,
     paddingLeft: 10,
     margin: 0
-  },
-});
+  }
+})
 
-const messages = { 
+const messages = {
   header: 'Tell Us About Yourself So Others Can Find You',
   buttonTitle: 'Continue',
   photoBtnAdd: 'Add',
@@ -171,18 +171,18 @@ const messages = {
   ]
 }
 
-var didAnimation = false
+let didAnimation = false
 const FormTitle = () => {
-  var opacity = new Animated.Value(1);
+  let opacity = new Animated.Value(1)
   if (!didAnimation) {
-    opacity = new Animated.Value(0);
+    opacity = new Animated.Value(0)
     Animated.timing(opacity, {
       toValue: 1,
       duration: 500,
       useNativeDriver: true
     }).start(({ finished }) => {
       didAnimation = true
-    });
+    })
   }
   return (
     <Animated.View style={{ opacity }}>
@@ -191,7 +191,7 @@ const FormTitle = () => {
   )
 }
 
-const MainBtnTitle = ({isWorking}: {isWorking: boolean}) => {
+const MainBtnTitle = ({ isWorking }: { isWorking: boolean }) => {
   if (isWorking) {
     return (
       <View style={styles.loadingIcon}>
@@ -205,15 +205,20 @@ const MainBtnTitle = ({isWorking}: {isWorking: boolean}) => {
   } else {
     return (
       <View style={styles.formButtonTitleContainer}>
-        <Text style={styles.formButtonTitle}> { messages.buttonTitle } </Text>
+        <Text style={styles.formButtonTitle}> {messages.buttonTitle} </Text>
         <IconArrow style={styles.arrow} fill={'white'} />
       </View>
     )
   }
 }
 
-const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) => {
-
+const ProfileManual = ({
+  navigation,
+  route
+}: {
+  navigation: any
+  route: any
+}) => {
   const [isWorking, setisWorking] = useState(false)
   const username = route.params.email
   const password = route.params.password
@@ -232,46 +237,42 @@ const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) =
     fileType: '',
     uri: '',
     file: ''
-  });
+  })
   const [imageSet, setImageSet] = useState(false)
 
   useEffect(() => {
-    if (profileImage.file != '') {
+    if (profileImage.file !== '') {
       setPhotoBtnIsHidden(true)
     } else {
       setPhotoBtnIsHidden(false)
     }
   }, [profileImage])
-  
+
   const ProfileImage = () => {
     if (!imageSet) {
-      return(
-        <NoPicture
-          height={226}
-          width={226}
-          style={styles.profilePicEmpty}
-        />
+      return (
+        <NoPicture height={226} width={226} style={styles.profilePicEmpty} />
       )
     } else {
-      return(
+      return (
         <TouchableOpacity
           style={styles.profilePicShadow}
           activeOpacity={1}
           onPress={() => {
-              setPhotoBtnIsHidden(!photoBtnIsHidden)
+            setPhotoBtnIsHidden(!photoBtnIsHidden)
           }}
-          >
-        <Image
-          source={profileImage}
-          height={206}
-          width={206}
-          style={[styles.profilePic]}
-        />
+        >
+          <Image
+            source={profileImage}
+            height={206}
+            width={206}
+            style={[styles.profilePic]}
+          />
         </TouchableOpacity>
       )
     }
   }
-  
+
   const selectPhotoFromLibrary = () => {
     launchImageLibrary(
       {
@@ -330,7 +331,7 @@ const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) =
   }
 
   const PhotoMenu = () => {
-    if (Platform.OS === "ios") {
+    if (Platform.OS === 'ios') {
       // iOS ActionSheet
       ActionSheetIOS.showActionSheetWithOptions(
         {
@@ -338,7 +339,7 @@ const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) =
           tintColor: '#7E1BCC',
           cancelButtonIndex: 0
         },
-        (buttonIndex) => {
+        buttonIndex => {
           if (buttonIndex === 1) {
             selectPhotoFromLibrary()
           } else if (buttonIndex === 2) {
@@ -349,28 +350,27 @@ const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) =
     } else {
       // Android Alert
       Alert.alert(
-        "Profile Photo",
-        "",
+        'Profile Photo',
+        '',
         [
           {
             text: 'Photo Library',
             style: 'default',
-            onPress: () => selectPhotoFromLibrary(),
+            onPress: () => selectPhotoFromLibrary()
           },
           {
             text: 'Take Photo',
             style: 'default',
-            onPress: () => takePhoto(),
+            onPress: () => takePhoto()
           },
           {
-            text: "Cancel",
-            style: "cancel",
-          },
+            text: 'Cancel',
+            style: 'cancel'
+          }
         ],
         {
           cancelable: true,
-          onDismiss: () =>
-            null
+          onDismiss: () => null
         }
       )
     }
@@ -388,7 +388,7 @@ const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) =
   }
 
   const signUp = () => {
-    if (username != '' && password != '' && name != '' && handle != '') {
+    if (username !== '' && password !== '' && name !== '' && handle !== '') {
       dispatchWeb({
         type: MessageType.SUBMIT_SIGNUP,
         username: username,
@@ -401,106 +401,134 @@ const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) =
     }
   }
 
-  const errorView = ({handleIsValid, handleError,}: {handleIsValid: boolean, handleError:string}) => {
-    if (!handleIsValid && handleError != '') {
+  const errorView = ({
+    handleIsValid,
+    handleError
+  }: {
+    handleIsValid: boolean
+    handleError: string
+  }) => {
+    if (!handleIsValid && handleError !== '') {
       return (
-        <View style={styles.errorContainer} >
+        <View style={styles.errorContainer}>
           <ValidationIconX style={styles.errorIcon} />
-          <Text style={styles.errorText}> {messages.errors[messages.errorTypes.indexOf(handleError)]} </Text>
+          <Text style={styles.errorText}>
+            {' '}
+            {messages.errors[messages.errorTypes.indexOf(handleError)]}{' '}
+          </Text>
         </View>
       )
     } else {
       return (
-        <View style={styles.errorContainer} >
-        <ValidationIconX style={[styles.errorIcon, {opacity: 0}]} />
-        <Text style={styles.errorText}> </Text>
+        <View style={styles.errorContainer}>
+          <ValidationIconX style={[styles.errorIcon, { opacity: 0 }]} />
+          <Text style={styles.errorText}> </Text>
         </View>
-        )
+      )
     }
   }
-  
+
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? 'padding' : 'height'}>
-    <SignupHeader></SignupHeader>
-    <SafeAreaView style={{ backgroundColor: 'white' }} >
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={styles.container}>
-          <View style={styles.containerForm}>
-            <FormTitle></FormTitle>
-            <View style={styles.profilePicContainer}>
-              {ProfileImage()}
-              {PhotoBtn({
-                isWorking: isWorking,
-                imageSet: imageSet,
-                photoBtnIsHidden: photoBtnIsHidden,
-                doAction: PhotoMenu})}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <SignupHeader />
+      <SafeAreaView style={{ backgroundColor: 'white' }}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <View style={styles.container}>
+            <View style={styles.containerForm}>
+              <FormTitle />
+              <View style={styles.profilePicContainer}>
+                {ProfileImage()}
+                {PhotoBtn({
+                  isWorking: isWorking,
+                  imageSet: imageSet,
+                  photoBtnIsHidden: photoBtnIsHidden,
+                  doAction: PhotoMenu
+                })}
+              </View>
+              <TextInput
+                style={[styles.input, { borderColor: nameBorderColor }]}
+                placeholderTextColor='#C2C0CC'
+                underlineColorAndroid='transparent'
+                placeholder='Display Name'
+                keyboardType='default'
+                autoCompleteType='off'
+                autoCorrect={false}
+                autoCapitalize='words'
+                enablesReturnKeyAutomatically={true}
+                maxLength={32}
+                textContentType='name'
+                onChangeText={newText => {
+                  setName(newText.trim())
+                }}
+                onFocus={() => {
+                  setNameBorderColor('#7E1BCC')
+                }}
+                onBlur={() => {
+                  setNameBorderColor('#F7F7F9')
+                }}
+              />
+
+              <TextInput
+                style={[styles.input, { borderColor: handleBorderColor }]}
+                placeholderTextColor='#C2C0CC'
+                underlineColorAndroid='transparent'
+                placeholder='@handle'
+                keyboardType='email-address'
+                autoCompleteType='off'
+                autoCorrect={false}
+                autoCapitalize='none'
+                enablesReturnKeyAutomatically={true}
+                maxLength={16}
+                textContentType='nickname'
+                onChangeText={newText => {
+                  if (newText.length && newText[0] === '@') {
+                    newText = newText.substring(1)
+                  }
+                  // let newHandle = newText.replace('@', '')
+                  setHandle(newText.trim())
+                  validateHandle(newText.trim())
+                }}
+                onFocus={() => {
+                  setHandleBorderColor('#7E1BCC')
+                }}
+                onBlur={() => {
+                  setHandleBorderColor('#F7F7F9')
+                }}
+              />
+              {errorView({ handleIsValid, handleError })}
+
+              <TouchableOpacity
+                style={styles.formBtn}
+                activeOpacity={0.6}
+                disabled={isWorking}
+                onPress={() => {
+                  Keyboard.dismiss()
+                  if (!isWorking && handleIsValid && name !== '') {
+                    console.log(
+                      username + '|' + password + '|' + name + '|' + handle
+                    )
+                    setisWorking(true)
+                    signUp()
+                    navigation.push('FirstFollows', {
+                      email: username,
+                      password: password,
+                      name: name,
+                      handle: handle,
+                      profileImage: profileImage
+                    })
+                  }
+                }}
+              >
+                <MainBtnTitle isWorking={isWorking} />
+              </TouchableOpacity>
             </View>
-            <TextInput
-              style={[styles.input, {borderColor: nameBorderColor}]}
-              placeholderTextColor= '#C2C0CC'
-              underlineColorAndroid='transparent'
-              placeholder='Display Name'
-              keyboardType='default'
-              autoCompleteType="off"
-              autoCorrect={false}
-              autoCapitalize='words'
-              enablesReturnKeyAutomatically={true}
-              maxLength={32}
-              textContentType='name'
-              onChangeText={(newText) => {
-                setName(newText.trim())
-              }}
-              onFocus={() => {setNameBorderColor('#7E1BCC')}}
-              onBlur={() => {setNameBorderColor('#F7F7F9')}}
-              />
-
-            <TextInput
-              style={[styles.input, {borderColor: handleBorderColor}]}
-              placeholderTextColor= '#C2C0CC'
-              underlineColorAndroid='transparent'
-              placeholder='@handle'
-              keyboardType='email-address'
-              autoCompleteType="off"
-              autoCorrect={false}
-              autoCapitalize='none'
-              enablesReturnKeyAutomatically={true}
-              maxLength={16}
-              textContentType='nickname'
-              onChangeText={(newText) => {
-                if (newText.length && newText[0] === '@') {
-                  newText = newText.substring(1);
-                }
-                // let newHandle = newText.replace('@', '')
-                setHandle(newText.trim())
-                validateHandle(newText.trim())
-              }}
-              onFocus={() => {setHandleBorderColor('#7E1BCC')}}
-              onBlur={() => {setHandleBorderColor('#F7F7F9')}}
-              />
-              {errorView({handleIsValid, handleError})}
-
-            <TouchableOpacity
-            style={styles.formBtn}
-            activeOpacity={0.6}
-            disabled={isWorking}
-            onPress={() => {
-              Keyboard.dismiss()
-              if (!isWorking && handleIsValid && name != '') {
-                console.log ( username + '|' + password + '|' + name + '|' +  handle )
-                setisWorking(true);
-                signUp()
-                navigation.push('FirstFollows', { email: username, password: password, name: name, handle: handle, profileImage: profileImage })
-              }
-            }}
-            >
-              <MainBtnTitle isWorking={isWorking}></MainBtnTitle>
-            </TouchableOpacity>
           </View>
-        </View>
-      </TouchableWithoutFeedback>
-    </SafeAreaView>
+        </TouchableWithoutFeedback>
+      </SafeAreaView>
     </KeyboardAvoidingView>
   )
-};
+}
 
-export default ProfileManual;
+export default ProfileManual

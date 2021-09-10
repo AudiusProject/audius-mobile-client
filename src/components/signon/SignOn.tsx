@@ -1,17 +1,17 @@
-import React, {useState, useRef, useEffect} from "react"
-import { 
-  Animated, 
-  ImageBackground, 
-  StyleSheet, 
-  Text, 
-  View, 
-  Image, 
-  TextInput, 
-  TouchableOpacity, 
+import React, { useState, useRef, useEffect } from 'react'
+import {
+  Animated,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TextInput,
+  TouchableOpacity,
   Dimensions,
   TouchableWithoutFeedback,
-  Keyboard,
- } from "react-native"
+  Keyboard
+} from 'react-native'
 
 import { useSelector, useDispatch } from 'react-redux'
 import { useDispatchWebAction } from '../../hooks/useWebAction'
@@ -24,11 +24,14 @@ import signupCTA from '../../assets/images/signUpCTA.png'
 import IconArrow from '../../assets/images/iconArrow.svg'
 import ValidationIconX from '../../assets/images/iconValidationX.svg'
 import LottieView from 'lottie-react-native'
-import  * as SignOnActions from '../../store/signon/actions'
-import { getIsSigninError, getEmailIsAvailable } from '../../store/signon/selectors'
+import * as SignOnActions from '../../store/signon/actions'
+import {
+  getIsSigninError,
+  getEmailIsAvailable
+} from '../../store/signon/selectors'
 import { getIsSignedIn, getDappLoaded } from '../../store/lifecycle/selectors'
 
-const image = backgImage;
+const image = backgImage
 
 const styles = StyleSheet.create({
   container: {
@@ -40,9 +43,11 @@ const styles = StyleSheet.create({
   },
   containerForm: {
     position: 'absolute',
-    transform: [{
-      translateY: 0
-    }],
+    transform: [
+      {
+        translateY: 0
+      }
+    ],
     top: 0,
     left: 0,
     width: '100%',
@@ -55,7 +60,7 @@ const styles = StyleSheet.create({
     paddingBottom: 38,
     paddingTop: 50
   },
-  
+
   containerCTA: {
     position: 'absolute',
     bottom: 0,
@@ -105,11 +110,11 @@ const styles = StyleSheet.create({
     paddingTop: 3,
     paddingBottom: 3
   },
-  audiusLogoHorizontal:{
+  audiusLogoHorizontal: {
     width: 194,
     height: 51
   },
-  signupCTA:{
+  signupCTA: {
     marginTop: 32,
     width: 316,
     height: 222
@@ -153,11 +158,11 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: 'center',
     backgroundColor: '#CC0FE0',
-    borderRadius: 4,
+    borderRadius: 4
   },
   formButtonTitleContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   formButtonTitle: {
     color: 'white',
@@ -181,7 +186,7 @@ const styles = StyleSheet.create({
   switchFormBtnTitle: {
     color: 'white',
     fontSize: 14,
-    fontFamily: 'AvenirNextLTPro-regular',
+    fontFamily: 'AvenirNextLTPro-regular'
   },
   errorText: {
     flex: 1,
@@ -200,7 +205,7 @@ const styles = StyleSheet.create({
   errorArrow: {
     height: 12,
     width: 12,
-    alignSelf: 'center',
+    alignSelf: 'center'
   },
   errorContainer: {
     flexDirection: 'row',
@@ -213,7 +218,7 @@ const styles = StyleSheet.create({
     margin: 0,
     width: '100%'
   }
-});
+})
 
 const messages = {
   title: 'Sign Up For Audius',
@@ -236,22 +241,28 @@ const signInErrorMessages = {
   default: 'Invalid Credentials'
 }
 
-var formContainerHeight = 0
+let formContainerHeight = 0
 
-var lastIsSignin = false
-const MainBtnTitle = ({isSignin, isWorking}: {isSignin: boolean, isWorking: boolean}) => {
-  var opacity = new Animated.Value(1);
+let lastIsSignin = false
+const MainBtnTitle = ({
+  isSignin,
+  isWorking
+}: {
+  isSignin: boolean
+  isWorking: boolean
+}) => {
+  let opacity = new Animated.Value(1)
 
-  if (lastIsSignin != isSignin) {
-    opacity = new Animated.Value(0);
+  if (lastIsSignin !== isSignin) {
+    opacity = new Animated.Value(0)
     Animated.timing(opacity, {
       toValue: 1,
       duration: 500,
       useNativeDriver: true
     }).start(({ finished }) => {
       lastIsSignin = isSignin
-    });
-  }   
+    })
+  }
   if (isWorking) {
     return (
       <View style={styles.loadingIcon}>
@@ -265,36 +276,41 @@ const MainBtnTitle = ({isSignin, isWorking}: {isSignin: boolean, isWorking: bool
   } else {
     return (
       <Animated.View style={[styles.formButtonTitleContainer, { opacity }]}>
-        <Text style={styles.formButtonTitle}> { isSignin ? messages.signIn:messages.signUp } </Text>
+        <Text style={styles.formButtonTitle}>
+          {' '}
+          {isSignin ? messages.signIn : messages.signUp}{' '}
+        </Text>
         <IconArrow style={styles.arrow} fill={'white'} />
       </Animated.View>
     )
   }
 }
 
-const FormTitle = ({isSignin}: {isSignin: boolean}) => {
-  var opacity = new Animated.Value(1);
-  
-  if (lastIsSignin != isSignin) {
-    opacity = new Animated.Value(0);
+const FormTitle = ({ isSignin }: { isSignin: boolean }) => {
+  let opacity = new Animated.Value(1)
+
+  if (lastIsSignin !== isSignin) {
+    opacity = new Animated.Value(0)
     Animated.timing(opacity, {
       toValue: 1,
       duration: 500,
       useNativeDriver: true
     }).start(({ finished }) => {
       lastIsSignin = isSignin
-    });
+    })
   }
   if (isSignin) {
     return (
-      <Animated.Text style={[styles.title, { opacity }]} >{messages.signinDescription}</Animated.Text>
+      <Animated.Text style={[styles.title, { opacity }]}>
+        {messages.signinDescription}
+      </Animated.Text>
     )
   } else {
     return (
-      <Animated.View  style={{ opacity }}>
-      <Text style={styles.title}>{messages.title}</Text>
-      <Text style={styles.header}>{messages.header1}</Text>
-      <Text style={styles.header}>{messages.header2}</Text>
+      <Animated.View style={{ opacity }}>
+        <Text style={styles.title}>{messages.title}</Text>
+        <Text style={styles.header}>{messages.header1}</Text>
+        <Text style={styles.header}>{messages.header2}</Text>
       </Animated.View>
     )
   }
@@ -306,22 +322,21 @@ const isValidEmailString = (email: string) => {
 }
 
 const SignOn = ({ navigation }: { navigation: any }) => {
-  
-  const [isWorking, setisWorking] = useState(false);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [isSignin, setisSignIn] = useState(false);
-  const [emailBorderColor, setEmailBorderColor] = useState('#F7F7F9');
-  const [passBorderColor, setPassBorderColor] = useState('#F7F7F9');
-  const [formButtonMarginTop, setFormButtonMarginTop] = useState(28);
-  const [cpaContainerHeight, setcpaContainerHeight] = useState(0);
+  const [isWorking, setisWorking] = useState(false)
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [isSignin, setisSignIn] = useState(false)
+  const [emailBorderColor, setEmailBorderColor] = useState('#F7F7F9')
+  const [passBorderColor, setPassBorderColor] = useState('#F7F7F9')
+  const [formButtonMarginTop, setFormButtonMarginTop] = useState(28)
+  const [cpaContainerHeight, setcpaContainerHeight] = useState(0)
 
-  const isSigninError = useSelector(getIsSigninError);
-  const dappLoaded = useSelector(getDappLoaded);
-  const signedIn = useSelector(getIsSignedIn);
+  const isSigninError = useSelector(getIsSigninError)
+  const dappLoaded = useSelector(getDappLoaded)
+  const signedIn = useSelector(getIsSignedIn)
 
-  const emailIsAvailable = useSelector(getEmailIsAvailable);
-  const [showInvalidEmailError, setShowInvalidEmailError] = useState(false);
+  const emailIsAvailable = useSelector(getEmailIsAvailable)
+  const [showInvalidEmailError, setShowInvalidEmailError] = useState(false)
 
   useEffect(() => {
     if (isSigninError) {
@@ -333,9 +348,9 @@ const SignOn = ({ navigation }: { navigation: any }) => {
 
   useEffect(() => {
     if (signedIn) {
-        setisWorking(false)
-        setUsername('')
-        setPassword('')
+      setisWorking(false)
+      setUsername('')
+      setPassword('')
     }
   }, [signedIn])
 
@@ -346,71 +361,88 @@ const SignOn = ({ navigation }: { navigation: any }) => {
       fadeCTA()
     }
   }, [dappLoaded])
-  
+
   const topDrawer = useRef(new Animated.Value(-800)).current
   const animateDrawer = () => {
-      Animated.timing(topDrawer, {
-        toValue: 0,
-        duration: 700,
-        delay: 500,
-        useNativeDriver: true
-      }).start();
+    Animated.timing(topDrawer, {
+      toValue: 0,
+      duration: 700,
+      delay: 500,
+      useNativeDriver: true
+    }).start()
   }
 
   const opacityCTA = useRef(new Animated.Value(0)).current
   const fadeCTA = () => {
-      Animated.timing(opacityCTA, {
-        toValue: 1,
-        duration: 500,
-        delay: 1200,
-        useNativeDriver: true
-      }).start();
+    Animated.timing(opacityCTA, {
+      toValue: 1,
+      duration: 500,
+      delay: 1200,
+      useNativeDriver: true
+    }).start()
   }
 
-  const errorView = ({isSigninError, emailIsAvailable, showInvalidEmailError}: {isSigninError: boolean, emailIsAvailable:boolean, showInvalidEmailError: boolean}) => {
+  const errorView = ({
+    isSigninError,
+    emailIsAvailable,
+    showInvalidEmailError
+  }: {
+    isSigninError: boolean
+    emailIsAvailable: boolean
+    showInvalidEmailError: boolean
+  }) => {
     if (isSignin && isSigninError) {
       return (
-        <View style={styles.errorContainer} >
+        <View style={styles.errorContainer}>
           <ValidationIconX style={styles.errorIcon} />
           <Text style={styles.errorText}> {signInErrorMessages.default} </Text>
         </View>
       )
-    } else if (!isSignin && !emailIsAvailable && username != "") {
+    } else if (!isSignin && !emailIsAvailable && username !== '') {
       return (
-        <TouchableOpacity style={styles.errorButton} onPress={() => {switchForm()}}>
-        <View style={styles.errorContainer} >
-          <ValidationIconX style={styles.errorIcon} />
-          <Text style={[styles.errorText, {flex: 0, textDecorationLine: 'underline'}]}> {errorMessages.inUse} </Text>
-          <Text style={[styles.errorText, {fontSize: 13}]}> ➔</Text>
-        </View>
+        <TouchableOpacity
+          style={styles.errorButton}
+          onPress={() => {
+            switchForm()
+          }}
+        >
+          <View style={styles.errorContainer}>
+            <ValidationIconX style={styles.errorIcon} />
+            <Text
+              style={[
+                styles.errorText,
+                { flex: 0, textDecorationLine: 'underline' }
+              ]}
+            >
+              {' '}
+              {errorMessages.inUse}{' '}
+            </Text>
+            <Text style={[styles.errorText, { fontSize: 13 }]}> ➔</Text>
+          </View>
         </TouchableOpacity>
       )
     } else if (showInvalidEmailError) {
       return (
-        <View style={styles.errorContainer} >
+        <View style={styles.errorContainer}>
           <ValidationIconX style={styles.errorIcon} />
           <Text style={styles.errorText}> {errorMessages.characters} </Text>
         </View>
       )
     } else {
       return (
-        <View style={styles.errorContainer} >
-        <ValidationIconX style={[styles.errorIcon, {opacity: 0}]} />
-        <Text style={styles.errorText}> </Text>
+        <View style={styles.errorContainer}>
+          <ValidationIconX style={[styles.errorIcon, { opacity: 0 }]} />
+          <Text style={styles.errorText}> </Text>
         </View>
-        )
+      )
     }
   }
-  
+
   const formSwitchBtnTitle = () => {
     if (isSignin) {
-      return (
-        <Text style={styles.switchFormBtnTitle}> {messages.newUser} </Text>
-      )
+      return <Text style={styles.switchFormBtnTitle}> {messages.newUser} </Text>
     } else {
-      return (
-        <Text style={styles.switchFormBtnTitle}> {messages.oldUser} </Text>
-      )
+      return <Text style={styles.switchFormBtnTitle}> {messages.oldUser} </Text>
     }
   }
 
@@ -436,23 +468,27 @@ const SignOn = ({ navigation }: { navigation: any }) => {
     if (isSignin) {
       return (
         <TextInput
-          style={[styles.inputPass, {borderColor: passBorderColor}]}
-          placeholderTextColor= '#C2C0CC'
+          style={[styles.inputPass, { borderColor: passBorderColor }]}
+          placeholderTextColor='#C2C0CC'
           underlineColorAndroid='transparent'
-          placeholder="Password"
-          autoCompleteType="off"
+          placeholder='Password'
+          autoCompleteType='off'
           autoCorrect={false}
           autoCapitalize='none'
-          //clearTextOnFocus={true}
+          // clearTextOnFocus={true}
           enablesReturnKeyAutomatically={true}
           maxLength={100}
-          textContentType="password"
+          textContentType='password'
           secureTextEntry={true}
-          onChangeText={(newText) => {
+          onChangeText={newText => {
             setPassword(newText)
           }}
-          onFocus={() => {setPassBorderColor('#7E1BCC')}}
-          onBlur={() => {setPassBorderColor('#F7F7F9')}}
+          onFocus={() => {
+            setPassBorderColor('#7E1BCC')
+          }}
+          onBlur={() => {
+            setPassBorderColor('#F7F7F9')
+          }}
         />
       )
     }
@@ -469,108 +505,144 @@ const SignOn = ({ navigation }: { navigation: any }) => {
     })
   }
 
-
-  
-  
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-    <View style={styles.container}>
-      <View style={styles.containerBack}>
-        <RadialGradient style={styles.gradient}
-                          colors={['rgba(91, 35, 225, 0.8)','rgba(113, 41, 230, 0.640269)','rgba(162, 47, 235, 0.5)']}
-                          stops={[0.1,0.67,1]}
-                          radius={Dimensions.get('window').width/1.2}>
-        </RadialGradient>
-        <ImageBackground source={image} resizeMode="cover" style={styles.image} />
-      </View>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <Animated.View
-          style={[styles.containerForm, {transform: [{ translateY: topDrawer }]}]}
-          onLayout={(event) => {
-            formContainerHeight = event.nativeEvent.layout.height;
-            setcpaContainerHeight (Dimensions.get('window').height - formContainerHeight)
-            // console.log (formContainerHeight)
-          }}
-        >
-          <Image source={audiusLogoHorizontal} style={styles.audiusLogoHorizontal} />
-          <FormTitle isSignin={isSignin}></FormTitle>
-          <TextInput
-          style={[styles.input, {borderColor: emailBorderColor}]}
-          placeholderTextColor= '#C2C0CC'
-          underlineColorAndroid='transparent'
-          placeholder="Email"
-          keyboardType="email-address"
-          autoCompleteType="off"
-          autoCorrect={false}
-          autoCapitalize='none'
-          enablesReturnKeyAutomatically={true}
-          maxLength={100}
-          textContentType="username"
-          onChangeText={(newText) => {
-            setUsername(newText.trim())
-            if (showInvalidEmailError) {
-              setShowInvalidEmailError(false)
-            }
-            // console.log('Signup: sending validate to client:' + newText)
-            if (!isSignin) {
-              validateEmail(newText.trim())
-            }
-          }}
-          onFocus={() => {setEmailBorderColor('#7E1BCC')}}
-          onBlur={() => {setEmailBorderColor('#F7F7F9')}}
+      <View style={styles.container}>
+        <View style={styles.containerBack}>
+          <RadialGradient
+            style={styles.gradient}
+            colors={[
+              'rgba(91, 35, 225, 0.8)',
+              'rgba(113, 41, 230, 0.640269)',
+              'rgba(162, 47, 235, 0.5)'
+            ]}
+            stops={[0.1, 0.67, 1]}
+            radius={Dimensions.get('window').width / 1.2}
           />
+          <ImageBackground
+            source={image}
+            resizeMode='cover'
+            style={styles.image}
+          />
+        </View>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <Animated.View
+            style={[
+              styles.containerForm,
+              { transform: [{ translateY: topDrawer }] }
+            ]}
+            onLayout={event => {
+              formContainerHeight = event.nativeEvent.layout.height
+              setcpaContainerHeight(
+                Dimensions.get('window').height - formContainerHeight
+              )
+              // console.log (formContainerHeight)
+            }}
+          >
+            <Image
+              source={audiusLogoHorizontal}
+              style={styles.audiusLogoHorizontal}
+            />
+            <FormTitle isSignin={isSignin} />
+            <TextInput
+              style={[styles.input, { borderColor: emailBorderColor }]}
+              placeholderTextColor='#C2C0CC'
+              underlineColorAndroid='transparent'
+              placeholder='Email'
+              keyboardType='email-address'
+              autoCompleteType='off'
+              autoCorrect={false}
+              autoCapitalize='none'
+              enablesReturnKeyAutomatically={true}
+              maxLength={100}
+              textContentType='username'
+              onChangeText={newText => {
+                setUsername(newText.trim())
+                if (showInvalidEmailError) {
+                  setShowInvalidEmailError(false)
+                }
+                // console.log('Signup: sending validate to client:' + newText)
+                if (!isSignin) {
+                  validateEmail(newText.trim())
+                }
+              }}
+              onFocus={() => {
+                setEmailBorderColor('#7E1BCC')
+              }}
+              onBlur={() => {
+                setEmailBorderColor('#F7F7F9')
+              }}
+            />
 
-          {passField()}
-          {errorView({isSigninError, emailIsAvailable, showInvalidEmailError})}
+            {passField()}
+            {errorView({
+              isSigninError,
+              emailIsAvailable,
+              showInvalidEmailError
+            })}
+
+            <TouchableOpacity
+              style={[styles.formBtn, { marginTop: formButtonMarginTop }]}
+              activeOpacity={0.6}
+              disabled={isWorking}
+              onPress={() => {
+                Keyboard.dismiss()
+                if (
+                  !isWorking &&
+                  username !== '' &&
+                  ((isSignin && password !== '') || !isSignin)
+                ) {
+                  dispatch(SignOnActions.signinFailedReset())
+                  if (isSignin) {
+                    // console.log('Signin: sending message to client')
+                    setisWorking(true)
+                    dispatchWeb({
+                      type: MessageType.SUBMIT_SIGNIN,
+                      username: username,
+                      password: password,
+                      isAction: true
+                    })
+                  } else {
+                    if (!isValidEmailString(username)) {
+                      setShowInvalidEmailError(true)
+                    } else if (emailIsAvailable) {
+                      console.log('Sign Up')
+                      setisWorking(false)
+                      navigation.push('CreatePassword', { email: username })
+                    }
+                  }
+                }
+              }}
+            >
+              <MainBtnTitle isWorking={isWorking} isSignin={isSignin} />
+            </TouchableOpacity>
+          </Animated.View>
+        </TouchableWithoutFeedback>
+        <Animated.View
+          style={[
+            styles.containerCTA,
+            { height: cpaContainerHeight, opacity: opacityCTA }
+          ]}
+        >
+          {Dimensions.get('window').height < 790 ? (
+            <Text />
+          ) : (
+            <Image source={signupCTA} style={styles.signupCTA} />
+          )}
 
           <TouchableOpacity
-          style={[styles.formBtn, {marginTop: formButtonMarginTop}]}
-          activeOpacity={0.6}
-          disabled={isWorking}
-          onPress={() => {
-            Keyboard.dismiss()
-            if (!isWorking && username!='' && ((isSignin && password!='') || !isSignin)) {
-              dispatch(SignOnActions.signinFailedReset());
-              if (isSignin) {
-                //console.log('Signin: sending message to client')
-                setisWorking(true);
-                dispatchWeb({
-                  type: MessageType.SUBMIT_SIGNIN,
-                  username: username,
-                  password: password,
-                  isAction: true
-                })
-              } else {
-                
-                if (!isValidEmailString(username)) {
-                  setShowInvalidEmailError(true)
-                } else if (emailIsAvailable) {
-                  console.log('Sign Up')
-                  setisWorking(false);
-                  navigation.push('CreatePassword', { email: username })
-                }
-              }
-            }
-          }}
+            style={styles.switchFormBtn}
+            onPress={() => {
+              switchForm()
+            }}
+            activeOpacity={0.6}
           >
-            <MainBtnTitle isWorking={isWorking} isSignin={isSignin}></MainBtnTitle>
+            {formSwitchBtnTitle()}
           </TouchableOpacity>
         </Animated.View>
-      </TouchableWithoutFeedback>
-      <Animated.View style={[styles.containerCTA, {height: cpaContainerHeight, opacity: opacityCTA}]}>
-      {Dimensions.get('window').height < 790 ? <Text></Text> : <Image source={signupCTA} style={styles.signupCTA} />}
-        
-        <TouchableOpacity
-          style={styles.switchFormBtn}
-          onPress={() => {switchForm()}}
-          activeOpacity={0.6}
-          >
-          {formSwitchBtnTitle()}
-        </TouchableOpacity>
-      </Animated.View>
-    </View>
+      </View>
     </TouchableWithoutFeedback>
   )
-};
+}
 
-export default SignOn;
+export default SignOn

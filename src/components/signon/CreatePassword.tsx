@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect } from 'react'
 import {
   Animated,
   Easing,
@@ -14,10 +14,9 @@ import {
   Linking,
   KeyboardAvoidingView,
   Platform
-} from "react-native"
+} from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
-import SignupHeader from "./SignupHeader"
-declare module 'fxa-common-password-list'
+import SignupHeader from './SignupHeader'
 import commonPasswordList from 'fxa-common-password-list'
 import LottieView from 'lottie-react-native'
 import { useDispatchWebAction } from '../../hooks/useWebAction'
@@ -29,6 +28,7 @@ import ValidationIconX from '../../assets/images/iconValidationX.svg'
 
 import * as LifecycleActions from '../../store/lifecycle/actions'
 import { getOnSignUp } from '../../store/lifecycle/selectors'
+declare module 'fxa-common-password-list'
 
 const styles = StyleSheet.create({
   container: {
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
     fontFamily: 'AvenirNextLTPro-Bold',
     lineHeight: 26,
     textAlign: 'center',
-    paddingBottom: 6,
+    paddingBottom: 6
   },
   header: {
     color: '#858199',
@@ -85,11 +85,11 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: 'center',
     backgroundColor: '#CC0FE0',
-    borderRadius: 4,
+    borderRadius: 4
   },
   formButtonTitleContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   formButtonTitle: {
     color: 'white',
@@ -116,16 +116,16 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#858199',
     borderRadius: 12,
-    marginRight: 13,
+    marginRight: 13
   },
   iconCheck: {
-    position: "absolute",
+    position: 'absolute',
     width: 16,
     height: 16,
     zIndex: 2
   },
   errorIcon: {
-    position: "absolute",
+    position: 'absolute',
     width: 16,
     height: 16,
     zIndex: 2
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     paddingTop: 26,
     width: '100%'
   }
-});
+})
 
 const messages = {
   header: 'Create A Password That Is Secure And Easy To Remember!',
@@ -165,28 +165,32 @@ const messages = {
   buttonTitle: 'Continue'
 }
 
-var didAnimation = false
+let didAnimation = false
 const FormTitle = () => {
-  var opacity = new Animated.Value(1);
+  let opacity = new Animated.Value(1)
   if (!didAnimation) {
-    opacity = new Animated.Value(0);
+    opacity = new Animated.Value(0)
     Animated.timing(opacity, {
       toValue: 1,
       duration: 500,
       useNativeDriver: true
     }).start(({ finished }) => {
       didAnimation = true
-    });
+    })
   }
   return (
     <Animated.View style={{ opacity }}>
       <Text style={styles.title}>{messages.header}</Text>
-      {Dimensions.get('window').height < 650 ? <View></View> : <Text style={styles.header}>{messages.warning}</Text>}
+      {Dimensions.get('window').height < 650 ? (
+        <View />
+      ) : (
+        <Text style={styles.header}>{messages.warning}</Text>
+      )}
     </Animated.View>
   )
 }
 
-const MainBtnTitle = ({isWorking}: {isWorking: boolean}) => {
+const MainBtnTitle = ({ isWorking }: { isWorking: boolean }) => {
   if (isWorking) {
     return (
       <View style={styles.loadingIcon}>
@@ -200,28 +204,33 @@ const MainBtnTitle = ({isWorking}: {isWorking: boolean}) => {
   } else {
     return (
       <View style={styles.formButtonTitleContainer}>
-        <Text style={styles.formButtonTitle}> { messages.buttonTitle } </Text>
+        <Text style={styles.formButtonTitle}> {messages.buttonTitle} </Text>
         <IconArrow style={styles.arrow} fill={'white'} />
       </View>
     )
   }
 }
 
-var opacity1 = new Animated.Value(0);
-var opacity2 = new Animated.Value(0);
-var opacity3 = new Animated.Value(0);
-var opacity4 = new Animated.Value(0);
-var opacity1r = new Animated.Value(0);
-var opacity2r = new Animated.Value(0);
-var opacity3r = new Animated.Value(0);
-var opacity4r = new Animated.Value(0);
+const opacity1 = new Animated.Value(0)
+const opacity2 = new Animated.Value(0)
+const opacity3 = new Animated.Value(0)
+const opacity4 = new Animated.Value(0)
+const opacity1r = new Animated.Value(0)
+const opacity2r = new Animated.Value(0)
+const opacity3r = new Animated.Value(0)
+const opacity4r = new Animated.Value(0)
 
-const Checkbox = ({i, meetsReq, shouldShowRedErrors}: {
-  i: number,
-  meetsReq: boolean,
-  shouldShowRedErrors: boolean}) => {
-  const opacityArr = [ opacity1, opacity2, opacity3, opacity4 ]
-  const opacityArrR = [ opacity1r, opacity2r, opacity3r, opacity4r ]
+const Checkbox = ({
+  i,
+  meetsReq,
+  shouldShowRedErrors
+}: {
+  i: number
+  meetsReq: boolean
+  shouldShowRedErrors: boolean
+}) => {
+  const opacityArr = [opacity1, opacity2, opacity3, opacity4]
+  const opacityArrR = [opacity1r, opacity2r, opacity3r, opacity4r]
   const opacity = opacityArr[i]
   const opacityRed = opacityArrR[i]
 
@@ -233,7 +242,7 @@ const Checkbox = ({i, meetsReq, shouldShowRedErrors}: {
       useNativeDriver: true
     }).start(({ finished }) => {
       //
-    });
+    })
   } else if (shouldShowRedErrors) {
     Animated.timing(opacityRed, {
       toValue: 1,
@@ -242,61 +251,76 @@ const Checkbox = ({i, meetsReq, shouldShowRedErrors}: {
       useNativeDriver: true
     }).start(({ finished }) => {
       //
-    });
+    })
   }
 
   const animatedStyles = [
     styles.iconCheck,
     {
       opacity: opacity,
-      transform: [{
-        scale: opacity.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, 1]
-        })
-      }]
+      transform: [
+        {
+          scale: opacity.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, 1]
+          })
+        }
+      ]
     }
-  ];
+  ]
   const animatedStylesR = [
     styles.iconCheck,
     {
       opacity: opacityRed,
-      transform: [{
-        scale: opacityRed.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, 1]
-        })
-      }]
+      transform: [
+        {
+          scale: opacityRed.interpolate({
+            inputRange: [0, 1],
+            outputRange: [0, 1]
+          })
+        }
+      ]
     }
-  ];
-  
+  ]
+
   if (meetsReq) {
     return (
       <View style={styles.checkboxContainer}>
-        <Animated.View style={ animatedStyles }>
-          <IconCheck style={styles.iconCheck}></IconCheck>
+        <Animated.View style={animatedStyles}>
+          <IconCheck style={styles.iconCheck} />
         </Animated.View>
-        <View style={styles.unchecked}></View>
-        <Text style={[styles.uncheckedDescription, {alignSelf: 'center'}]}>{messages.checks[i]}</Text>
+        <View style={styles.unchecked} />
+        <Text style={[styles.uncheckedDescription, { alignSelf: 'center' }]}>
+          {messages.checks[i]}
+        </Text>
       </View>
     )
   } else {
     if (shouldShowRedErrors) {
       return (
-      <View style={styles.checkboxContainer}>
-        <Animated.View style={ animatedStylesR }>
-          <ValidationIconX style={styles.iconCheck}></ValidationIconX>
-        </Animated.View>
-        <View style={styles.unchecked}></View>
-        <Text style={[styles.uncheckedDescription, {alignSelf: 'center', color: '#E03D51'}]}>{messages.checks[i]}</Text>
-      </View>
+        <View style={styles.checkboxContainer}>
+          <Animated.View style={animatedStylesR}>
+            <ValidationIconX style={styles.iconCheck} />
+          </Animated.View>
+          <View style={styles.unchecked} />
+          <Text
+            style={[
+              styles.uncheckedDescription,
+              { alignSelf: 'center', color: '#E03D51' }
+            ]}
+          >
+            {messages.checks[i]}
+          </Text>
+        </View>
       )
     } else {
       return (
-      <View style={styles.checkboxContainer}>
-        <View style={styles.unchecked}></View>
-        <Text style={[styles.uncheckedDescription, {alignSelf: 'center'}]}>{messages.checks[i]}</Text>
-      </View>
+        <View style={styles.checkboxContainer}>
+          <View style={styles.unchecked} />
+          <Text style={[styles.uncheckedDescription, { alignSelf: 'center' }]}>
+            {messages.checks[i]}
+          </Text>
+        </View>
       )
     }
   }
@@ -304,29 +328,34 @@ const Checkbox = ({i, meetsReq, shouldShowRedErrors}: {
 
 const MIN_PASSWORD_LEN = 8
 
-const CreatePassword = ({ navigation, route }: { navigation: any, route: any }) => {
+const CreatePassword = ({
+  navigation,
+  route
+}: {
+  navigation: any
+  route: any
+}) => {
+  const [passBorderColor, setPassBorderColor] = useState('#F7F7F9')
+  const [passBorderColor2, setPassBorderColor2] = useState('#F7F7F9')
 
-  const [passBorderColor, setPassBorderColor] = useState('#F7F7F9');
-  const [passBorderColor2, setPassBorderColor2] = useState('#F7F7F9');
+  const [isWorking, setisWorking] = useState(false)
+  const [password, setPassword] = useState('')
+  const [password2, setPassword2] = useState('')
 
-  const [isWorking, setisWorking] = useState(false);
-  const [password, setPassword] = useState('');
-  const [password2, setPassword2] = useState('');
-
-  const [meetsNumberReq, setMeetsNumberReq] = useState(false);
-  const [meetsLengthReq, setMeetsLengthReq] = useState(false);
-  const [meetsMatchReq, setMeetsMatchReq] = useState(false);
-  const [meetsCommonReq, setMeetsCommonReq] = useState(false);
-  const [shouldShowRedErrors, setShouldShowRedErrors] = useState(false);
-  const [shouldShowRedMatchError, setShowRedMatchError] = useState(false);
-  const [focusedField, setFocusedField] = useState (0)
+  const [meetsNumberReq, setMeetsNumberReq] = useState(false)
+  const [meetsLengthReq, setMeetsLengthReq] = useState(false)
+  const [meetsMatchReq, setMeetsMatchReq] = useState(false)
+  const [meetsCommonReq, setMeetsCommonReq] = useState(false)
+  const [shouldShowRedErrors, setShouldShowRedErrors] = useState(false)
+  const [shouldShowRedMatchError, setShowRedMatchError] = useState(false)
+  const [focusedField, setFocusedField] = useState(0)
 
   const dispatch = useDispatch()
   // Set Lifecycle onSignUp(true) so signup flow isn't hidden even if signed-in.
-  const onSignOn = useSelector(getOnSignUp);
+  const onSignOn = useSelector(getOnSignUp)
   const setOnSignOn = () => {
     if (!onSignOn) {
-    dispatch(LifecycleActions.onSignUp(true))
+      dispatch(LifecycleActions.onSignUp(true))
     }
   }
 
@@ -337,7 +366,7 @@ const CreatePassword = ({ navigation, route }: { navigation: any, route: any }) 
       isAction: true
     })
   }
-  const [didFetchArtists, setDidFetchArtists] = useState(false);
+  const [didFetchArtists, setDidFetchArtists] = useState(false)
   if (!didFetchArtists) {
     setDidFetchArtists(true)
     getSuggestedFollowArtists()
@@ -349,9 +378,9 @@ const CreatePassword = ({ navigation, route }: { navigation: any, route: any }) 
     } else if (meetsLengthReq) {
       setMeetsLengthReq(false)
     }
-    if (password.length > 0 && password == password2) {
+    if (password.length > 0 && password === password2) {
       setMeetsMatchReq(true)
-      if (focusedField == 1) {
+      if (focusedField === 1) {
         setPassBorderColor2('#F7F7F9')
       }
     } else if (meetsMatchReq) {
@@ -362,149 +391,220 @@ const CreatePassword = ({ navigation, route }: { navigation: any, route: any }) 
     } else if (meetsNumberReq) {
       setMeetsNumberReq(false)
     }
-    if (!commonPasswordList.test(password) && password.length >= MIN_PASSWORD_LEN) {
+    if (
+      !commonPasswordList.test(password) &&
+      password.length >= MIN_PASSWORD_LEN
+    ) {
       setMeetsCommonReq(true)
     } else {
       setMeetsCommonReq(false)
     }
-    if (focusedField == 2 && password2 == '' && meetsCommonReq && meetsLengthReq && meetsNumberReq) {
+    if (
+      focusedField === 2 &&
+      password2 === '' &&
+      meetsCommonReq &&
+      meetsLengthReq &&
+      meetsNumberReq
+    ) {
       setPassBorderColor('#F7F7F9')
-    } 
+    }
   }, [password, password2])
 
   useEffect(() => {
-    if (focusedField == 2 && meetsCommonReq && meetsLengthReq && meetsMatchReq && meetsNumberReq && password2 != '' && password != '') {
+    if (
+      focusedField === 2 &&
+      meetsCommonReq &&
+      meetsLengthReq &&
+      meetsMatchReq &&
+      meetsNumberReq &&
+      password2 !== '' &&
+      password !== ''
+    ) {
       setPassBorderColor('#F7F7F9')
     }
   }, [meetsMatchReq])
 
   return (
-    <KeyboardAvoidingView behavior={Platform.OS === "ios" ? 'padding' : 'height'}>
-      <SignupHeader></SignupHeader>
-    <SafeAreaView style={{ backgroundColor: 'white' }} > 
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-        <View style={styles.container}>
-          <View style={styles.containerForm}>
-            <FormTitle></FormTitle>
-            <TextInput
-              style={[styles.input, { borderColor: passBorderColor }]}
-              placeholderTextColor='#C2C0CC'
-              underlineColorAndroid='transparent'
-              placeholder="Password"
-              autoCompleteType="off"
-              autoCorrect={false}
-              autoCapitalize='none'
-              //clearTextOnFocus={true}
-              enablesReturnKeyAutomatically={true}
-              maxLength={100}
-              textContentType='newPassword'
-              secureTextEntry={true}
-              onChangeText={(newText) => {
-                setPassword(newText)
-                if (newText == '') {
-                  setShouldShowRedErrors(false)
-                }
-              }}
-              onFocus={() => { 
-                setFocusedField(1)
-                setPassBorderColor('#7E1BCC')
-              }}
-              onBlur={() => { 
-                setPassBorderColor('#F7F7F9')
-                if (password == '') {
-                  setShouldShowRedErrors(false)
-                } else {
-                  setShouldShowRedErrors(true)
-                  if (password != '' && (!meetsCommonReq || !meetsLengthReq || !meetsNumberReq )) {
-                    setPassBorderColor('#E03D51')
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      <SignupHeader />
+      <SafeAreaView style={{ backgroundColor: 'white' }}>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+          <View style={styles.container}>
+            <View style={styles.containerForm}>
+              <FormTitle />
+              <TextInput
+                style={[styles.input, { borderColor: passBorderColor }]}
+                placeholderTextColor='#C2C0CC'
+                underlineColorAndroid='transparent'
+                placeholder='Password'
+                autoCompleteType='off'
+                autoCorrect={false}
+                autoCapitalize='none'
+                // clearTextOnFocus={true}
+                enablesReturnKeyAutomatically={true}
+                maxLength={100}
+                textContentType='newPassword'
+                secureTextEntry={true}
+                onChangeText={newText => {
+                  setPassword(newText)
+                  if (newText === '') {
+                    setShouldShowRedErrors(false)
                   }
-                  if (password != '' && password2 != '' && !meetsMatchReq) {
-                    setPassBorderColor('#E03D51')
-                    setPassBorderColor2('#E03D51')
-                  }
-                }
-              }}
-              keyboardAppearance='dark'
-            />
-            <TextInput
-              style={[styles.input, { borderColor: passBorderColor2, marginBottom: 10 }]}
-              placeholderTextColor='#C2C0CC'
-              underlineColorAndroid='transparent'
-              placeholder="Confirm Password"
-              autoCompleteType="off"
-              autoCorrect={false}
-              autoCapitalize='none'
-              //clearTextOnFocus={true}
-              enablesReturnKeyAutomatically={true}
-              maxLength={100}
-              textContentType='newPassword'
-              secureTextEntry={true}
-              onChangeText={(newText) => {
-                setPassword2(newText)
-              }}
-              onFocus={() => { 
-                setFocusedField(2)
-                setPassBorderColor2('#7E1BCC')
-                setShowRedMatchError(false)
-              }}
-              onBlur={() => { 
-                setPassBorderColor2('#F7F7F9')
-                
-                if (password == '') {
-                  setShouldShowRedErrors(false)
-                } else {
-                  setShouldShowRedErrors(true)
-                  setShowRedMatchError(true)
-                }
-                if (password2 != '' && password != '' && !meetsMatchReq) {
-                  setPassBorderColor2('#E03D51')
-                  setPassBorderColor('#E03D51')
-                }
-                if (meetsMatchReq && meetsCommonReq && meetsLengthReq && meetsNumberReq) {
+                }}
+                onFocus={() => {
+                  setFocusedField(1)
+                  setPassBorderColor('#7E1BCC')
+                }}
+                onBlur={() => {
                   setPassBorderColor('#F7F7F9')
-                }
-              }}
-              keyboardAppearance='dark'
-            />
-            {Checkbox({i:0, meetsReq: meetsNumberReq, shouldShowRedErrors: shouldShowRedErrors})}
-            {Checkbox({i:1, meetsReq: meetsLengthReq, shouldShowRedErrors: shouldShowRedErrors})}
-            {Checkbox({i:3, meetsReq: meetsCommonReq, shouldShowRedErrors: shouldShowRedErrors})}
-            {Checkbox({i:2, meetsReq: meetsMatchReq, shouldShowRedErrors: (password2.length >= password.length || shouldShowRedMatchError) ? shouldShowRedErrors: false})}
-            <Text style={styles.terms}>{messages.termsAndPrivacy}
-            <Text
-              style={{color:'#CC0FE0'}}
-              onPress={() => {
-                Linking.openURL('https://audius.co/legal/privacy-policy').catch((err) => console.error('An error occurred', err))
-              }}
-              > {messages.terms}</Text>
-            <Text> {messages.and}</Text>
-            <Text style={{color:'#CC0FE0'}}
-            onPress={() => {
-              Linking.openURL('https://audius.co/legal/privacy-policy').catch((err) => console.error('An error occurred', err))
-            }}
-            > {messages.privacy}</Text>
-            </Text>
-            <TouchableOpacity
-            style={styles.formBtn}
-            disabled={isWorking}
-            activeOpacity={0.6}
-            onPress={() => {
-              Keyboard.dismiss()
-              if (!isWorking && meetsLengthReq && meetsNumberReq && meetsMatchReq && meetsCommonReq) {
-                setOnSignOn()
-                console.log(route.params.email)
-                navigation.push('ProfileAuto', { email: route.params.email, password: password })
-              }
-            }}
-            >
-              <MainBtnTitle isWorking={isWorking}></MainBtnTitle>
-            </TouchableOpacity>
+                  if (password === '') {
+                    setShouldShowRedErrors(false)
+                  } else {
+                    setShouldShowRedErrors(true)
+                    if (
+                      password !== '' &&
+                      (!meetsCommonReq || !meetsLengthReq || !meetsNumberReq)
+                    ) {
+                      setPassBorderColor('#E03D51')
+                    }
+                    if (password !== '' && password2 !== '' && !meetsMatchReq) {
+                      setPassBorderColor('#E03D51')
+                      setPassBorderColor2('#E03D51')
+                    }
+                  }
+                }}
+                keyboardAppearance='dark'
+              />
+              <TextInput
+                style={[
+                  styles.input,
+                  { borderColor: passBorderColor2, marginBottom: 10 }
+                ]}
+                placeholderTextColor='#C2C0CC'
+                underlineColorAndroid='transparent'
+                placeholder='Confirm Password'
+                autoCompleteType='off'
+                autoCorrect={false}
+                autoCapitalize='none'
+                // clearTextOnFocus={true}
+                enablesReturnKeyAutomatically={true}
+                maxLength={100}
+                textContentType='newPassword'
+                secureTextEntry={true}
+                onChangeText={newText => {
+                  setPassword2(newText)
+                }}
+                onFocus={() => {
+                  setFocusedField(2)
+                  setPassBorderColor2('#7E1BCC')
+                  setShowRedMatchError(false)
+                }}
+                onBlur={() => {
+                  setPassBorderColor2('#F7F7F9')
+
+                  if (password === '') {
+                    setShouldShowRedErrors(false)
+                  } else {
+                    setShouldShowRedErrors(true)
+                    setShowRedMatchError(true)
+                  }
+                  if (password2 !== '' && password !== '' && !meetsMatchReq) {
+                    setPassBorderColor2('#E03D51')
+                    setPassBorderColor('#E03D51')
+                  }
+                  if (
+                    meetsMatchReq &&
+                    meetsCommonReq &&
+                    meetsLengthReq &&
+                    meetsNumberReq
+                  ) {
+                    setPassBorderColor('#F7F7F9')
+                  }
+                }}
+                keyboardAppearance='dark'
+              />
+              {Checkbox({
+                i: 0,
+                meetsReq: meetsNumberReq,
+                shouldShowRedErrors: shouldShowRedErrors
+              })}
+              {Checkbox({
+                i: 1,
+                meetsReq: meetsLengthReq,
+                shouldShowRedErrors: shouldShowRedErrors
+              })}
+              {Checkbox({
+                i: 3,
+                meetsReq: meetsCommonReq,
+                shouldShowRedErrors: shouldShowRedErrors
+              })}
+              {Checkbox({
+                i: 2,
+                meetsReq: meetsMatchReq,
+                shouldShowRedErrors:
+                  password2.length >= password.length || shouldShowRedMatchError
+                    ? shouldShowRedErrors
+                    : false
+              })}
+              <Text style={styles.terms}>
+                {messages.termsAndPrivacy}
+                <Text
+                  style={{ color: '#CC0FE0' }}
+                  onPress={() => {
+                    Linking.openURL(
+                      'https://audius.co/legal/privacy-policy'
+                    ).catch(err => console.error('An error occurred', err))
+                  }}
+                >
+                  {' '}
+                  {messages.terms}
+                </Text>
+                <Text> {messages.and}</Text>
+                <Text
+                  style={{ color: '#CC0FE0' }}
+                  onPress={() => {
+                    Linking.openURL(
+                      'https://audius.co/legal/privacy-policy'
+                    ).catch(err => console.error('An error occurred', err))
+                  }}
+                >
+                  {' '}
+                  {messages.privacy}
+                </Text>
+              </Text>
+              <TouchableOpacity
+                style={styles.formBtn}
+                disabled={isWorking}
+                activeOpacity={0.6}
+                onPress={() => {
+                  Keyboard.dismiss()
+                  if (
+                    !isWorking &&
+                    meetsLengthReq &&
+                    meetsNumberReq &&
+                    meetsMatchReq &&
+                    meetsCommonReq
+                  ) {
+                    setisWorking(true)
+                    setOnSignOn()
+                    console.log(route.params.email)
+                    navigation.push('ProfileAuto', {
+                      email: route.params.email,
+                      password: password
+                    })
+                  }
+                }}
+              >
+                <MainBtnTitle isWorking={isWorking} />
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-      </TouchableWithoutFeedback>
-    </SafeAreaView>
+        </TouchableWithoutFeedback>
+      </SafeAreaView>
     </KeyboardAvoidingView>
   )
-};
+}
 
-export default CreatePassword;
+export default CreatePassword

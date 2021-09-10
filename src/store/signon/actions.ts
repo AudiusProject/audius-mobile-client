@@ -57,15 +57,21 @@ export const signinFailedReset = (): SigninFailedResetAction => ({
   type: SIGN_IN_FAILED_RESET
 })
 
-export const signupValidateEmailFailed = (error: string): SignupValidateEmailFailedAction => ({
+export const signupValidateEmailFailed = (
+  error: string
+): SignupValidateEmailFailedAction => ({
   type: VALIDATE_EMAIL_FAILED,
   error
 })
-export const signupValidateEmailSuceeded = (available: boolean): SignupValidateEmailSuceededAction => ({
+export const signupValidateEmailSuceeded = (
+  available: boolean
+): SignupValidateEmailSuceededAction => ({
   type: VALIDATE_EMAIL_SUCEEDED,
   available
 })
-export const signupValidateHandleFailed = (error: string): SignupValidateHandleFailedAction => ({
+export const signupValidateHandleFailed = (
+  error: string
+): SignupValidateHandleFailedAction => ({
   type: VALIDATE_HANDLE_FAILED,
   error
 })

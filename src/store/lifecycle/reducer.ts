@@ -1,5 +1,5 @@
 import User from 'models/User'
-import { FollowArtistsCategory } from 'store/signon/types'
+
 import {
   LifecycleActions,
   BACKEND_LOADED,
@@ -27,7 +27,7 @@ const initialState = {
   signedIn: false,
   account: null,
   location: null,
-  onSignUp: false,
+  onSignUp: false
 }
 
 const reducer = (

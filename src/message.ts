@@ -52,10 +52,10 @@ export enum MessageType {
   // Sign On
   SUBMIT_SIGNIN = 'submit-signin',
   SIGN_IN_FAILURE = 'sign-in-failure',
-  SIGN_UP_VALIDATE_EMAIL= 'sign-up-validate-email',
+  SIGN_UP_VALIDATE_EMAIL = 'sign-up-validate-email',
   SIGN_UP_VALIDATE_EMAIL_SUCCESS = 'sign-up-validate-email-success',
   SIGN_UP_VALIDATE_EMAIL_FAILURE = 'sign-up-validate-email-failure',
-  SIGN_UP_VALIDATE_HANDLE= 'sign-up-validate-handle',
+  SIGN_UP_VALIDATE_HANDLE = 'sign-up-validate-handle',
   SIGN_UP_VALIDATE_HANDLE_SUCCESS = 'sign-up-validate-handle-success',
   SIGN_UP_VALIDATE_HANDLE_FAILURE = 'sign-up-validate-handle-failure',
   FETCH_ALL_FOLLOW_ARTISTS = 'fetch_all_follow_artists',
@@ -245,29 +245,29 @@ export const handleMessage = async (
       return dispatch(notificationsActions.append(Status.FAILURE, []))
 
     // Signon
-    case MessageType.SIGN_IN_FAILURE: 
-      //console.log('Signin: got failure message from client')
+    case MessageType.SIGN_IN_FAILURE:
+      // console.log('Signin: got failure message from client')
       dispatch(signonActions.signinFailed(message.error))
       return
     case MessageType.SIGN_UP_VALIDATE_EMAIL_FAILURE:
-      //console.log('Signup: got email validate failure message from client')
+      // console.log('Signup: got email validate failure message from client')
       dispatch(signonActions.signupValidateEmailFailed(message.error))
       return
     case MessageType.SIGN_UP_VALIDATE_EMAIL_SUCCESS:
-      //console.log('Signup: got email validate success message from client')
+      // console.log('Signup: got email validate success message from client')
       dispatch(signonActions.signupValidateEmailSuceeded(message.available))
       return
     case MessageType.SIGN_UP_VALIDATE_HANDLE_FAILURE:
-      //console.log('Signup: got handle validate failure message from client')
+      // console.log('Signup: got handle validate failure message from client')
       dispatch(signonActions.signupValidateHandleFailed(message.error))
       return
-    
+
     case MessageType.SIGN_UP_VALIDATE_HANDLE_SUCCESS:
-      //console.log('Signup: got handle validate success message from client')
+      // console.log('Signup: got handle validate success message from client')
       dispatch(signonActions.signupValidateHandleSuceeded())
       return
     case MessageType.SIGN_UP_SUCCESS:
-      //console.log('Signup: got succeeded message from client')
+      // console.log('Signup: got succeeded message from client')
       dispatch(signonActions.signupSuceeded(message.userId))
       return
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react"
+import React, { useState, useEffect } from 'react'
 import {
   Animated,
   StyleSheet,
@@ -7,12 +7,12 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView
-} from "react-native"
+} from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { useDispatchWebAction } from '../../hooks/useWebAction'
-import SignupHeader from "./SignupHeader"
-import { FollowArtistsCategory } from "../../store/signon/types"
-import { getUserId } from "../../store/signon/selectors"
+import SignupHeader from './SignupHeader'
+import { FollowArtistsCategory } from '../../store/signon/types'
+import { getUserId } from '../../store/signon/selectors'
 
 import IconArrow from '../../assets/images/iconArrow.svg'
 import IconWand from '../../assets/images/iconWand.svg'
@@ -24,8 +24,7 @@ const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: 'white',
     justifyContent: 'flex-start',
-    flexDirection: 'column',
-
+    flexDirection: 'column'
   },
   containerTop: {
     flex: 0,
@@ -53,7 +52,7 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    flexWrap: 'wrap',
+    flexWrap: 'wrap'
   },
   containerButton: {
     position: 'absolute',
@@ -65,7 +64,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     zIndex: 15,
     paddingBottom: 40,
-    backgroundColor: 'white',
+    backgroundColor: 'white'
   },
   title: {
     color: '#7E1BCC',
@@ -85,11 +84,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#CC0FE0',
     borderRadius: 4,
     paddingRight: 10,
-    paddingLeft: 10,
+    paddingLeft: 10
   },
   formButtonTitleContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   formButtonTitle: {
     color: 'white',
@@ -106,7 +105,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     height: 20,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
   wandButtonTitle: {
     color: '#858199',
@@ -134,9 +133,9 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
-    flexWrap: 'wrap',
+    flexWrap: 'wrap'
   },
-  animatedPillView:{
+  animatedPillView: {
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 8
@@ -151,11 +150,11 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     backgroundColor: 'white',
     marginLeft: 8,
-    lineHeight: 24,
+    lineHeight: 24
   },
   pillActive: {
     borderColor: '#7E1BCC',
-    backgroundColor: '#7E1BCC',
+    backgroundColor: '#7E1BCC'
   },
   pillText: {
     fontFamily: 'AvenirNextLTPro-Medium',
@@ -170,7 +169,7 @@ const styles = StyleSheet.create({
     color: '#858199',
     fontSize: 14,
     textAlign: 'center',
-    fontFamily: 'AvenirNextLTPro-Regular',
+    fontFamily: 'AvenirNextLTPro-Regular'
   },
   card: {
     width: 140,
@@ -183,11 +182,11 @@ const styles = StyleSheet.create({
     shadowColor: '#6A677A40',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.35,
-    shadowRadius: 3,  
+    shadowRadius: 3,
     elevation: 5,
     alignItems: 'center',
-    flexDirection:'column',
-    justifyContent: 'center',
+    flexDirection: 'column',
+    justifyContent: 'center'
   },
   cardName: {
     color: '#858199',
@@ -212,7 +211,7 @@ const styles = StyleSheet.create({
     borderColor: '#F7F7F9',
     marginBottom: 10
   }
-});
+})
 
 const messages = {
   title: 'Follow At Least 3 Artists To Get Started',
@@ -220,27 +219,26 @@ const messages = {
     'Tracks uploaded or reposted by people you follow will appear in your feed.',
   pickForMe: 'Pick Some For Me',
   following: 'Following',
-  continue: 'Continue',
+  continue: 'Continue'
 }
 const MINIMUM_FOLLOWER_COUNT = 3
 
-var didAnimation = false
+let didAnimation = false
 const FormTitle = () => {
-  var opacity = new Animated.Value(1);
+  let opacity = new Animated.Value(1)
   if (!didAnimation) {
-    opacity = new Animated.Value(0);
+    opacity = new Animated.Value(0)
     Animated.timing(opacity, {
       toValue: 1,
       duration: 500,
       useNativeDriver: true
     }).start(({ finished }) => {
       didAnimation = true
-    });
+    })
   }
   return (
     <Animated.View style={{ opacity }}>
-      <Text style={styles.title}>{messages.title}
-      </Text>
+      <Text style={styles.title}>{messages.title}</Text>
     </Animated.View>
   )
 }
@@ -248,7 +246,7 @@ const FormTitle = () => {
 const FormBtnTitle = () => {
   return (
     <View style={styles.formButtonTitleContainer}>
-      <Text style={styles.formButtonTitle}> { messages.continue } </Text>
+      <Text style={styles.formButtonTitle}> {messages.continue} </Text>
       <IconArrow style={styles.icon} fill={'white'} />
     </View>
   )
@@ -257,44 +255,59 @@ const FormBtnTitle = () => {
 const WandBtnTitle = () => {
   return (
     <View style={styles.formButtonTitleContainer}>
-      <IconWand style={styles.wandIcon} fill={'#858199'} width={16} height={16} />
-      <Text style={styles.wandButtonTitle}> { messages.pickForMe } </Text>
+      <IconWand
+        style={styles.wandIcon}
+        fill={'#858199'}
+        width={16}
+        height={16}
+      />
+      <Text style={styles.wandButtonTitle}> {messages.pickForMe} </Text>
     </View>
   )
 }
 
 const Card = () => {
-  return(
-  <View style={styles.card}>
-    <View style={styles.cardImage}></View>
-    <Text style={styles.cardName} numberOfLines={1} >Abdjsd hgfhfhgfhf</Text>
-    <Text style={styles.cardFollowers} numberOfLines={1} >99,999 Followers</Text>
-  </View>
+  return (
+    <View style={styles.card}>
+      <View style={styles.cardImage} />
+      <Text style={styles.cardName} numberOfLines={1}>
+        Abdjsd hgfhfhgfhf
+      </Text>
+      <Text style={styles.cardFollowers} numberOfLines={1}>
+        99,999 Followers
+      </Text>
+    </View>
   )
 }
 
-
-const FirstFollows = ({ navigation, route }: { navigation: any, route: any }) => {
-
-  const [isWorking, setisWorking] = useState(false);
-  const [activeFilter, setActiveFilter] = useState(FollowArtistsCategory.FEATURED)
-  const userId = useSelector(getUserId);
+const FirstFollows = ({
+  navigation,
+  route
+}: {
+  navigation: any
+  route: any
+}) => {
+  const [isWorking, setisWorking] = useState(false)
+  const [activeFilter, setActiveFilter] = useState(
+    FollowArtistsCategory.FEATURED
+  )
+  const userId = useSelector(getUserId)
 
   useEffect(() => {
     console.log('Received User ID: ' + userId)
   }, [userId])
 
   const Pill = ({ category }: { category: FollowArtistsCategory }) => {
-    const isActive = (activeFilter===category)
+    const isActive = activeFilter === category
     const scalePill = new Animated.Value(1)
     const animatePillIn = () => {
-        Animated.timing(scalePill, {
-          toValue: 0.9,
-          duration: 100,
-          delay: 0,
-          // easing: Easing.in(Easing.bounce),
-          useNativeDriver: true
-        }).start();
+      Animated.timing(scalePill, {
+        toValue: 0.9,
+        duration: 100,
+        delay: 0,
+        // easing: Easing.in(Easing.bounce),
+        useNativeDriver: true
+      }).start()
     }
     const animatePillOut = () => {
       Animated.timing(scalePill, {
@@ -302,24 +315,29 @@ const FirstFollows = ({ navigation, route }: { navigation: any, route: any }) =>
         duration: 100,
         delay: 0,
         // easing: Easing.in(Easing.bounce),
-        useNativeDriver: true,
-      }).start();
-  }
+        useNativeDriver: true
+      }).start()
+    }
     if (!isActive) {
       return (
-        <Animated.View style={[styles.animatedPillView, {transform: [{scale: scalePill}]}]}>
+        <Animated.View
+          style={[
+            styles.animatedPillView,
+            { transform: [{ scale: scalePill }] }
+          ]}
+        >
           <TouchableOpacity
-          style={styles.pill}
-          activeOpacity={1}
-          onPressIn={() => {
-            animatePillIn()
-          }}
-          onPressOut={()=>{
-            animatePillOut()
-          }}
-          onPress={()=>{
-            setActiveFilter(category)
-          }}
+            style={styles.pill}
+            activeOpacity={1}
+            onPressIn={() => {
+              animatePillIn()
+            }}
+            onPressOut={() => {
+              animatePillOut()
+            }}
+            onPress={() => {
+              setActiveFilter(category)
+            }}
           >
             <Text style={styles.pillText}>{category}</Text>
           </TouchableOpacity>
@@ -327,18 +345,25 @@ const FirstFollows = ({ navigation, route }: { navigation: any, route: any }) =>
       )
     } else {
       return (
-        <Animated.View style={[styles.animatedPillView, {transform: [{scale: scalePill}]}]}>
-          <TouchableOpacity 
+        <Animated.View
+          style={[
+            styles.animatedPillView,
+            { transform: [{ scale: scalePill }] }
+          ]}
+        >
+          <TouchableOpacity
             style={[styles.pill, styles.pillActive]}
             activeOpacity={1}
-            onPressIn={()=>{
+            onPressIn={() => {
               animatePillIn()
             }}
-            onPressOut={()=>{
+            onPressOut={() => {
               animatePillOut()
             }}
-            >
-            <Text style={[styles.pillText, styles.pillTextActive]}>{category}</Text>
+          >
+            <Text style={[styles.pillText, styles.pillTextActive]}>
+              {category}
+            </Text>
           </TouchableOpacity>
         </Animated.View>
       )
@@ -350,66 +375,76 @@ const FirstFollows = ({ navigation, route }: { navigation: any, route: any }) =>
 
   return (
     <View style={styles.container}>
-      <SignupHeader></SignupHeader>
-      <SafeAreaView style={{ backgroundColor: 'white'}} >
+      <SignupHeader />
+      <SafeAreaView style={{ backgroundColor: 'white' }}>
         <ScrollView>
           <View style={styles.container}>
             <View style={styles.containerTop}>
-              <FormTitle></FormTitle>
+              <FormTitle />
               <Text style={styles.instruction}>{messages.subTitle}</Text>
 
               <View style={styles.pillsContainer}>
-                {Pill({category: FollowArtistsCategory.FEATURED})}
-                {Pill({category: FollowArtistsCategory.ALL_GENRES})}
-                {Pill({category: FollowArtistsCategory.ELECTRONIC})}
-                {Pill({category: FollowArtistsCategory.HIP_HOP_RAP})}
-                {Pill({category: FollowArtistsCategory.ALTERNATIVE})}
-                {Pill({category: FollowArtistsCategory.ROCK})}
+                {Pill({ category: FollowArtistsCategory.FEATURED })}
+                {Pill({ category: FollowArtistsCategory.ALL_GENRES })}
+                {Pill({ category: FollowArtistsCategory.ELECTRONIC })}
+                {Pill({ category: FollowArtistsCategory.HIP_HOP_RAP })}
+                {Pill({ category: FollowArtistsCategory.ALTERNATIVE })}
+                {Pill({ category: FollowArtistsCategory.ROCK })}
               </View>
             </View>
             <View style={styles.cardsArea}>
               <TouchableOpacity
-                  style={styles.wandBtn}
-                  activeOpacity={0.6}
-                  onPress={() => {
-                    // ...
-                  }}
-                >
-                <WandBtnTitle></WandBtnTitle>
+                style={styles.wandBtn}
+                activeOpacity={0.6}
+                onPress={() => {
+                  // ...
+                }}
+              >
+                <WandBtnTitle />
               </TouchableOpacity>
               <View style={styles.containerCards}>
-                  
-                <Card></Card>
-                <Card></Card>
-                <Card></Card>
-                <Card></Card>
-                <Card></Card>
-                <Card></Card>
-
+                <Card />
+                <Card />
+                <Card />
+                <Card />
+                <Card />
+                <Card />
               </View>
             </View>
           </View>
         </ScrollView>
       </SafeAreaView>
-        
-        <View style={styles.containerButton}>
-          <TouchableOpacity
-            style={styles.formBtn}
-            activeOpacity={0.6}
-            onPress={() => {
-              if (!isWorking) {
-              console.log ( route.params.email + '|' + route.params.password + '|' + route.params.name + '|' +  route.params.handle )
-              navigation.push('AllowNotifications', { email: route.params.email, password: route.params.password, name: route.params.name, handle: route.params.handle })
-              }
-            }}
-          >
-            <FormBtnTitle></FormBtnTitle>
-          </TouchableOpacity>
-          <Text style={styles.followCounter}>Following 0/3</Text>
-        </View>
-        </View>
-    
-  )
-};
 
-export default FirstFollows;
+      <View style={styles.containerButton}>
+        <TouchableOpacity
+          style={styles.formBtn}
+          activeOpacity={0.6}
+          onPress={() => {
+            if (!isWorking) {
+              console.log(
+                route.params.email +
+                  '|' +
+                  route.params.password +
+                  '|' +
+                  route.params.name +
+                  '|' +
+                  route.params.handle
+              )
+              navigation.push('AllowNotifications', {
+                email: route.params.email,
+                password: route.params.password,
+                name: route.params.name,
+                handle: route.params.handle
+              })
+            }
+          }}
+        >
+          <FormBtnTitle />
+        </TouchableOpacity>
+        <Text style={styles.followCounter}>Following 0/3</Text>
+      </View>
+    </View>
+  )
+}
+
+export default FirstFollows

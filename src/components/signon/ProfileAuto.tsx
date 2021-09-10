@@ -1,4 +1,4 @@
-import React from "react"
+import React from 'react'
 import {
   Animated,
   StyleSheet,
@@ -7,8 +7,8 @@ import {
   TouchableOpacity,
   Dimensions,
   SafeAreaView
-} from "react-native"
-import SignupHeader from "./SignupHeader"
+} from 'react-native'
+import SignupHeader from './SignupHeader'
 
 import IconInstagram from '../../assets/images/iconInstagram.svg'
 import IconTwitter from '../../assets/images/iconTwitterBird.svg'
@@ -49,11 +49,11 @@ const styles = StyleSheet.create({
     padding: 10,
     justifyContent: 'center',
     backgroundColor: '#CC0FE0',
-    borderRadius: 4,
+    borderRadius: 4
   },
   formButtonTitleContainer: {
     flexDirection: 'row',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   formButtonTitle: {
     color: 'white',
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   icon: {
     height: 20,
     width: 20,
-    marginRight: 10,
+    marginRight: 10
   },
   instruction: {
     color: '#858199',
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   bulletsContainer: {
     marginLeft: 0,
     paddingLeft: 0,
-    paddingBottom: 48,
+    paddingBottom: 48
   },
   bulletpointText: {
     color: '#858199',
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
   verifiedIcon: {
     marginLeft: 8
   },
-  ifApplicable:{
+  ifApplicable: {
     fontSize: 10,
     fontFamily: 'AvenirNextLTPro-regular',
     color: '#C2C0CC',
@@ -114,16 +114,16 @@ const styles = StyleSheet.create({
   gotoManualBtnTitle: {
     color: '#7E1BCC',
     fontSize: 14,
-    fontFamily: 'AvenirNextLTPro-regular',
+    fontFamily: 'AvenirNextLTPro-regular'
   }
-});
+})
 
 const messages = {
   header: 'Tell Us About Yourself So Others Can Find You',
   description:
     'Quickly complete your profile by linking one of your social accounts.',
   descriptionLong:
-    'We will autofill your name, handle, profile picture, cover photo, location, and verification. You won\'t use this to log-in, and Audius will never post on your behalf.',
+    "We will autofill your name, handle, profile picture, cover photo, location, and verification. You won't use this to log-in, and Audius will never post on your behalf.",
   twitter: 'Complete With Twitter',
   instagram: 'Complete With Instagram',
   manually: 'I’d rather fill out my profile manually',
@@ -137,18 +137,18 @@ const messages = {
   ifApplicable: '(if applicable)'
 }
 
-var didAnimation = false
+let didAnimation = false
 const FormTitle = () => {
-  var opacity = new Animated.Value(1);
+  let opacity = new Animated.Value(1)
   if (!didAnimation) {
-    opacity = new Animated.Value(0);
+    opacity = new Animated.Value(0)
     Animated.timing(opacity, {
       toValue: 1,
       duration: 500,
       useNativeDriver: true
     }).start(({ finished }) => {
       didAnimation = true
-    });
+    })
   }
   return (
     <Animated.View style={{ opacity }}>
@@ -161,7 +161,7 @@ const TwitterBtnTitle = () => {
   return (
     <View style={styles.formButtonTitleContainer}>
       <IconTwitter style={styles.icon} fill={'white'} />
-      <Text style={styles.formButtonTitle}> { messages.twitter } </Text>
+      <Text style={styles.formButtonTitle}> {messages.twitter} </Text>
     </View>
   )
 }
@@ -170,27 +170,23 @@ const InstagramBtnTitle = () => {
   return (
     <View style={styles.formButtonTitleContainer}>
       <IconInstagram style={styles.icon} fill={'white'} />
-      <Text style={styles.formButtonTitle}> { messages.instagram } </Text>
+      <Text style={styles.formButtonTitle}> {messages.instagram} </Text>
     </View>
   )
 }
 
 const BulletPoint = ({ i }: { i: number }) => {
-  if (i == 4) {
+  if (i === 4) {
     return (
-      <View style={[styles.formButtonTitleContainer, {marginBottom:4}]}>
+      <View style={[styles.formButtonTitleContainer, { marginBottom: 4 }]}>
         <GradientSave style={styles.icon} />
         <Text style={styles.bulletpointText}>{messages.twitterChecks[i]}</Text>
-        <IconVerified
-            height={16}
-            width={16}
-            style={styles.verifiedIcon}
-          />
+        <IconVerified height={16} width={16} style={styles.verifiedIcon} />
       </View>
     )
   } else {
     return (
-      <View style={[styles.formButtonTitleContainer, {marginBottom:15.6}]}>
+      <View style={[styles.formButtonTitleContainer, { marginBottom: 15.6 }]}>
         <GradientSave style={styles.icon} />
         <Text style={styles.bulletpointText}>{messages.twitterChecks[i]}</Text>
       </View>
@@ -199,74 +195,88 @@ const BulletPoint = ({ i }: { i: number }) => {
 }
 
 const gotoManualBtnTitle = () => {
-  return (
-    <Text style={styles.gotoManualBtnTitle}> {messages.manually} </Text>
-  )
+  return <Text style={styles.gotoManualBtnTitle}> {messages.manually} </Text>
 }
 
-const ProfileAuto = ({ navigation, route }: { navigation: any, route: any }) => {
-
+const ProfileAuto = ({
+  navigation,
+  route
+}: {
+  navigation: any
+  route: any
+}) => {
   return (
-    
-    <SafeAreaView style={{ backgroundColor: 'white' }} >
-      <SignupHeader></SignupHeader>
-        <View style={styles.container}>
-          <View style={styles.containerForm}>
-            <FormTitle></FormTitle>
-            {Dimensions.get('window').height < 670 ? <Text style={[styles.instruction, {paddingLeft: 0, paddingRight: 0, paddingTop: 0}]}>{messages.description}</Text>: null}
-            
-            <TouchableOpacity
-            style={[styles.formBtn, {backgroundColor: '#1BA1F1'}]}
+    <SafeAreaView style={{ backgroundColor: 'white' }}>
+      <SignupHeader />
+      <View style={styles.container}>
+        <View style={styles.containerForm}>
+          <FormTitle />
+          {Dimensions.get('window').height < 670 ? (
+            <Text
+              style={[
+                styles.instruction,
+                { paddingLeft: 0, paddingRight: 0, paddingTop: 0 }
+              ]}
+            >
+              {messages.description}
+            </Text>
+          ) : null}
+
+          <TouchableOpacity
+            style={[styles.formBtn, { backgroundColor: '#1BA1F1' }]}
             activeOpacity={0.6}
             onPress={() => {
-              
-                console.log(route.params.email)
-
+              console.log(route.params.email)
             }}
-            >
-              <TwitterBtnTitle></TwitterBtnTitle>
-            </TouchableOpacity>
+          >
+            <TwitterBtnTitle />
+          </TouchableOpacity>
 
-            <TouchableOpacity
+          <TouchableOpacity
             style={styles.formBtn}
             activeOpacity={0.6}
             onPress={() => {
-              
-                console.log(route.params.email + '-' + route.params.password)
-
+              console.log(route.params.email + '-' + route.params.password)
             }}
-            >
-              <InstagramBtnTitle></InstagramBtnTitle>
-            </TouchableOpacity>
-            
-            {Dimensions.get('window').height < 670 ? 
+          >
+            <InstagramBtnTitle />
+          </TouchableOpacity>
+
+          {Dimensions.get('window').height < 670 ? (
             <Text style={[styles.instructionLong]}>
               {messages.descriptionLong}
-            </Text> : <Text style={styles.instruction}>{messages.description}</Text>}
+            </Text>
+          ) : (
+            <Text style={styles.instruction}>{messages.description}</Text>
+          )}
 
-            {Dimensions.get('window').height > 670 ? 
+          {Dimensions.get('window').height > 670 ? (
             <View style={styles.bulletsContainer}>
-              {BulletPoint({i:0})}
-              {BulletPoint({i:1})}
-              {BulletPoint({i:2})}
-              {BulletPoint({i:3})}
-              {BulletPoint({i:4})}
+              {BulletPoint({ i: 0 })}
+              {BulletPoint({ i: 1 })}
+              {BulletPoint({ i: 2 })}
+              {BulletPoint({ i: 3 })}
+              {BulletPoint({ i: 4 })}
               <Text style={styles.ifApplicable}>{messages.ifApplicable}</Text>
-            </View> : null}
-            
-            <TouchableOpacity
-              style={styles.gotoManualBtn}
-              activeOpacity={0.6}
-              onPress={() => {
-                navigation.push('ProfileManual', { email: route.params.email, password: route.params.password })
-              }}
-              >
-              {gotoManualBtnTitle()}
-            </TouchableOpacity>
-          </View>
+            </View>
+          ) : null}
+
+          <TouchableOpacity
+            style={styles.gotoManualBtn}
+            activeOpacity={0.6}
+            onPress={() => {
+              navigation.push('ProfileManual', {
+                email: route.params.email,
+                password: route.params.password
+              })
+            }}
+          >
+            {gotoManualBtnTitle()}
+          </TouchableOpacity>
         </View>
+      </View>
     </SafeAreaView>
   )
-};
+}
 
-export default ProfileAuto;
+export default ProfileAuto
