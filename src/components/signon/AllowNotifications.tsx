@@ -7,7 +7,10 @@ import {
   TouchableOpacity,
   SafeAreaView
 } from "react-native"
+import { useSelector, useDispatch } from 'react-redux'
+import * as LifecycleActions from '../../store/lifecycle/actions'
 import SignupHeader from "./SignupHeader"
+import { getOnSignUp } from '../../store/lifecycle/selectors'
 
 import IconNotifications from '../../assets/images/iconNotification.svg'
 
@@ -129,6 +132,15 @@ const skipBtnTitle = () => {
 
 const AllowNotifications = ({ navigation, route }: { navigation: any, route: any }) => {
 
+  const dispatch = useDispatch()
+  // Set Lifecycle onSignUp(falsr) to hide signup flow.
+  const onSignOn = useSelector(getOnSignUp);
+  const setOnSignOn = () => {
+    if (onSignOn) {
+      dispatch(LifecycleActions.onSignUp(false))
+    }
+  }
+
   return (
     <SafeAreaView style={{ backgroundColor: 'white' }} >
       <SignupHeader></SignupHeader>
@@ -151,6 +163,7 @@ const AllowNotifications = ({ navigation, route }: { navigation: any, route: any
               activeOpacity={0.6}
               onPress={() => {
                 console.log ( route.params.email + '|' + route.params.password + '|' + route.params.name + '|' +  route.params.handle )
+                setOnSignOn()
               }}
               >
               {skipBtnTitle()}

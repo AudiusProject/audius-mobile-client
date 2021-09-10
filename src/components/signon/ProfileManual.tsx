@@ -15,15 +15,15 @@ import {
   Alert,
   Image
 } from "react-native"
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useDispatchWebAction } from '../../hooks/useWebAction'
 import LottieView from 'lottie-react-native'
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import { MessageType } from '../../message'
-import SignupHeader from "./SignupHeader"
+import SignupHeader from './SignupHeader'
+import PhotoBtn from './PhotoBtn'
 
 import IconArrow from '../../assets/images/iconArrow.svg'
-import IconCamera from '../../assets/images/iconCamera.svg'
 import NoPicture from '../../assets/images/nopicture.svg'
 import ValidationIconX from '../../assets/images/iconValidationX.svg'
 import { getHandleIsValid, getHandleError } from "../../store/signon/selectors"
@@ -128,36 +128,6 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: '#FFFFFF'
   },
-  cameraBtn: {
-    position: 'absolute',
-    backgroundColor: '#FCFCFC',
-    width: 114,
-    height: 40,
-    borderRadius: 6,
-    shadowColor: '#000000',
-    shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 0,  
-    elevation: 5,
-    zIndex: 5,
-    alignSelf: 'center',
-    marginTop: 137,
-    textAlign: 'center'
-  },
-  cameraBtnTitleContainer: {
-    width: '100%',
-    height: '100%',
-    flexDirection: 'row',
-    alignItems: 'center',
-    alignContent: 'center',
-    justifyContent: 'center',
-  },
-  cameraBtnTitle: {
-    color: '#7E1BCC',
-    fontSize: 16,
-    fontFamily: 'AvenirNextLTPro-Medium',
-    marginLeft: 11
-  },
   errorText: {
     flex: 1,
     color: '#E03D51',
@@ -244,16 +214,16 @@ const MainBtnTitle = ({isWorking}: {isWorking: boolean}) => {
 
 const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) => {
 
-  const [isWorking, setisWorking] = useState(false);
+  const [isWorking, setisWorking] = useState(false)
   const username = route.params.email
   const password = route.params.password
-  const [name, setName] = useState('');
-  const [handle, setHandle] = useState('');
-  const [nameBorderColor, setNameBorderColor] = useState('#F7F7F9');
-  const [handleBorderColor, setHandleBorderColor] = useState('#F7F7F9');
-
-  const handleIsValid = useSelector(getHandleIsValid);
-  const handleError = useSelector(getHandleError);
+  const [name, setName] = useState('')
+  const [handle, setHandle] = useState('')
+  const [nameBorderColor, setNameBorderColor] = useState('#F7F7F9')
+  const [handleBorderColor, setHandleBorderColor] = useState('#F7F7F9')
+  const [photoBtnIsHidden, setPhotoBtnIsHidden] = useState(false)
+  const handleIsValid = useSelector(getHandleIsValid)
+  const handleError = useSelector(getHandleError)
   const [profileImage, setProfileImage] = useState({
     height: 0,
     width: 0,
@@ -265,27 +235,13 @@ const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) =
   });
   const [imageSet, setImageSet] = useState(false)
 
-  const AddPhotoBtn = () => {
-    return(
-    <TouchableOpacity
-      style={styles.cameraBtn}
-      activeOpacity={0.6}
-      disabled={isWorking}
-      onPress={() => {
-        PhotoMenu()
-      }}
-      >
-        <View style={styles.cameraBtnTitleContainer}>
-        <IconCamera
-          height={18}
-          width={22}
-          fill={'#7E1BCC'}
-        />
-          <Text style={styles.cameraBtnTitle}>{!imageSet ? messages.photoBtnAdd : messages.photoBtnChange } </Text>
-        </View>
-    </TouchableOpacity>
-    )
-  }
+  useEffect(() => {
+    if (profileImage.file != '') {
+      setPhotoBtnIsHidden(true)
+    } else {
+      setPhotoBtnIsHidden(false)
+    }
+  }, [profileImage])
   
   const ProfileImage = () => {
     if (!imageSet) {
@@ -298,14 +254,20 @@ const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) =
       )
     } else {
       return(
-        <View style={styles.profilePicShadow}>
+        <TouchableOpacity
+          style={styles.profilePicShadow}
+          activeOpacity={1}
+          onPress={() => {
+              setPhotoBtnIsHidden(!photoBtnIsHidden)
+          }}
+          >
         <Image
           source={profileImage}
           height={206}
           width={206}
           style={[styles.profilePic]}
         />
-        </View>
+        </TouchableOpacity>
       )
     }
   }
@@ -415,7 +377,6 @@ const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) =
   }
 
   const dispatchWeb = useDispatchWebAction()
-  const dispatch = useDispatch()
 
   const validateHandle = (handle: string) => {
     dispatchWeb({
@@ -468,7 +429,11 @@ const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) =
             <FormTitle></FormTitle>
             <View style={styles.profilePicContainer}>
               {ProfileImage()}
-              {AddPhotoBtn()}
+              {PhotoBtn({
+                isWorking: isWorking,
+                imageSet: imageSet,
+                photoBtnIsHidden: photoBtnIsHidden,
+                doAction: PhotoMenu})}
             </View>
             <TextInput
               style={[styles.input, {borderColor: nameBorderColor}]}
