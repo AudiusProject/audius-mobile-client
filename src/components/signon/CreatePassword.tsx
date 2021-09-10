@@ -29,7 +29,6 @@ import ValidationIconX from '../../assets/images/iconValidationX.svg'
 
 import * as LifecycleActions from '../../store/lifecycle/actions'
 import { getOnSignUp } from '../../store/lifecycle/selectors'
-import { on } from "process"
 
 const styles = StyleSheet.create({
   container: {

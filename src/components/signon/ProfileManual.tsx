@@ -259,8 +259,9 @@ const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) =
     width: 0,
     name: '',
     size: 0,
-    type: '',
+    fileType: '',
     uri: '',
+    file: ''
   });
   const [imageSet, setImageSet] = useState(false)
 
@@ -326,9 +327,11 @@ const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) =
             width: response.width ?? 0,
             name: response.fileName ?? response.uri?.split('/').pop() ?? '',
             size: response.fileSize ?? 0,
-            type: 'image',
-            uri: `data:image/*;base64,${response.base64}`
+            fileType: response.type ?? '',
+            uri: response.uri ?? '',
+            file: `data:${response.type};base64,${response.base64}`
           }
+          console.log(response.type)
           setProfileImage(image)
           setImageSet(true)
         }
@@ -353,8 +356,9 @@ const ProfileManual = ({ navigation, route }: { navigation: any, route: any }) =
             width: response.width ?? 0,
             name: response.fileName ?? response.uri?.split('/').pop() ?? '',
             size: response.fileSize ?? 0,
-            type: 'image',
-            uri: `data:image/*;base64,${response.base64}`,
+            fileType: response.type ?? '',
+            uri: response.uri ?? '',
+            file: `data:${response.type};base64,${response.base64}`
           }
           setProfileImage(image)
           setImageSet(true)
