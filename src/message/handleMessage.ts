@@ -42,5 +42,15 @@ export const handleMessage = async (
   postMessage: (message: Message) => void,
   reload: () => void
 ) => {
-  messageHandlers[message.type]?.(message, dispatch, postMessage, reload)
+  const handler = messageHandlers[message.type]
+  if (handler) {
+    handler(message, dispatch, postMessage, reload)
+  } else {
+    // Ignore warning for android messages on ios
+    if (message.type in android && isIos) {
+      return
+    }
+
+    console.warn('No handler defined for message type: ', message.type)
+  }
 }
