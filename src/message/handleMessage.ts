@@ -44,7 +44,7 @@ export const handleMessage = async (
   postMessage: (message: Message) => void,
   reload: () => void
 ) => {
-  const handler = messageHandlers[message.type]
+  const handler = (messageHandlers as any)[message.type]
   if (handler) {
     handler(message, dispatch, postMessage, reload)
   } else {

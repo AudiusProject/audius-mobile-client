@@ -100,7 +100,7 @@ export enum MessageType {
 }
 
 export type Message = {
-  type: MessageType
+  type: string
   [key: string]: any
 }
 

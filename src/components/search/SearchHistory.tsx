@@ -11,7 +11,7 @@ import {
 import useSearchHistory from '../../store/search/hooks'
 import { submitQuery } from '../../store/search/actions'
 import { useColor, useTheme } from '../../utils/theme'
-import { useDispatchWebAction } from '../../hooks/useWebAction'
+import { useDispatchWebAction } from '../../hooks/useDispatchWeb'
 import { MessageType } from '../../message'
 import EmptySearch from './content/EmptySearch'
 import IconArrow from '../../assets/images/iconArrow.svg'

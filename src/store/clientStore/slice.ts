@@ -5,7 +5,7 @@ const initialState: any = {}
 // Slice
 
 const slice = createSlice({
-  name: 'clientStore',
+  name: 'CLIENT_STORE',
   initialState,
   reducers: {
     receive: (state, action) => {
