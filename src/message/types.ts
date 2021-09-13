@@ -94,7 +94,9 @@ export enum MessageType {
   LOGGING = 'logging',
 
   // Theme
-  THEME_CHANGE = 'theme-change'
+  THEME_CHANGE = 'theme-change',
+
+  SYNC_CLIENT_STORE = 'sync-client-store'
 }
 
 export type Message = {
