@@ -102,12 +102,16 @@ export type Message = {
   [key: string]: any
 }
 
-export type MessageHandler = (
-  message: Message | AnalyticsMessage,
-  dispatch: Dispatch,
-  postMessage: (message: Message) => void,
+export type MessageHandler = (args: {
+  // The message to handle
+  message: Message | AnalyticsMessage
+  // Used to dispatch an action to the redux store
+  dispatch: Dispatch
+  // Used to post a message back to the web client
+  postMessage: (message: Message) => void
+  // Used to reload the WebView
   reload: () => void
-) => void
+}) => void
 
 export type MessageHandlers = {
   [key in MessageType]: MessageHandler

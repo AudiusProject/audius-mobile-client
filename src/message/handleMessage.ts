@@ -44,7 +44,7 @@ export const handleMessage = async (
 ) => {
   const handler = messageHandlers[message.type]
   if (handler) {
-    handler(message, dispatch, postMessage, reload)
+    handler({ message, dispatch, postMessage, reload })
   } else {
     // Ignore warning for android messages on ios
     if (message.type in android && isIos) {

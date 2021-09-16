@@ -4,17 +4,17 @@ import { checkConnectivity, Connectivity } from '../../utils/connectivity'
 import { MessageType, MessageHandlers } from '../types'
 
 export const messageHandlers: Partial<MessageHandlers> = {
-  [MessageType.BACKEND_SETUP]: (_, dispatch) => {
+  [MessageType.BACKEND_SETUP]: ({ dispatch }) => {
     dispatch(lifecycleActions.backendLoaded())
   },
-  [MessageType.RELOAD]: (_, dispatch, __, reload) => {
+  [MessageType.RELOAD]: ({ dispatch, reload }) => {
     dispatch(lifecycleActions.backendTearDown())
     reload()
   },
-  [MessageType.SIGNED_IN]: (message, dispatch) => {
+  [MessageType.SIGNED_IN]: ({ message, dispatch }) => {
     dispatch(lifecycleActions.signedIn(message.account))
   },
-  [MessageType.REQUEST_NETWORK_CONNECTED]: (_, __, postMessage) => {
+  [MessageType.REQUEST_NETWORK_CONNECTED]: ({ postMessage }) => {
     const isConnected = checkConnectivity(Connectivity.netInfo)
     postMessage({
       type: MessageType.IS_NETWORK_CONNECTED,
@@ -22,13 +22,13 @@ export const messageHandlers: Partial<MessageHandlers> = {
       isAction: true
     })
   },
-  [MessageType.ON_FIRST_PAGE]: (_, dispatch) => {
+  [MessageType.ON_FIRST_PAGE]: ({ dispatch }) => {
     dispatch(lifecycleActions.onFirstPage())
   },
-  [MessageType.NOT_ON_FIRST_PAGE]: (_, dispatch) => {
+  [MessageType.NOT_ON_FIRST_PAGE]: ({ dispatch }) => {
     dispatch(lifecycleActions.notOnFirstPage())
   },
-  [MessageType.CHANGED_PAGE]: (message, dispatch) => {
+  [MessageType.CHANGED_PAGE]: ({ message, dispatch }) => {
     dispatch(lifecycleActions.changedPage(message.location))
   }
 }

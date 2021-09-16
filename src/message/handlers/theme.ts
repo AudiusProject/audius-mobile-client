@@ -10,11 +10,11 @@ import { MessageType, MessageHandlers } from '../types'
 let sentInitialTheme = false
 
 export const messageHandlers: Partial<MessageHandlers> = {
-  [MessageType.THEME_CHANGE]: (message, dispatch) => {
+  [MessageType.THEME_CHANGE]: ({ message, dispatch }) => {
     dispatch(themeActions.set(message.theme))
     handleThemeChange(message.theme)
   },
-  [MessageType.PREFERS_COLOR_SCHEME]: async (message, _, postMessage) => {
+  [MessageType.PREFERS_COLOR_SCHEME]: async ({ message, postMessage }) => {
     let prefers
     if (!sentInitialTheme) {
       prefers = getInitialDarkModePreference()
