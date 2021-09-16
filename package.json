@@ -31,6 +31,7 @@
     "lint": "eslint --cache --ext=js,jsx,ts,tsx src"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.15.8",
     "@react-native-community/async-storage": "^1.7.1",
     "@react-native-community/netinfo": "^5.7.1",
     "@react-native-community/push-notification-ios": "^1.0.3",
@@ -40,8 +41,9 @@
     "@svgr/core": "^5.5.0",
     "@types/react-native-video": "^3.1.5",
     "@types/react-redux": "^7.1.5",
-    "audius-client": "github:AudiusProject/audius-client",
+    "audius-client": "file:.yalc/audius-client",
     "bn.js": "^5.2.0",
+    "expo-crypto": "^9.2.0",
     "lottie-ios": "^3.2.3",
     "lottie-react-native": "^4.0.3",
     "numeral": "^2.0.6",
@@ -61,6 +63,7 @@
     "react-native-static-server": "^0.5.0",
     "react-native-svg": "^12.1.0",
     "react-native-svg-transformer": "^0.14.3",
+    "react-native-unimodules": "^0.14.8",
     "react-native-version-number": "^0.3.6",
     "react-native-video": "file:react-native-video-5.1.0-alpha2.tgz",
     "react-native-webview": "^11.0.2",
