@@ -1,3 +1,4 @@
+import colors from 'assets/colors/light'
 import React from 'react'
 
 import { StyleSheet } from 'react-native'
@@ -9,25 +10,15 @@ import AnimatedButtonProvider, {
 const styles = StyleSheet.create({
   animatedButton: {
     width: '20%',
-    height: 49,
     display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center'
+    alignItems: 'center'
   },
 
   iconWrapper: {
     width: 28,
-    height: 28
+    height: 49
   }
 })
-
-// .animatedButton path {
-//   fill: var(--neutral);
-// }
-
-// .activeButton path {
-//   fill: var(--primary);
-// }
 
 const AnimatedBottomButton = (props: AnimatedButtonProviderProps) => {
   return (

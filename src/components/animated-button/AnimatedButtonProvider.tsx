@@ -3,22 +3,17 @@ import { TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
 
 import LottieView from 'lottie-react-native'
 
-import useInstanceVar from 'audius-client/src/common/hooks/useInstanceVar'
+import AnimatedLottieView from 'lottie-react-native'
 
 export type BaseAnimatedButtonProps = {
   onClick: () => void
   uniqueKey: string
   isActive: boolean
   isDisabled?: boolean
-  className?: string
   stopPropagation?: boolean
   isMatrix: boolean
   style: ViewStyle
   wrapperStyle: ViewStyle
-
-  // If we mount in the active state,
-  // should we animate that transition or not?
-  disableAnimationOnMount?: boolean
 }
 
 type IconJSON = any
@@ -32,57 +27,39 @@ const AnimatedButton = ({
   onClick,
   isActive,
   isMatrix,
-  uniqueKey,
   isDisabled = false,
-  className = '',
   stopPropagation = false,
-  disableAnimationOnMount = true,
   style,
   wrapperStyle
 }: AnimatedButtonProps) => {
-  const [isPaused, setIsPaused] = useState(true)
-  // The key suffix is used to reset the animation (i.e. time = 0)
-  const [keySuffix, setKeySuffix] = useState(0)
-
-  const [getDidMount, setDidMount] = useInstanceVar(false)
-
+  const animationRef = useRef<AnimatedLottieView | null>()
   useEffect(() => {
     if (isActive) {
-      if (!disableAnimationOnMount || getDidMount()) {
-        setIsPaused(false)
-      }
+      const lastFrame = iconJSON.op
+      animationRef.current?.play(lastFrame, lastFrame)
     } else {
-      setKeySuffix(keySuffix => keySuffix + 1)
-      setIsPaused(true)
+      animationRef.current?.play(0, 0)
     }
-  }, [isActive, disableAnimationOnMount, getDidMount])
-
-  useEffect(() => {
-    setDidMount(true)
-  }, [setDidMount])
+  }, [isActive])
 
   const handleClick = useCallback(() => {
     if (isDisabled) return
+    animationRef.current?.play()
 
     onClick()
   }, [isDisabled, onClick, stopPropagation])
 
   return (
-    <View style={style}>
-      <TouchableWithoutFeedback onPress={handleClick}>
+    <TouchableWithoutFeedback onPress={handleClick}>
+      <View style={style}>
         <View style={wrapperStyle}>
           <LottieView
-            // We construct a unique here with a suffix that changes each time
-            // isActive is changed to false. This allows the parent of this component
-            // to reset the state of other animated buttons.
-            key={`${uniqueKey}-${keySuffix}`}
-            loop={false}
-            autoPlay={false}
+            ref={animation => (animationRef.current = animation)}
             source={iconJSON}
           />
         </View>
-      </TouchableWithoutFeedback>
-    </View>
+      </View>
+    </TouchableWithoutFeedback>
   )
 }
 

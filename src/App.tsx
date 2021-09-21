@@ -57,7 +57,6 @@ const App = () => {
         <WebRefContextProvider>
           <GoogleCast webRef={webRef} />
           <WebApp webRef={webRef} />
-          <BottomBar />
           <Search />
           {/*
         Note: it is very important that Notifications is rendered after WebApp.
@@ -65,6 +64,7 @@ const App = () => {
         touch targets and onPress will not work.
       */}
           <Notifications webRef={webRef} />
+          <BottomBar />
           <Audio webRef={webRef} />
           <OAuth webRef={webRef} />
           <Airplay webRef={webRef} />

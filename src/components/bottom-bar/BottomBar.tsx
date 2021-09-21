@@ -6,7 +6,7 @@ import React, {
   useEffect
 } from 'react'
 import { useSelector } from 'react-redux'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { push } from 'connected-react-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
@@ -46,10 +46,6 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: colors.neutralLight8,
     backgroundColor: colors.neutralLight10,
-    /* Above the play bar so it can slide up from underneath */
-    zIndex: 12,
-
-    padding: 0,
 
     display: 'flex',
     flexDirection: 'row',
