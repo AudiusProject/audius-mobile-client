@@ -27,11 +27,12 @@ module.exports = (async () => {
 
       extraNodeModules: {
         // This is used to resolve the absolute paths found in audius-client.
-        // Eventually all shared state logic will live in @audius/client-store
+        // Eventually all shared state logic will live in @audius/client-common
         // and this can be removed
         ...[
           'assets',
           'audio',
+          'common',
           'containers',
           'models',
           'schemas',
