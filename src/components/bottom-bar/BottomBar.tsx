@@ -3,14 +3,24 @@ import React, {
   useCallback,
   useContext,
   useState,
-  useEffect
+  useEffect,
+  useRef
 } from 'react'
 import { useSelector } from 'react-redux'
-import { StyleSheet } from 'react-native'
+import { Animated, Easing, StyleSheet, View } from 'react-native'
 import { push } from 'connected-react-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { getUserHandle } from 'audius-client/src/common/store/account/selectors'
+import { getMobileOverflowModal } from 'audius-client/src/common/store/ui/mobileOverflowModal/selectors'
+// TODO: move these into /common
+import {
+  openSignOn as _openSignOn,
+  showRequiresAccountModal
+} from 'audius-client/src/containers/sign-on/store/actions'
+import { Tabs } from 'audius-client/src/containers/explore-page/store/types'
+import { setTab } from 'audius-client/src/containers/explore-page/store/actions'
+
 import {
   FEED_PAGE,
   TRENDING_PAGE,
@@ -19,12 +29,6 @@ import {
   getPathname,
   profilePage
 } from 'audius-client/src/utils/route'
-import {
-  openSignOn as _openSignOn,
-  showRequiresAccountModal
-} from 'audius-client/src/containers/sign-on/store/actions'
-import { Tabs } from 'audius-client/src/containers/explore-page/store/types'
-import { setTab } from 'audius-client/src/containers/explore-page/store/actions'
 
 import colors from '../../assets/colors/light'
 import { useDispatchWeb } from '../../hooks/useDispatchWeb'
@@ -54,6 +58,14 @@ const styles = StyleSheet.create({
     flexWrap: 'nowrap',
     alignItems: 'center',
     justifyContent: 'space-evenly'
+  },
+
+  overlay: {
+    position: 'absolute',
+    top: -1,
+    width: '100%',
+    height: '200%',
+    backgroundColor: 'rgb(0, 0, 0)'
   }
 })
 
@@ -65,6 +77,7 @@ const BottomBar = () => {
   const dispatchWeb = useDispatchWeb()
   const handle = useSelectorWeb(getUserHandle)
   const location = useSelector(getLocation)
+  const overflowModal = useSelectorWeb(getMobileOverflowModal)
 
   const openSignOn = () => {
     dispatchWeb(_openSignOn(false))
@@ -95,6 +108,23 @@ const BottomBar = () => {
       setNavRoute(currentRoute)
     }
   }
+
+  const overlayOpacity = useRef(new Animated.Value(0)).current
+  useEffect(() => {
+    if (overflowModal.isOpen) {
+      Animated.timing(overlayOpacity, {
+        toValue: 0.6,
+        duration: 300,
+        useNativeDriver: false
+      }).start()
+    } else {
+      Animated.timing(overlayOpacity, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: false
+      }).start()
+    }
+  }, [overlayOpacity, overflowModal])
 
   const goToFeed = useCallback(() => {
     resetExploreTab()
@@ -143,36 +173,39 @@ const BottomBar = () => {
 
   return !onSignOn ? (
     <SafeAreaView style={styles.bottomBar} edges={['bottom']}>
-      <FeedButton
-        isActive={currentRoute === FEED_PAGE}
-        darkMode={isDarkMode}
-        onClick={onClick(goToFeed, FEED_PAGE)}
-        isMatrixMode={isMatrixMode}
-      />
-      <TrendingButton
-        isActive={currentRoute === TRENDING_PAGE}
-        darkMode={isDarkMode}
-        onClick={onClick(goToTrending, TRENDING_PAGE)}
-        isMatrixMode={isMatrixMode}
-      />
-      <ExploreButton
-        isActive={currentRoute === EXPLORE_PAGE}
-        darkMode={isDarkMode}
-        onClick={onClick(goToExplore, EXPLORE_PAGE)}
-        isMatrixMode={isMatrixMode}
-      />
-      <FavoritesButton
-        isActive={currentRoute === FAVORITES_PAGE}
-        darkMode={isDarkMode}
-        onClick={onClick(goToFavorites, FAVORITES_PAGE)}
-        isMatrixMode={isMatrixMode}
-      />
-      <ProfileButton
-        isActive={currentRoute === userProfilePage}
-        darkMode={isDarkMode}
-        onClick={onClick(goToProfile, userProfilePage)}
-        isMatrixMode={isMatrixMode}
-      />
+      <>
+        <FeedButton
+          isActive={currentRoute === FEED_PAGE}
+          darkMode={isDarkMode}
+          onClick={onClick(goToFeed, FEED_PAGE)}
+          isMatrixMode={isMatrixMode}
+        />
+        <TrendingButton
+          isActive={currentRoute === TRENDING_PAGE}
+          darkMode={isDarkMode}
+          onClick={onClick(goToTrending, TRENDING_PAGE)}
+          isMatrixMode={isMatrixMode}
+        />
+        <ExploreButton
+          isActive={currentRoute === EXPLORE_PAGE}
+          darkMode={isDarkMode}
+          onClick={onClick(goToExplore, EXPLORE_PAGE)}
+          isMatrixMode={isMatrixMode}
+        />
+        <FavoritesButton
+          isActive={currentRoute === FAVORITES_PAGE}
+          darkMode={isDarkMode}
+          onClick={onClick(goToFavorites, FAVORITES_PAGE)}
+          isMatrixMode={isMatrixMode}
+        />
+        <ProfileButton
+          isActive={currentRoute === userProfilePage}
+          darkMode={isDarkMode}
+          onClick={onClick(goToProfile, userProfilePage)}
+          isMatrixMode={isMatrixMode}
+        />
+      </>
+      <Animated.View style={{ ...styles.overlay, opacity: overlayOpacity }} />
     </SafeAreaView>
   ) : null
 }
