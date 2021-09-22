@@ -1,9 +1,8 @@
 import React, { memo, useState, useEffect, useRef, useCallback } from 'react'
-import { TouchableWithoutFeedback, View, ViewStyle } from 'react-native'
+import { TouchableHighlight, View, ViewStyle } from 'react-native'
 
 import LottieView from 'lottie-react-native'
-
-import AnimatedLottieView from 'lottie-react-native'
+import colors from '../../assets/colors/light'
 
 export type BaseAnimatedButtonProps = {
   onClick: () => void
@@ -32,34 +31,37 @@ const AnimatedButton = ({
   style,
   wrapperStyle
 }: AnimatedButtonProps) => {
-  const animationRef = useRef<AnimatedLottieView | null>()
+  const animationRef = useRef<LottieView | null>()
   useEffect(() => {
     if (isActive) {
       const lastFrame = iconJSON.op
-      animationRef.current?.play(lastFrame, lastFrame)
+      animationRef.current?.play(lastFrame)
     } else {
       animationRef.current?.play(0, 0)
     }
   }, [isActive])
 
   const handleClick = useCallback(() => {
-    if (isDisabled) return
+    if (isDisabled || isActive) return
     animationRef.current?.play()
 
     onClick()
   }, [isDisabled, onClick, stopPropagation])
 
   return (
-    <TouchableWithoutFeedback onPress={handleClick}>
-      <View style={style}>
-        <View style={wrapperStyle}>
-          <LottieView
-            ref={animation => (animationRef.current = animation)}
-            source={iconJSON}
-          />
-        </View>
+    <TouchableHighlight
+      onPress={handleClick}
+      style={style}
+      underlayColor={colors.neutralLight8}
+    >
+      <View style={wrapperStyle}>
+        <LottieView
+          ref={animation => (animationRef.current = animation)}
+          loop={false}
+          source={iconJSON}
+        />
       </View>
-    </TouchableWithoutFeedback>
+    </TouchableHighlight>
   )
 }
 

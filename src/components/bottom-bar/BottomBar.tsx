@@ -23,6 +23,8 @@ import {
   openSignOn as _openSignOn,
   showRequiresAccountModal
 } from 'audius-client/src/containers/sign-on/store/actions'
+import { Tabs } from 'audius-client/src/containers/explore-page/store/types'
+import { setTab } from 'audius-client/src/containers/explore-page/store/actions'
 
 import colors from '../../assets/colors/light'
 import { useDispatchWeb } from '../../hooks/useDispatchWeb'
@@ -64,8 +66,12 @@ const BottomBar = () => {
   const handle = useSelectorWeb(getUserHandle)
   const location = useSelector(getLocation)
 
-  const openSignOn = () => dispatchWeb(_openSignOn(false))
+  const openSignOn = () => {
+    dispatchWeb(_openSignOn(false))
+    dispatchWeb(showRequiresAccountModal())
+  }
   const goToRoute = (route: string) => dispatchWeb(push(route))
+  const resetExploreTab = () => dispatchWeb(setTab(Tabs.FOR_YOU))
 
   const userProfilePage = handle ? profilePage(handle) : null
   const navRoutes = new Set([
@@ -79,6 +85,9 @@ const BottomBar = () => {
   const [lastNavRoute, setNavRoute] = useState(FEED_PAGE)
   const currentRoute = location && getPathname(location)
 
+  // TODO: this will have to change with the RN SignOn changes
+  const onSignOn = currentRoute === '/signup' || currentRoute === '/signin'
+
   if (lastNavRoute !== currentRoute) {
     // If the current route isn't what we memoized, check if it's a nav route
     // and update the current route if so
@@ -88,7 +97,7 @@ const BottomBar = () => {
   }
 
   const goToFeed = useCallback(() => {
-    // resetExploreTab()
+    resetExploreTab()
     if (!handle) {
       openSignOn()
     } else {
@@ -97,17 +106,17 @@ const BottomBar = () => {
   }, [goToRoute, handle, openSignOn])
 
   const goToTrending = useCallback(() => {
-    // resetExploreTab()
+    resetExploreTab()
     goToRoute(TRENDING_PAGE)
   }, [goToRoute])
 
   const goToExplore = useCallback(() => {
-    // resetExploreTab()
+    resetExploreTab()
     goToRoute(EXPLORE_PAGE)
   }, [goToRoute])
 
   const goToFavorites = useCallback(() => {
-    // resetExploreTab()
+    resetExploreTab()
     if (!handle) {
       openSignOn()
     } else {
@@ -116,7 +125,7 @@ const BottomBar = () => {
   }, [goToRoute, handle, openSignOn])
 
   const goToProfile = useCallback(() => {
-    // resetExploreTab()
+    resetExploreTab()
     if (!handle) {
       openSignOn()
     } else {
@@ -132,7 +141,7 @@ const BottomBar = () => {
     []
   )
 
-  return (
+  return !onSignOn ? (
     <SafeAreaView style={styles.bottomBar} edges={['bottom']}>
       <FeedButton
         isActive={currentRoute === FEED_PAGE}
@@ -165,7 +174,7 @@ const BottomBar = () => {
         isMatrixMode={isMatrixMode}
       />
     </SafeAreaView>
-  )
+  ) : null
 }
 
 export default BottomBar
