@@ -521,6 +521,7 @@ const WebApp = ({
             'mailto://*'
           ]}
           cacheEnabled={false}
+          cacheMode='LOAD_NO_CACHE'
           onScroll={onScroll}
           overScrollMode='never'
           onMessage={onMessageHandler}
