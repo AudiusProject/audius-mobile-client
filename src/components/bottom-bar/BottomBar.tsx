@@ -6,6 +6,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { getUserHandle } from 'audius-client/src/common/store/account/selectors'
 import { getMobileOverflowModal } from 'audius-client/src/common/store/ui/mobileOverflowModal/selectors'
+import { getIsOpen as getIsUploadDrawerOpen } from 'audius-client/src/common/store/ui/mobile-upload-drawer/selectors'
 // TODO: move these into /common
 import {
   openSignOn as _openSignOn,
@@ -71,6 +72,7 @@ const BottomBar = () => {
   const handle = useSelectorWeb(getUserHandle)
   const location = useSelector(getLocation)
   const overflowModal = useSelectorWeb(getMobileOverflowModal)
+  const isUploadDrawerOpen = useSelectorWeb(getIsUploadDrawerOpen)
 
   // Actions
   const dispatchWeb = useDispatchWeb()
@@ -107,15 +109,19 @@ const BottomBar = () => {
   // Hide the BottomBar when an overlay is open
   // NOTE: This can be removed when the overlays (overflow modal, drawer)
   // are migrated to RN
-  const [isOverlayOpen, setIsOverlayOpen] = useState(false)
+  const [isOverflowModalOpen, setIsOverflowModalOpen] = useState(false)
   useEffect(() => {
     if (overflowModal?.isOpen) {
-      setIsOverlayOpen(true)
+      setIsOverflowModalOpen(true)
     } else {
-      const timeout = setTimeout(() => setIsOverlayOpen(false), 300)
+      const timeout = setTimeout(() => setIsOverflowModalOpen(false), 300)
       return () => clearTimeout(timeout)
     }
   }, [overflowModal])
+
+  const hideBottomBar = React.useMemo(() => {
+    return onSignOn || isOverflowModalOpen || isUploadDrawerOpen
+  }, [onSignOn, isOverflowModalOpen, isUploadDrawerOpen])
 
   const goToFeed = useCallback(() => {
     resetExploreTab()
@@ -162,7 +168,7 @@ const BottomBar = () => {
     []
   )
 
-  return !isOverlayOpen && !onSignOn ? (
+  return !hideBottomBar ? (
     <SafeAreaView style={styles.bottomBar} edges={['bottom']}>
       <FeedButton
         isActive={currentRoute === FEED_PAGE}
