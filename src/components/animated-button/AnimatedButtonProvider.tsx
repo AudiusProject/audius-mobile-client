@@ -35,7 +35,7 @@ const AnimatedButton = ({
   useEffect(() => {
     if (isActive) {
       const lastFrame = iconJSON.op
-      animationRef.current?.play(lastFrame)
+      animationRef.current?.play(lastFrame, lastFrame)
     } else {
       animationRef.current?.play(0, 0)
     }

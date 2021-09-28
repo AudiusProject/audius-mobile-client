@@ -1,13 +1,6 @@
-import React, {
-  memo,
-  useCallback,
-  useContext,
-  useState,
-  useEffect,
-  useRef
-} from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Animated, Easing, StyleSheet, View } from 'react-native'
+import { StyleSheet } from 'react-native'
 import { push } from 'connected-react-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
@@ -74,11 +67,13 @@ const BottomBar = () => {
   const isMatrixMode = false
   const isDarkMode = false
 
-  const dispatchWeb = useDispatchWeb()
+  // Selectors
   const handle = useSelectorWeb(getUserHandle)
   const location = useSelector(getLocation)
   const overflowModal = useSelectorWeb(getMobileOverflowModal)
 
+  // Actions
+  const dispatchWeb = useDispatchWeb()
   const openSignOn = () => {
     dispatchWeb(_openSignOn(false))
     dispatchWeb(showRequiresAccountModal())
@@ -109,22 +104,18 @@ const BottomBar = () => {
     }
   }
 
-  const overlayOpacity = useRef(new Animated.Value(0)).current
+  // Hide the BottomBar when an overlay is open
+  // NOTE: This can be removed when the overlays (overflow modal, drawer)
+  // are migrated to RN
+  const [isOverlayOpen, setIsOverlayOpen] = useState(false)
   useEffect(() => {
-    if (overflowModal.isOpen) {
-      Animated.timing(overlayOpacity, {
-        toValue: 0.6,
-        duration: 300,
-        useNativeDriver: false
-      }).start()
+    if (overflowModal?.isOpen) {
+      setIsOverlayOpen(true)
     } else {
-      Animated.timing(overlayOpacity, {
-        toValue: 0,
-        duration: 200,
-        useNativeDriver: false
-      }).start()
+      const timeout = setTimeout(() => setIsOverlayOpen(false), 300)
+      return () => clearTimeout(timeout)
     }
-  }, [overlayOpacity, overflowModal])
+  }, [overflowModal])
 
   const goToFeed = useCallback(() => {
     resetExploreTab()
@@ -171,41 +162,38 @@ const BottomBar = () => {
     []
   )
 
-  return !onSignOn ? (
+  return !isOverlayOpen && !onSignOn ? (
     <SafeAreaView style={styles.bottomBar} edges={['bottom']}>
-      <>
-        <FeedButton
-          isActive={currentRoute === FEED_PAGE}
-          darkMode={isDarkMode}
-          onClick={onClick(goToFeed, FEED_PAGE)}
-          isMatrixMode={isMatrixMode}
-        />
-        <TrendingButton
-          isActive={currentRoute === TRENDING_PAGE}
-          darkMode={isDarkMode}
-          onClick={onClick(goToTrending, TRENDING_PAGE)}
-          isMatrixMode={isMatrixMode}
-        />
-        <ExploreButton
-          isActive={currentRoute === EXPLORE_PAGE}
-          darkMode={isDarkMode}
-          onClick={onClick(goToExplore, EXPLORE_PAGE)}
-          isMatrixMode={isMatrixMode}
-        />
-        <FavoritesButton
-          isActive={currentRoute === FAVORITES_PAGE}
-          darkMode={isDarkMode}
-          onClick={onClick(goToFavorites, FAVORITES_PAGE)}
-          isMatrixMode={isMatrixMode}
-        />
-        <ProfileButton
-          isActive={currentRoute === userProfilePage}
-          darkMode={isDarkMode}
-          onClick={onClick(goToProfile, userProfilePage)}
-          isMatrixMode={isMatrixMode}
-        />
-      </>
-      <Animated.View style={{ ...styles.overlay, opacity: overlayOpacity }} />
+      <FeedButton
+        isActive={currentRoute === FEED_PAGE}
+        darkMode={isDarkMode}
+        onClick={onClick(goToFeed, FEED_PAGE)}
+        isMatrixMode={isMatrixMode}
+      />
+      <TrendingButton
+        isActive={currentRoute === TRENDING_PAGE}
+        darkMode={isDarkMode}
+        onClick={onClick(goToTrending, TRENDING_PAGE)}
+        isMatrixMode={isMatrixMode}
+      />
+      <ExploreButton
+        isActive={currentRoute === EXPLORE_PAGE}
+        darkMode={isDarkMode}
+        onClick={onClick(goToExplore, EXPLORE_PAGE)}
+        isMatrixMode={isMatrixMode}
+      />
+      <FavoritesButton
+        isActive={currentRoute === FAVORITES_PAGE}
+        darkMode={isDarkMode}
+        onClick={onClick(goToFavorites, FAVORITES_PAGE)}
+        isMatrixMode={isMatrixMode}
+      />
+      <ProfileButton
+        isActive={currentRoute === userProfilePage}
+        darkMode={isDarkMode}
+        onClick={onClick(goToProfile, userProfilePage)}
+        isMatrixMode={isMatrixMode}
+      />
     </SafeAreaView>
   ) : null
 }
