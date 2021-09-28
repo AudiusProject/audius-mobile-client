@@ -5,8 +5,9 @@ import { push } from 'connected-react-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { getUserHandle } from 'audius-client/src/common/store/account/selectors'
-import { getMobileOverflowModal } from 'audius-client/src/common/store/ui/mobileOverflowModal/selectors'
+import { getMobileOverflowModal } from 'audius-client/src/common/store/ui/mobile-overflow-menu/selectors'
 import { getIsOpen as getIsUploadDrawerOpen } from 'audius-client/src/common/store/ui/mobile-upload-drawer/selectors'
+import { getIsOpen as getIsPushNotificationsDrawerOpen } from 'audius-client/src/common/store/ui/push-notifications-drawer/selectors'
 // TODO: move these into /common
 import {
   openSignOn as _openSignOn,
@@ -73,6 +74,9 @@ const BottomBar = () => {
   const location = useSelector(getLocation)
   const overflowModal = useSelectorWeb(getMobileOverflowModal)
   const isUploadDrawerOpen = useSelectorWeb(getIsUploadDrawerOpen)
+  const isPushNotificationDrawerOpen = useSelectorWeb(
+    getIsPushNotificationsDrawerOpen
+  )
 
   // Actions
   const dispatchWeb = useDispatchWeb()
@@ -120,8 +124,18 @@ const BottomBar = () => {
   }, [overflowModal])
 
   const hideBottomBar = React.useMemo(() => {
-    return onSignOn || isOverflowModalOpen || isUploadDrawerOpen
-  }, [onSignOn, isOverflowModalOpen, isUploadDrawerOpen])
+    return (
+      onSignOn ||
+      isOverflowModalOpen ||
+      isUploadDrawerOpen ||
+      isPushNotificationDrawerOpen
+    )
+  }, [
+    onSignOn,
+    isOverflowModalOpen,
+    isUploadDrawerOpen,
+    isPushNotificationDrawerOpen
+  ])
 
   const goToFeed = useCallback(() => {
     resetExploreTab()
