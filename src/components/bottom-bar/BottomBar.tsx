@@ -7,6 +7,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { getUserHandle } from 'audius-client/src/common/store/account/selectors'
 import { getMobileOverflowModal } from 'audius-client/src/common/store/ui/mobile-overflow-menu/selectors'
 import { getIsOpen as getIsUploadDrawerOpen } from 'audius-client/src/common/store/ui/mobile-upload-drawer/selectors'
+import { getModalIsOpen } from 'audius-client/src/common/store/ui/modals/slice'
 import { getIsOpen as getIsPushNotificationsDrawerOpen } from 'audius-client/src/common/store/ui/push-notifications-drawer/selectors'
 // TODO: move these into /common
 import {
@@ -77,6 +78,7 @@ const BottomBar = () => {
   const isPushNotificationDrawerOpen = useSelectorWeb(
     getIsPushNotificationsDrawerOpen
   )
+  const isModalOpen = useSelectorWeb(getModalIsOpen)
 
   // Actions
   const dispatchWeb = useDispatchWeb()
@@ -128,13 +130,15 @@ const BottomBar = () => {
       onSignOn ||
       isOverflowModalOpen ||
       isUploadDrawerOpen ||
-      isPushNotificationDrawerOpen
+      isPushNotificationDrawerOpen ||
+      isModalOpen
     )
   }, [
     onSignOn,
     isOverflowModalOpen,
     isUploadDrawerOpen,
-    isPushNotificationDrawerOpen
+    isPushNotificationDrawerOpen,
+    isModalOpen
   ])
 
   const goToFeed = useCallback(() => {
