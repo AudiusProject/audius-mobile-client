@@ -2,7 +2,7 @@ import React, { memo, useState, useEffect, useRef, useCallback } from 'react'
 import { TouchableHighlight, View, ViewStyle } from 'react-native'
 
 import LottieView from 'lottie-react-native'
-import colors from '../../assets/colors/light'
+import { useColor } from '../../utils/theme'
 
 export type BaseAnimatedButtonProps = {
   onClick: () => void
@@ -31,6 +31,7 @@ const AnimatedButton = ({
   style,
   wrapperStyle
 }: AnimatedButtonProps) => {
+  const underlayColor = useColor('neutralLight8')
   const animationRef = useRef<LottieView | null>()
   useEffect(() => {
     if (isActive) {
@@ -52,7 +53,7 @@ const AnimatedButton = ({
     <TouchableHighlight
       onPress={handleClick}
       style={style}
-      underlayColor={colors.neutralLight8}
+      underlayColor={underlayColor}
     >
       <View style={wrapperStyle}>
         <LottieView

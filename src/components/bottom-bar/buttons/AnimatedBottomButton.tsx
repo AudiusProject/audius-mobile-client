@@ -1,4 +1,3 @@
-import colors from 'assets/colors/light'
 import React from 'react'
 
 import { StyleSheet } from 'react-native'

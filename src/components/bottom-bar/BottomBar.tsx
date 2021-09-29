@@ -28,10 +28,10 @@ import {
   profilePage
 } from 'audius-client/src/utils/route'
 
-import colors from '../../assets/colors/light'
 import { useDispatchWeb } from '../../hooks/useDispatchWeb'
 import { useSelectorWeb } from '../../hooks/useSelectorWeb'
 import { getLocation } from '../../store/lifecycle/selectors'
+import { useTheme } from '../../utils/theme'
 
 import FeedButton from './buttons/FeedButton'
 import TrendingButton from './buttons/TrendingButton'
@@ -48,8 +48,6 @@ const styles = StyleSheet.create({
     width: '100%',
 
     borderTopWidth: 1,
-    borderTopColor: colors.neutralLight8,
-    backgroundColor: colors.neutralLight10,
 
     display: 'flex',
     flexDirection: 'row',
@@ -60,7 +58,11 @@ const styles = StyleSheet.create({
 })
 
 const BottomBar = () => {
-  // TODO: Theming
+  const bottomBarStyle = useTheme(styles.bottomBar, {
+    borderTopColor: 'neutralLight8',
+    backgroundColor: 'neutralLight10'
+  })
+
   const isMatrixMode = false
   const isDarkMode = false
 
@@ -184,7 +186,7 @@ const BottomBar = () => {
   )
 
   return !hideBottomBar ? (
-    <SafeAreaView style={styles.bottomBar} edges={['bottom']}>
+    <SafeAreaView style={bottomBarStyle} edges={['bottom']}>
       <FeedButton
         isActive={currentRoute === FEED_PAGE}
         darkMode={isDarkMode}
