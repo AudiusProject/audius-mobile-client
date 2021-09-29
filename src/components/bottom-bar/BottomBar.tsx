@@ -30,6 +30,7 @@ import {
 
 import { useDispatchWeb } from '../../hooks/useDispatchWeb'
 import { useSelectorWeb } from '../../hooks/useSelectorWeb'
+import { MessageType } from '../../message/types'
 import { getLocation } from '../../store/lifecycle/selectors'
 import { useTheme } from '../../utils/theme'
 
@@ -85,6 +86,10 @@ const BottomBar = () => {
   }
   const goToRoute = (route: string) => dispatchWeb(push(route))
   const resetExploreTab = () => dispatchWeb(setTab(Tabs.FOR_YOU))
+  const scrollToTop = () =>
+    dispatchWeb({
+      type: MessageType.SCROLL_TO_TOP
+    })
 
   const userProfilePage = handle ? profilePage(handle) : null
   const navRoutes = new Set([
@@ -100,6 +105,7 @@ const BottomBar = () => {
 
   // TODO: this will have to change with the RN SignOn changes
   const onSignOn = currentRoute === '/signup' || currentRoute === '/signin'
+  const onErrorPage = currentRoute === '/error'
 
   if (lastNavRoute !== currentRoute) {
     // If the current route isn't what we memoized, check if it's a nav route
@@ -125,6 +131,7 @@ const BottomBar = () => {
   const hideBottomBar = React.useMemo(() => {
     return (
       onSignOn ||
+      onErrorPage ||
       isOverflowModalOpen ||
       isUploadDrawerOpen ||
       isPushNotificationDrawerOpen ||
@@ -141,7 +148,6 @@ const BottomBar = () => {
   ])
 
   const goToFeed = useCallback(() => {
-    resetExploreTab()
     if (!handle) {
       openSignOn()
     } else {
@@ -150,17 +156,14 @@ const BottomBar = () => {
   }, [goToRoute, handle, openSignOn])
 
   const goToTrending = useCallback(() => {
-    resetExploreTab()
     goToRoute(TRENDING_PAGE)
   }, [goToRoute])
 
   const goToExplore = useCallback(() => {
-    resetExploreTab()
     goToRoute(EXPLORE_PAGE)
   }, [goToRoute])
 
   const goToFavorites = useCallback(() => {
-    resetExploreTab()
     if (!handle) {
       openSignOn()
     } else {
@@ -169,7 +172,6 @@ const BottomBar = () => {
   }, [goToRoute, handle, openSignOn])
 
   const goToProfile = useCallback(() => {
-    resetExploreTab()
     if (!handle) {
       openSignOn()
     } else {
@@ -180,9 +182,14 @@ const BottomBar = () => {
   // TODO: scroll up and stack reset
   const onClick = useCallback(
     (callback: () => void, page: string | null) => () => {
-      callback()
+      resetExploreTab()
+      if (page === currentRoute) {
+        scrollToTop()
+      } else {
+        callback()
+      }
     },
-    []
+    [currentRoute]
   )
 
   return !hideBottomBar ? (

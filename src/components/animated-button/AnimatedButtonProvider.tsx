@@ -43,8 +43,13 @@ const AnimatedButton = ({
   }, [isActive])
 
   const handleClick = useCallback(() => {
-    if (isDisabled || isActive) return
-    animationRef.current?.play()
+    if (isDisabled) {
+      return
+    }
+
+    if (!isActive) {
+      animationRef.current?.play()
+    }
 
     onClick()
   }, [isDisabled, onClick, stopPropagation])

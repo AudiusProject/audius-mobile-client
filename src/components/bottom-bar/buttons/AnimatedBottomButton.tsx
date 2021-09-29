@@ -19,7 +19,9 @@ const styles = StyleSheet.create({
   }
 })
 
-const AnimatedBottomButton = (props: AnimatedButtonProviderProps) => {
+const AnimatedBottomButton = (
+  props: Omit<AnimatedButtonProviderProps, 'style' | 'wrapperStyle'>
+) => {
   return (
     <AnimatedButtonProvider
       {...props}
