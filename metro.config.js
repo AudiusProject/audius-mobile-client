@@ -3,7 +3,7 @@ const { getDefaultConfig } = require('metro-config')
 // If developing locally and using yalc
 // to manage local audius-client dependency,
 // change this to '.yalc'
-const AUDIUS_CLIENT_LOCATION = '.yalc'
+const AUDIUS_CLIENT_LOCATION = 'node_modules'
 const clientPath = path =>
   `${__dirname}/${AUDIUS_CLIENT_LOCATION}/audius-client/src/${path}`
 
