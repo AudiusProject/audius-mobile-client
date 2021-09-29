@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react'
+
+import { push } from 'connected-react-router'
 import { useSelector } from 'react-redux'
 import { StyleSheet } from 'react-native'
-import { push } from 'connected-react-router'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { getUserHandle } from 'audius-client/src/common/store/account/selectors'
@@ -9,6 +10,7 @@ import { getMobileOverflowModal } from 'audius-client/src/common/store/ui/mobile
 import { getIsOpen as getIsUploadDrawerOpen } from 'audius-client/src/common/store/ui/mobile-upload-drawer/selectors'
 import { getModalIsOpen } from 'audius-client/src/common/store/ui/modals/slice'
 import { getIsOpen as getIsPushNotificationsDrawerOpen } from 'audius-client/src/common/store/ui/push-notifications-drawer/selectors'
+import { getIsOpen as getIsNowPlayingOpen } from 'audius-client/src/common/store/ui/now-playing/selectors'
 // TODO: move these into /common
 import {
   openSignOn as _openSignOn,
@@ -54,14 +56,6 @@ const styles = StyleSheet.create({
     flexWrap: 'nowrap',
     alignItems: 'center',
     justifyContent: 'space-evenly'
-  },
-
-  overlay: {
-    position: 'absolute',
-    top: -1,
-    width: '100%',
-    height: '200%',
-    backgroundColor: 'rgb(0, 0, 0)'
   }
 })
 
@@ -79,6 +73,7 @@ const BottomBar = () => {
     getIsPushNotificationsDrawerOpen
   )
   const isModalOpen = useSelectorWeb(getModalIsOpen)
+  const isNowPlayingOpen = useSelectorWeb(getIsNowPlayingOpen)
 
   // Actions
   const dispatchWeb = useDispatchWeb()
@@ -131,14 +126,16 @@ const BottomBar = () => {
       isOverflowModalOpen ||
       isUploadDrawerOpen ||
       isPushNotificationDrawerOpen ||
-      isModalOpen
+      isModalOpen ||
+      isNowPlayingOpen
     )
   }, [
     onSignOn,
     isOverflowModalOpen,
     isUploadDrawerOpen,
     isPushNotificationDrawerOpen,
-    isModalOpen
+    isModalOpen,
+    isNowPlayingOpen
   ])
 
   const goToFeed = useCallback(() => {
