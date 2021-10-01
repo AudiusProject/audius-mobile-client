@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 
 import { push } from 'connected-react-router'
 import { useSelector } from 'react-redux'
@@ -6,7 +6,7 @@ import { StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { getUserHandle } from 'audius-client/src/common/store/account/selectors'
-import { getMobileOverflowModal } from 'audius-client/src/common/store/ui/mobile-overflow-menu/selectors'
+import { getIsOpen as getIsMobileOverflowModalOpen } from 'audius-client/src/common/store/ui/mobile-overflow-menu/selectors'
 import { getIsOpen as getIsUploadDrawerOpen } from 'audius-client/src/common/store/ui/mobile-upload-drawer/selectors'
 import { getModalIsOpen } from 'audius-client/src/common/store/ui/modals/slice'
 import { getIsOpen as getIsPushNotificationsDrawerOpen } from 'audius-client/src/common/store/ui/push-notifications-drawer/selectors'
@@ -70,7 +70,7 @@ const BottomBar = () => {
   // Selectors
   const handle = useSelectorWeb(getUserHandle)
   const location = useSelector(getLocation)
-  const overflowModal = useSelectorWeb(getMobileOverflowModal)
+  const isOverflowModalOpen = useSelectorWeb(getIsMobileOverflowModalOpen)
   const isUploadDrawerOpen = useSelectorWeb(getIsUploadDrawerOpen)
   const isPushNotificationDrawerOpen = useSelectorWeb(
     getIsPushNotificationsDrawerOpen
@@ -118,16 +118,6 @@ const BottomBar = () => {
   // Hide the BottomBar when an overlay is open
   // NOTE: This can be removed when the overlays (overflow modal, drawer)
   // are migrated to RN
-  const [isOverflowModalOpen, setIsOverflowModalOpen] = useState(false)
-  useEffect(() => {
-    if (overflowModal?.isOpen) {
-      setIsOverflowModalOpen(true)
-    } else {
-      const timeout = setTimeout(() => setIsOverflowModalOpen(false), 300)
-      return () => clearTimeout(timeout)
-    }
-  }, [overflowModal])
-
   const hideBottomBar = React.useMemo(() => {
     return (
       onSignOn ||
@@ -179,7 +169,6 @@ const BottomBar = () => {
     }
   }, [goToRoute, handle, openSignOn])
 
-  // TODO: scroll up and stack reset
   const onClick = useCallback(
     (callback: () => void, page: string | null) => () => {
       resetExploreTab()

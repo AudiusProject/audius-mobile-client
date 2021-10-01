@@ -64,7 +64,11 @@ const App = () => {
         touch targets and onPress will not work.
       */}
           <Notifications webRef={webRef} />
-          <BottomBar />
+
+          {/*
+            Commenting out BottomBar until the drawers and overlays are migrated to RN
+          */}
+          {/* <BottomBar /> */}
           <Audio webRef={webRef} />
           <OAuth webRef={webRef} />
           <Airplay webRef={webRef} />
