@@ -26,7 +26,7 @@
     "test": "jest",
     "upgrade": "react-native upgrade",
     "ios:bump-build-number": "fastlane run increment_build_number xcodeproj:\"ios/AudiusReactNative.xcodeproj\"",
-    "ios:version-patch": "cd ios && fastlane run increment_version_number_in_xcodeproj scheme:\"AudiusReactNative\" xcodeproj:\"AudiusReactNative.xcodeproj\" && cd ../",
+    "ios:version-patch": "fastlane run increment_version_number xcodeproj:\"ios/AudiusReactNative.xcodeproj\"",
     "lint:fix": "eslint --cache --fix --ext=js,jsx,ts,tsx src",
     "lint": "eslint --cache --ext=js,jsx,ts,tsx src"
   },
@@ -61,7 +61,7 @@
     "react-native-permissions": "^3.0.0",
     "react-native-push-notification": "^7.3.1",
     "react-native-safe-area-context": "^3.3.2",
-    "react-native-static-server": "^0.5.0",
+    "react-native-static-server": "git@github.com:futurepress/react-native-static-server.git#034c04e7a2999ae11a799fb68266c94389fc61bf",
     "react-native-svg": "^12.1.0",
     "react-native-svg-transformer": "^0.14.3",
     "react-native-unimodules": "^0.14.8",
