@@ -18,13 +18,12 @@ import { useTheme } from '../../utils/theme'
 
 const styles = StyleSheet.create({
   drawer: {
-    zIndex: 22,
     position: 'absolute',
     top: 0,
     left: 0,
     width: '100%',
-    marginBottom: 0,
-    paddingTop: 0,
+    shadowOpacity: 0,
+    shadowRadius: 40,
     borderRadius: 40
   },
 
@@ -64,56 +63,11 @@ const styles = StyleSheet.create({
     left: 0,
     top: 0,
     bottom: 0
-  },
-
-  /*
-   * Fixes positioning on ios Safari due to the navigation
-   * bar that appears while scrolling up / down.
-   * When testing this, make sure to test Safari embedded inside Twitter.
-   */
-  // @supports (-webkit-overflow-scrolling: touch) {
-  //   .drawer:not(.native):not(.fullDrawer).isOpen {
-  //     top: calc(100vh - 100px);
-  //   }
-  //   .drawer:not(.native):not(.fullDrawer):not(.isOpen) {
-  //     top: calc(100vh + 100px);
-  //   }
-  // }
-
-  skirt: {
-    position: 'absolute',
-    /* Need to provide a small overlap
-    between skirt and now playing,
-    otherwise we see a ~1px gap
-    between them when the drawer translates.
-    (Probably something to due with fractional
-    pixel translations/aliasing etc)
-  */
-    bottom: 799,
-    left: 0,
-    right: 0,
-    height: 800
   }
 })
 
-// Hide the drawer when the keyboard is down
-const DRAWER_KEYBOARD_UP = 50
-
-// Fraction of swipe up to fade (1 / FADE_FRACTION_DENOMINATOR)
-const FADE_FRACTION_DENOMINATOR = 2
-
-// Cut off where an open is considered an open
-const OPEN_CUTOFF = 0.2
-// Cut off where a close is considered a close
-const CLOSE_CUTOFF = 0.7
-// Cut off where velocity trumps open/close cut offs
-const VELOCITY_CUTOFF = 0.5
-
-// Controls the amount of friction in swiping when overflowing up or down
-const OVERFLOW_FRICTION = 4
-
 const INITIAL_OFFSET = 10
-const MAX_BG_OPACITY = 0.3
+const MAX_SHADOW_OPACITY = 0.4
 const ON_MOVE_RESPONDER_DX = 20
 const ON_MOVE_RESPONDER_DY = 10
 const MOVE_CUTOFF_CLOSE = 0.8
@@ -144,6 +98,7 @@ const Drawer = ({
   const openPosition = height - drawerHeight
 
   const translationAnim = useRef(new Animated.Value(initialPosition)).current
+  const shadowAnim = useRef(new Animated.Value(0)).current
 
   const slideIn = useCallback(() => {
     Animated.spring(translationAnim, {
@@ -152,7 +107,14 @@ const Drawer = ({
       friction: 25,
       useNativeDriver: true
     }).start()
-  }, [translationAnim])
+
+    Animated.spring(shadowAnim, {
+      toValue: MAX_SHADOW_OPACITY,
+      tension: 150,
+      friction: 25,
+      useNativeDriver: true
+    }).start()
+  }, [openPosition, translationAnim, shadowAnim])
 
   const slideOut = useCallback(() => {
     Animated.spring(translationAnim, {
@@ -161,7 +123,14 @@ const Drawer = ({
       friction: 25,
       useNativeDriver: true
     }).start()
-  }, [initialPosition, translationAnim])
+
+    Animated.spring(shadowAnim, {
+      toValue: 0,
+      tension: 150,
+      friction: 25,
+      useNativeDriver: true
+    }).start()
+  }, [initialPosition, translationAnim, shadowAnim])
 
   useEffect(() => {
     if (isOpen) {
@@ -185,7 +154,6 @@ const Drawer = ({
           Animated.event(
             [
               null,
-
               {
                 dy: translationAnim
               }
@@ -211,7 +179,8 @@ const Drawer = ({
     }
   })
 
-  // TODO: click outside
+  // TODO: sk - click outside
+  // NOTE: This is currently handled by the web app
   //   const clickOutsideRef = useClickOutside(() => close())
 
   // TODO: border radius transition for fullscreen drawer
@@ -228,6 +197,7 @@ const Drawer = ({
           drawerStyle,
           ...(isFullscreen ? [styles.fullDrawer] : []),
           {
+            shadowOpacity: shadowAnim,
             transform: [
               {
                 translateY: translationAnim
