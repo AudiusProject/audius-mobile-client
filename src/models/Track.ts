@@ -88,6 +88,8 @@ export type TrackMetadata = TrackImage &
     field_visibility?: FieldVisibility
     listenCount?: number
 
+    permalink?: string
+
     // Optional Fields
     is_invalid?: boolean
     stem_of?: {
