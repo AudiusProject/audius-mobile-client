@@ -4,17 +4,15 @@ import AnimatedBottomButton from './AnimatedBottomButton'
 import { ButtonProps } from './types'
 
 const ProfileButton = ({
-  darkMode,
+  isDarkMode,
   onClick,
   isActive,
-  isMatrixMode
 }: ButtonProps) => {
   return (
     <AnimatedBottomButton
       uniqueKey='profile-button'
       isActive={isActive}
-      darkMode={darkMode}
-      isMatrix={isMatrixMode}
+      isDarkMode={isDarkMode}
       onClick={onClick}
       iconLightJSON={() => require('assets/animations/iconProfileLight.json')}
       iconDarkJSON={() => require('assets/animations/iconProfileDark.json')}

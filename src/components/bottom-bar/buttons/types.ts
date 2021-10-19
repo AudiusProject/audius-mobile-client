@@ -1,6 +1,5 @@
 export type ButtonProps = {
-  darkMode: boolean
-  isMatrixMode: boolean
+  isDarkMode: boolean
   onClick: () => void
   isActive: boolean
 }

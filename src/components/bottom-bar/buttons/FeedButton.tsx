@@ -4,17 +4,15 @@ import AnimatedBottomButton from './AnimatedBottomButton'
 import { ButtonProps } from './types'
 
 const FeedButton = ({
-  darkMode,
+  isDarkMode,
   onClick,
   isActive,
-  isMatrixMode
 }: ButtonProps) => {
   return (
     <AnimatedBottomButton
       uniqueKey='feed-button'
-      isMatrix={isMatrixMode}
       isActive={isActive}
-      darkMode={darkMode}
+      isDarkMode={isDarkMode}
       onClick={onClick}
       iconLightJSON={() => require('assets/animations/iconFeedLight.json')}
       iconDarkJSON={() => require('assets/animations/iconFeedDark.json')}

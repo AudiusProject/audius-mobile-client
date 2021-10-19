@@ -32,7 +32,7 @@ import { useDispatchWeb } from '../../hooks/useDispatchWeb'
 import { useSelectorWeb } from '../../hooks/useSelectorWeb'
 import { MessageType } from '../../message/types'
 import { getLocation } from '../../store/lifecycle/selectors'
-import { useTheme } from '../../utils/theme'
+import { Theme, useTheme, useThemeVariant } from '../../utils/theme'
 
 import FeedButton from './buttons/FeedButton'
 import TrendingButton from './buttons/TrendingButton'
@@ -64,8 +64,8 @@ const BottomBar = () => {
     backgroundColor: 'neutralLight10'
   })
 
-  const isMatrixMode = false
-  const isDarkMode = false
+  const themeVariant = useThemeVariant()
+  const isDarkMode = themeVariant === Theme.DARK
 
   // Selectors
   const handle = useSelectorWeb(getUserHandle)
@@ -185,33 +185,28 @@ const BottomBar = () => {
     <SafeAreaView style={bottomBarStyle} edges={['bottom']}>
       <FeedButton
         isActive={currentRoute === FEED_PAGE}
-        darkMode={isDarkMode}
+        isDarkMode={isDarkMode}
         onClick={onClick(goToFeed, FEED_PAGE)}
-        isMatrixMode={isMatrixMode}
       />
       <TrendingButton
         isActive={currentRoute === TRENDING_PAGE}
-        darkMode={isDarkMode}
+        isDarkMode={isDarkMode}
         onClick={onClick(goToTrending, TRENDING_PAGE)}
-        isMatrixMode={isMatrixMode}
       />
       <ExploreButton
         isActive={currentRoute === EXPLORE_PAGE}
-        darkMode={isDarkMode}
+        isDarkMode={isDarkMode}
         onClick={onClick(goToExplore, EXPLORE_PAGE)}
-        isMatrixMode={isMatrixMode}
       />
       <FavoritesButton
         isActive={currentRoute === FAVORITES_PAGE}
-        darkMode={isDarkMode}
+        isDarkMode={isDarkMode}
         onClick={onClick(goToFavorites, FAVORITES_PAGE)}
-        isMatrixMode={isMatrixMode}
       />
       <ProfileButton
         isActive={currentRoute === userProfilePage}
-        darkMode={isDarkMode}
+        isDarkMode={isDarkMode}
         onClick={onClick(goToProfile, userProfilePage)}
-        isMatrixMode={isMatrixMode}
       />
     </SafeAreaView>
   ) : null
