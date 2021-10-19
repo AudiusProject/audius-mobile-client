@@ -1,15 +1,12 @@
 import React from 'react'
 
-import { useSelector } from 'react-redux'
-import { Image, MaskedViewIOS, StyleSheet, Text, View } from 'react-native'
+import { Image, StyleSheet, Text, View } from 'react-native'
+import MaskedView from '@react-native-masked-view/masked-view'
 
 import IconUpload from '../../assets/images/iconGradientUpload.svg'
 import HeavyCheckMark from '../../assets/images/emojis/white-heavy-check-mark.png'
 import { getIsOpen } from 'audius-client/src/common/store/ui/mobile-upload-drawer/selectors'
-import {
-  show,
-  hide
-} from 'audius-client/src/common/store/ui/mobile-upload-drawer/slice'
+import { hide } from 'audius-client/src/common/store/ui/mobile-upload-drawer/slice'
 
 import Drawer from '../drawer'
 import { getIsKeyboardOpen } from '../../store/keyboard/selectors'
@@ -17,7 +14,6 @@ import { useSelectorWeb } from '../../hooks/useSelectorWeb'
 import { useDispatchWeb } from '../../hooks/useDispatchWeb'
 import { useColor, useTheme } from '../../utils/theme'
 import LinearGradient from 'react-native-linear-gradient'
-import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript'
 
 const styles = StyleSheet.create({
   drawer: {
@@ -31,7 +27,7 @@ const styles = StyleSheet.create({
 
   iconUpload: {
     width: 66,
-    height: 66,
+    height: 66
   },
 
   cta: {
@@ -89,7 +85,6 @@ const messages = {
 const MobileUploadDrawer = () => {
   const isOpen = useSelectorWeb(getIsOpen)
   const dispatchWeb = useDispatchWeb()
-  const open = () => dispatchWeb(show())
   const close = () => dispatchWeb(hide())
 
   const bodyTextColorStyle = useTheme(
@@ -101,7 +96,6 @@ const MobileUploadDrawer = () => {
 
   const gradientColor1 = useColor('pageHeaderGradientColor1')
   const gradientColor2 = useColor('pageHeaderGradientColor2')
-  console.log(gradientColor1)
 
   const keyboardVisible = false //useSelector(getIsKeyboardOpen)
 
@@ -110,7 +104,7 @@ const MobileUploadDrawer = () => {
   )
 
   return (
-    <Drawer isOpen={isOpen} onOpen={open} onClose={close}>
+    <Drawer isOpen={isOpen} onClose={close}>
       <View style={styles.drawer}>
         <View style={styles.top}>
           <IconUpload
@@ -120,7 +114,7 @@ const MobileUploadDrawer = () => {
             fillSecondary={gradientColor1}
           />
 
-          <MaskedViewIOS
+          <MaskedView
             maskElement={<Text style={styles.cta}>{messages.start}</Text>}
           >
             <LinearGradient
@@ -130,7 +124,7 @@ const MobileUploadDrawer = () => {
             >
               <Text style={[styles.cta, { opacity: 0 }]}>{messages.start}</Text>
             </LinearGradient>
-          </MaskedViewIOS>
+          </MaskedView>
           <View>
             <Text style={[styles.visit, bodyTextColorStyle]}>
               {messages.visit}

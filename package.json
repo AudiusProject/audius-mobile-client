@@ -32,7 +32,6 @@
   },
   "dependencies": {
     "@gorhom/portal": "^1.0.9",
-    "@react-native-async-storage/async-storage": "^1.15.8",
     "@react-native-community/async-storage": "^1.7.1",
     "@react-native-community/netinfo": "^5.7.1",
     "@react-native-community/push-notification-ios": "^1.0.3",
