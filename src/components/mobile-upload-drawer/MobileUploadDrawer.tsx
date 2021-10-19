@@ -15,7 +15,6 @@ import Drawer from '../drawer'
 import { getIsKeyboardOpen } from '../../store/keyboard/selectors'
 import { useSelectorWeb } from '../../hooks/useSelectorWeb'
 import { useDispatchWeb } from '../../hooks/useDispatchWeb'
-import { FONT_SIZE, FONT_WEIGHT } from '../../utils/typography'
 import { useColor, useTheme } from '../../utils/theme'
 import LinearGradient from 'react-native-linear-gradient'
 import { collapseTextChangeRangesAcrossMultipleVersions } from 'typescript'
@@ -33,19 +32,18 @@ const styles = StyleSheet.create({
   iconUpload: {
     width: 66,
     height: 66,
-    marginBottom: 16
   },
 
   cta: {
-    fontWeight: FONT_WEIGHT.heavy,
-    fontSize: FONT_SIZE['3xl'],
+    marginTop: 16,
+    fontFamily: 'AvenirNextLTPro-Heavy',
+    fontSize: 32,
     lineHeight: 34,
     textAlign: 'center'
   },
 
   visit: {
-    fontWeight: FONT_WEIGHT.medium,
-    fontSize: FONT_SIZE['2xl'],
+    fontSize: 24,
     lineHeight: 29,
     textAlign: 'center',
     marginTop: 4
@@ -68,8 +66,8 @@ const styles = StyleSheet.create({
   },
 
   actionLabel: {
-    fontWeight: FONT_WEIGHT.bold,
-    fontSize: FONT_SIZE['2xl'],
+    fontFamily: 'AvenirNextLTPro-Bold',
+    fontSize: 24,
     lineHeight: 40
   },
 

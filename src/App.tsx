@@ -51,25 +51,28 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <Provider store={store}>
-        <WebRefContextProvider>
-          <GoogleCast webRef={webRef} />
-          <WebApp webRef={webRef} />
-          <Search />
-          {/*
+        <PortalProvider>
+          <WebRefContextProvider>
+            <GoogleCast webRef={webRef} />
+            <WebApp webRef={webRef} />
+            <Search />
+            {/*
         Note: it is very important that Notifications is rendered after WebApp.
         On Android, regardless of position: absolute, WebApp will steal all of Notifications
         touch targets and onPress will not work.
       */}
-          <Notifications webRef={webRef} />
+            <Notifications webRef={webRef} />
 
-          {/*
+            {/*
             Commenting out BottomBar until the drawers and overlays are migrated to RN
           */}
-          {/* <BottomBar /> */}
-          <Audio webRef={webRef} />
-          <OAuth webRef={webRef} />
-          <Airplay webRef={webRef} />
-        </WebRefContextProvider>
+            {/* <BottomBar /> */}
+            <MobileUploadDrawer />
+            <Audio webRef={webRef} />
+            <OAuth webRef={webRef} />
+            <Airplay webRef={webRef} />
+          </WebRefContextProvider>
+        </PortalProvider>
       </Provider>
     </SafeAreaProvider>
   )
