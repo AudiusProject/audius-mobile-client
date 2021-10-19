@@ -3,18 +3,12 @@ import React, { memo } from 'react'
 import AnimatedBottomButton from './AnimatedBottomButton'
 import { ButtonProps } from './types'
 
-const ExploreButton = ({
-  darkMode,
-  onClick,
-  isActive,
-  isMatrixMode
-}: ButtonProps) => {
+const ExploreButton = ({ isDarkMode, onClick, isActive }: ButtonProps) => {
   return (
     <AnimatedBottomButton
       uniqueKey='explore-button'
       isActive={isActive}
-      darkMode={darkMode}
-      isMatrix={isMatrixMode}
+      isDarkMode={isDarkMode}
       onClick={onClick}
       iconLightJSON={() => require('assets/animations/iconExploreLight.json')}
       iconDarkJSON={() => require('assets/animations/iconExploreDark.json')}

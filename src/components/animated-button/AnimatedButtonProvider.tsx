@@ -9,8 +9,6 @@ export type BaseAnimatedButtonProps = {
   uniqueKey: string
   isActive: boolean
   isDisabled?: boolean
-  stopPropagation?: boolean
-  isMatrix: boolean
   style: ViewStyle
   wrapperStyle: ViewStyle
 }
@@ -25,9 +23,7 @@ const AnimatedButton = ({
   iconJSON,
   onClick,
   isActive,
-  isMatrix,
   isDisabled = false,
-  stopPropagation = false,
   style,
   wrapperStyle
 }: AnimatedButtonProps) => {
@@ -52,7 +48,7 @@ const AnimatedButton = ({
     }
 
     onClick()
-  }, [isDisabled, onClick, stopPropagation])
+  }, [isDisabled, onClick])
 
   return (
     <TouchableHighlight
@@ -72,14 +68,13 @@ const AnimatedButton = ({
 }
 
 export type AnimatedButtonProviderProps = {
-  darkMode: boolean
-  isMatrix: boolean
+  isDarkMode: boolean
   iconDarkJSON: () => any
   iconLightJSON: () => any
 } & BaseAnimatedButtonProps
 
 const AnimatedButtonProvider = ({
-  darkMode,
+  isDarkMode,
   iconDarkJSON,
   iconLightJSON,
   ...buttonProps
@@ -89,7 +84,7 @@ const AnimatedButtonProvider = ({
   const darkAnimations = useRef<IconJSON | null>(null)
 
   useEffect(() => {
-    if (darkMode) {
+    if (isDarkMode) {
       if (!darkAnimations.current) {
         darkAnimations.current = iconDarkJSON()
       }
@@ -100,7 +95,7 @@ const AnimatedButtonProvider = ({
       }
       setIconJSON({ ...defaultAnimations.current })
     }
-  }, [darkMode, setIconJSON, iconDarkJSON, iconLightJSON])
+  }, [isDarkMode, setIconJSON, iconDarkJSON, iconLightJSON])
 
   return iconJSON && <AnimatedButton iconJSON={iconJSON} {...buttonProps} />
 }
