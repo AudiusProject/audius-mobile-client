@@ -1,10 +1,10 @@
 import React, { useRef, useEffect } from 'react'
-import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import { Platform } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { PortalProvider } from '@gorhom/portal'
 
-import createRootReducer from './store'
+import createStore from './store'
 import WebApp from './components/web/WebApp'
 import Audio from './components/audio/Audio'
 import GoogleCast from './components/audio/GoogleCast'
@@ -18,12 +18,9 @@ import Notifications from './components/notifications/Notifications'
 import Search from './components/search/Search'
 import { WebRefContextProvider } from './components/web/WebRef'
 import BottomBar from './components/bottom-bar'
+import MobileUploadDrawer from './components/mobile-upload-drawer'
 
-const store = createStore(
-  createRootReducer(),
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-)
-export const dispatch = store.dispatch
+const store = createStore()
 
 const Airplay = Platform.select({
   ios: () => require('./components/audio/Airplay').default,
