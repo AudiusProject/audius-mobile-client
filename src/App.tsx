@@ -4,7 +4,7 @@ import { Provider } from 'react-redux'
 import { Platform } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 
-import createRootReducer from './store'
+import createRootReducer from 'app/store'
 import WebApp from './components/web/WebApp'
 import Audio from './components/audio/Audio'
 import GoogleCast from './components/audio/GoogleCast'
