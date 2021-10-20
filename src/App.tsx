@@ -8,7 +8,7 @@ import { createStore } from 'redux'
 
 import Audio from 'app/components/audio/Audio'
 import GoogleCast from 'app/components/audio/GoogleCast'
-import BottomBar from 'app/components/bottom-bar'
+// import BottomBar from 'app/components/bottom-bar'
 import Notifications from 'app/components/notifications/Notifications'
 import OAuth from 'app/components/oauth/OAuth'
 import Search from 'app/components/search/Search'

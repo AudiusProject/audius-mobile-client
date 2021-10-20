@@ -1,5 +1,3 @@
-import { dispatch } from 'App'
-
 import { remindUserToTurnOnNotifications } from 'app/components/notification-reminder/NotificationReminder'
 import PushNotifications from 'app/notifications'
 import * as notificationsActions from 'app/store/notifications/actions'

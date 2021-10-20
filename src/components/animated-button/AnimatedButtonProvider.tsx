@@ -37,7 +37,7 @@ const AnimatedButton = ({
     } else {
       animationRef.current?.play(0, 0)
     }
-  }, [isActive])
+  }, [isActive, iconJSON])
 
   const handleClick = useCallback(() => {
     if (isDisabled) {
@@ -49,7 +49,7 @@ const AnimatedButton = ({
     }
 
     onClick()
-  }, [isDisabled, onClick])
+  }, [isDisabled, onClick, isActive])
 
   return (
     <TouchableHighlight

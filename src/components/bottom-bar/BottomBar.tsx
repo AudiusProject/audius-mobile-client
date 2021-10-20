@@ -78,16 +78,23 @@ const BottomBar = () => {
 
   // Actions
   const dispatchWeb = useDispatchWeb()
-  const openSignOn = () => {
+  const openSignOn = useCallback(() => {
     dispatchWeb(_openSignOn(false))
     dispatchWeb(showRequiresAccountModal())
-  }
-  const goToRoute = (route: string) => dispatchWeb(push(route))
-  const resetExploreTab = () => dispatchWeb(setTab(Tabs.FOR_YOU))
-  const scrollToTop = () =>
-    dispatchWeb({
-      type: MessageType.SCROLL_TO_TOP
-    })
+  }, [dispatchWeb])
+  const goToRoute = useCallback((route: string) => dispatchWeb(push(route)), [
+    dispatchWeb
+  ])
+  const resetExploreTab = useCallback(() => dispatchWeb(setTab(Tabs.FOR_YOU)), [
+    dispatchWeb
+  ])
+  const scrollToTop = useCallback(
+    () =>
+      dispatchWeb({
+        type: MessageType.SCROLL_TO_TOP
+      }),
+    [dispatchWeb]
+  )
 
   const userProfilePage = handle ? profilePage(handle) : null
   const navRoutes = new Set([
@@ -128,6 +135,7 @@ const BottomBar = () => {
     )
   }, [
     onSignOn,
+    onErrorPage,
     isOverflowModalOpen,
     isUploadDrawerOpen,
     isPushNotificationDrawerOpen,
@@ -176,7 +184,7 @@ const BottomBar = () => {
         callback()
       }
     },
-    [currentRoute]
+    [currentRoute, resetExploreTab, scrollToTop]
   )
 
   return !hideBottomBar ? (
