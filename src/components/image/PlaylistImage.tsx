@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
-import { UserMultihash } from '../../models/User'
-import { CollectionImage } from '../../models/Collection'
+import { UserMultihash } from 'app/models/User'
+import { CollectionImage } from 'app/models/Collection'
 import ImageLoader from './ImageLoader'
 import { gateways, publicGateways } from './utils'
 
@@ -84,7 +84,7 @@ const PlaylistImage = ({
       style={imageStyle}
       source={
         didError || source === null
-          ? require('../../assets/images/imageBlank2x.png')
+          ? require('app/assets/images/imageBlank2x.png')
           : source
       }
       onError={onError}

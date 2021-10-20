@@ -1,7 +1,7 @@
-import * as notificationsActions from '../../store/notifications/actions'
-import PushNotifications from '../../notifications'
-import { remindUserToTurnOnNotifications } from '../../components/notification-reminder/NotificationReminder'
-import { Status } from '../../types/status'
+import * as notificationsActions from 'app/store/notifications/actions'
+import PushNotifications from 'app/notifications'
+import { remindUserToTurnOnNotifications } from 'app/components/notification-reminder/NotificationReminder'
+import { Status } from 'app/types/status'
 
 import { MessageType, MessageHandlers } from '../types'
 import { dispatch } from 'App'

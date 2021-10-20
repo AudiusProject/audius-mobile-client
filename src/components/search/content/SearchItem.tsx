@@ -1,23 +1,23 @@
 import React, { useCallback } from 'react'
 import { StyleSheet, View, Text, TouchableHighlight } from 'react-native'
-import IconArrow from '../../../assets/images/iconArrow.svg'
-import { useColor, useTheme } from '../../../utils/theme'
+import IconArrow from 'app/assets/images/iconArrow.svg'
+import { useColor, useTheme } from 'app/utils/theme'
 import {
   getTrackRoute,
   getUserRoute,
   getCollectionRoute
-} from '../../../utils/routes'
-import UserImage from '../../image/UserImage'
-import TrackImage from '../../image/TrackImage'
-import PlaylistImage from '../../image/PlaylistImage'
-import UserBadges from '../../user-badges/UserBadges'
+} from 'app/utils/routes'
+import UserImage from 'app/components/image/UserImage'
+import TrackImage from 'app/components/image/TrackImage'
+import PlaylistImage from 'app/components/image/PlaylistImage'
+import UserBadges from 'app/components/user-badges/UserBadges'
 import {
   SearchPlaylist,
   SearchTrack,
   SearchUser,
   SectionHeader
-} from '../../../store/search/types'
-import useSearchHistory from '../../../store/search/hooks'
+} from 'app/store/search/types'
+import useSearchHistory from 'app/store/search/hooks'
 import { usePushSearchRoute } from '../utils'
 
 const styles = StyleSheet.create({

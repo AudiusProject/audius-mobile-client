@@ -55,7 +55,7 @@ const SplashScreen = ({ dappLoaded }: SplashScreenProps) => {
       }}
     >
       <LottieView
-        source={require('../../assets/animations/splashscreen.json')}
+        source={require('app/assets/animations/splashscreen.json')}
         ref={animation => {
           animationRef.current = animation
         }}

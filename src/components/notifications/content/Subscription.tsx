@@ -1,9 +1,9 @@
 import React, { ReactNode } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { UserSubscription as SubscriptionNotification } from '../../../store/notifications/types'
+import { UserSubscription as SubscriptionNotification } from 'app/store/notifications/types'
 import UserImages from './UserImages'
 import Entity from './Entity'
-import { useTheme } from '../../../utils/theme'
+import { useTheme } from 'app/utils/theme'
 import User from './User'
 
 const styles = StyleSheet.create({

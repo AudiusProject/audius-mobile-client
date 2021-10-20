@@ -1,10 +1,10 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { Follow as FollowNotification } from '../../../store/notifications/types'
+import { Follow as FollowNotification } from 'app/store/notifications/types'
 import UserImages from './UserImages'
-import { formatCount } from '../../../utils/format'
+import { formatCount } from 'app/utils/format'
 import User from './User'
-import { useTheme } from '../../../utils/theme'
+import { useTheme } from 'app/utils/theme'
 
 const styles = StyleSheet.create({
   textWrapper: {

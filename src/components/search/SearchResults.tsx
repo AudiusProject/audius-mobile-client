@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, SectionList, Keyboard } from 'react-native'
 import { useSelector } from 'react-redux'
-import { getSearchResults } from '../../store/search/selectors'
+import { getSearchResults } from 'app/store/search/selectors'
 import SearchSectionHeader from './content/SearchSectionHeader'
 import SearchItem from './content/SearchItem'
 import MoreContainer from './content/MoreContainer'
@@ -10,7 +10,7 @@ import {
   SearchTrack,
   SearchPlaylist,
   SectionHeader
-} from '../../store/search/types'
+} from 'app/store/search/types'
 
 const messages = {
   profile: 'PROFILES',

@@ -1,8 +1,8 @@
+import LottieView from 'lottie-react-native'
 import React, { memo, useState, useEffect, useRef, useCallback } from 'react'
 import { TouchableHighlight, View, ViewStyle } from 'react-native'
 
-import LottieView from 'lottie-react-native'
-import { useColor } from '../../utils/theme'
+import { useColor } from 'app/utils/theme'
 
 export type BaseAnimatedButtonProps = {
   onClick: () => void

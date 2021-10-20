@@ -2,7 +2,7 @@ import React from 'react'
 import {
   Notification,
   NotificationType
-} from '../../../store/notifications/types'
+} from 'app/store/notifications/types'
 import Favorite from './Favorite'
 import Repost from './Repost'
 import Follow from './Follow'

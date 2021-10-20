@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react'
-import { UserMultihash } from '../../models/User'
-import { TrackImage as TrackImageType } from '../../models/Track'
+import { UserMultihash } from 'app/models/User'
+import { TrackImage as TrackImageType } from 'app/models/Track'
 import ImageLoader from './ImageLoader'
 import { gateways, publicGateways } from './utils'
 
@@ -83,7 +83,7 @@ const TrackImage = ({
       style={imageStyle}
       source={
         didError || source === null
-          ? require('../../assets/images/imageBlank2x.png')
+          ? require('app/assets/images/imageBlank2x.png')
           : source
       }
       onError={onError}

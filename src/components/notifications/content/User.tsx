@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { StyleSheet, Text } from 'react-native'
-import { useTheme } from '../../../utils/theme'
-import { getUserRoute } from '../../../utils/routes'
+import { useTheme } from 'app/utils/theme'
+import { getUserRoute } from 'app/utils/routes'
 
 const styles = StyleSheet.create({
   text: {

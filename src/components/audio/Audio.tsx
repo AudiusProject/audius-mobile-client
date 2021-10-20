@@ -12,10 +12,10 @@ import MusicControl from 'react-native-music-control'
 import Video, { OnProgressData } from 'react-native-video'
 import { Command } from 'react-native-music-control/lib/types'
 
-import { AppState } from '../../store'
-import * as audioActions from '../../store/audio/actions'
-import { getGoogleCastStatus } from '../../store/googleCast/selectors'
-import { CastStatus, setPlayPosition } from '../../store/googleCast/actions'
+import { AppState } from 'app/store'
+import * as audioActions from 'app/store/audio/actions'
+import { getGoogleCastStatus } from 'app/store/googleCast/selectors'
+import { CastStatus, setPlayPosition } from 'app/store/googleCast/actions'
 import {
   getTrack,
   getPlaying,
@@ -25,14 +25,14 @@ import {
   getRepeatMode,
   getIsShuffleOn,
   getShuffleIndex
-} from '../../store/audio/selectors'
+} from 'app/store/audio/selectors'
 
-import { MessageType } from '../../message'
+import { MessageType } from 'app/message'
 import { logListen } from './listens'
-import { postMessage } from '../../utils/postMessage'
-import { Genre } from '../../utils/genres'
-import { MessagePostingWebView } from '../../types/MessagePostingWebView'
-import { RepeatMode } from '../../store/audio/reducer'
+import { postMessage } from 'app/utils/postMessage'
+import { Genre } from 'app/utils/genres'
+import { MessagePostingWebView } from 'app/types/MessagePostingWebView'
+import { RepeatMode } from 'app/store/audio/reducer'
 
 const SKIP_DURATION_SEC = 15
 

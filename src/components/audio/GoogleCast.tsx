@@ -1,10 +1,10 @@
 import React, { useEffect, RefObject, useCallback } from 'react'
 import { Dispatch } from 'redux'
 import { connect } from 'react-redux'
-import { MessageType } from '../../message'
-import { postMessage } from '../../utils/postMessage'
-import { MessagePostingWebView } from '../../types/MessagePostingWebView'
-import * as googleCastActions from '../../store/googleCast/actions'
+import { MessageType } from 'app/message'
+import { postMessage } from 'app/utils/postMessage'
+import { MessagePostingWebView } from 'app/types/MessagePostingWebView'
+import * as googleCastActions from 'app/store/googleCast/actions'
 import {
   getTrack,
   getPlaying,
@@ -12,13 +12,13 @@ import {
   getIndex,
   getQueueLength,
   getIsRepeatSingle
-} from '../../store/audio/selectors'
-import * as audioActions from '../../store/audio/actions'
-import { AppState } from '../../store'
+} from 'app/store/audio/selectors'
+import * as audioActions from 'app/store/audio/actions'
+import { AppState } from 'app/store'
 import {
   getGoogleCastStatus,
   getCastStartPosition
-} from '../../store/googleCast/selectors'
+} from 'app/store/googleCast/selectors'
 import GoogleCast, { CastButton } from 'react-native-google-cast'
 
 type OwnProps = {

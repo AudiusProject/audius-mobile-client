@@ -23,25 +23,25 @@ import StaticServer from 'react-native-static-server'
 import RNFS from 'react-native-fs'
 
 import PullToRefresh from './PullToRefresh'
-import { Message, MessageType, handleMessage } from '../../message'
+import { Message, MessageType, handleMessage } from 'app/message'
 import {
   WebViewMessage,
   WebViewNavigation
 } from 'react-native-webview/lib/WebViewTypes'
-import { AppState } from '../../store'
-import { getTrack, getIndex } from '../../store/audio/selectors'
+import { AppState } from 'app/store'
+import { getTrack, getIndex } from 'app/store/audio/selectors'
 import {
   getIsOnFirstPage,
   getIsSignedIn
-} from '../../store/lifecycle/selectors'
+} from 'app/store/lifecycle/selectors'
 import SplashScreen from '../splash-screen/SplashScreen'
 import {
   postMessage,
   postMessage as postMessageUtil
-} from '../../utils/postMessage'
-import { MessagePostingWebView } from '../../types/MessagePostingWebView'
-import useAppState from '../../hooks/useAppState'
-import useKeyboardListeners from '../../hooks/useKeyboardListeners'
+} from 'app/utils/postMessage'
+import { MessagePostingWebView } from 'app/types/MessagePostingWebView'
+import useAppState from 'app/hooks/useAppState'
+import useKeyboardListeners from 'app/hooks/useKeyboardListeners'
 import NotificationReminder from '../notification-reminder/NotificationReminder'
 import { WebRefContext } from './WebRef'
 

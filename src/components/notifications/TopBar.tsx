@@ -5,9 +5,9 @@ import {
   TouchableOpacity,
   Platform
 } from 'react-native'
-import IconRemove from '../../assets/images/iconRemove.svg'
+import IconRemove from 'app/assets/images/iconRemove.svg'
 import React from 'react'
-import { useSpecialColor, useTheme } from '../../utils/theme'
+import { useSpecialColor, useTheme } from 'app/utils/theme'
 
 const IS_IOS = Platform.OS === 'ios'
 

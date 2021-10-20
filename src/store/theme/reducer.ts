@@ -1,4 +1,4 @@
-import { Theme } from '../../utils/theme'
+import { Theme } from 'app/utils/theme'
 import { ThemeActions, SET } from './actions'
 
 export type ThemeState = {

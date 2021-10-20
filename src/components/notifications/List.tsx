@@ -4,19 +4,20 @@ import { connect } from 'react-redux'
 import { StyleSheet, FlatList, View, RefreshControl } from 'react-native'
 import LottieView from 'lottie-react-native'
 
-import { AppState } from '../../store'
+import { AppState } from 'app/store'
 import {
   getEndReached,
   getNotifications,
   getStatus
-} from '../../store/notifications/selectors'
-import NotificationBlock from './NotificationBlock'
-import * as notificationsActions from '../../store/notifications/actions'
-import { Notification } from '../../store/notifications/types'
-import { Status } from '../../types/status'
+} from 'app/store/notifications/selectors'
+import * as notificationsActions from 'app/store/notifications/actions'
+import { Notification } from 'app/store/notifications/types'
+import { Status } from 'app/types/status'
+import { useColor } from 'app/utils/theme'
+import * as haptics from 'app/haptics'
+
 import Empty from './Empty'
-import { useColor } from '../../utils/theme'
-import * as haptics from '../../haptics'
+import NotificationBlock from './NotificationBlock'
 
 const styles = StyleSheet.create({
   list: {
@@ -103,7 +104,7 @@ const List = ({
         status === Status.LOADING ? (
           <View style={styles.footer}>
             <LottieView
-              source={require('../../assets/animations/loadingSpinner.json')}
+              source={require('app/assets/animations/loadingSpinner.json')}
               autoPlay
               loop
               colorFilters={[

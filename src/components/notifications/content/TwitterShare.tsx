@@ -12,10 +12,10 @@ import {
   Track,
   TrendingTrack,
   User
-} from '../../../store/notifications/types'
-import IconTwitterBird from '../../../assets/images/iconTwitterBird.svg'
+} from 'app/store/notifications/types'
+import IconTwitterBird from 'app/assets/images/iconTwitterBird.svg'
 import { getEntityRoute } from '../routeUtil'
-import { getUserRoute } from '../../../utils/routes'
+import { getUserRoute } from 'app/utils/routes'
 import { getRankSuffix } from './Trending'
 import { BadgeTier } from 'utils/badgeTier'
 

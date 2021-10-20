@@ -7,18 +7,18 @@ import {
   getSearchQuery,
   getSearchResultQuery,
   getSearchResults
-} from '../../store/search/selectors'
-import * as searchActions from '../../store/search/actions'
-import { useTheme } from '../../utils/theme'
-import useAppState from '../../hooks/useAppState'
-import useLocation from '../../hooks/useLocation'
-import { usePushRouteWeb } from '../../hooks/usePushRouteWeb'
+} from 'app/store/search/selectors'
+import * as searchActions from 'app/store/search/actions'
+import { useTheme } from 'app/utils/theme'
+import useAppState from 'app/hooks/useAppState'
+import useLocation from 'app/hooks/useLocation'
+import { usePushRouteWeb } from 'app/hooks/usePushRouteWeb'
 import TopBar from './TopBar'
 import SearchHistory from './SearchHistory'
 import SearchResults from './SearchResults'
 import Header from '../header/Header'
 import EmptySearch from './content/EmptySearch'
-import { getEmptyPageRoute } from '../../utils/routes'
+import { getEmptyPageRoute } from 'app/utils/routes'
 
 const FADE_DURATION = 80
 

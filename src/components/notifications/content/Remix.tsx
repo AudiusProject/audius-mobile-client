@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import {
   RemixCreate as RemixNotification,
   Entity as EntityType
-} from '../../../store/notifications/types'
+} from 'app/store/notifications/types'
 import UserImages from './UserImages'
 import User from './User'
 import Entity from './Entity'

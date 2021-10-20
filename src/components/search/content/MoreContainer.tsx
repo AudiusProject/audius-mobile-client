@@ -2,12 +2,12 @@ import React, { useState, useCallback } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { StyleSheet, Animated, Text, TouchableOpacity } from 'react-native'
 
-import { useColor, useTheme } from '../../../utils/theme'
-import { getSearchRoute } from '../../../utils/routes'
-import { usePushRouteWeb } from '../../../hooks/usePushRouteWeb'
-import * as searchActions from '../../../store/search/actions'
-import { getSearchResultQuery } from '../../../store/search/selectors'
-import IconArrow from '../../../assets/images/iconArrow.svg'
+import { useColor, useTheme } from 'app/utils/theme'
+import { getSearchRoute } from 'app/utils/routes'
+import { usePushRouteWeb } from 'app/hooks/usePushRouteWeb'
+import * as searchActions from 'app/store/search/actions'
+import { getSearchResultQuery } from 'app/store/search/selectors'
+import IconArrow from 'app/assets/images/iconArrow.svg'
 
 const messages = {
   more: 'See More Results'

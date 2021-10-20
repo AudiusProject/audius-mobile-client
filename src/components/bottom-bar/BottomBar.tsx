@@ -28,11 +28,11 @@ import {
   profilePage
 } from 'audius-client/src/utils/route'
 
-import { useDispatchWeb } from '../../hooks/useDispatchWeb'
-import { useSelectorWeb } from '../../hooks/useSelectorWeb'
-import { MessageType } from '../../message/types'
-import { getLocation } from '../../store/lifecycle/selectors'
-import { Theme, useTheme, useThemeVariant } from '../../utils/theme'
+import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
+import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
+import { MessageType } from 'app/message/types'
+import { getLocation } from 'app/store/lifecycle/selectors'
+import { Theme, useTheme, useThemeVariant } from 'app/utils/theme'
 
 import FeedButton from './buttons/FeedButton'
 import TrendingButton from './buttons/TrendingButton'

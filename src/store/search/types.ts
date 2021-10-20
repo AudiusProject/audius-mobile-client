@@ -1,12 +1,12 @@
-import { TrackImage } from '../../models/Track'
-import { CollectionImage } from '../../models/Collection'
+import { TrackImage } from 'app/models/Track'
+import { CollectionImage } from 'app/models/Collection'
 import {
   UserImage,
   UserMultihash,
   UserBalance,
   UserName,
   UserVerified
-} from '../../models/User'
+} from 'app/models/User'
 
 export type SearchUser = UserMultihash &
   UserImage &

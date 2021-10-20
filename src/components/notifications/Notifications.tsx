@@ -15,19 +15,19 @@ import {
   View
 } from 'react-native'
 
-import { AppState } from '../../store'
-import { MessagePostingWebView } from '../../types/MessagePostingWebView'
-import { getIsOpen } from '../../store/notifications/selectors'
-import * as notificationsActions from '../../store/notifications/actions'
-import { getIsSignedIn } from '../../store/lifecycle/selectors'
-import { getIsOpen as getIsSearchOpen } from '../../store/search/selectors'
+import { AppState } from 'app/store'
+import { MessagePostingWebView } from 'app/types/MessagePostingWebView'
+import { getIsOpen } from 'app/store/notifications/selectors'
+import * as notificationsActions from 'app/store/notifications/actions'
+import { getIsSignedIn } from 'app/store/lifecycle/selectors'
+import { getIsOpen as getIsSearchOpen } from 'app/store/search/selectors'
 import TopBar from './TopBar'
 import List from './List'
-import { postMessage } from '../../utils/postMessage'
-import { MessageType } from '../../message'
-import { useTheme } from '../../utils/theme'
-import useAppState from '../../hooks/useAppState'
-import useLocation from '../../hooks/useLocation'
+import { postMessage } from 'app/utils/postMessage'
+import { MessageType } from 'app/message'
+import { useTheme } from 'app/utils/theme'
+import useAppState from 'app/hooks/useAppState'
+import useLocation from 'app/hooks/useLocation'
 
 const INITIAL_OFFSET = 10
 const MAX_BG_OPACITY = 0.3

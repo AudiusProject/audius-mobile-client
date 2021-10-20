@@ -5,8 +5,9 @@ import {
   NativeModules
 } from 'react-native'
 import WebView from 'react-native-webview'
-import { MessageType } from '../../message'
-import { postMessage } from '../../utils/postMessage'
+
+import { MessageType } from 'app/message'
+import { postMessage } from 'app/utils/postMessage'
 
 const AIRPLAY_PORT_TYPE = 'AirPlay'
 

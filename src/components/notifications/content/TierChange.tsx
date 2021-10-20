@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { useTheme } from '../../../utils/theme'
+import { useTheme } from 'app/utils/theme'
 import { TierChange as TierChangeType } from 'store/notifications/types'
 import TwitterShare from './TwitterShare'
 import { BadgeTier } from 'utils/badgeTier'

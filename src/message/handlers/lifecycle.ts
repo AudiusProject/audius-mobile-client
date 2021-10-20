@@ -1,5 +1,5 @@
-import * as lifecycleActions from '../../store/lifecycle/actions'
-import { checkConnectivity, Connectivity } from '../../utils/connectivity'
+import * as lifecycleActions from 'app/store/lifecycle/actions'
+import { checkConnectivity, Connectivity } from 'app/utils/connectivity'
 
 import { MessageType, MessageHandlers } from '../types'
 

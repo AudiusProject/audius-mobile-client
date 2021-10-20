@@ -1,7 +1,8 @@
 import { StatusBar } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useDarkMode } from 'react-native-dark-mode'
-import { getTheme } from '../store/theme/selectors'
+
+import { getTheme } from 'app/store/theme/selectors'
 
 export enum Theme {
   DEFAULT = 'default',

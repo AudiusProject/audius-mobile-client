@@ -3,12 +3,12 @@ import { StyleSheet, Text, View } from 'react-native'
 import {
   RemixCosign as CosignNotification,
   Entity as EntityType
-} from '../../../store/notifications/types'
+} from 'app/store/notifications/types'
 import UserImages from './UserImages'
 import User from './User'
 import Entity from './Entity'
 import TwitterShare from './TwitterShare'
-import { useTheme } from '../../../utils/theme'
+import { useTheme } from 'app/utils/theme'
 import Track from 'models/Track'
 
 const styles = StyleSheet.create({
