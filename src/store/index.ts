@@ -1,14 +1,14 @@
 import { combineReducers } from 'redux'
 
-import googleCast, { GoogleCastState } from './googleCast/reducer'
 import audio, { AudioState } from './audio/reducer'
-import oauth, { OAuthState } from './oauth/reducer'
-import web, { WebState } from './web/reducer'
+import clientStore from './clientStore/slice'
+import googleCast, { GoogleCastState } from './googleCast/reducer'
 import lifecycle, { LifecycleState } from './lifecycle/reducer'
 import notifications, { NotificationsState } from './notifications/reducer'
+import oauth, { OAuthState } from './oauth/reducer'
 import search, { SearchState } from './search/reducer'
 import theme, { ThemeState } from './theme/reducer'
-import clientStore from './clientStore/slice'
+import web, { WebState } from './web/reducer'
 
 export type AppState = {
   audio: AudioState

@@ -5,8 +5,7 @@ import React, {
   useRef,
   useState
 } from 'react'
-import { Dispatch } from 'redux'
-import { connect, useSelector } from 'react-redux'
+
 import {
   StyleSheet,
   Animated,
@@ -14,20 +13,23 @@ import {
   PanResponder,
   View
 } from 'react-native'
+import { connect, useSelector } from 'react-redux'
+import { Dispatch } from 'redux'
 
-import { AppState } from 'app/store'
-import { MessagePostingWebView } from 'app/types/MessagePostingWebView'
-import { getIsOpen } from 'app/store/notifications/selectors'
-import * as notificationsActions from 'app/store/notifications/actions'
-import { getIsSignedIn } from 'app/store/lifecycle/selectors'
-import { getIsOpen as getIsSearchOpen } from 'app/store/search/selectors'
-import TopBar from './TopBar'
-import List from './List'
-import { postMessage } from 'app/utils/postMessage'
-import { MessageType } from 'app/message'
-import { useTheme } from 'app/utils/theme'
 import useAppState from 'app/hooks/useAppState'
 import useLocation from 'app/hooks/useLocation'
+import { MessageType } from 'app/message'
+import { AppState } from 'app/store'
+import { getIsSignedIn } from 'app/store/lifecycle/selectors'
+import * as notificationsActions from 'app/store/notifications/actions'
+import { getIsOpen } from 'app/store/notifications/selectors'
+import { getIsOpen as getIsSearchOpen } from 'app/store/search/selectors'
+import { MessagePostingWebView } from 'app/types/MessagePostingWebView'
+import { postMessage } from 'app/utils/postMessage'
+import { useTheme } from 'app/utils/theme'
+
+import List from './List'
+import TopBar from './TopBar'
 
 const INITIAL_OFFSET = 10
 const MAX_BG_OPACITY = 0.3

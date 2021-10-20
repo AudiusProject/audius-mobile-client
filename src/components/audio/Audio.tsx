@@ -5,17 +5,18 @@ import React, {
   RefObject,
   useCallback
 } from 'react'
-import { Dispatch } from 'redux'
-import { connect } from 'react-redux'
+
 import { Platform, StyleSheet, View } from 'react-native'
 import MusicControl from 'react-native-music-control'
-import Video, { OnProgressData } from 'react-native-video'
 import { Command } from 'react-native-music-control/lib/types'
+import Video, { OnProgressData } from 'react-native-video'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
 
+import { MessageType } from 'app/message'
 import { AppState } from 'app/store'
 import * as audioActions from 'app/store/audio/actions'
-import { getGoogleCastStatus } from 'app/store/googleCast/selectors'
-import { CastStatus, setPlayPosition } from 'app/store/googleCast/actions'
+import { RepeatMode } from 'app/store/audio/reducer'
 import {
   getTrack,
   getPlaying,
@@ -26,13 +27,13 @@ import {
   getIsShuffleOn,
   getShuffleIndex
 } from 'app/store/audio/selectors'
-
-import { MessageType } from 'app/message'
-import { logListen } from './listens'
-import { postMessage } from 'app/utils/postMessage'
-import { Genre } from 'app/utils/genres'
+import { CastStatus, setPlayPosition } from 'app/store/googleCast/actions'
+import { getGoogleCastStatus } from 'app/store/googleCast/selectors'
 import { MessagePostingWebView } from 'app/types/MessagePostingWebView'
-import { RepeatMode } from 'app/store/audio/reducer'
+import { Genre } from 'app/utils/genres'
+import { postMessage } from 'app/utils/postMessage'
+
+import { logListen } from './listens'
 
 const SKIP_DURATION_SEC = 15
 

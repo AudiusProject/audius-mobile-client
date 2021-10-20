@@ -1,5 +1,5 @@
-import { TrackImage } from 'app/models/Track'
 import { CollectionImage } from 'app/models/Collection'
+import { TrackImage } from 'app/models/Track'
 import {
   UserImage,
   UserMultihash,

@@ -1,10 +1,11 @@
 import React, { RefObject, useCallback } from 'react'
+
 import { checkNotifications, RESULTS } from 'react-native-permissions'
 
-import { MessagePostingWebView } from 'app/types/MessagePostingWebView'
-import { postMessage as postMessageUtil } from 'app/utils/postMessage'
 import useSessionCount from 'app/hooks/useSessionCount'
 import { Message, MessageType } from 'app/message'
+import { MessagePostingWebView } from 'app/types/MessagePostingWebView'
+import { postMessage as postMessageUtil } from 'app/utils/postMessage'
 
 const REMINDER_EVERY_N_SESSIONS = 10
 

@@ -1,10 +1,15 @@
 import React, { RefObject, useCallback } from 'react'
-import Config from 'react-native-config'
-import { Dispatch } from 'redux'
-import { connect } from 'react-redux'
-import { WebView } from 'react-native-webview'
-import { NativeSyntheticEvent, Modal, View, Button } from 'react-native'
 
+import { NativeSyntheticEvent, Modal, View, Button } from 'react-native'
+import Config from 'react-native-config'
+import { WebView } from 'react-native-webview'
+import { WebViewMessage } from 'react-native-webview/lib/WebViewTypes'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
+
+import { AppState } from 'app/store'
+import { closePopup } from 'app/store/oauth/actions'
+import { Provider } from 'app/store/oauth/reducer'
 import {
   getUrl,
   getIsOpen,
@@ -12,10 +17,6 @@ import {
   getAuthProvider,
   getMessageType
 } from 'app/store/oauth/selectors'
-import { AppState } from 'app/store'
-import { closePopup } from 'app/store/oauth/actions'
-import { Provider } from 'app/store/oauth/reducer'
-import { WebViewMessage } from 'react-native-webview/lib/WebViewTypes'
 import { MessagePostingWebView } from 'app/types/MessagePostingWebView'
 import { postMessage } from 'app/utils/postMessage'
 

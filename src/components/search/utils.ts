@@ -1,5 +1,7 @@
 import { useCallback } from 'react'
+
 import { useDispatch } from 'react-redux'
+
 import { usePushRouteWeb } from 'app/hooks/usePushRouteWeb'
 import * as searchActions from 'app/store/search/actions'
 

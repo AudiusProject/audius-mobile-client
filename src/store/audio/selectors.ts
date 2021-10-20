@@ -1,4 +1,5 @@
 import { AppState } from 'src/store'
+
 import { RepeatMode } from './reducer'
 
 const getBaseState = (state: AppState) => state.audio

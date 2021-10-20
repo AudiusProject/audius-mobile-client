@@ -1,4 +1,5 @@
 import React, { ReactNode, useRef, useState, RefObject } from 'react'
+
 import {
   View,
   ActivityIndicator,
@@ -6,15 +7,15 @@ import {
   Platform,
   Animated
 } from 'react-native'
-import { connect } from 'react-redux'
 import { useDarkMode } from 'react-native-dark-mode'
-
-import { light } from 'app/haptics'
-import { getIsEnabled, getMessageId } from 'app/store/web/selectors'
+import { connect } from 'react-redux'
 import { AppState } from 'src/store'
 import { MessagePostingWebView } from 'src/types/MessagePostingWebView'
-import { postMessage } from 'app/utils/postMessage'
+
+import { light } from 'app/haptics'
 import { MessageType } from 'app/message'
+import { getIsEnabled, getMessageId } from 'app/store/web/selectors'
+import { postMessage } from 'app/utils/postMessage'
 
 // How far the user needs to drag before the refresh fires
 const MAX_OFFSET = 140

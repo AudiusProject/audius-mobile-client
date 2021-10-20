@@ -1,16 +1,19 @@
 import React from 'react'
+
 import { StyleSheet, View, SectionList, Keyboard } from 'react-native'
 import { useSelector } from 'react-redux'
+
 import { getSearchResults } from 'app/store/search/selectors'
-import SearchSectionHeader from './content/SearchSectionHeader'
-import SearchItem from './content/SearchItem'
-import MoreContainer from './content/MoreContainer'
 import {
   SearchUser,
   SearchTrack,
   SearchPlaylist,
   SectionHeader
 } from 'app/store/search/types'
+
+import MoreContainer from './content/MoreContainer'
+import SearchItem from './content/SearchItem'
+import SearchSectionHeader from './content/SearchSectionHeader'
 
 const messages = {
   profile: 'PROFILES',

@@ -1,7 +1,8 @@
 import { useCallback, useContext } from 'react'
+
 import { WebRefContext } from '../components/web/WebRef'
-import { postMessage } from '../utils/postMessage'
 import { MessageType } from '../message'
+import { postMessage } from '../utils/postMessage'
 
 // When mobile-client is no longer dependent on the web client
 // calls to useDispatchWeb can be replaced with useDispatch

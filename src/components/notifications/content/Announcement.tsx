@@ -1,7 +1,9 @@
 import React from 'react'
+
 import { View } from 'react-native'
-import { Announcement as AnnouncementNotification } from 'app/store/notifications/types'
 import Markdown from 'react-native-markdown-display'
+
+import { Announcement as AnnouncementNotification } from 'app/store/notifications/types'
 import { useTheme } from 'app/utils/theme'
 
 type AnnouncementProps = {

@@ -1,10 +1,3 @@
-import {
-  Platform,
-  NativeSyntheticEvent,
-  Linking,
-  BackHandler,
-  StatusBar
-} from 'react-native'
 import React, {
   useRef,
   useState,
@@ -13,36 +6,43 @@ import React, {
   useCallback,
   useContext
 } from 'react'
-import Config from 'react-native-config'
-import AsyncStorage from '@react-native-community/async-storage'
-import VersionNumber from 'react-native-version-number'
-import { Dispatch } from 'redux'
-import { connect } from 'react-redux'
-import { WebView } from 'react-native-webview'
-import StaticServer from 'react-native-static-server'
-import RNFS from 'react-native-fs'
 
-import PullToRefresh from './PullToRefresh'
-import { Message, MessageType, handleMessage } from 'app/message'
+import AsyncStorage from '@react-native-community/async-storage'
+import {
+  Platform,
+  NativeSyntheticEvent,
+  Linking,
+  BackHandler,
+  StatusBar
+} from 'react-native'
+import Config from 'react-native-config'
+import RNFS from 'react-native-fs'
+import StaticServer from 'react-native-static-server'
+import VersionNumber from 'react-native-version-number'
+import { WebView } from 'react-native-webview'
 import {
   WebViewMessage,
   WebViewNavigation
 } from 'react-native-webview/lib/WebViewTypes'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
+
+import useAppState from 'app/hooks/useAppState'
+import useKeyboardListeners from 'app/hooks/useKeyboardListeners'
+import { Message, MessageType, handleMessage } from 'app/message'
 import { AppState } from 'app/store'
 import { getTrack, getIndex } from 'app/store/audio/selectors'
-import {
-  getIsOnFirstPage,
-  getIsSignedIn
-} from 'app/store/lifecycle/selectors'
-import SplashScreen from '../splash-screen/SplashScreen'
+import { getIsOnFirstPage, getIsSignedIn } from 'app/store/lifecycle/selectors'
+import { MessagePostingWebView } from 'app/types/MessagePostingWebView'
 import {
   postMessage,
   postMessage as postMessageUtil
 } from 'app/utils/postMessage'
-import { MessagePostingWebView } from 'app/types/MessagePostingWebView'
-import useAppState from 'app/hooks/useAppState'
-import useKeyboardListeners from 'app/hooks/useKeyboardListeners'
+
 import NotificationReminder from '../notification-reminder/NotificationReminder'
+import SplashScreen from '../splash-screen/SplashScreen'
+
+import PullToRefresh from './PullToRefresh'
 import { WebRefContext } from './WebRef'
 
 const URL_OVERRIDE = Config.URL_OVERRIDE

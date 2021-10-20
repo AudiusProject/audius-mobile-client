@@ -1,5 +1,6 @@
-import LottieView from 'lottie-react-native'
 import React, { memo, useState, useEffect, useRef, useCallback } from 'react'
+
+import LottieView from 'lottie-react-native'
 import { TouchableHighlight, View, ViewStyle } from 'react-native'
 
 import { useColor } from 'app/utils/theme'

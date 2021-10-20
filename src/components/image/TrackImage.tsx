@@ -1,6 +1,8 @@
 import React, { useCallback, useState } from 'react'
-import { UserMultihash } from 'app/models/User'
+
 import { TrackImage as TrackImageType } from 'app/models/Track'
+import { UserMultihash } from 'app/models/User'
+
 import ImageLoader from './ImageLoader'
 import { gateways, publicGateways } from './utils'
 

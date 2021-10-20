@@ -1,9 +1,12 @@
 import React from 'react'
+
 import { StyleSheet, Text, View } from 'react-native'
-import { useTheme } from 'app/utils/theme'
 import { TierChange as TierChangeType } from 'store/notifications/types'
-import TwitterShare from './TwitterShare'
 import { BadgeTier } from 'utils/badgeTier'
+
+import { useTheme } from 'app/utils/theme'
+
+import TwitterShare from './TwitterShare'
 
 const styles = StyleSheet.create({
   wrapper: {

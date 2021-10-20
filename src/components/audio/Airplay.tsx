@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, Ref } from 'react'
+
 import {
   requireNativeComponent,
   NativeEventEmitter,

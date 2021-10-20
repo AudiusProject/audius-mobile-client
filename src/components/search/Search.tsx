@@ -1,24 +1,27 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { StyleSheet, Animated, View } from 'react-native'
 
+import { StyleSheet, Animated, View } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
+
+import useAppState from 'app/hooks/useAppState'
+import useLocation from 'app/hooks/useLocation'
+import { usePushRouteWeb } from 'app/hooks/usePushRouteWeb'
+import * as searchActions from 'app/store/search/actions'
 import {
   getIsOpen,
   getSearchQuery,
   getSearchResultQuery,
   getSearchResults
 } from 'app/store/search/selectors'
-import * as searchActions from 'app/store/search/actions'
+import { getEmptyPageRoute } from 'app/utils/routes'
 import { useTheme } from 'app/utils/theme'
-import useAppState from 'app/hooks/useAppState'
-import useLocation from 'app/hooks/useLocation'
-import { usePushRouteWeb } from 'app/hooks/usePushRouteWeb'
-import TopBar from './TopBar'
+
+import Header from '../header/Header'
+
 import SearchHistory from './SearchHistory'
 import SearchResults from './SearchResults'
-import Header from '../header/Header'
+import TopBar from './TopBar'
 import EmptySearch from './content/EmptySearch'
-import { getEmptyPageRoute } from 'app/utils/routes'
 
 const FADE_DURATION = 80
 

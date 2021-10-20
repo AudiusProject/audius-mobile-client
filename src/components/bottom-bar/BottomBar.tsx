@@ -1,24 +1,18 @@
 import React, { useCallback, useState } from 'react'
 
-import { push } from 'connected-react-router'
-import { useSelector } from 'react-redux'
-import { StyleSheet } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
-
 import { getUserHandle } from 'audius-client/src/common/store/account/selectors'
 import { getIsOpen as getIsMobileOverflowModalOpen } from 'audius-client/src/common/store/ui/mobile-overflow-menu/selectors'
 import { getIsOpen as getIsUploadDrawerOpen } from 'audius-client/src/common/store/ui/mobile-upload-drawer/selectors'
 import { getModalIsOpen } from 'audius-client/src/common/store/ui/modals/slice'
-import { getIsOpen as getIsPushNotificationsDrawerOpen } from 'audius-client/src/common/store/ui/push-notifications-drawer/selectors'
 import { getIsOpen as getIsNowPlayingOpen } from 'audius-client/src/common/store/ui/now-playing/selectors'
+import { getIsOpen as getIsPushNotificationsDrawerOpen } from 'audius-client/src/common/store/ui/push-notifications-drawer/selectors'
 // TODO: move these into /common
+import { setTab } from 'audius-client/src/containers/explore-page/store/actions'
+import { Tabs } from 'audius-client/src/containers/explore-page/store/types'
 import {
   openSignOn as _openSignOn,
   showRequiresAccountModal
 } from 'audius-client/src/containers/sign-on/store/actions'
-import { Tabs } from 'audius-client/src/containers/explore-page/store/types'
-import { setTab } from 'audius-client/src/containers/explore-page/store/actions'
-
 import {
   FEED_PAGE,
   TRENDING_PAGE,
@@ -27,6 +21,10 @@ import {
   getPathname,
   profilePage
 } from 'audius-client/src/utils/route'
+import { push } from 'connected-react-router'
+import { StyleSheet } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { useSelector } from 'react-redux'
 
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
@@ -34,11 +32,11 @@ import { MessageType } from 'app/message/types'
 import { getLocation } from 'app/store/lifecycle/selectors'
 import { Theme, useTheme, useThemeVariant } from 'app/utils/theme'
 
-import FeedButton from './buttons/FeedButton'
-import TrendingButton from './buttons/TrendingButton'
 import ExploreButton from './buttons/ExploreButton'
 import FavoritesButton from './buttons/FavoritesButton'
+import FeedButton from './buttons/FeedButton'
 import ProfileButton from './buttons/ProfileButton'
+import TrendingButton from './buttons/TrendingButton'
 
 const styles = StyleSheet.create({
   bottomBar: {

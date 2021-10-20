@@ -1,15 +1,18 @@
 import React from 'react'
+
+import Track from 'models/Track'
 import { StyleSheet, Text, View } from 'react-native'
+
 import {
   RemixCosign as CosignNotification,
   Entity as EntityType
 } from 'app/store/notifications/types'
-import UserImages from './UserImages'
-import User from './User'
+import { useTheme } from 'app/utils/theme'
+
 import Entity from './Entity'
 import TwitterShare from './TwitterShare'
-import { useTheme } from 'app/utils/theme'
-import Track from 'models/Track'
+import User from './User'
+import UserImages from './UserImages'
 
 const styles = StyleSheet.create({
   container: {

@@ -1,10 +1,10 @@
 import * as themeActions from 'app/store/theme/actions'
-import { handleThemeChange } from 'app/utils/theme'
-
 import {
   getInitialDarkModePreference,
   getPrefersDarkModeChange
 } from 'app/theme'
+import { handleThemeChange } from 'app/utils/theme'
+
 import { MessageType, MessageHandlers } from '../types'
 
 let sentInitialTheme = false

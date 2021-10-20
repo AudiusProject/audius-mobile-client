@@ -1,5 +1,7 @@
 import React, { useCallback, useState } from 'react'
+
 import { View, Animated, ImageProps } from 'react-native'
+
 import { useColor } from 'app/utils/theme'
 
 /**

@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useCallback } from 'react'
+
+import LottieView from 'lottie-react-native'
 import {
   StyleSheet,
   View,
@@ -7,20 +9,20 @@ import {
   Platform
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import LottieView from 'lottie-react-native'
 
 import IconCaretRight from 'app/assets/images/iconCaretRight.svg'
 import IconRemove from 'app/assets/images/iconRemove.svg'
-import { useColor, useTheme } from 'app/utils/theme'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { MessageType } from 'app/message'
-import { getTagSearchRoute } from 'app/utils/routes'
+import { updateQuery } from 'app/store/search/actions'
+import useSearchHistory from 'app/store/search/hooks'
 import {
   getSearchQuery,
   getSearchResultQuery
 } from 'app/store/search/selectors'
-import { updateQuery } from 'app/store/search/actions'
-import useSearchHistory from 'app/store/search/hooks'
+import { getTagSearchRoute } from 'app/utils/routes'
+import { useColor, useTheme } from 'app/utils/theme'
+
 import { usePushSearchRoute } from './utils'
 
 const IS_IOS = Platform.OS === 'ios'

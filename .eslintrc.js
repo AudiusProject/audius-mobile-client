@@ -24,7 +24,22 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module',
   },
-  plugins: ['react', 'react-hooks', '@typescript-eslint', 'jest'],
+  plugins: ['react', 'react-hooks', '@typescript-eslint', 'jest', 'import'],
+  settings: {
+    'import/external-module-folders': [
+      'node_modules',
+      'audius-client'
+    ],
+    'import/resolver': {
+      // NOTE: sk - These aliases are required for the import/order rule.
+      alias: {
+        map: [
+          ['app', './src'],
+        ],
+        extensions: ['.ts', '.tsx', '.js', '.jsx', '.json']
+      }
+    }
+  },
   rules: {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-non-null-assertion': 'off',
@@ -64,5 +79,31 @@ module.exports = {
 
     'space-before-function-paren': 'off',
     'generator-star-spacing': 'off',
+
+    'import/order': [
+      'error',
+      {
+        alphabetize: {
+          order: 'asc'
+        },
+        groups: [
+          'builtin',
+          'external',
+          'internal',
+          'parent',
+          'sibling',
+          'index'
+        ],
+        'newlines-between': 'always',
+        pathGroups: [
+          {
+            pattern: 'react',
+            group: 'builtin',
+            position: 'before'
+          }
+        ],
+        pathGroupsExcludedImportTypes: ['builtin']
+      }
+    ]
   },
 };

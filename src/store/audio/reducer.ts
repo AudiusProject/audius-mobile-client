@@ -1,3 +1,6 @@
+import { EventNames, PlaybackSource } from 'app/types/analytics'
+import { track, make } from 'app/utils/analytics'
+
 import {
   AudioActions,
   PLAY,
@@ -10,8 +13,6 @@ import {
   SHUFFLE,
   RESET
 } from './actions'
-import { track, make } from 'app/utils/analytics'
-import { EventNames, PlaybackSource } from 'app/types/analytics'
 
 type Uri = string
 

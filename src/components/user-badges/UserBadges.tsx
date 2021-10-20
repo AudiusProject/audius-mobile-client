@@ -1,16 +1,15 @@
 import React, { ReactElement } from 'react'
+
 import { StyleSheet, View, Image, Text } from 'react-native'
 
 import IconBronzeBadgeSVG from 'app/assets/images/IconBronzeBadge.svg'
-import IconSilverBadgeSVG from 'app/assets/images/IconSilverBadge.svg'
 import IconGoldBadgeSVG from 'app/assets/images/IconGoldBadge.svg'
 import IconPlatinumBadgeSVG from 'app/assets/images/IconPlatinumBadge.svg'
-
+import IconSilverBadgeSVG from 'app/assets/images/IconSilverBadge.svg'
 import IconVerified from 'app/assets/images/iconVerified.svg'
-
+import { UserName, UserBalance, UserVerified } from 'app/models/User'
 import getBadgeTier, { BadgeTier } from 'app/utils/badgeTier'
 import { Nullable } from 'app/utils/typeUtils'
-import { UserName, UserBalance, UserVerified } from 'app/models/User'
 
 type UserBadgesProps = {
   user: UserName & UserBalance & UserVerified

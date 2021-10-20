@@ -1,4 +1,5 @@
 import React, { ReactNode, useCallback } from 'react'
+
 import {
   StyleSheet,
   View,
@@ -7,27 +8,29 @@ import {
   Animated,
   Platform
 } from 'react-native'
+import { BadgeTier } from 'utils/badgeTier'
+
+import IconBronzeBadge from 'app/assets/images/IconBronzeBadge.svg'
+import IconGoldBadge from 'app/assets/images/IconGoldBadge.svg'
+import IconPlatinumBadge from 'app/assets/images/IconPlatinumBadge.svg'
+import IconSilverBadge from 'app/assets/images/IconSilverBadge.svg'
+import IconAudius from 'app/assets/images/iconAudius.svg'
+import IconHeart from 'app/assets/images/iconHeart.svg'
+import IconRemix from 'app/assets/images/iconRemix.svg'
+import IconRepost from 'app/assets/images/iconRepost.svg'
+import IconStars from 'app/assets/images/iconStars.svg'
+import IconTrending from 'app/assets/images/iconTrending.svg'
+import IconTrophy from 'app/assets/images/iconTrophy.svg'
+import IconUser from 'app/assets/images/iconUser.svg'
 import {
   Notification,
   NotificationType,
   TierChange
 } from 'app/store/notifications/types'
-import NotificationContent from './content/NotificationContent'
-import IconHeart from 'app/assets/images/iconHeart.svg'
-import IconRepost from 'app/assets/images/iconRepost.svg'
-import IconStars from 'app/assets/images/iconStars.svg'
-import IconTrophy from 'app/assets/images/iconTrophy.svg'
-import IconUser from 'app/assets/images/iconUser.svg'
-import IconRemix from 'app/assets/images/iconRemix.svg'
-import IconTrending from 'app/assets/images/iconTrending.svg'
-import IconAudius from 'app/assets/images/iconAudius.svg'
-import IconBronzeBadge from 'app/assets/images/IconBronzeBadge.svg'
-import IconSilverBadge from 'app/assets/images/IconSilverBadge.svg'
-import IconGoldBadge from 'app/assets/images/IconGoldBadge.svg'
-import IconPlatinumBadge from 'app/assets/images/IconPlatinumBadge.svg'
-import { getNotificationRoute } from './routeUtil'
 import { useColor, useTheme } from 'app/utils/theme'
-import { BadgeTier } from 'utils/badgeTier'
+
+import NotificationContent from './content/NotificationContent'
+import { getNotificationRoute } from './routeUtil'
 
 const IS_IOS = Platform.OS === 'ios'
 

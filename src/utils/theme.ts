@@ -1,6 +1,6 @@
 import { StatusBar } from 'react-native'
-import { useSelector } from 'react-redux'
 import { useDarkMode } from 'react-native-dark-mode'
+import { useSelector } from 'react-redux'
 
 import { getTheme } from 'app/store/theme/selectors'
 
@@ -152,7 +152,7 @@ const matrixTheme = {
 const themeColorsByThemeVariant = {
   [Theme.DEFAULT]: defaultTheme,
   [Theme.DARK]: darkTheme,
-  [Theme.MATRIX]: matrixTheme,
+  [Theme.MATRIX]: matrixTheme
 }
 
 export const useThemeVariant = (): keyof typeof themeColorsByThemeVariant => {

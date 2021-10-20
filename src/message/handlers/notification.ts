@@ -1,10 +1,11 @@
-import * as notificationsActions from 'app/store/notifications/actions'
-import PushNotifications from 'app/notifications'
+import { dispatch } from 'App'
+
 import { remindUserToTurnOnNotifications } from 'app/components/notification-reminder/NotificationReminder'
+import PushNotifications from 'app/notifications'
+import * as notificationsActions from 'app/store/notifications/actions'
 import { Status } from 'app/types/status'
 
 import { MessageType, MessageHandlers } from '../types'
-import { dispatch } from 'App'
 
 export const messageHandlers: Partial<MessageHandlers> = {
   [MessageType.ENABLE_PUSH_NOTIFICATIONS]: async ({ message, postMessage }) => {

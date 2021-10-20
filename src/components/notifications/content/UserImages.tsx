@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import Config from 'react-native-config'
+
 import {
   Image,
   ImageSourcePropType,
@@ -7,11 +7,14 @@ import {
   TouchableOpacity,
   View
 } from 'react-native'
-import { getUserListRoute } from '../routeUtil'
+import Config from 'react-native-config'
+
+import User from 'app/models/User'
+import { Notification } from 'app/store/notifications/types'
 import { getUserRoute } from 'app/utils/routes'
 import { useTheme } from 'app/utils/theme'
-import { Notification } from 'app/store/notifications/types'
-import User from 'app/models/User'
+
+import { getUserListRoute } from '../routeUtil'
 
 const USER_METADATA_NODE = Config.USER_METADATA_NODE
 

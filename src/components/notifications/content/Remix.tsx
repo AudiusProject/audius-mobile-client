@@ -1,14 +1,17 @@
 import React from 'react'
+
+import Track from 'models/Track'
 import { StyleSheet, Text, View } from 'react-native'
+
 import {
   RemixCreate as RemixNotification,
   Entity as EntityType
 } from 'app/store/notifications/types'
-import UserImages from './UserImages'
-import User from './User'
+
 import Entity from './Entity'
 import TwitterShare from './TwitterShare'
-import Track from 'models/Track'
+import User from './User'
+import UserImages from './UserImages'
 
 const styles = StyleSheet.create({
   titleText: {

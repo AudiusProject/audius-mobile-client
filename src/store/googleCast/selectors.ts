@@ -1,4 +1,5 @@
 import { AppState } from 'src/store'
+
 import { CastStatus } from './actions'
 
 const getBaseState = (state: AppState) => state.googleCast

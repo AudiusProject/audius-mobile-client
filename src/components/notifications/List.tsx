@@ -1,20 +1,21 @@
 import React, { useCallback } from 'react'
-import { Dispatch } from 'redux'
-import { connect } from 'react-redux'
-import { StyleSheet, FlatList, View, RefreshControl } from 'react-native'
-import LottieView from 'lottie-react-native'
 
+import LottieView from 'lottie-react-native'
+import { StyleSheet, FlatList, View, RefreshControl } from 'react-native'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
+
+import * as haptics from 'app/haptics'
 import { AppState } from 'app/store'
+import * as notificationsActions from 'app/store/notifications/actions'
 import {
   getEndReached,
   getNotifications,
   getStatus
 } from 'app/store/notifications/selectors'
-import * as notificationsActions from 'app/store/notifications/actions'
 import { Notification } from 'app/store/notifications/types'
 import { Status } from 'app/types/status'
 import { useColor } from 'app/utils/theme'
-import * as haptics from 'app/haptics'
 
 import Empty from './Empty'
 import NotificationBlock from './NotificationBlock'
