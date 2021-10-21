@@ -157,7 +157,7 @@ const matrixTheme = {
 const themeColorsByThemeVariant = {
   [Theme.DEFAULT]: defaultTheme,
   [Theme.DARK]: darkTheme,
-  [Theme.MATRIX]: matrixTheme,
+  [Theme.MATRIX]: matrixTheme
 }
 
 export const useThemeVariant = (): keyof typeof themeColorsByThemeVariant => {

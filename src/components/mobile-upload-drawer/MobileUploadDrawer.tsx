@@ -97,7 +97,7 @@ const MobileUploadDrawer = () => {
   const gradientColor1 = useColor('pageHeaderGradientColor1')
   const gradientColor2 = useColor('pageHeaderGradientColor2')
 
-  const keyboardVisible = false //useSelector(getIsKeyboardOpen)
+  const keyboardVisible = false // useSelector(getIsKeyboardOpen)
 
   const CheckMark = () => (
     <Image style={styles.iconCheck} source={HeavyCheckMark} />
@@ -133,7 +133,7 @@ const MobileUploadDrawer = () => {
         </View>
         <View style={styles.bottom}>
           {[messages.unlimited, messages.clear, messages.exclusive].map(m => (
-            <View style={styles.action}>
+            <View style={styles.action} key={m}>
               <CheckMark />
               <Text style={[styles.actionLabel, bodyTextColorStyle]}>{m}</Text>
             </View>
