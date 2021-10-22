@@ -11,11 +11,13 @@ import {
   LayoutChangeEvent,
   PanResponder,
   StyleSheet,
+  TouchableOpacity,
   View
 } from 'react-native'
 import { Portal } from '@gorhom/portal'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { useTheme } from '../../utils/theme'
+import { Edge, SafeAreaView } from 'react-native-safe-area-context'
+import IconRemove from '../../assets/images/iconRemove.svg'
+import { useSpecialColor, useTheme } from '../../utils/theme'
 
 const styles = StyleSheet.create({
   drawer: {
@@ -26,7 +28,8 @@ const styles = StyleSheet.create({
     elevation: 5,
     shadowOpacity: 0,
     shadowRadius: 40,
-    borderRadius: 40
+    borderRadius: 40,
+    padding: 24
   },
 
   fullDrawer: {
@@ -75,12 +78,14 @@ const Drawer = ({ isOpen, children, onClose, isFullscreen }: DrawerProps) => {
   })
 
   const { height } = Dimensions.get('window')
-  const [drawerHeight, setDrawerHeight] = useState(0)
+  const [drawerHeight, setDrawerHeight] = useState(height)
   const initialPosition = height
   const openPosition = height - drawerHeight
 
   const translationAnim = useRef(new Animated.Value(initialPosition)).current
   const shadowAnim = useRef(new Animated.Value(0)).current
+
+  const closeColor = useSpecialColor('staticWhite', 'white')
 
   const slideIn = useCallback(() => {
     Animated.spring(translationAnim, {
@@ -195,12 +200,19 @@ const Drawer = ({ isOpen, children, onClose, isFullscreen }: DrawerProps) => {
         ]}
       >
         <SafeAreaView
-          edges={['bottom']}
+          edges={['bottom', ...((isFullscreen ? ['top'] : []) as Edge[])]}
           onLayout={(event: LayoutChangeEvent) => {
-            const { height } = event.nativeEvent.layout
-            setDrawerHeight(height)
+            if (!isFullscreen) {
+              const { height } = event.nativeEvent.layout
+              setDrawerHeight(height)
+            }
           }}
         >
+          {isFullscreen && (
+            <TouchableOpacity activeOpacity={0.7} onPress={onClose}>
+              <IconRemove width={30} height={30} fill={closeColor} />
+            </TouchableOpacity>
+          )}
           {children}
         </SafeAreaView>
         <View style={styles.skirt} />

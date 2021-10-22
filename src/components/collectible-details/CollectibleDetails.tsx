@@ -31,7 +31,7 @@ export const messages = {
 }
 
 const styles = StyleSheet.create({
-  nftDrawer: {
+  drawer: {
     //   display: flex,
     //   flex-direction: column,
     //   margin-top: 64,
@@ -171,7 +171,7 @@ const CollectibleDetails = () => {
   return (
     <Drawer isOpen={isOpen} onClose={handleClose} isFullscreen>
       {collectible && (
-        <View style={styles.nftDrawer}>
+        <View style={styles.drawer}>
           {/* <CollectibleMedia
           collectible={collectible}
           isMuted={isMuted}

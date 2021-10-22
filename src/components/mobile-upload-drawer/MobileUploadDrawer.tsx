@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-evenly',
     width: '100%',
-    padding: 40
+    padding: 16
   },
 
   iconUpload: {
@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
 
   top: {
     display: 'flex',
+    marginTop: 0,
     flexDirection: 'column',
     alignItems: 'center'
   },
