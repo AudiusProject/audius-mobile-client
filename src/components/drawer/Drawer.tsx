@@ -17,7 +17,7 @@ import {
 import { Portal } from '@gorhom/portal'
 import { Edge, SafeAreaView } from 'react-native-safe-area-context'
 import IconRemove from '../../assets/images/iconRemove.svg'
-import { useSpecialColor, useTheme } from '../../utils/theme'
+import { useColor, useSpecialColor, useTheme } from '../../utils/theme'
 
 const styles = StyleSheet.create({
   drawer: {
@@ -85,7 +85,7 @@ const Drawer = ({ isOpen, children, onClose, isFullscreen }: DrawerProps) => {
   const translationAnim = useRef(new Animated.Value(initialPosition)).current
   const shadowAnim = useRef(new Animated.Value(0)).current
 
-  const closeColor = useSpecialColor('staticWhite', 'white')
+  const closeColor = useColor('neutralLight4')
 
   const slideIn = useCallback(() => {
     Animated.spring(translationAnim, {
@@ -209,7 +209,11 @@ const Drawer = ({ isOpen, children, onClose, isFullscreen }: DrawerProps) => {
           }}
         >
           {isFullscreen && (
-            <TouchableOpacity activeOpacity={0.7} onPress={onClose}>
+            <TouchableOpacity
+              activeOpacity={0.7}
+              onPress={onClose}
+              style={{ marginBottom: 8 }}
+            >
               <IconRemove width={30} height={30} fill={closeColor} />
             </TouchableOpacity>
           )}

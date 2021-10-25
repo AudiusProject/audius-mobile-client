@@ -28,6 +28,12 @@ import {
   View
 } from 'react-native'
 import Video from 'react-native-video'
+import {
+  ThemeColors,
+  useColor,
+  useTheme,
+  useThemedStyles
+} from '../../utils/theme'
 
 const MODAL_NAME = 'CollectibleDetails'
 
@@ -37,121 +43,125 @@ export const messages = {
   linkToCollectible: 'Link To Collectible'
 }
 
-const styles = StyleSheet.create({
-  drawer: {
-    //   display: flex,
-    //   flex-direction: column,
-    //   margin-top: 64,
-    //   font-size: var(--font-s);
-    //   font-weight: var(--font-bold);
-    //   overflow-y: scroll;
-    //   overflow-x: hidden;
-    //   z-index: 100;
-    //   height: 100%;
-  },
+const unthemedStyles = (themeColors: ThemeColors) =>
+  StyleSheet.create({
+    drawer: {
+      //   display: flex,
+      //   flex-direction: column,
+      //   margin-top: 64,
+      //   font-size: var(--font-s);
+      //   font-weight: var(--font-bold);
+      //   overflow-y: scroll;
+      //   overflow-x: hidden;
+      //   z-index: 100;
+      //   height: 100%;
+    },
 
+    volumeIcon: {
+      //   position: relative;
+      //   margin: 0;
+      //   top: -40px;
+      //   right: calc(-100vw + 88px);
+    },
+
+    details: {
+      marginTop: 24
+    },
+
+    detailsDescription: {
+      color: themeColors.neutralLight2,
+      marginTop: 24,
+      marginBottom: 24
+    },
+
+    detailsTitle: {
+      color: themeColors.neutral,
+      fontFamily: 'AvenirNextLTPro-Bold',
+      textAlign: 'center',
+      fontSize: 16,
+      marginBottom: 24
+    },
+
+    detailsStamp: {
+      color: themeColors.white,
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginBottom: 20,
+      fontSize: 12
+    },
+
+    badge: {
+      fontFamily: 'AvenirNextLTPro-Bold',
+      paddingTop: 4,
+      paddingRight: 8,
+      paddingBottom: 4,
+      paddingLeft: 8,
+      borderRadius: 12,
+      overflow: 'hidden',
+      borderWidth: 1,
+      borderColor: themeColors.white
+    },
+
+    created: {
+      backgroundColor: themeColors.primary
+    },
+
+    owned: {
+      backgroundColor: themeColors.secondary
+    },
+
+    chainIcon: {
+      borderWidth: 1,
+      borderColor: themeColors.neutralLight7,
+      borderRadius: 12,
+      padding: 2,
+      marginLeft: 8
+    },
+
+    dateWrapper: {
+      display: 'flex',
+      marginTop: 8,
+      marginBottom: 8
+    },
+
+    dateTitle: {
+      color: themeColors.neutralLight4
+    },
+
+    date: {
+      color: themeColors.neutralLight2,
+      marginRight: 8,
+      marginLeft: 8
+    },
+
+    link: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+
+    linkText: {
+      color: themeColors.secondary,
+      fontFamily: 'AvenirNextLTPro-Heavy',
+      textDecorationLine: 'underline'
+    },
+
+    linkIcon: {
+      // color: themeColors.secondary,
+      marginRight: 6
+    }
+  })
+
+const mediaStyles = StyleSheet.create({
   detailsMediaWrapper: {
     //   margin: 48px 24px 0;
     //   max-width: none;
     //   max-height: none;
     //   height: auto;
   },
-
   image: {
-    //   border-radius: 8px;
-    //   max-width: 100%;
-    //   pointer-events: none;
-    //   cursor: default;
-  },
-
-  volumeIcon: {
-    //   position: relative;
-    //   margin: 0;
-    //   top: -40px;
-    //   right: calc(-100vw + 88px);
-  },
-
-  details: {
-    //   width: 100%;
-    //   max-width: none;
-    //   min-width: unset;
-    //   margin: 0;
-    //   padding: 24px;
-  },
-
-  detailsDescription: {
-    //   margin: var(--unit-6) 0;
-    //   color: var(--neutral-light-2);
-    //   font-weight: var(--font-medium);
-    //   line-height: 18px;
-    //   overflow-wrap: break-word;
-  },
-
-  detailsTitle: {
-    //   text-align: center;
-    //   font-size: var(--font-m);
-    //   line-height: 28px;
-  },
-
-  detailsStamp: {
-    //   display: flex;
-    //   align-items: center;
-    //   margin-bottom: 20px;
-    //   font-size: var(--font-xs);
-    //   line-height: 15px;
-    //   color: var(--white);
-  },
-
-  created: {
-    // padding: var(--unit-1) var(--unit-2);
-    // border-radius: 50px;
-    // border: 1px solid var(--white);
-    // background: var(--primary);
-  },
-
-  owned: {
-    // padding: var(--unit-1) var(--unit-2);
-    // border-radius: 50px;
-    // border: 1px solid var(--white);
-    // background: var(--secondary);
-  },
-
-  link: {
-    //   display: flex;
-    //   align-items: center;
-    //   color: var(--secondary);
-    //   font-weight: var(--font-demi-bold);
-    //   text-decoration: underline !important;
-    //   margin-bottom: var(--unit-6);
-  },
-
-  chainIcon: {
-    //   border: 1px solid var(--neutral-light-7);
-    //   border-radius: 50%;
-    //   padding: 2px;
-    //   margin-left: 8px;
-    //   width: 24px;
-    //   height: 24px;
-  },
-
-  dateWrapper: {
-    //   display: flex;
-    //   margin: 8px 0;
-  },
-
-  dateTitle: {
-    //   color: var(--neutral-light-4);
-  },
-
-  date: {
-    //   margin: 0 8px;
-    //   color: var(--neutral-light-2);
-  },
-
-  linkIcon: {
-    //   width: 16px;
-    //   height: 16px;
-    //   margin-right: 6px;
+    borderRadius: 8
   }
 })
 
@@ -166,16 +176,16 @@ const CollectibleMedia: React.FC<{
   }, [isMuted, setIsMuted])
 
   return mediaType === CollectibleMediaType.THREE_D ? (
-    <View style={styles.detailsMediaWrapper}>
+    <View style={mediaStyles.detailsMediaWrapper}>
       <AutoSizeImage source={gifUrl!} />
     </View>
   ) : mediaType === CollectibleMediaType.GIF ? (
-    <View style={styles.detailsMediaWrapper}>
+    <View style={mediaStyles.detailsMediaWrapper}>
       <AutoSizeImage source={{ uri: gifUrl }} />
     </View>
   ) : mediaType === CollectibleMediaType.VIDEO ? (
     <TouchableWithoutFeedback
-      style={styles.detailsMediaWrapper}
+      style={mediaStyles.detailsMediaWrapper}
       onPress={toggleMute}
     >
       <Video muted={isMuted} source={videoUrl!} />
@@ -186,8 +196,8 @@ const CollectibleMedia: React.FC<{
       )} */}
     </TouchableWithoutFeedback>
   ) : (
-    <View style={styles.detailsMediaWrapper}>
-      <AutoSizeImage source={{ uri: imageUrl }} />
+    <View style={mediaStyles.detailsMediaWrapper}>
+      <AutoSizeImage source={{ uri: imageUrl }} style={mediaStyles.image} />
     </View>
   )
 }
@@ -210,6 +220,9 @@ const CollectibleDetails = () => {
     return collectible?.externalLink?.match(/(https*:\/\/)(.+)\//)[2] ?? ''
   }, [collectible])
 
+  const styles = useThemedStyles(unthemedStyles)
+  const secondaryColor = useColor('secondary')
+
   return (
     <Drawer isOpen={isOpen} onClose={handleClose} isFullscreen>
       {collectible && (
@@ -219,16 +232,19 @@ const CollectibleDetails = () => {
           <View style={styles.details}>
             <Text style={styles.detailsTitle}>{collectible.name}</Text>
             <View style={styles.detailsStamp}>
-              {collectible.isOwned ? (
-                <Text style={styles.owned}>{messages.owned}</Text>
-              ) : (
-                <Text style={styles.created}>{messages.created}</Text>
-              )}
+              <Text
+                style={[
+                  styles.badge,
+                  collectible.isOwned ? styles.owned : styles.created
+                ]}
+              >
+                {collectible.isOwned ? messages.owned : messages.created}
+              </Text>
 
               {collectible.chain === Chain.Eth ? (
-                <LogoEth style={styles.chainIcon} />
+                <LogoEth style={styles.chainIcon} height={16} width={16} />
               ) : (
-                <LogoSol style={styles.chainIcon} />
+                <LogoSol style={styles.chainIcon} height={16} width={16} />
               )}
             </View>
 
@@ -258,23 +274,34 @@ const CollectibleDetails = () => {
 
             {collectible.externalLink && (
               <TouchableWithoutFeedback
-                style={styles.link}
                 onPress={() => handleLinkPress(collectible.externalLink)}
               >
-                <View>
-                  <IconLink style={styles.linkIcon} />
-                  <Text>{prettyLink}</Text>
+                <View style={styles.link}>
+                  <IconLink
+                    fill={secondaryColor}
+                    style={styles.linkIcon}
+                    height={16}
+                    width={16}
+                  />
+                  <Text style={styles.linkText}>{prettyLink}</Text>
                 </View>
               </TouchableWithoutFeedback>
             )}
+
             {collectible.permaLink && (
               <TouchableWithoutFeedback
-                style={styles.link}
                 onPress={() => handleLinkPress(collectible.permaLink)}
               >
-                <View>
-                  <IconLink style={styles.linkIcon} />
-                  <Text>{messages.linkToCollectible}</Text>
+                <View style={styles.link}>
+                  <IconLink
+                    fill={secondaryColor}
+                    style={styles.linkIcon}
+                    height={16}
+                    width={16}
+                  />
+                  <Text style={styles.linkText}>
+                    {messages.linkToCollectible}
+                  </Text>
                 </View>
               </TouchableWithoutFeedback>
             )}
