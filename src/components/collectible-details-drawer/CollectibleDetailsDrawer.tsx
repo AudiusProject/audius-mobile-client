@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 
 import IconLink from '../../assets/images/iconLink.svg'
 import LogoEth from '../../assets/images/logoEth.svg'
@@ -11,16 +11,23 @@ import {
 } from 'audius-client/src/common/store/ui/modals/slice'
 import { getCollectible } from 'audius-client/src/common/store/ui/collectible-details/selectors'
 import { Chain } from 'audius-client/src/common/models/Chain'
+import {
+  Collectible,
+  CollectibleMediaType
+} from 'audius-client/src/common/models/Collectible'
 import { formatDateWithTimezoneOffset } from 'audius-client/src/common/utils/timeUtil'
 
 import { useDispatchWeb } from '../../hooks/useDispatchWeb'
+import AutoSizeImage from '../../components/image/AutoSizeImage'
 import {
+  Image,
   Linking,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
   View
 } from 'react-native'
+import Video from 'react-native-video'
 
 const MODAL_NAME = 'CollectibleDetails'
 
@@ -148,6 +155,43 @@ const styles = StyleSheet.create({
   }
 })
 
+const CollectibleMedia: React.FC<{
+  collectible: Collectible
+}> = ({ collectible }) => {
+  const { mediaType, imageUrl, videoUrl, gifUrl, threeDUrl } = collectible
+
+  const [isMuted, setIsMuted] = useState<boolean>(true)
+  const toggleMute = useCallback(() => {
+    setIsMuted(!isMuted)
+  }, [isMuted, setIsMuted])
+
+  return mediaType === CollectibleMediaType.THREE_D ? (
+    <View style={styles.detailsMediaWrapper}>
+      <AutoSizeImage source={gifUrl!} />
+    </View>
+  ) : mediaType === CollectibleMediaType.GIF ? (
+    <View style={styles.detailsMediaWrapper}>
+      <AutoSizeImage source={{ uri: gifUrl }} />
+    </View>
+  ) : mediaType === CollectibleMediaType.VIDEO ? (
+    <TouchableWithoutFeedback
+      style={styles.detailsMediaWrapper}
+      onPress={toggleMute}
+    >
+      <Video muted={isMuted} source={videoUrl!} />
+      {/* {isMuted ? (
+        <IconMute className={styles.volumeIcon} />
+      ) : (
+        <IconVolume className={styles.volumeIcon} />
+      )} */}
+    </TouchableWithoutFeedback>
+  ) : (
+    <View style={styles.detailsMediaWrapper}>
+      <AutoSizeImage source={{ uri: imageUrl }} />
+    </View>
+  )
+}
+
 const CollectibleDetails = () => {
   const dispatchWeb = useDispatchWeb()
 
@@ -163,21 +207,14 @@ const CollectibleDetails = () => {
   }, [])
 
   const prettyLink = useMemo(() => {
-    return collectible
-      ? collectible.externalLink.match(/(https*:\/\/)(.+)\//)[2]
-      : ''
+    return collectible?.externalLink?.match(/(https*:\/\/)(.+)\//)[2] ?? ''
   }, [collectible])
 
   return (
     <Drawer isOpen={isOpen} onClose={handleClose} isFullscreen>
       {collectible && (
         <View style={styles.drawer}>
-          {/* <CollectibleMedia
-          collectible={collectible}
-          isMuted={isMuted}
-          toggleMute={toggleMute}
-          isMobile={isMobile}
-        /> */}
+          <CollectibleMedia collectible={collectible} />
 
           <View style={styles.details}>
             <Text style={styles.detailsTitle}>{collectible.name}</Text>
