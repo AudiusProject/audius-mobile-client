@@ -69,11 +69,11 @@ export const closePopup = (): ClosePopupAction => ({
 })
 
 export const setTwitterInfo = (
-  uuid: any,
+  uuid: string,
   profile: any,
-  profileImage: any,
-  profileBanner: any,
-  requiresUserReview: any
+  profileImage: { url: string; file: any },
+  profileBanner: { url: string; file: any },
+  requiresUserReview: boolean
 ): SetTwitterInfoAction => ({
   type: SET_TWITTER_INFO,
   uuid,
@@ -88,10 +88,10 @@ export const setTwitterError = (error: any): SetTwitterErrorAction => ({
 })
 
 export const setInstagramInfo = (
-  uuid: any,
+  uuid: string,
   profile: any,
-  profileImage: any,
-  requiresUserReview: any
+  profileImage: { url: string; file: any },
+  requiresUserReview: boolean
 ): SetInstagramInfoAction => ({
   type: SET_INSTAGRAM_INFO,
   uuid,
