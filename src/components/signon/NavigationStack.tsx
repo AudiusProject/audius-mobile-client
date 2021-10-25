@@ -55,7 +55,7 @@ const SignOnNav = () => {
     setIsHidden(
       !dappLoaded ||
         signedIn === null ||
-        signedIn ||
+        (signedIn && !onSignUp) ||
         (submittedFollowedArtists && isAccountAvailable)
     )
   }, [

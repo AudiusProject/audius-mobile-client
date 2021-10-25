@@ -401,8 +401,8 @@ const CreatePassword = ({
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <SignupHeader />
       <SafeAreaView style={{ backgroundColor: 'white' }}>
+        <SignupHeader />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={styles.container}>
             <View style={styles.containerForm}>

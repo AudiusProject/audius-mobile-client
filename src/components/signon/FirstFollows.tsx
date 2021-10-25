@@ -414,15 +414,18 @@ const FirstFollows = ({
   // random artist from the top 10
   const onPickForMe = () => {
     const selectedIds = new Set(followedArtistIds)
-    const firstThreeUserIds = suggestedFollowArtists
-      .slice(0, 3)
-      .map((user: any) => user.user_id)
-      .filter((userId: number) => !selectedIds.has(userId))
 
-    const suggestedUserIds = suggestedFollowArtists
-      .slice(3, 10)
-      .map((user: any) => user.user_id)
-      .filter((userId: number) => !selectedIds.has(userId))
+    const toUnselectedUserIds = (users: any[]) =>
+      users
+        .map((user: any) => user.user_id)
+        .filter((userId: number) => !selectedIds.has(userId))
+
+    const firstThreeUserIds = toUnselectedUserIds(
+      suggestedFollowArtists.slice(0, 3)
+    )
+    const suggestedUserIds = toUnselectedUserIds(
+      suggestedFollowArtists.slice(3, 10)
+    )
 
     const followUsers = firstThreeUserIds.concat(
       sampleSize(suggestedUserIds, 2)
@@ -501,9 +504,9 @@ const FirstFollows = ({
   }
 
   return (
-    <View style={styles.container}>
-      <SignupHeader />
-      <SafeAreaView style={{ backgroundColor: 'white' }}>
+    <SafeAreaView style={{ backgroundColor: 'white' }}>
+      <View style={styles.container}>
+        <SignupHeader />
         <ScrollView>
           <View style={styles.container}>
             <View style={styles.containerTop}>
@@ -552,26 +555,26 @@ const FirstFollows = ({
             </View>
           </View>
         </ScrollView>
-      </SafeAreaView>
 
-      <View style={styles.containerButton}>
-        <TouchableOpacity
-          style={[styles.formBtn, isDisabled ? styles.btnDisabled : {}]}
-          activeOpacity={0.6}
-          disabled={isDisabled}
-          onPress={onContinuePress}
-        >
-          <ContinueButton />
-        </TouchableOpacity>
-        <Text style={styles.followCounter}>
-          {`${messages.following} ${
-            followedArtistIds.length > MINIMUM_FOLLOWER_COUNT
-              ? followedArtistIds.length
-              : `${followedArtistIds.length}/${MINIMUM_FOLLOWER_COUNT}`
-          }`}
-        </Text>
+        <View style={styles.containerButton}>
+          <TouchableOpacity
+            style={[styles.formBtn, isDisabled ? styles.btnDisabled : {}]}
+            activeOpacity={0.6}
+            disabled={isDisabled}
+            onPress={onContinuePress}
+          >
+            <ContinueButton />
+          </TouchableOpacity>
+          <Text style={styles.followCounter}>
+            {`${messages.following} ${
+              followedArtistIds.length > MINIMUM_FOLLOWER_COUNT
+                ? followedArtistIds.length
+                : `${followedArtistIds.length}/${MINIMUM_FOLLOWER_COUNT}`
+            }`}
+          </Text>
+        </View>
       </View>
-    </View>
+    </SafeAreaView>
   )
 }
 

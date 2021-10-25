@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, SafeAreaView } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
 import HeaderLogo from '../../assets/images/audiusLogoHorizontal.svg'
 
@@ -27,7 +27,6 @@ const styles = StyleSheet.create({
 const SignupHeader = () => {
   return (
     <View style={{ backgroundColor: 'white', zIndex: 15 }}>
-      <SafeAreaView />
       <View style={styles.header}>
         <HeaderLogo style={styles.audiusLogoHeader} fill={'#C2C0CC'} />
       </View>

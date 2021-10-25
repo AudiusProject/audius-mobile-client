@@ -27,7 +27,7 @@ import {
 } from 'react-native-image-picker'
 import { MessageType } from '../../message/types'
 import SignupHeader from './SignupHeader'
-import PhotoBtn from './PhotoBtn'
+import PhotoButton from './PhotoButton'
 import * as signonActions from '../../store/signon/actions'
 
 import IconArrow from '../../assets/images/iconArrow.svg'
@@ -499,15 +499,15 @@ const ProfileManual = ({
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <SignupHeader />
       <SafeAreaView style={{ backgroundColor: 'white' }}>
+        <SignupHeader />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={styles.container}>
             <View style={styles.containerForm}>
               <FormTitle />
               <View style={styles.profilePicContainer}>
                 <ProfileImage />
-                <PhotoBtn
+                <PhotoButton
                   imageSet={imageSet}
                   photoBtnIsHidden={photoBtnIsHidden}
                   doAction={openPhotoMenu}

@@ -55,7 +55,7 @@ const messages = {
 
 let opacityPhotoBtn = new Animated.Value(1)
 let lastPhotoBtnIsHiddden = false
-const PhotoBtn = ({
+const PhotoButton = ({
   imageSet,
   photoBtnIsHidden,
   doAction
@@ -127,4 +127,4 @@ const PhotoBtn = ({
   )
 }
 
-export default PhotoBtn
+export default PhotoButton

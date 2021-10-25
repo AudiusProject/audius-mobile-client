@@ -248,7 +248,7 @@ const errorMessages = {
 let formContainerHeight = 0
 
 let lastIsSignin = false
-const MainBtnTitle = ({
+const MainButton = ({
   isSignin,
   isWorking
 }: {
@@ -453,7 +453,7 @@ const SignOn = ({ navigation }: { navigation: any }) => {
     }
   }
 
-  const formSwitchBtnTitle = () => {
+  const FormSwitchButton = () => {
     return (
       <Text style={styles.switchFormBtnTitle}>
         {isSignin ? `${messages.newToAudius}` : `${messages.hasAccountAlready}`}
@@ -658,7 +658,7 @@ const SignOn = ({ navigation }: { navigation: any }) => {
                 }
               }}
             >
-              <MainBtnTitle isWorking={isWorking} isSignin={isSignin} />
+              <MainButton isWorking={isWorking} isSignin={isSignin} />
             </TouchableOpacity>
           </Animated.View>
         </TouchableWithoutFeedback>
@@ -675,7 +675,7 @@ const SignOn = ({ navigation }: { navigation: any }) => {
           )}
 
           <TouchableOpacity style={styles.switchFormBtn} activeOpacity={0.6}>
-            {formSwitchBtnTitle()}
+            <FormSwitchButton />
           </TouchableOpacity>
         </Animated.View>
       </View>
