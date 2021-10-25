@@ -71,6 +71,7 @@ const reducer = (
       return {
         ...state,
         signedIn: false,
+        onSignUp: false,
         account: action.account
       }
     case ON_SIGN_UP:
