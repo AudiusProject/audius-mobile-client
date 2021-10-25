@@ -8,6 +8,8 @@ export const getEmailIsAvailable = (state: AppState) =>
   getBaseState(state).emailIsAvailable
 export const getEmailIsValid = (state: AppState) =>
   getBaseState(state).emailIsValid
+export const getEmailStatus = (state: AppState) =>
+  getBaseState(state).emailStatus
 export const getHandleIsValid = (state: AppState) =>
   getBaseState(state).handleIsValid
 export const getHandleStatus = (state: AppState) =>

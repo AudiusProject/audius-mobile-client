@@ -2,6 +2,7 @@ import { FollowArtistsCategory } from './types'
 
 export const SIGN_IN_FAILED = 'SIGN_ON/SIGN_IN_FAILED'
 export const SIGN_IN_FAILED_RESET = 'SIGN_ON/SIGN_IN_FAILED_RESET'
+export const SET_EMAIL_STATUS = 'SIGN_ON/SET_EMAIL_STATUS'
 export const VALIDATE_EMAIL = 'SIGN_ON/VALIDATE_EMAIL'
 export const VALIDATE_EMAIL_SUCEEDED = 'SIGN_ON/VALIDATE_EMAIL_SUCCEEDED'
 export const VALIDATE_EMAIL_FAILED = 'SIGN_ON/VALIDATE_EMAIL_FAILED'
@@ -20,7 +21,9 @@ export const SET_ACCOUNT_AVAILABLE = 'SIGN_ON/SET_ACCOUNT_AVAILABLE'
 export const SIGN_UP_SUCCEEDED = 'SIGN_ON/SIGN_UP_SUCCEEDED'
 export const RESET_SIGNON_STATE = 'SIGN_ON/RESET_SIGNON_STATE'
 
-export type SignupHandleStatusType = 'editing' | 'done'
+type SignupFieldStatusType = 'editing' | 'done'
+export type SignupHandleStatusType = SignupFieldStatusType
+export type SignupEmailStatusType = SignupFieldStatusType
 
 type SigninFailedAction = {
   type: typeof SIGN_IN_FAILED
@@ -29,6 +32,11 @@ type SigninFailedAction = {
 
 type SigninFailedResetAction = {
   type: typeof SIGN_IN_FAILED_RESET
+}
+
+type SignupSetEmailStatusAction = {
+  type: typeof SET_EMAIL_STATUS
+  status: SignupEmailStatusType
 }
 
 type SignupValidateEmailFailedAction = {
@@ -103,6 +111,7 @@ type ResetSignonStateAction = {
 export type SignonActions =
   | SigninFailedAction
   | SigninFailedResetAction
+  | SignupSetEmailStatusAction
   | SignupValidateEmailFailedAction
   | SignupValidateEmailSuceededAction
   | SignupSetHandleStatusAction
@@ -127,6 +136,12 @@ export const signinFailedReset = (): SigninFailedResetAction => ({
   type: SIGN_IN_FAILED_RESET
 })
 
+export const setEmailStatus = (
+  status: SignupEmailStatusType
+): SignupSetEmailStatusAction => ({
+  type: SET_EMAIL_STATUS,
+  status
+})
 export const signupValidateEmailFailed = (
   error: string
 ): SignupValidateEmailFailedAction => ({

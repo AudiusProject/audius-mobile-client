@@ -24,11 +24,12 @@ import signupCTA from '../../assets/images/signUpCTA.png'
 import IconArrow from '../../assets/images/iconArrow.svg'
 import ValidationIconX from '../../assets/images/iconValidationX.svg'
 import LottieView from 'lottie-react-native'
-import * as SignOnActions from '../../store/signon/actions'
+import * as signonActions from '../../store/signon/actions'
 import {
   getIsSigninError,
   getEmailIsAvailable,
-  getEmailIsValid
+  getEmailIsValid,
+  getEmailStatus
 } from '../../store/signon/selectors'
 import { getIsSignedIn, getDappLoaded } from '../../store/lifecycle/selectors'
 import { track, make } from '../../utils/analytics'
@@ -348,6 +349,7 @@ const SignOn = ({ navigation }: { navigation: any }) => {
   const signedIn = useSelector(getIsSignedIn)
   const emailIsAvailable = useSelector(getEmailIsAvailable)
   const emailIsValid = useSelector(getEmailIsValid)
+  const emailStatus = useSelector(getEmailStatus)
 
   const topDrawer = useRef(new Animated.Value(-800)).current
   const animateDrawer = useCallback(() => {
@@ -499,7 +501,7 @@ const SignOn = ({ navigation }: { navigation: any }) => {
       setShowEmptyPasswordError(false)
       setAttemptedPassword(false)
       setisSignIn(!isSignin)
-      dispatch(SignOnActions.signinFailedReset())
+      dispatch(signonActions.signinFailedReset())
       Keyboard.dismiss()
     }
   }
@@ -537,6 +539,7 @@ const SignOn = ({ navigation }: { navigation: any }) => {
   }
 
   const validateEmail = (email: string) => {
+    dispatch(signonActions.setEmailStatus('editing'))
     dispatchWeb({
       type: MessageType.SIGN_UP_VALIDATE_AND_CHECK_EMAIL,
       email: email,
@@ -546,7 +549,7 @@ const SignOn = ({ navigation }: { navigation: any }) => {
 
   const signIn = () => {
     setIsWorking(true)
-    dispatch(SignOnActions.signinFailedReset())
+    dispatch(signonActions.signinFailedReset())
     dispatchWeb({
       type: MessageType.SUBMIT_SIGNIN,
       email,
@@ -648,8 +651,8 @@ const SignOn = ({ navigation }: { navigation: any }) => {
                       // in case email is what was wrong with the credentials
                       setShowDefaultError(true)
                     }
-                  } else if (emailIsAvailable) {
-                    dispatch(SignOnActions.signinFailedReset())
+                  } else if (emailIsAvailable && emailStatus === 'done') {
+                    dispatch(signonActions.signinFailedReset())
                     setIsWorking(false)
                     navigation.push('CreatePassword', { email })
                   }

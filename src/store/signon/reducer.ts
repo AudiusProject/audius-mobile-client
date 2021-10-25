@@ -16,7 +16,9 @@ import {
   SET_ACCOUNT_AVAILABLE,
   RESET_SIGNON_STATE,
   SignupHandleStatusType,
-  SUBMIT_FOLLOWED_ARTISTS
+  SUBMIT_FOLLOWED_ARTISTS,
+  SET_EMAIL_STATUS,
+  SignupEmailStatusType
 } from './actions'
 import { FollowArtistsCategory } from './types'
 
@@ -25,6 +27,7 @@ export type SigninState = {
   emailIsAvailable: boolean
   emailIsValid: boolean
   handleIsValid: boolean
+  emailStatus: SignupEmailStatusType
   handleStatus: SignupHandleStatusType
   handleError: string
   accountAvailable: boolean
@@ -40,11 +43,12 @@ export type SigninState = {
   finalHandle: string
 }
 
-const initialSigninState = {
+const initialSigninState: SigninState = {
   isError: false,
   emailIsAvailable: true,
   emailIsValid: false,
   handleIsValid: false,
+  emailStatus: 'editing' as 'editing',
   handleError: '',
   handleStatus: 'editing' as 'editing',
   accountAvailable: false,
@@ -75,17 +79,24 @@ const reducer = (
         ...state,
         isError: false
       }
+    case SET_EMAIL_STATUS:
+      return {
+        ...state,
+        emailStatus: action.status
+      }
     case VALIDATE_EMAIL_SUCEEDED:
       return {
         ...state,
         emailIsAvailable: action.available,
-        emailIsValid: true
+        emailIsValid: true,
+        emailStatus: 'done'
       }
     case VALIDATE_EMAIL_FAILED:
       return {
         ...state,
         emailIsAvailable: true,
-        emailIsValid: false
+        emailIsValid: false,
+        emailStatus: 'done'
       }
     case SET_HANDLE_STATUS:
       return {
