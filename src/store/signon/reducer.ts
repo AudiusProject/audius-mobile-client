@@ -22,7 +22,7 @@ import {
 } from './actions'
 import { FollowArtistsCategory } from './types'
 
-export type SigninState = {
+export type SignonState = {
   isError: boolean
   emailIsAvailable: boolean
   emailIsValid: boolean
@@ -43,7 +43,7 @@ export type SigninState = {
   finalHandle: string
 }
 
-const initialSigninState: SigninState = {
+const initialSignonState: SignonState = {
   isError: false,
   emailIsAvailable: true,
   emailIsValid: false,
@@ -65,7 +65,7 @@ const initialSigninState: SigninState = {
 }
 
 const reducer = (
-  state: SigninState = initialSigninState,
+  state: SignonState = initialSignonState,
   action: SignonActions
 ) => {
   switch (action.type) {
@@ -182,7 +182,7 @@ const reducer = (
       }
     case RESET_SIGNON_STATE:
       return {
-        ...initialSigninState
+        ...initialSignonState
       }
     default:
       return state

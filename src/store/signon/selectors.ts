@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect'
 import { AppState } from '../'
 
-export const getBaseState = (state: AppState) => state.signin
+export const getBaseState = (state: AppState) => state.signon
 
 export const getIsSigninError = (state: AppState) => getBaseState(state).isError
 export const getEmailIsAvailable = (state: AppState) =>

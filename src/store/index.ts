@@ -9,7 +9,7 @@ import web, { WebState } from './web/reducer'
 import lifecycle, { LifecycleState } from './lifecycle/reducer'
 import notifications, { NotificationsState } from './notifications/reducer'
 import search, { SearchState } from './search/reducer'
-import signin, { SigninState } from './signon/reducer'
+import signon, { SignonState } from './signon/reducer'
 import theme, { ThemeState } from './theme/reducer'
 import clientStore from './clientStore/slice'
 
@@ -27,7 +27,7 @@ export type AppState = {
   search: SearchState
   clientStore: any
   keyboard: KeyboardState
-  signin: SigninState
+  signon: SignonState
 }
 
 const createRootReducer = () =>
@@ -41,7 +41,7 @@ const createRootReducer = () =>
     notifications,
     theme,
     search,
-    signin
+    signon
   })
 
 export default () => {
