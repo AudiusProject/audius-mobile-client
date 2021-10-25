@@ -34,6 +34,8 @@ import {
 import { getIsSignedIn, getDappLoaded } from '../../store/lifecycle/selectors'
 import { track, make } from '../../utils/analytics'
 import { EventNames } from '../../types/analytics'
+import { RootStackParamList } from './NavigationStack'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 
 const image = backgImage
 
@@ -326,7 +328,8 @@ const isValidEmailString = (email: string) => {
   return emailRe.test(String(email).toLowerCase())
 }
 
-const SignOn = ({ navigation }: { navigation: any }) => {
+type SignOnProps = NativeStackScreenProps<RootStackParamList, 'SignOn'>
+const SignOn = ({ navigation }: SignOnProps) => {
   const dispatchWeb = useDispatchWeb()
   const dispatch = useDispatch()
 

@@ -29,6 +29,8 @@ import { useColor } from '../../utils/theme'
 import * as oauthActions from '../../store/oauth/actions'
 import { track, make } from '../../utils/analytics'
 import { EventNames } from '../../types/analytics'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { RootStackParamList } from './NavigationStack'
 
 const styles = StyleSheet.create({
   container: {
@@ -211,13 +213,11 @@ const BulletPoint = ({ i }: { i: number }) => {
   )
 }
 
-const ProfileAuto = ({
-  navigation,
-  route
-}: {
-  navigation: any
-  route: any
-}) => {
+type ProfileAutoProps = NativeStackScreenProps<
+  RootStackParamList,
+  'ProfileAuto'
+>
+const ProfileAuto = ({ navigation, route }: ProfileAutoProps) => {
   const { email, password } = route.params
   const dispatch = useDispatch()
   const dispatchWeb = useDispatchWeb()
@@ -234,27 +234,38 @@ const ProfileAuto = ({
 
   const goTo = useCallback(
     (page: 'ProfileManual' | 'FirstFollows') => {
-      const params: any = { email, password }
-      if (twitterInfo) {
-        params.twitterId = twitterInfo.twitterId
-        params.name = twitterInfo.profile.name
-        params.handle = twitterInfo.profile.screen_name
-        params.twitterScreenName = twitterInfo.profile.screen_name
-        params.verified = twitterInfo.profile.verified
-        params.profilePictureUrl =
-          twitterInfo.profile.profile_image_url_https ?? null
-        params.coverPhotoUrl = twitterInfo.profile.profile_banner_url ?? null
-      } else if (instagramInfo) {
-        params.instagramId = instagramInfo.instagramId
-        params.name = instagramInfo.profile.full_name
-        params.handle = instagramInfo.profile.username
-        params.instagramScreenName = instagramInfo.profile.username
-        params.verified = instagramInfo.profile.is_verified
-        params.profilePictureUrl =
-          instagramInfo.profile.profile_pic_url_hd ?? null
-        params.coverPhotoUrl = null
+      const routeParams: any = { email }
+
+      if (page === 'ProfileManual') {
+        routeParams.password = password
       }
-      navigation.push(page, params)
+
+      if (twitterInfo) {
+        routeParams.handle = twitterInfo.profile.screen_name
+        if (page === 'ProfileManual') {
+          routeParams.twitterId = twitterInfo.twitterId
+          routeParams.name = twitterInfo.profile.name
+          routeParams.twitterScreenName = twitterInfo.profile.screen_name
+          routeParams.verified = twitterInfo.profile.verified
+          routeParams.profilePictureUrl =
+            twitterInfo.profile.profile_image_url_https ?? null
+          routeParams.coverPhotoUrl =
+            twitterInfo.profile.profile_banner_url ?? null
+        }
+      } else if (instagramInfo) {
+        routeParams.handle = instagramInfo.profile.username
+        if (page === 'ProfileManual') {
+          routeParams.instagramId = instagramInfo.instagramId
+          routeParams.name = instagramInfo.profile.full_name
+          routeParams.instagramScreenName = instagramInfo.profile.username
+          routeParams.verified = instagramInfo.profile.is_verified
+          routeParams.profilePictureUrl =
+            instagramInfo.profile.profile_pic_url_hd ?? null
+          routeParams.coverPhotoUrl = null
+        }
+      }
+
+      navigation.push(page, routeParams)
     },
     [navigation, email, password, twitterInfo, instagramInfo]
   )
@@ -300,30 +311,31 @@ const ProfileAuto = ({
   )
 
   const signUp = useCallback(() => {
-    const params: any = { email, password }
+    const signUpParams: any = { email, password }
     if (twitterInfo) {
-      params.twitterId = twitterInfo.twitterId
-      params.name = twitterInfo.profile.name
-      params.handle = twitterInfo.profile.screen_name
-      params.twitterScreenName = twitterInfo.profile.screen_name
-      params.verified = twitterInfo.profile.verified
-      params.profilePictureUrl =
+      signUpParams.twitterId = twitterInfo.twitterId
+      signUpParams.name = twitterInfo.profile.name
+      signUpParams.handle = twitterInfo.profile.screen_name
+      signUpParams.twitterScreenName = twitterInfo.profile.screen_name
+      signUpParams.verified = twitterInfo.profile.verified
+      signUpParams.profilePictureUrl =
         twitterInfo.profile.profile_image_url_https ?? null
-      params.coverPhotoUrl = twitterInfo.profile.profile_banner_url ?? null
+      signUpParams.coverPhotoUrl =
+        twitterInfo.profile.profile_banner_url ?? null
     } else if (instagramInfo) {
-      params.instagramId = instagramInfo.instagramId
-      params.name = instagramInfo.profile.full_name
-      params.handle = instagramInfo.profile.username
-      params.instagramScreenName = instagramInfo.profile.username
-      params.verified = instagramInfo.profile.is_verified
-      params.profilePictureUrl =
+      signUpParams.instagramId = instagramInfo.instagramId
+      signUpParams.name = instagramInfo.profile.full_name
+      signUpParams.handle = instagramInfo.profile.username
+      signUpParams.instagramScreenName = instagramInfo.profile.username
+      signUpParams.verified = instagramInfo.profile.is_verified
+      signUpParams.profilePictureUrl =
         instagramInfo.profile.profile_pic_url_hd ?? null
-      params.coverPhotoUrl = null
+      signUpParams.coverPhotoUrl = null
     }
 
     dispatchWeb({
       type: MessageType.SUBMIT_SIGNUP,
-      ...params,
+      ...signUpParams,
       accountAlreadyExisted: false,
       referrer: null,
       isAction: true

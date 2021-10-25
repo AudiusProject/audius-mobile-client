@@ -23,6 +23,27 @@ import {
 import { track, make } from '../../utils/analytics'
 import { EventNames } from '../../types/analytics'
 
+export type RootStackParamList = {
+  SignOn: undefined
+  CreatePassword: { email: string }
+  ProfileAuto: { email: string; password: string }
+  ProfileManual: {
+    email: string
+    password: string
+    name?: string
+    handle?: string
+    twitterId?: string
+    twitterScreenName?: string
+    instagramId?: string
+    instagramScreenName?: string
+    verified?: boolean
+    profilePictureUrl?: string
+    coverPhotoUrl?: string
+  }
+  FirstFollows: { email: string; handle: string }
+  SignupLoadingPage: undefined
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

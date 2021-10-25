@@ -33,6 +33,8 @@ import UserBadges from '../user-badges/UserBadges'
 import LinearGradient from 'react-native-linear-gradient'
 import { track, make } from '../../utils/analytics'
 import { EventNames } from '../../types/analytics'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { RootStackParamList } from './NavigationStack'
 
 const styles = StyleSheet.create({
   container: {
@@ -345,13 +347,11 @@ const FollowArtistCard = ({
   )
 }
 
-const FirstFollows = ({
-  navigation,
-  route
-}: {
-  navigation: any
-  route: any
-}) => {
+export type FirstFollowsProps = NativeStackScreenProps<
+  RootStackParamList,
+  'FirstFollows'
+>
+const FirstFollows = ({ navigation, route }: FirstFollowsProps) => {
   const { email, handle } = route.params
   const dispatch = useDispatch()
   const dispatchWeb = useDispatchWeb()

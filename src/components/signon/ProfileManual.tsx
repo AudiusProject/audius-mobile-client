@@ -38,6 +38,8 @@ import {
   getHandleError,
   getHandleStatus
 } from '../../store/signon/selectors'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { RootStackParamList } from './NavigationStack'
 
 const styles = StyleSheet.create({
   container: {
@@ -252,18 +254,16 @@ const ContinueButton = ({ isWorking }: { isWorking: boolean }) => {
   )
 }
 
-const ProfileManual = ({
-  navigation,
-  route
-}: {
-  navigation: any
-  route: any
-}) => {
+export type ProfileManualProps = NativeStackScreenProps<
+  RootStackParamList,
+  'ProfileManual'
+>
+const ProfileManual = ({ navigation, route }: ProfileManualProps) => {
   const {
     email,
     password,
-    name: oAuthName,
-    handle: oAuthHandle,
+    name: oAuthName = '',
+    handle: oAuthHandle = '',
     twitterId = '',
     twitterScreenName = '',
     instagramId = '',
@@ -277,8 +277,8 @@ const ProfileManual = ({
   const handleIsValid = useSelector(getHandleIsValid)
   const handleStatus = useSelector(getHandleStatus)
   const handleError = useSelector(getHandleError)
-  const [name, setName] = useState(oAuthName || '')
-  const [handle, setHandle] = useState(oAuthHandle || '')
+  const [name, setName] = useState(oAuthName)
+  const [handle, setHandle] = useState(oAuthHandle)
   const [didUpdateHandle, setDidUpdateHandle] = useState(false)
   const [nameBorderColor, setNameBorderColor] = useState('#F7F7F9')
   const [handleBorderColor, setHandleBorderColor] = useState('#F7F7F9')
@@ -473,7 +473,7 @@ const ProfileManual = ({
       name: name.trim(),
       handle,
       verified,
-      // if there file property is populated, it means the user picked from photo library
+      // if the file property is populated, it means the user picked from photo library
       // otherwise we take the profile picture url from oauth if the user went through oauth
       // if there is no profile picture url, we ensure that it's null
       profilePictureUrl: profileImage.file

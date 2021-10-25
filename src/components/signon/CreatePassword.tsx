@@ -28,6 +28,8 @@ import { MessageType } from '../../message/types'
 import { track, make } from '../../utils/analytics'
 import { EventNames } from '../../types/analytics'
 import { useDispatchWeb } from '../../hooks/useDispatchWeb'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { RootStackParamList } from './NavigationStack'
 
 declare module 'fxa-common-password-list'
 
@@ -282,13 +284,11 @@ const Checkbox = ({
   }
 }
 
-const CreatePassword = ({
-  navigation,
-  route
-}: {
-  navigation: any
-  route: any
-}) => {
+type CreatePasswordProps = NativeStackScreenProps<
+  RootStackParamList,
+  'CreatePassword'
+>
+const CreatePassword = ({ navigation, route }: CreatePasswordProps) => {
   const dispatch = useDispatch()
   const dispatchWeb = useDispatchWeb()
 
