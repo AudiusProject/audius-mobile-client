@@ -29,13 +29,6 @@ export const messages = {
 
 const unthemedStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
-    volumeIcon: {
-      //   position: relative;
-      //   margin: 0;
-      //   top: -40px;
-      //   right: calc(-100vw + 88px);
-    },
-
     details: {
       marginTop: 24
     },
@@ -102,7 +95,7 @@ const CollectibleDetails = () => {
   }, [dispatchWeb])
 
   const prettyLink = useMemo(() => {
-    return collectible?.externalLink?.match(/(https*:\/\/)(.+)\//)[2] ?? ''
+    return collectible?.externalLink?.match(/(https*:\/\/)(.+)(\/|$)/)[2] ?? ''
   }, [collectible])
 
   const styles = useThemedStyles(unthemedStyles)
@@ -111,7 +104,7 @@ const CollectibleDetails = () => {
 
   return (
     <Drawer isOpen={isOpen} onClose={handleClose} isFullscreen>
-      {collectible && (
+      {collectible && isOpen && (
         <View>
           <CollectibleMedia collectible={collectible} />
 

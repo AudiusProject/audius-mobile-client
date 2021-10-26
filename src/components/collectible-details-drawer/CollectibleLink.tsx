@@ -21,7 +21,8 @@ const linkStyles = (themeColors: ThemeColors) =>
     link: {
       display: 'flex',
       flexDirection: 'row',
-      alignItems: 'center'
+      alignItems: 'center',
+      marginBottom: 20
     },
 
     linkText: {

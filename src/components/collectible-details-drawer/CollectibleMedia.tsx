@@ -4,55 +4,95 @@ import {
   Collectible,
   CollectibleMediaType
 } from 'audius-client/src/common/models/Collectible'
-import { StyleSheet, TouchableWithoutFeedback, View } from 'react-native'
-import Video from 'react-native-video'
-import AutoSizeImage from '../image/AutoSizeImage'
+import {
+  ImageStyle,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View
+} from 'react-native'
 
-const styles = StyleSheet.create({
-  detailsMediaWrapper: {
-    //   margin: 48px 24px 0;
-    //   max-width: none;
-    //   max-height: none;
-    //   height: auto;
-  },
-  image: {
-    borderRadius: 8
-  }
-})
+import IconVolume from '../../assets/images/iconVolume.svg'
+import IconMute from '../../assets/images/iconVolume0.svg'
+import AutoSizeImage from '../image/AutoSizeImage'
+import AutoSizeVideo from '../video/AutoSizeVideo'
+import { ThemeColors, useThemedStyles } from '../../utils/theme'
+
+const unthemedStyles = (themeColors: ThemeColors) =>
+  StyleSheet.create({
+    container: {
+      borderRadius: 8
+    },
+
+    volumeIconContainer: {
+      position: 'absolute',
+      height: 42,
+      width: 42,
+      bottom: 8,
+      right: 8,
+      borderWidth: 2,
+      borderColor: themeColors.neutralLight5,
+      borderRadius: 21
+    },
+
+    volumeIcon: {
+      marginTop: 10,
+      marginLeft: 10
+    }
+  })
 
 export const CollectibleMedia: React.FC<{
   collectible: Collectible
 }> = ({ collectible }) => {
   const { mediaType, imageUrl, videoUrl, gifUrl, threeDUrl } = collectible
 
+  const styles = useThemedStyles(unthemedStyles)
+
   const [isMuted, setIsMuted] = useState<boolean>(true)
   const toggleMute = useCallback(() => {
     setIsMuted(!isMuted)
   }, [isMuted, setIsMuted])
 
-  return mediaType === CollectibleMediaType.THREE_D ? (
-    <View style={styles.detailsMediaWrapper}>
-      <AutoSizeImage source={gifUrl!} />
-    </View>
-  ) : mediaType === CollectibleMediaType.GIF ? (
-    <View style={styles.detailsMediaWrapper}>
-      <AutoSizeImage source={{ uri: gifUrl }} />
-    </View>
-  ) : mediaType === CollectibleMediaType.VIDEO ? (
-    <TouchableWithoutFeedback
-      style={styles.detailsMediaWrapper}
-      onPress={toggleMute}
-    >
-      <Video muted={isMuted} source={videoUrl!} />
-      {/* {isMuted ? (
-        <IconMute className={styles.volumeIcon} />
-      ) : (
-        <IconVolume className={styles.volumeIcon} />
-      )} */}
-    </TouchableWithoutFeedback>
-  ) : (
-    <View style={styles.detailsMediaWrapper}>
-      <AutoSizeImage source={{ uri: imageUrl }} style={styles.image} />
-    </View>
-  )
+  const VolumeIcon = isMuted ? IconMute : IconVolume
+
+  const renderByMediaType = {
+    // TODO: Implement 3D model viewing on mobile
+    [CollectibleMediaType.THREE_D]: () => (
+      <AutoSizeImage
+        source={{ uri: gifUrl }}
+        style={styles.container as ImageStyle}
+      />
+    ),
+    [CollectibleMediaType.GIF]: () => (
+      <AutoSizeImage
+        source={{ uri: gifUrl }}
+        style={styles.container as ImageStyle}
+      />
+    ),
+    [CollectibleMediaType.VIDEO]: () => (
+      <TouchableWithoutFeedback onPress={toggleMute}>
+        <View>
+          <AutoSizeVideo
+            fullscreen={false}
+            muted={isMuted}
+            source={{ uri: videoUrl }}
+            style={styles.container}
+          />
+          <View style={styles.volumeIconContainer}>
+            <VolumeIcon style={styles.volumeIcon} height={18} width={18} />
+          </View>
+        </View>
+      </TouchableWithoutFeedback>
+    ),
+    [CollectibleMediaType.IMAGE]: () => (
+      <AutoSizeImage
+        source={{ uri: imageUrl }}
+        style={styles.container as ImageStyle}
+      />
+    )
+  }
+
+  return (
+    renderByMediaType[mediaType] ??
+    renderByMediaType[CollectibleMediaType.IMAGE]
+  )()
 }

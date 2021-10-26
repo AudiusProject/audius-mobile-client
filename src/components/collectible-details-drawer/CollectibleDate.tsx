@@ -10,12 +10,14 @@ const dateStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
     dateWrapper: {
       display: 'flex',
+      flexDirection: 'row',
       marginTop: 8,
-      marginBottom: 8
+      marginBottom: 20
     },
 
     dateTitle: {
-      color: themeColors.neutralLight4
+      color: themeColors.neutralLight4,
+      fontFamily: 'AvenirNextLTPro-Bold'
     },
 
     date: {
