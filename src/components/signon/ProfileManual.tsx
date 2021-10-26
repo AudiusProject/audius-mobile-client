@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     padding: 10
   },
   atLabel: {
-    color: '#858199',
+    color: '#C2C0CC',
     fontFamily: 'AvenirNextLTPro-regular',
     fontSize: 16,
     marginRight: 2
