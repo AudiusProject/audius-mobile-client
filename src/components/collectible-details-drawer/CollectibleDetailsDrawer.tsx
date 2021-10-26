@@ -1,6 +1,5 @@
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useMemo } from 'react'
 
-import IconLink from '../../assets/images/iconLink.svg'
 import LogoEth from '../../assets/images/logoEth.svg'
 import LogoSol from '../../assets/images/logoSol.svg'
 import Drawer from '../drawer'
@@ -11,29 +10,14 @@ import {
 } from 'audius-client/src/common/store/ui/modals/slice'
 import { getCollectible } from 'audius-client/src/common/store/ui/collectible-details/selectors'
 import { Chain } from 'audius-client/src/common/models/Chain'
-import {
-  Collectible,
-  CollectibleMediaType
-} from 'audius-client/src/common/models/Collectible'
-import { formatDateWithTimezoneOffset } from 'audius-client/src/common/utils/timeUtil'
 
 import { useDispatchWeb } from '../../hooks/useDispatchWeb'
-import AutoSizeImage from '../../components/image/AutoSizeImage'
-import {
-  Image,
-  Linking,
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View
-} from 'react-native'
-import Video from 'react-native-video'
-import {
-  ThemeColors,
-  useColor,
-  useTheme,
-  useThemedStyles
-} from '../../utils/theme'
+import { StyleSheet, Text, View } from 'react-native'
+import { ThemeColors, useThemedStyles } from '../../utils/theme'
+
+import { CollectibleMedia } from './CollectibleMedia'
+import { CollectibleDate } from './CollectibleDate'
+import { CollectibleLink } from './CollectibleLink'
 
 const MODAL_NAME = 'CollectibleDetails'
 
@@ -45,18 +29,6 @@ export const messages = {
 
 const unthemedStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
-    drawer: {
-      //   display: flex,
-      //   flex-direction: column,
-      //   margin-top: 64,
-      //   font-size: var(--font-s);
-      //   font-weight: var(--font-bold);
-      //   overflow-y: scroll;
-      //   overflow-x: hidden;
-      //   z-index: 100;
-      //   height: 100%;
-    },
-
     volumeIcon: {
       //   position: relative;
       //   margin: 0;
@@ -70,7 +42,6 @@ const unthemedStyles = (themeColors: ThemeColors) =>
 
     detailsDescription: {
       color: themeColors.neutralLight2,
-      marginTop: 24,
       marginBottom: 24
     },
 
@@ -117,90 +88,8 @@ const unthemedStyles = (themeColors: ThemeColors) =>
       borderRadius: 12,
       padding: 2,
       marginLeft: 8
-    },
-
-    dateWrapper: {
-      display: 'flex',
-      marginTop: 8,
-      marginBottom: 8
-    },
-
-    dateTitle: {
-      color: themeColors.neutralLight4
-    },
-
-    date: {
-      color: themeColors.neutralLight2,
-      marginRight: 8,
-      marginLeft: 8
-    },
-
-    link: {
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center'
-    },
-
-    linkText: {
-      color: themeColors.secondary,
-      fontFamily: 'AvenirNextLTPro-Heavy',
-      textDecorationLine: 'underline'
-    },
-
-    linkIcon: {
-      // color: themeColors.secondary,
-      marginRight: 6
     }
   })
-
-const mediaStyles = StyleSheet.create({
-  detailsMediaWrapper: {
-    //   margin: 48px 24px 0;
-    //   max-width: none;
-    //   max-height: none;
-    //   height: auto;
-  },
-  image: {
-    borderRadius: 8
-  }
-})
-
-const CollectibleMedia: React.FC<{
-  collectible: Collectible
-}> = ({ collectible }) => {
-  const { mediaType, imageUrl, videoUrl, gifUrl, threeDUrl } = collectible
-
-  const [isMuted, setIsMuted] = useState<boolean>(true)
-  const toggleMute = useCallback(() => {
-    setIsMuted(!isMuted)
-  }, [isMuted, setIsMuted])
-
-  return mediaType === CollectibleMediaType.THREE_D ? (
-    <View style={mediaStyles.detailsMediaWrapper}>
-      <AutoSizeImage source={gifUrl!} />
-    </View>
-  ) : mediaType === CollectibleMediaType.GIF ? (
-    <View style={mediaStyles.detailsMediaWrapper}>
-      <AutoSizeImage source={{ uri: gifUrl }} />
-    </View>
-  ) : mediaType === CollectibleMediaType.VIDEO ? (
-    <TouchableWithoutFeedback
-      style={mediaStyles.detailsMediaWrapper}
-      onPress={toggleMute}
-    >
-      <Video muted={isMuted} source={videoUrl!} />
-      {/* {isMuted ? (
-        <IconMute className={styles.volumeIcon} />
-      ) : (
-        <IconVolume className={styles.volumeIcon} />
-      )} */}
-    </TouchableWithoutFeedback>
-  ) : (
-    <View style={mediaStyles.detailsMediaWrapper}>
-      <AutoSizeImage source={{ uri: imageUrl }} style={mediaStyles.image} />
-    </View>
-  )
-}
 
 const CollectibleDetails = () => {
   const dispatchWeb = useDispatchWeb()
@@ -212,21 +101,18 @@ const CollectibleDetails = () => {
     dispatchWeb(setVisibility({ modal: MODAL_NAME, visible: false }))
   }, [dispatchWeb])
 
-  const handleLinkPress = useCallback(async url => {
-    await Linking.openURL(url)
-  }, [])
-
   const prettyLink = useMemo(() => {
     return collectible?.externalLink?.match(/(https*:\/\/)(.+)\//)[2] ?? ''
   }, [collectible])
 
   const styles = useThemedStyles(unthemedStyles)
-  const secondaryColor = useColor('secondary')
+
+  const ChainLogo = collectible?.chain === Chain.Eth ? LogoEth : LogoSol
 
   return (
     <Drawer isOpen={isOpen} onClose={handleClose} isFullscreen>
       {collectible && (
-        <View style={styles.drawer}>
+        <View>
           <CollectibleMedia collectible={collectible} />
 
           <View style={styles.details}>
@@ -241,31 +127,23 @@ const CollectibleDetails = () => {
                 {collectible.isOwned ? messages.owned : messages.created}
               </Text>
 
-              {collectible.chain === Chain.Eth ? (
-                <LogoEth style={styles.chainIcon} height={16} width={16} />
-              ) : (
-                <LogoSol style={styles.chainIcon} height={16} width={16} />
-              )}
+              <View style={styles.chainIcon}>
+                <ChainLogo height={20} width={20} />
+              </View>
             </View>
 
             {collectible.dateCreated && (
-              <View style={styles.dateWrapper}>
-                <Text style={styles.dateTitle}>Date Created:</Text>
-                <Text style={styles.date}>
-                  {formatDateWithTimezoneOffset(collectible.dateCreated)}
-                </Text>
-              </View>
+              <CollectibleDate
+                date={collectible.dateCreated}
+                label='Date Created:'
+              />
             )}
 
             {collectible.dateLastTransferred && (
-              <View style={styles.dateWrapper}>
-                <Text style={styles.dateTitle}>Last Transferred:</Text>
-                <Text style={styles.date}>
-                  {formatDateWithTimezoneOffset(
-                    collectible.dateLastTransferred
-                  )}
-                </Text>
-              </View>
+              <CollectibleDate
+                date={collectible.dateLastTransferred}
+                label='Last Transferred:'
+              />
             )}
 
             <Text style={styles.detailsDescription}>
@@ -273,37 +151,16 @@ const CollectibleDetails = () => {
             </Text>
 
             {collectible.externalLink && (
-              <TouchableWithoutFeedback
-                onPress={() => handleLinkPress(collectible.externalLink)}
-              >
-                <View style={styles.link}>
-                  <IconLink
-                    fill={secondaryColor}
-                    style={styles.linkIcon}
-                    height={16}
-                    width={16}
-                  />
-                  <Text style={styles.linkText}>{prettyLink}</Text>
-                </View>
-              </TouchableWithoutFeedback>
+              <CollectibleLink
+                url={collectible.externalLink}
+                text={prettyLink}
+              />
             )}
-
             {collectible.permaLink && (
-              <TouchableWithoutFeedback
-                onPress={() => handleLinkPress(collectible.permaLink)}
-              >
-                <View style={styles.link}>
-                  <IconLink
-                    fill={secondaryColor}
-                    style={styles.linkIcon}
-                    height={16}
-                    width={16}
-                  />
-                  <Text style={styles.linkText}>
-                    {messages.linkToCollectible}
-                  </Text>
-                </View>
-              </TouchableWithoutFeedback>
+              <CollectibleLink
+                url={collectible.permaLink}
+                text={messages.linkToCollectible}
+              />
             )}
           </View>
         </View>
