@@ -19,6 +19,7 @@ import Search from './components/search/Search'
 import { WebRefContextProvider } from './components/web/WebRef'
 import BottomBar from './components/bottom-bar'
 import MobileUploadDrawer from './components/mobile-upload-drawer'
+import CollectibleDetails from './components/collectible-details-drawer'
 
 const store = createStore()
 
@@ -68,6 +69,7 @@ const App = () => {
           */}
             {/* <BottomBar /> */}
             <MobileUploadDrawer />
+            <CollectibleDetails />
             <Audio webRef={webRef} />
             <OAuth webRef={webRef} />
             <Airplay webRef={webRef} />
