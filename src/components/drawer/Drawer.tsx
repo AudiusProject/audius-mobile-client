@@ -8,6 +8,7 @@ import React, {
 import {
   Animated,
   Dimensions,
+  GestureResponderEvent,
   LayoutChangeEvent,
   PanResponder,
   StyleSheet,
@@ -90,6 +91,20 @@ const springToValue = (animation: Animated.Value, value: number) => {
   }).start()
 }
 
+const attachToDy = (animation: Animated.Value, newValue: number) => (
+  e: GestureResponderEvent
+) => {
+  Animated.event(
+    [
+      null,
+      {
+        dy: animation
+      }
+    ],
+    { useNativeDriver: false }
+  )(e, { dy: newValue })
+}
+
 const Drawer = ({ isOpen, children, onClose, isFullscreen }: DrawerProps) => {
   const styles = useThemedStyles(createStyles)
 
@@ -100,18 +115,37 @@ const Drawer = ({ isOpen, children, onClose, isFullscreen }: DrawerProps) => {
 
   const translationAnim = useRef(new Animated.Value(initialPosition)).current
   const shadowAnim = useRef(new Animated.Value(0)).current
+  const borderRadiusAnim = useRef(new Animated.Value(BORDER_RADIUS)).current
 
   const closeColor = useColor('neutralLight4')
 
   const slideIn = useCallback(() => {
     springToValue(translationAnim, openPosition)
     springToValue(shadowAnim, MAX_SHADOW_OPACITY)
-  }, [openPosition, translationAnim, shadowAnim])
+    if (isFullscreen) {
+      springToValue(borderRadiusAnim, 0)
+    }
+  }, [
+    openPosition,
+    translationAnim,
+    shadowAnim,
+    borderRadiusAnim,
+    isFullscreen
+  ])
 
   const slideOut = useCallback(() => {
     springToValue(translationAnim, initialPosition)
     springToValue(shadowAnim, 0)
-  }, [initialPosition, translationAnim, shadowAnim])
+    if (isFullscreen) {
+      springToValue(borderRadiusAnim, BORDER_RADIUS)
+    }
+  }, [
+    initialPosition,
+    translationAnim,
+    shadowAnim,
+    borderRadiusAnim,
+    isFullscreen
+  ])
 
   useEffect(() => {
     if (isOpen) {
@@ -133,26 +167,21 @@ const Drawer = ({ isOpen, children, onClose, isFullscreen }: DrawerProps) => {
       if (isOpen) {
         if (gestureState.dy > 0) {
           // Dragging downwards
-          Animated.event(
-            [
-              null,
-              {
-                dy: translationAnim
-              }
-            ],
-            { useNativeDriver: false }
-          )(e, { dy: openPosition + gestureState.dy })
+          const newTranslation = openPosition + gestureState.dy
+          attachToDy(translationAnim, newTranslation)(e)
+
+          if (isFullscreen) {
+            const newBorderRadius =
+              BORDER_RADIUS *
+              (1 - (drawerHeight - gestureState.dy) / drawerHeight)
+
+            attachToDy(borderRadiusAnim, newBorderRadius)(e)
+          }
         } else if (gestureState.dy < 0) {
           // Dragging upwards
-          Animated.event(
-            [
-              null,
-              {
-                dy: translationAnim
-              }
-            ],
-            { useNativeDriver: false }
-          )(e, { dy: openPosition + gestureState.dy / OVERFLOW_FRICTION })
+          const newTranslation =
+            openPosition + gestureState.dy / OVERFLOW_FRICTION
+          attachToDy(translationAnim, newTranslation)(e)
         }
       }
     },
@@ -176,6 +205,13 @@ const Drawer = ({ isOpen, children, onClose, isFullscreen }: DrawerProps) => {
   // NOTE: This is currently handled by the web app
   //   const clickOutsideRef = useClickOutside(() => close())
 
+  // NOTE: sk - Need to interpolate the border radius bc of a funky
+  // issue with border radius under 1 in ios
+  const interpolatedBorderRadius = borderRadiusAnim.interpolate({
+    inputRange: [0, 0.99, 1, BORDER_RADIUS],
+    outputRange: [0, 0, 1, BORDER_RADIUS]
+  })
+
   return (
     <Portal>
       <Animated.View
@@ -189,7 +225,9 @@ const Drawer = ({ isOpen, children, onClose, isFullscreen }: DrawerProps) => {
               {
                 translateY: translationAnim
               }
-            ]
+            ],
+            borderTopRightRadius: interpolatedBorderRadius,
+            borderTopLeftRadius: interpolatedBorderRadius
           }
         ]}
       >
