@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import {
   Animated,
   Easing,
@@ -174,19 +174,22 @@ const messages = {
 
 const MIN_PASSWORD_LEN = 8
 
-let didAnimation = false
 const FormTitle = () => {
-  let opacity = new Animated.Value(1)
-  if (!didAnimation) {
-    opacity = new Animated.Value(0)
-    Animated.timing(opacity, {
-      toValue: 1,
-      duration: 500,
-      useNativeDriver: true
-    }).start(() => {
-      didAnimation = true
-    })
-  }
+  const [didAnimation, setDidAnimation] = useState(false)
+  const opacity = useRef(new Animated.Value(0)).current
+
+  useEffect(() => {
+    if (!didAnimation) {
+      Animated.timing(opacity, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true
+      }).start(() => {
+        setDidAnimation(true)
+      })
+    }
+  }, [didAnimation, opacity])
+
   return (
     <Animated.View style={{ opacity }}>
       <Text style={styles.title}>{messages.header}</Text>
