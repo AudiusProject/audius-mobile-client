@@ -33,6 +33,10 @@ import { RootStackParamList } from './NavigationStack'
 
 declare module 'fxa-common-password-list'
 
+const defaultBorderColor = '#F7F7F9'
+const validBorderColor = '#7E1BCC'
+const errorBorderColor = '#E03D51'
+
 const styles = StyleSheet.create({
   container: {
     top: -47,
@@ -71,7 +75,7 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
     borderWidth: 1,
-    borderColor: '#F7F7F9',
+    borderColor: defaultBorderColor,
     backgroundColor: '#FCFCFC',
     borderRadius: 4,
     padding: 10,
@@ -272,7 +276,9 @@ const Checkbox = ({
           <ValidationIconX style={styles.iconCheck} />
         </Animated.View>
         <View style={styles.unchecked} />
-        <Text style={[styles.uncheckedDescription, { color: '#E03D51' }]}>
+        <Text
+          style={[styles.uncheckedDescription, { color: errorBorderColor }]}
+        >
           {messages.checks[i]}
         </Text>
       </View>
@@ -294,14 +300,15 @@ type CreatePasswordProps = NativeStackScreenProps<
 const CreatePassword = ({ navigation, route }: CreatePasswordProps) => {
   const dispatch = useDispatch()
   const dispatchWeb = useDispatchWeb()
-
   const onSignOn = useSelector(getOnSignUp)
-
   const [didFetchArtists, setDidFetchArtists] = useState(false)
-
-  const [passBorderColor, setPassBorderColor] = useState('#F7F7F9')
-  const [passBorderColor2, setPassBorderColor2] = useState('#F7F7F9')
-
+  const [passwordBorderColor, setPasswordBorderColor] = useState(
+    defaultBorderColor
+  )
+  const [
+    passwordConfirmationBorderColor,
+    setPasswordConfirmationBorderColor
+  ] = useState(defaultBorderColor)
   const [isWorking, setisWorking] = useState(false)
   const [isDisabled, setIsDisabled] = useState(false)
   const [password, setPassword] = useState('')
@@ -359,7 +366,7 @@ const CreatePassword = ({ navigation, route }: CreatePasswordProps) => {
       password.length > 0 && password === passwordConfirmation
     setMeetsMatchReq(newMeetsMatchReq)
     if (newMeetsMatchReq && focusedField === 1) {
-      setPassBorderColor2('#F7F7F9')
+      setPasswordConfirmationBorderColor(defaultBorderColor)
     }
 
     const newMeetsNumberReq = /\d/.test(password)
@@ -377,7 +384,7 @@ const CreatePassword = ({ navigation, route }: CreatePasswordProps) => {
       newMeetsNumberReq &&
       newMeetsCommonReq
     ) {
-      setPassBorderColor('#F7F7F9')
+      setPasswordBorderColor(defaultBorderColor)
     }
   }, [password, passwordConfirmation, focusedField])
 
@@ -411,7 +418,7 @@ const CreatePassword = ({ navigation, route }: CreatePasswordProps) => {
             <View style={styles.containerForm}>
               <FormTitle />
               <TextInput
-                style={[styles.input, { borderColor: passBorderColor }]}
+                style={[styles.input, { borderColor: passwordBorderColor }]}
                 placeholderTextColor='#C2C0CC'
                 underlineColorAndroid='transparent'
                 placeholder='Password'
@@ -427,30 +434,30 @@ const CreatePassword = ({ navigation, route }: CreatePasswordProps) => {
                   if (newText === '') {
                     setShouldShowRedErrors(false)
                   } else if (newText === passwordConfirmation) {
-                    setPassBorderColor('#7E1BCC')
-                    setPassBorderColor2('#7E1BCC')
+                    setPasswordBorderColor(validBorderColor)
+                    setPasswordConfirmationBorderColor(validBorderColor)
                   }
                 }}
                 onFocus={() => {
                   setFocusedField(1)
-                  setPassBorderColor('#7E1BCC')
+                  setPasswordBorderColor(validBorderColor)
                 }}
                 onBlur={() => {
-                  setPassBorderColor('#F7F7F9')
+                  setPasswordBorderColor(defaultBorderColor)
                   setShouldShowRedErrors(password !== '')
                   if (
                     password !== '' &&
                     (!meetsCommonReq || !meetsLengthReq || !meetsNumberReq)
                   ) {
-                    setPassBorderColor('#E03D51')
+                    setPasswordBorderColor(errorBorderColor)
                   }
                   if (
                     password !== '' &&
                     passwordConfirmation !== '' &&
                     !meetsMatchReq
                   ) {
-                    setPassBorderColor('#E03D51')
-                    setPassBorderColor2('#E03D51')
+                    setPasswordBorderColor(errorBorderColor)
+                    setPasswordConfirmationBorderColor(errorBorderColor)
                   }
                 }}
                 keyboardAppearance='dark'
@@ -458,7 +465,10 @@ const CreatePassword = ({ navigation, route }: CreatePasswordProps) => {
               <TextInput
                 style={[
                   styles.input,
-                  { borderColor: passBorderColor2, marginBottom: 10 }
+                  {
+                    borderColor: passwordConfirmationBorderColor,
+                    marginBottom: 10
+                  }
                 ]}
                 placeholderTextColor='#C2C0CC'
                 underlineColorAndroid='transparent'
@@ -473,17 +483,17 @@ const CreatePassword = ({ navigation, route }: CreatePasswordProps) => {
                 onChangeText={newText => {
                   setPasswordConfirmation(newText)
                   if (newText === password) {
-                    setPassBorderColor('#7E1BCC')
-                    setPassBorderColor2('#7E1BCC')
+                    setPasswordBorderColor(validBorderColor)
+                    setPasswordConfirmationBorderColor(validBorderColor)
                   }
                 }}
                 onFocus={() => {
                   setFocusedField(2)
-                  setPassBorderColor2('#7E1BCC')
+                  setPasswordConfirmationBorderColor(validBorderColor)
                   setShowRedMatchError(false)
                 }}
                 onBlur={() => {
-                  setPassBorderColor2('#F7F7F9')
+                  setPasswordConfirmationBorderColor(defaultBorderColor)
 
                   if (password === '') {
                     setShouldShowRedErrors(false)
@@ -496,8 +506,8 @@ const CreatePassword = ({ navigation, route }: CreatePasswordProps) => {
                     password !== '' &&
                     !meetsMatchReq
                   ) {
-                    setPassBorderColor2('#E03D51')
-                    setPassBorderColor('#E03D51')
+                    setPasswordConfirmationBorderColor(errorBorderColor)
+                    setPasswordBorderColor(errorBorderColor)
                   }
                   if (
                     meetsMatchReq &&
@@ -505,7 +515,7 @@ const CreatePassword = ({ navigation, route }: CreatePasswordProps) => {
                     meetsLengthReq &&
                     meetsNumberReq
                   ) {
-                    setPassBorderColor('#F7F7F9')
+                    setPasswordBorderColor(defaultBorderColor)
                   }
                 }}
                 keyboardAppearance='dark'
