@@ -16,6 +16,7 @@ import IconMute from '../../assets/images/iconVolume0.svg'
 import AutoSizeImage from '../image/AutoSizeImage'
 import AutoSizeVideo from '../video/AutoSizeVideo'
 import { ThemeColors, useThemedStyles } from '../../hooks/useThemedStyles'
+import { useColor } from '../../utils/theme'
 
 const createStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
@@ -46,6 +47,7 @@ export const CollectibleMedia: React.FC<{
   const { mediaType, imageUrl, videoUrl, gifUrl, threeDUrl } = collectible
 
   const styles = useThemedStyles(createStyles)
+  const neutralLight5 = useColor('neutralLight5')
 
   const [isMuted, setIsMuted] = useState<boolean>(true)
   const toggleMute = useCallback(() => {
@@ -78,7 +80,12 @@ export const CollectibleMedia: React.FC<{
             style={styles.container}
           />
           <View style={styles.volumeIconContainer}>
-            <VolumeIcon style={styles.volumeIcon} height={18} width={18} />
+            <VolumeIcon
+              style={styles.volumeIcon}
+              height={18}
+              width={18}
+              fill={neutralLight5}
+            />
           </View>
         </View>
       </TouchableWithoutFeedback>
