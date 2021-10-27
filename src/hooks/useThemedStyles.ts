@@ -26,6 +26,6 @@ export type ThemeColors = _ThemeColors
 export const useThemedStyles = <T>(
   createStyles: (themeColors: _ThemeColors) => StyleSheet.NamedStyles<T>
 ) => {
-  const theme = useThemeColors()
-  return useMemo(() => createStyles(theme), [createStyles, theme])
+  const themeColors = useThemeColors()
+  return useMemo(() => createStyles(themeColors), [createStyles, themeColors])
 }
