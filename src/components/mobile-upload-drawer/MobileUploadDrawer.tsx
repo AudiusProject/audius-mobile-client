@@ -98,8 +98,6 @@ const MobileUploadDrawer = () => {
   const gradientColor1 = useColor('pageHeaderGradientColor1')
   const gradientColor2 = useColor('pageHeaderGradientColor2')
 
-  const keyboardVisible = false // useSelector(getIsKeyboardOpen)
-
   const CheckMark = () => (
     <Image style={styles.iconCheck} source={HeavyCheckMark} />
   )
