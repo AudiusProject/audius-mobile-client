@@ -254,6 +254,9 @@ const ContinueButton = ({ isWorking }: { isWorking: boolean }) => {
   )
 }
 
+let handleTimeout = 0
+const HANDLE_VALIDATION_IN_PROGRESS_DELAY_MS = 1000
+
 export type ProfileManualProps = NativeStackScreenProps<
   RootStackParamList,
   'ProfileManual'
@@ -279,7 +282,7 @@ const ProfileManual = ({ navigation, route }: ProfileManualProps) => {
   const handleError = useSelector(getHandleError)
   const [name, setName] = useState(oAuthName)
   const [handle, setHandle] = useState(oAuthHandle)
-  const [didUpdateHandle, setDidUpdateHandle] = useState(false)
+  const [handleDebounce, setHandleDebounce] = useState(false)
   const [nameBorderColor, setNameBorderColor] = useState('#F7F7F9')
   const [handleBorderColor, setHandleBorderColor] = useState('#F7F7F9')
   const [photoBtnIsHidden, setPhotoBtnIsHidden] = useState(false)
@@ -308,6 +311,15 @@ const ProfileManual = ({ navigation, route }: ProfileManualProps) => {
         handleStatus === 'editing' ||
         !handleIsValid
     )
+
+    // if handle change timeout was set and validation
+    // has returned, then clear the timeout
+    if (handleStatus === 'done') {
+      if (handleTimeout) {
+        clearTimeout(handleTimeout)
+      }
+      setHandleDebounce(false)
+    }
   }, [name, handle, handleStatus, handleIsValid])
 
   useEffect(() => {
@@ -491,7 +503,7 @@ const ProfileManual = ({ navigation, route }: ProfileManualProps) => {
 
     navigation.push('FirstFollows', {
       email,
-      password
+      handle
     })
   }
 
@@ -558,13 +570,16 @@ const ProfileManual = ({ navigation, route }: ProfileManualProps) => {
                   textContentType='nickname'
                   value={handle}
                   onChangeText={newText => {
-                    setDidUpdateHandle(true)
+                    clearTimeout(handleTimeout)
+                    handleTimeout = setTimeout(() => {
+                      // if the handle validation has not returned yet, then set to true
+                      // to denote that validation is still in progess after the 1s delay
+                      if (handleStatus === 'editing') {
+                        setHandleDebounce(true)
+                      }
+                    }, HANDLE_VALIDATION_IN_PROGRESS_DELAY_MS)
                     dispatch(signonActions.setHandleStatus('editing'))
-                    let newHandle = newText
-                    if (newHandle.length && newHandle[0] === '@') {
-                      newHandle = newHandle.substring(1)
-                    }
-                    newHandle = newText.trim()
+                    const newHandle = newText.trim()
                     setHandle(newHandle)
                     validateHandle(newHandle)
                   }}
@@ -589,7 +604,7 @@ const ProfileManual = ({ navigation, route }: ProfileManualProps) => {
                 onPress={onContinuePress}
               >
                 <ContinueButton
-                  isWorking={handleStatus === 'editing' && didUpdateHandle}
+                  isWorking={handleStatus === 'editing' && handleDebounce}
                 />
               </TouchableOpacity>
             </View>
