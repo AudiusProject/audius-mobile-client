@@ -1,10 +1,8 @@
 import * as notificationsActions from '../../store/notifications/actions'
 import PushNotifications from '../../notifications'
-import { remindUserToTurnOnNotifications } from '../../components/notification-reminder/NotificationReminder'
 import { Status } from '../../types/status'
 
 import { MessageType, MessageHandlers } from '../types'
-import { dispatch } from 'App'
 
 export const messageHandlers: Partial<MessageHandlers> = {
   [MessageType.ENABLE_PUSH_NOTIFICATIONS]: async ({ message, postMessage }) => {
@@ -30,9 +28,6 @@ export const messageHandlers: Partial<MessageHandlers> = {
   },
   [MessageType.RESET_NOTIFICATIONS_BADGE_COUNT]: () => {
     PushNotifications.setBadgeCount(0)
-  },
-  [MessageType.PROMPT_PUSH_NOTIFICATION_REMINDER]: ({ postMessage }) => {
-    remindUserToTurnOnNotifications(postMessage)
   },
   [MessageType.OPEN_NOTIFICATIONS]: ({ dispatch, postMessage }) => {
     dispatch(notificationsActions.open())
