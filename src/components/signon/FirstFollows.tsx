@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import {
   Animated,
   SafeAreaView,
@@ -269,19 +269,22 @@ const messages = {
 
 const MINIMUM_FOLLOWER_COUNT = 3
 
-let didAnimation = false
 const FormTitle = () => {
-  let opacity = new Animated.Value(1)
-  if (!didAnimation) {
-    opacity = new Animated.Value(0)
-    Animated.timing(opacity, {
-      toValue: 1,
-      duration: 500,
-      useNativeDriver: true
-    }).start(() => {
-      didAnimation = true
-    })
-  }
+  const [didAnimation, setDidAnimation] = useState(false)
+  const opacity = useRef(new Animated.Value(0)).current
+
+  useEffect(() => {
+    if (!didAnimation) {
+      Animated.timing(opacity, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true
+      }).start(() => {
+        setDidAnimation(true)
+      })
+    }
+  }, [didAnimation, opacity])
+
   return (
     <Animated.View style={{ opacity }}>
       <Text style={styles.title}>{messages.title}</Text>
