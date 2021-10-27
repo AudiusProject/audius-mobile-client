@@ -12,7 +12,7 @@ import IconLink from '../../assets/images/iconLink.svg'
 import { useColor } from '../../utils/theme'
 import { ThemeColors, useThemedStyles } from '../../hooks/useThemedStyles'
 
-const linkStyles = (themeColors: ThemeColors) =>
+const createStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
     link: {
       display: 'flex',
@@ -39,7 +39,7 @@ export const CollectibleLink = ({
   url: string
   text: string
 }) => {
-  const styles = useThemedStyles(linkStyles)
+  const styles = useThemedStyles(createStyles)
   const handleLinkPress = useCallback(() => {
     Linking.openURL(url)
   }, [url])

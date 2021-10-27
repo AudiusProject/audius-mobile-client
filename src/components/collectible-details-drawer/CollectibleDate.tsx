@@ -6,7 +6,7 @@ import { formatDateWithTimezoneOffset } from 'audius-client/src/common/utils/tim
 
 import { ThemeColors, useThemedStyles } from '../../hooks/useThemedStyles'
 
-const dateStyles = (themeColors: ThemeColors) =>
+const createStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
     dateWrapper: {
       display: 'flex',
@@ -34,7 +34,7 @@ export const CollectibleDate = ({
   date: string
   label: string
 }) => {
-  const styles = useThemedStyles(dateStyles)
+  const styles = useThemedStyles(createStyles)
 
   return (
     <View style={styles.dateWrapper}>

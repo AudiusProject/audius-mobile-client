@@ -1,9 +1,9 @@
 import { useMemo } from 'react'
 import { StyleSheet } from 'react-native'
 
-import { ThemeColors, useThemeColors } from '../utils/theme'
+import { ThemeColors as _ThemeColors, useThemeColors } from '../utils/theme'
 
-export { ThemeColors } from '../utils/theme'
+export type ThemeColors = _ThemeColors
 
 /**
  * This hook will return the result of passing the currently selected theme colors
@@ -13,7 +13,7 @@ export { ThemeColors } from '../utils/theme'
  *
  * Example:
  *
- * const unthemedStyles = (themeColors: ThemeColors) =>
+ * const createStyles = (themeColors: ThemeColors) =>
  *   StyleSheet.create({
  *     view: {
  *       color: themeColors.neutralLight4,
@@ -21,10 +21,10 @@ export { ThemeColors } from '../utils/theme'
  *   })
  *
  *
- * const styles = useThemedStyles(unthemedStyles)
+ * const styles = useThemedStyles(createStyles)
  */
 export const useThemedStyles = <T>(
-  createStyles: (themeColors: ThemeColors) => StyleSheet.NamedStyles<T>
+  createStyles: (themeColors: _ThemeColors) => StyleSheet.NamedStyles<T>
 ) => {
   const theme = useThemeColors()
   return useMemo(() => createStyles(theme), [createStyles, theme])

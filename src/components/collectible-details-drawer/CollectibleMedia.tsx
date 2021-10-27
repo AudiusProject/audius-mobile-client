@@ -17,7 +17,7 @@ import AutoSizeImage from '../image/AutoSizeImage'
 import AutoSizeVideo from '../video/AutoSizeVideo'
 import { ThemeColors, useThemedStyles } from '../../hooks/useThemedStyles'
 
-const unthemedStyles = (themeColors: ThemeColors) =>
+const createStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
     container: {
       borderRadius: 8
@@ -45,7 +45,7 @@ export const CollectibleMedia: React.FC<{
 }> = ({ collectible }) => {
   const { mediaType, imageUrl, videoUrl, gifUrl, threeDUrl } = collectible
 
-  const styles = useThemedStyles(unthemedStyles)
+  const styles = useThemedStyles(createStyles)
 
   const [isMuted, setIsMuted] = useState<boolean>(true)
   const toggleMute = useCallback(() => {

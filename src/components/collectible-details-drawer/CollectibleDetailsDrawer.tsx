@@ -27,7 +27,7 @@ export const messages = {
   linkToCollectible: 'Link To Collectible'
 }
 
-const unthemedStyles = (themeColors: ThemeColors) =>
+const createStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
     details: {
       marginTop: 24
@@ -57,11 +57,12 @@ const unthemedStyles = (themeColors: ThemeColors) =>
     badge: {
       color: themeColors.white,
       fontFamily: 'AvenirNextLTPro-Bold',
+      textAlign: 'center',
       paddingTop: 4,
       paddingRight: 8,
       paddingBottom: 4,
       paddingLeft: 8,
-      borderRadius: 12,
+      borderRadius: 14,
       overflow: 'hidden',
       borderWidth: 1,
       borderColor: themeColors.white
@@ -78,7 +79,7 @@ const unthemedStyles = (themeColors: ThemeColors) =>
     chainIcon: {
       borderWidth: 1,
       borderColor: themeColors.neutralLight7,
-      borderRadius: 12,
+      borderRadius: 14,
       padding: 2,
       marginLeft: 8
     }
@@ -98,7 +99,7 @@ const CollectibleDetails = () => {
     return collectible?.externalLink?.match(/(https*:\/\/)([^\/]+)/)?.[2] ?? ''
   }, [collectible])
 
-  const styles = useThemedStyles(unthemedStyles)
+  const styles = useThemedStyles(createStyles)
 
   const ChainLogo = collectible?.chain === Chain.Eth ? LogoEth : LogoSol
 
