@@ -1,5 +1,4 @@
-import { useMemo } from 'react'
-import { StatusBar, StyleSheet } from 'react-native'
+import { StatusBar } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useDarkMode } from 'react-native-dark-mode'
 import { getTheme } from '../store/theme/selectors'
@@ -174,16 +173,9 @@ export const useThemeVariant = (): keyof typeof themeColorsByThemeVariant => {
   return theme === Theme.AUTO ? systemTheme : theme
 }
 
-const useThemeColors = () => {
+export const useThemeColors = () => {
   const themeVariant = useThemeVariant()
   return themeColorsByThemeVariant[themeVariant]
-}
-
-export const useThemedStyles = <T>(
-  createStyles: (themeColors: ThemeColors) => StyleSheet.NamedStyles<T>
-) => {
-  const theme = useThemeColors()
-  return useMemo(() => createStyles(theme), [createStyles, theme])
 }
 
 export const useColor = (color: string) => {

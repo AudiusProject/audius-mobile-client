@@ -9,12 +9,8 @@ import {
 } from 'react-native'
 
 import IconLink from '../../assets/images/iconLink.svg'
-import {
-  ThemeColors,
-  useColor,
-  useTheme,
-  useThemedStyles
-} from '../../utils/theme'
+import { useColor } from '../../utils/theme'
+import { ThemeColors, useThemedStyles } from '../../hooks/useThemedStyles'
 
 const linkStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({

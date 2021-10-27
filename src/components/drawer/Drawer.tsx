@@ -212,7 +212,7 @@ const Drawer = ({ isOpen, children, onClose, isFullscreen }: DrawerProps) => {
             <TouchableOpacity
               activeOpacity={0.7}
               onPress={onClose}
-              style={{ marginBottom: 8 }}
+              style={{ marginBottom: 8, width: 30 }}
             >
               <IconRemove width={30} height={30} fill={closeColor} />
             </TouchableOpacity>

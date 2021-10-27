@@ -13,7 +13,7 @@ import { Chain } from 'audius-client/src/common/models/Chain'
 
 import { useDispatchWeb } from '../../hooks/useDispatchWeb'
 import { StyleSheet, Text, View } from 'react-native'
-import { ThemeColors, useThemedStyles } from '../../utils/theme'
+import { ThemeColors, useThemedStyles } from '../../hooks/useThemedStyles'
 
 import { CollectibleMedia } from './CollectibleMedia'
 import { CollectibleDate } from './CollectibleDate'
@@ -47,7 +47,6 @@ const unthemedStyles = (themeColors: ThemeColors) =>
     },
 
     detailsStamp: {
-      color: themeColors.white,
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
@@ -56,6 +55,7 @@ const unthemedStyles = (themeColors: ThemeColors) =>
     },
 
     badge: {
+      color: themeColors.white,
       fontFamily: 'AvenirNextLTPro-Bold',
       paddingTop: 4,
       paddingRight: 8,
@@ -94,8 +94,8 @@ const CollectibleDetails = () => {
     dispatchWeb(setVisibility({ modal: MODAL_NAME, visible: false }))
   }, [dispatchWeb])
 
-  const prettyLink = useMemo(() => {
-    return collectible?.externalLink?.match(/(https*:\/\/)(.+)(\/|$)/)[2] ?? ''
+  const formattedLink = useMemo(() => {
+    return collectible?.externalLink?.match(/(https*:\/\/)([^\/]+)/)?.[2] ?? ''
   }, [collectible])
 
   const styles = useThemedStyles(unthemedStyles)
@@ -125,14 +125,14 @@ const CollectibleDetails = () => {
               </View>
             </View>
 
-            {collectible.dateCreated && (
+            {!!collectible.dateCreated && (
               <CollectibleDate
                 date={collectible.dateCreated}
                 label='Date Created:'
               />
             )}
 
-            {collectible.dateLastTransferred && (
+            {!!collectible.dateLastTransferred && (
               <CollectibleDate
                 date={collectible.dateLastTransferred}
                 label='Last Transferred:'
@@ -143,13 +143,13 @@ const CollectibleDetails = () => {
               {collectible.description}
             </Text>
 
-            {collectible.externalLink && (
+            {!!collectible.externalLink && (
               <CollectibleLink
                 url={collectible.externalLink}
-                text={prettyLink}
+                text={formattedLink}
               />
             )}
-            {collectible.permaLink && (
+            {!!collectible.permaLink && (
               <CollectibleLink
                 url={collectible.permaLink}
                 text={messages.linkToCollectible}

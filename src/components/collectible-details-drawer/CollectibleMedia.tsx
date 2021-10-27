@@ -15,7 +15,7 @@ import IconVolume from '../../assets/images/iconVolume.svg'
 import IconMute from '../../assets/images/iconVolume0.svg'
 import AutoSizeImage from '../image/AutoSizeImage'
 import AutoSizeVideo from '../video/AutoSizeVideo'
-import { ThemeColors, useThemedStyles } from '../../utils/theme'
+import { ThemeColors, useThemedStyles } from '../../hooks/useThemedStyles'
 
 const unthemedStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
