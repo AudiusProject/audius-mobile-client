@@ -20,6 +20,7 @@ import { WebRefContextProvider } from './components/web/WebRef'
 import BottomBar from './components/bottom-bar'
 import MobileUploadDrawer from './components/mobile-upload-drawer'
 import CollectibleDetails from './components/collectible-details-drawer'
+import EnablePushNotificationsDrawer from './components/enable-push-notifications-drawer'
 
 const store = createStore()
 
@@ -69,6 +70,7 @@ const App = () => {
           */}
             {/* <BottomBar /> */}
             <MobileUploadDrawer />
+            <EnablePushNotificationsDrawer />
             <CollectibleDetails />
             <Audio webRef={webRef} />
             <OAuth webRef={webRef} />
