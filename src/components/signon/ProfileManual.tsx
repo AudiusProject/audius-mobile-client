@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   TouchableWithoutFeedback,
   Keyboard,
-  SafeAreaView,
   TextInput,
   KeyboardAvoidingView,
   Platform,
@@ -15,6 +14,7 @@ import {
   Alert,
   Image
 } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { useDispatch, useSelector } from 'react-redux'
 import { useDispatchWeb } from '../../hooks/useDispatchWeb'
 import LottieView from 'lottie-react-native'
@@ -87,6 +87,7 @@ const styles = StyleSheet.create({
     marginRight: 2
   },
   handleInput: {
+    height: 42,
     color: '#858199',
     fontFamily: 'AvenirNextLTPro-regular',
     fontSize: 16,
@@ -140,8 +141,7 @@ const styles = StyleSheet.create({
   },
   profilePicContainer: {
     flex: 0,
-    alignContent: 'center',
-    marginBottom: -12
+    alignContent: 'center'
   },
   profilePicEmpty: {
     flex: 0,
@@ -150,8 +150,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 6,
     width: 226,
-    height: 226,
-    elevation: 5
+    height: 226
   },
   profilePicShadow: {
     marginTop: 8,
@@ -508,10 +507,10 @@ const ProfileManual = ({ navigation, route }: ProfileManualProps) => {
   }
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
-      <SafeAreaView style={{ backgroundColor: 'white' }}>
+    <SafeAreaView style={{ backgroundColor: 'white' }}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
         <SignupHeader />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={styles.container}>
@@ -610,8 +609,8 @@ const ProfileManual = ({ navigation, route }: ProfileManualProps) => {
             </View>
           </View>
         </TouchableWithoutFeedback>
-      </SafeAreaView>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   )
 }
 

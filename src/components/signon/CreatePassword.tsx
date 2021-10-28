@@ -10,11 +10,11 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
   Keyboard,
-  SafeAreaView,
   Linking,
   KeyboardAvoidingView,
   Platform
 } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import { useSelector, useDispatch } from 'react-redux'
 import SignupHeader from './SignupHeader'
 import LottieView from 'lottie-react-native'
@@ -408,10 +408,10 @@ const CreatePassword = ({ navigation, route }: CreatePasswordProps) => {
   }
 
   return (
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-    >
-      <SafeAreaView style={{ backgroundColor: 'white' }}>
+    <SafeAreaView style={{ backgroundColor: 'white' }}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
         <SignupHeader />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
           <View style={styles.container}>
@@ -563,8 +563,8 @@ const CreatePassword = ({ navigation, route }: CreatePasswordProps) => {
             </View>
           </View>
         </TouchableWithoutFeedback>
-      </SafeAreaView>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   )
 }
 
