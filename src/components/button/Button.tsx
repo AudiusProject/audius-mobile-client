@@ -1,6 +1,6 @@
 import React from 'react'
 import { Text, TouchableHighlight, ViewStyle, StyleSheet } from 'react-native'
-import { useColor } from '../../utils/theme'
+import { useColor, useThemeColors } from '../../utils/theme'
 
 import { ThemeColors, useThemedStyles } from '../../hooks/useThemedStyles'
 
@@ -28,12 +28,12 @@ type ButtonProps = {
 
 const Button = ({ style, onPress, title }: ButtonProps) => {
   const styles = useThemedStyles(createStyles)
-  const primaryLight1 = useColor('primaryLight1')
+  const { primaryDark1 } = useThemeColors()
   return (
     <TouchableHighlight
       style={[styles.button, style]}
       onPress={onPress}
-      underlayColor={primaryLight1}
+      underlayColor={primaryDark1}
     >
       <Text style={styles.text}>{title}</Text>
     </TouchableHighlight>

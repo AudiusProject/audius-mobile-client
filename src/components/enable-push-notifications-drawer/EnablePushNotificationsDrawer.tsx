@@ -15,12 +15,19 @@ import IconCoSign from '../../assets/images/iconCoSign.svg'
 import Button from '../../components/button'
 import Drawer from '../../components/drawer'
 
+// Importing directly from audius-client temporarily until
+// settings page is migrated because we still need push notification logic to work
+// on settings page and it doesn't necessarily make sense in common
+import { togglePushNotificationSetting } from 'audius-client/src/containers/settings-page/store/actions'
+import { PushNotificationSetting } from 'audius-client/src/containers/settings-page/store/types'
+
 import { useDrawer } from '../../hooks/useDrawer'
 import { useThemedStyles } from '../../hooks/useThemedStyles'
 import { ThemeColors } from '../../hooks/useThemedStyles'
 import { useColor } from '../../utils/theme'
 import LinearGradient from 'react-native-linear-gradient'
 import MaskedView from '@react-native-masked-view/masked-view'
+import { useDispatchWeb } from '../../hooks/useDispatchWeb'
 
 const messages = {
   dontMiss: `Don't Miss a Beat!`,
@@ -121,7 +128,7 @@ const createStyles = (themeColors: ThemeColors) =>
   })
 
 const EnablePushNotificationsDrawer = () => {
-  const dispatch = useDispatch()
+  const dispatchWeb = useDispatchWeb()
   const [isOpen, setIsOpen] = useDrawer('EnablePushNotifications')
   const styles = useThemedStyles(createStyles)
   const neutralLight2 = useColor('neutralLight2')
@@ -133,11 +140,11 @@ const EnablePushNotificationsDrawer = () => {
   }, [])
 
   const enablePushNotifications = useCallback(() => {
-    // dispatch(
-    //   togglePushNotificationSetting(PushNotificationSetting.MobilePush, true)
-    // )
+    dispatchWeb(
+      togglePushNotificationSetting(PushNotificationSetting.MobilePush, true)
+    )
     onClose()
-  }, [dispatch, onClose])
+  }, [dispatchWeb, onClose])
 
   return (
     <Drawer isOpen={isOpen} onClose={onClose}>
