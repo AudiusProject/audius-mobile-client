@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react'
+import React, { useCallback } from 'react'
 import { checkNotifications, RESULTS } from 'react-native-permissions'
 
 import { useDrawer } from '../../hooks/useDrawer'
@@ -62,9 +62,7 @@ const NotificationReminder = () => {
     remindUserToTurnOnNotifications(setIsOpen)
   }, [setIsOpen])
 
-  // TODO: sk - turn session count back on
-  // useSessionCount(reminder, REMINDER_EVERY_N_SESSIONS)
-  useEffect(reminder, [])
+  useSessionCount(reminder, REMINDER_EVERY_N_SESSIONS)
 
   // No UI component
   return null

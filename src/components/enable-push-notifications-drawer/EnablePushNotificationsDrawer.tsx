@@ -21,8 +21,7 @@ import { togglePushNotificationSetting } from 'audius-client/src/containers/sett
 import { PushNotificationSetting } from 'audius-client/src/containers/settings-page/store/types'
 
 import { useDrawer } from '../../hooks/useDrawer'
-import { useThemedStyles } from '../../hooks/useThemedStyles'
-import { ThemeColors } from '../../hooks/useThemedStyles'
+import { ThemeColors, useThemedStyles } from '../../hooks/useThemedStyles'
 import { useThemeColors } from '../../utils/theme'
 import LinearGradient from 'react-native-linear-gradient'
 import MaskedView from '@react-native-masked-view/masked-view'

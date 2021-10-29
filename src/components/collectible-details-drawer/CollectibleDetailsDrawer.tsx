@@ -93,7 +93,7 @@ const CollectibleDetails = () => {
   }, [dispatchWeb])
 
   const formattedLink = useMemo(() => {
-    return collectible?.externalLink?.match(/(https*:\/\/)([^\/]+)/)?.[2] ?? ''
+    return collectible?.externalLink?.match(/(https*:\/\/)([^/]+)/)?.[2] ?? ''
   }, [collectible])
 
   const styles = useThemedStyles(createStyles)
