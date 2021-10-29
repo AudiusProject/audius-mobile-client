@@ -31,7 +31,7 @@ import PhotoButton from './PhotoButton'
 import * as signonActions from '../../store/signon/actions'
 
 import IconArrow from '../../assets/images/iconArrow.svg'
-import NoPicture from '../../assets/images/nopicture.svg'
+import NoPicture from '../../assets/images/noPicture.png'
 import ValidationIconX from '../../assets/images/iconValidationX.svg'
 import {
   getHandleIsValid,
@@ -82,14 +82,14 @@ const styles = StyleSheet.create({
   },
   atLabel: {
     color: '#C2C0CC',
-    fontFamily: 'AvenirNextLTPro-regular',
+    fontFamily: 'AvenirNextLTPro-Regular',
     fontSize: 16,
     marginRight: 2
   },
   handleInput: {
     height: 42,
     color: '#858199',
-    fontFamily: 'AvenirNextLTPro-regular',
+    fontFamily: 'AvenirNextLTPro-Regular',
     fontSize: 16,
     flex: 1
   },
@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 10,
     color: '#858199',
-    fontFamily: 'AvenirNextLTPro-regular',
+    fontFamily: 'AvenirNextLTPro-Regular',
     fontSize: 16
   },
   formBtn: {
@@ -145,10 +145,6 @@ const styles = StyleSheet.create({
   },
   profilePicEmpty: {
     flex: 0,
-    shadowColor: '#858199',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.5,
-    shadowRadius: 6,
     width: 226,
     height: 226
   },
@@ -175,7 +171,7 @@ const styles = StyleSheet.create({
     flex: 1,
     color: '#E03D51',
     fontSize: 14,
-    fontFamily: 'AvenirNextLTPro-regular',
+    fontFamily: 'AvenirNextLTPro-Regular',
     alignSelf: 'center'
   },
   errorIcon: {
@@ -342,7 +338,12 @@ const ProfileManual = ({ navigation, route }: ProfileManualProps) => {
         />
       </TouchableOpacity>
     ) : (
-      <NoPicture height={226} width={226} style={styles.profilePicEmpty} />
+      <Image
+        height={226}
+        width={226}
+        source={NoPicture}
+        style={styles.profilePicEmpty}
+      />
     )
   }
 

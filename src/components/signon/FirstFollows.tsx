@@ -147,7 +147,7 @@ const styles = StyleSheet.create({
     color: '#858199',
     fontSize: 14,
     lineHeight: 21,
-    fontFamily: 'AvenirNextLTPro-regular',
+    fontFamily: 'AvenirNextLTPro-Regular',
     textAlign: 'center',
     paddingTop: 8,
     paddingBottom: 16,

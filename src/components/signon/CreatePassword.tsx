@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
     color: '#858199',
     fontSize: 14,
     lineHeight: 21,
-    fontFamily: 'AvenirNextLTPro-regular',
+    fontFamily: 'AvenirNextLTPro-Regular',
     textAlign: 'center',
     paddingTop: 16,
     paddingBottom: 3
@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 10,
     color: '#858199',
-    fontFamily: 'AvenirNextLTPro-regular',
+    fontFamily: 'AvenirNextLTPro-Regular',
     fontSize: 16
   },
   formBtn: {
@@ -143,14 +143,14 @@ const styles = StyleSheet.create({
   uncheckedDescription: {
     color: '#858199',
     fontSize: 14,
-    fontFamily: 'AvenirNextLTPro-regular',
+    fontFamily: 'AvenirNextLTPro-Regular',
     alignSelf: 'center'
   },
   terms: {
     color: '#858199',
     fontSize: 12,
     lineHeight: 21,
-    fontFamily: 'AvenirNextLTPro-regular',
+    fontFamily: 'AvenirNextLTPro-Regular',
     textAlign: 'left',
     paddingTop: 26,
     width: '100%'

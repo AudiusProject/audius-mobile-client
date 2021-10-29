@@ -38,6 +38,7 @@ import { RootStackParamList } from './NavigationStack'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 
 const image = backgImage
+const windowWidth = Dimensions.get('window').width
 
 const styles = StyleSheet.create({
   container: {
@@ -111,7 +112,7 @@ const styles = StyleSheet.create({
     color: '#7E1BCC',
     fontSize: 14,
     lineHeight: 16,
-    fontFamily: 'AvenirNextLTPro-regular',
+    fontFamily: 'AvenirNextLTPro-Regular',
     fontWeight: '600',
     textAlign: 'center',
     paddingTop: 3,
@@ -121,10 +122,15 @@ const styles = StyleSheet.create({
     width: 194,
     height: 51
   },
+  signupCTAContainer: {
+    flex: 1,
+    marginTop: 32
+  },
   signupCTA: {
+    resizeMode: 'contain',
+    flex: 1,
     marginTop: 32,
-    width: 316,
-    height: 222
+    width: windowWidth - 64
   },
   input: {
     height: 42,
@@ -138,7 +144,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 10,
     color: '#858199',
-    fontFamily: 'AvenirNextLTPro-regular',
+    fontFamily: 'AvenirNextLTPro-Regular',
     fontSize: 16
   },
   inputPass: {
@@ -153,7 +159,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
     padding: 10,
     color: '#858199',
-    fontFamily: 'AvenirNextLTPro-regular',
+    fontFamily: 'AvenirNextLTPro-Regular',
     fontSize: 16
   },
   formBtn: {
@@ -194,14 +200,13 @@ const styles = StyleSheet.create({
   switchFormBtnTitle: {
     color: 'white',
     fontSize: 14,
-    fontFamily: 'AvenirNextLTPro-regular',
-    fontWeight: '700'
+    fontFamily: 'AvenirNextLTPro-Medium'
   },
   errorText: {
     flex: 1,
     color: '#E03D51',
     fontSize: 14,
-    fontFamily: 'AvenirNextLTPro-regular',
+    fontFamily: 'AvenirNextLTPro-Regular',
     alignSelf: 'center'
   },
   errorIcon: {
@@ -674,10 +679,12 @@ const SignOn = ({ navigation }: SignOnProps) => {
             { height: cpaContainerHeight, opacity: opacityCTA }
           ]}
         >
-          {Dimensions.get('window').height < 790 ? (
-            <Text />
+          {Dimensions.get('window').height < 720 ? (
+            <></>
           ) : (
-            <Image source={signupCTA} style={styles.signupCTA} />
+            <View style={styles.signupCTAContainer}>
+              <Image source={signupCTA} style={styles.signupCTA} />
+            </View>
           )}
 
           <TouchableOpacity style={styles.switchFormBtn} activeOpacity={0.6}>

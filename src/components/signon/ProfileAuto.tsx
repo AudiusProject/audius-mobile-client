@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     color: '#858199',
     fontSize: 14,
     lineHeight: 21,
-    fontFamily: 'AvenirNextLTPro-regular',
+    fontFamily: 'AvenirNextLTPro-Regular',
     textAlign: 'center',
     paddingTop: 36,
     paddingBottom: 24,
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     color: '#858199',
     fontSize: 12,
     lineHeight: 21,
-    fontFamily: 'AvenirNextLTPro-regular',
+    fontFamily: 'AvenirNextLTPro-Regular',
     textAlign: 'center',
     paddingTop: 36,
     paddingBottom: 38,
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   },
   ifApplicable: {
     fontSize: 10,
-    fontFamily: 'AvenirNextLTPro-regular',
+    fontFamily: 'AvenirNextLTPro-Regular',
     color: '#C2C0CC',
     marginLeft: 34
   },
@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   gotoManualBtnTitle: {
     color: '#7E1BCC',
     fontSize: 14,
-    fontFamily: 'AvenirNextLTPro-regular'
+    fontFamily: 'AvenirNextLTPro-Regular'
   },
   loadingIcon: {
     marginTop: 48,
