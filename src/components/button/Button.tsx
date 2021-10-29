@@ -1,6 +1,7 @@
 import React from 'react'
-import { Text, TouchableHighlight, ViewStyle, StyleSheet } from 'react-native'
-import { useColor, useThemeColors } from '../../utils/theme'
+import { TouchableHighlight, ViewStyle, StyleSheet } from 'react-native'
+import { useThemeColors } from '../../utils/theme'
+import Text from '../../components/text'
 
 import { ThemeColors, useThemedStyles } from '../../hooks/useThemedStyles'
 
@@ -14,8 +15,7 @@ const createStyles = (themeColors: ThemeColors) =>
       padding: 16
     },
     text: {
-      color: themeColors.white,
-      fontFamily: 'AvenirNextLTPro-Bold',
+      color: themeColors.staticWhite,
       fontSize: 16
     }
   })
@@ -35,7 +35,9 @@ const Button = ({ style, onPress, title }: ButtonProps) => {
       onPress={onPress}
       underlayColor={primaryDark1}
     >
-      <Text style={styles.text}>{title}</Text>
+      <Text style={styles.text} weight='bold'>
+        {title}
+      </Text>
     </TouchableHighlight>
   )
 }

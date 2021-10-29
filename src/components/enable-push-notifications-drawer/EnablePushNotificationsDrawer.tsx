@@ -23,7 +23,7 @@ import { PushNotificationSetting } from 'audius-client/src/containers/settings-p
 import { useDrawer } from '../../hooks/useDrawer'
 import { useThemedStyles } from '../../hooks/useThemedStyles'
 import { ThemeColors } from '../../hooks/useThemedStyles'
-import { useColor } from '../../utils/theme'
+import { useThemeColors } from '../../utils/theme'
 import LinearGradient from 'react-native-linear-gradient'
 import MaskedView from '@react-native-masked-view/masked-view'
 import { useDispatchWeb } from '../../hooks/useDispatchWeb'
@@ -128,13 +128,15 @@ const EnablePushNotificationsDrawer = () => {
   const dispatchWeb = useDispatchWeb()
   const [isOpen, setIsOpen] = useDrawer('EnablePushNotifications')
   const styles = useThemedStyles(createStyles)
-  const neutralLight2 = useColor('neutralLight2')
-  const gradientColor1 = useColor('pageHeaderGradientColor1')
-  const gradientColor2 = useColor('pageHeaderGradientColor2')
+  const {
+    neutralLight2,
+    pageHeaderGradientColor1,
+    pageHeaderGradientColor2
+  } = useThemeColors()
 
   const onClose = useCallback(() => {
     setIsOpen(false)
-  }, [])
+  }, [setIsOpen])
 
   const enablePushNotifications = useCallback(() => {
     dispatchWeb(
@@ -150,8 +152,8 @@ const EnablePushNotificationsDrawer = () => {
           <IconNotification
             height={66}
             width={66}
-            fill={gradientColor2}
-            fillSecondary={gradientColor1}
+            fill={pageHeaderGradientColor2}
+            fillSecondary={pageHeaderGradientColor1}
           />
           <MaskedView
             maskElement={
@@ -161,7 +163,7 @@ const EnablePushNotificationsDrawer = () => {
             }
           >
             <LinearGradient
-              colors={[gradientColor1, gradientColor2]}
+              colors={[pageHeaderGradientColor1, pageHeaderGradientColor2]}
               start={{ x: 1, y: 1 }}
               end={{ x: 0, y: 0 }}
             >
