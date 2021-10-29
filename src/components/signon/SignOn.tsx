@@ -468,12 +468,7 @@ const SignOn = ({ navigation }: SignOnProps) => {
       <Text style={styles.switchFormBtnTitle}>
         {isSignin ? `${messages.newToAudius}` : `${messages.hasAccountAlready}`}
         &nbsp;
-        <Text
-          style={{ textDecorationLine: 'underline' }}
-          onPress={() => {
-            switchForm()
-          }}
-        >
+        <Text style={{ textDecorationLine: 'underline' }}>
           {isSignin ? `${messages.createAccount}` : `${messages.signIn}`}
         </Text>
       </Text>
@@ -687,7 +682,13 @@ const SignOn = ({ navigation }: SignOnProps) => {
             </View>
           )}
 
-          <TouchableOpacity style={styles.switchFormBtn} activeOpacity={0.6}>
+          <TouchableOpacity
+            style={styles.switchFormBtn}
+            activeOpacity={0.6}
+            onPress={() => {
+              switchForm()
+            }}
+          >
             <FormSwitchButton />
           </TouchableOpacity>
         </Animated.View>
