@@ -79,7 +79,6 @@ const createStyles = (themeColors: ThemeColors) =>
 
     cta: {
       marginTop: 16,
-      fontFamily: 'AvenirNextLTPro-Heavy',
       fontSize: 28
     },
 
@@ -112,7 +111,6 @@ const createStyles = (themeColors: ThemeColors) =>
     },
 
     actionText: {
-      fontFamily: 'AvenirNextLTPro-Bold',
       fontSize: 24,
       color: themeColors.neutralLight2
     },
@@ -156,14 +154,18 @@ const EnablePushNotificationsDrawer = () => {
             fillSecondary={gradientColor1}
           />
           <MaskedView
-            maskElement={<Text style={styles.cta}>{messages.dontMiss}</Text>}
+            maskElement={
+              <Text style={styles.cta} weight='heavy'>
+                {messages.dontMiss}
+              </Text>
+            }
           >
             <LinearGradient
               colors={[gradientColor1, gradientColor2]}
               start={{ x: 1, y: 1 }}
               end={{ x: 0, y: 0 }}
             >
-              <Text style={[styles.cta, { opacity: 0 }]}>
+              <Text style={[styles.cta, { opacity: 0 }]} weight='heavy'>
                 {messages.dontMiss}
               </Text>
             </LinearGradient>
@@ -179,7 +181,9 @@ const EnablePushNotificationsDrawer = () => {
                 fill={neutralLight2}
                 style={styles.actionIcon}
               />
-              <Text style={styles.actionText}>{label}</Text>
+              <Text style={styles.actionText} weight='bold'>
+                {label}
+              </Text>
             </View>
           ))}
         </View>
