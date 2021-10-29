@@ -1,8 +1,6 @@
 import React, { useCallback } from 'react'
 
-import { StyleSheet, Text, View } from 'react-native'
-
-import { useDispatch } from 'react-redux'
+import { StyleSheet, View } from 'react-native'
 
 import IconNotification from '../../assets/images/iconGradientNotification.svg'
 import IconHeart from '../../assets/images/iconHeart.svg'
@@ -14,6 +12,7 @@ import IconCoSign from '../../assets/images/iconCoSign.svg'
 
 import Button from '../../components/button'
 import Drawer from '../../components/drawer'
+import Text from '../../components/text'
 
 // Importing directly from audius-client temporarily until
 // settings page is migrated because we still need push notification logic to work
