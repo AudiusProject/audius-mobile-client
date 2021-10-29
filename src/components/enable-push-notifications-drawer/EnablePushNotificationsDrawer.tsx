@@ -128,6 +128,7 @@ const EnablePushNotificationsDrawer = () => {
   const [isOpen, setIsOpen] = useDrawer('EnablePushNotifications')
   const styles = useThemedStyles(createStyles)
   const {
+    background,
     neutralLight2,
     pageHeaderGradientColor1,
     pageHeaderGradientColor2
@@ -180,6 +181,7 @@ const EnablePushNotificationsDrawer = () => {
                 height={30}
                 width={30}
                 fill={neutralLight2}
+                fillSecondary={background}
                 style={styles.actionIcon}
               />
               <Text style={styles.actionText} weight='bold'>
