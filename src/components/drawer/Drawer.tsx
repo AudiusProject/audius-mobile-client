@@ -69,6 +69,14 @@ const createStyles = (themeColors: ThemeColors) =>
       }
     },
 
+    background: {
+      position: 'absolute',
+      top: 0,
+      height: '100%',
+      width: '100%',
+      opacity: 0
+    },
+
     skirt: {
       backgroundColor: themeColors.neutralLight10,
       width: '100%',
@@ -214,15 +222,7 @@ const Drawer = ({ isOpen, children, onClose, isFullscreen }: DrawerProps) => {
       <>
         {isOpen && (
           <TouchableWithoutFeedback onPress={onClose}>
-            <View
-              style={{
-                position: 'absolute',
-                top: 0,
-                height: '100%',
-                width: '100%',
-                opacity: 0
-              }}
-            />
+            <View style={styles.background} />
           </TouchableWithoutFeedback>
         )}
         <Animated.View
