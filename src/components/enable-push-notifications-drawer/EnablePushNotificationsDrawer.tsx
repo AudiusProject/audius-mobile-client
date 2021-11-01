@@ -28,14 +28,15 @@ import MaskedView from '@react-native-masked-view/masked-view'
 import { useDispatchWeb } from '../../hooks/useDispatchWeb'
 
 const messages = {
-  dontMiss: `Don't Miss a Beat!`,
+  dontMiss: "Don't Miss a Beat!",
   turnOn: 'Turn on Notifications',
   favorites: 'Favorites',
   reposts: 'Reposts',
   followers: 'Followers',
   coSigns: 'Co-Signs',
   remixes: 'Remixes',
-  newReleases: 'New Releases'
+  newReleases: 'New Releases',
+  enable: 'Enable Notifications'
 }
 
 const actions = [
@@ -191,7 +192,7 @@ const EnablePushNotificationsDrawer = () => {
           ))}
         </View>
         <Button
-          title='Enable Notifications'
+          title={messages.enable}
           onPress={enablePushNotifications}
           style={styles.button}
         />
