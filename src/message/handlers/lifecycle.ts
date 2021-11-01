@@ -1,4 +1,6 @@
 import * as lifecycleActions from 'app/store/lifecycle/actions'
+import * as oauthActions from 'app/store/oauth/actions'
+import * as signonActions from 'app/store/signon/actions'
 import { checkConnectivity, Connectivity } from 'app/utils/connectivity'
 
 import { MessageType, MessageHandlers } from '../types'
@@ -13,6 +15,14 @@ export const messageHandlers: Partial<MessageHandlers> = {
   },
   [MessageType.SIGNED_IN]: ({ message, dispatch }) => {
     dispatch(lifecycleActions.signedIn(message.account))
+  },
+  [MessageType.SIGNED_OUT]: ({ message, dispatch }) => {
+    dispatch(lifecycleActions.signedOut(message.account))
+    dispatch(signonActions.resetSignonState())
+    dispatch(oauthActions.resetOAuthState())
+  },
+  [MessageType.FETCH_ACCOUNT_FAILED]: ({ dispatch }) => {
+    dispatch(lifecycleActions.fetchAccountFailed())
   },
   [MessageType.REQUEST_NETWORK_CONNECTED]: ({ postMessage }) => {
     const isConnected = checkConnectivity(Connectivity.netInfo)

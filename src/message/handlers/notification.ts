@@ -1,9 +1,9 @@
 import { remindUserToTurnOnNotifications } from 'app/components/notification-reminder/NotificationReminder'
+import { MessageType, MessageHandlers } from 'app/message/types'
 import PushNotifications from 'app/notifications'
+import { setVisibility } from 'app/store/drawers/slice'
 import * as notificationsActions from 'app/store/notifications/actions'
 import { Status } from 'app/types/status'
-
-import { MessageType, MessageHandlers } from '../types'
 
 export const messageHandlers: Partial<MessageHandlers> = {
   [MessageType.ENABLE_PUSH_NOTIFICATIONS]: async ({ message, postMessage }) => {
@@ -30,8 +30,10 @@ export const messageHandlers: Partial<MessageHandlers> = {
   [MessageType.RESET_NOTIFICATIONS_BADGE_COUNT]: () => {
     PushNotifications.setBadgeCount(0)
   },
-  [MessageType.PROMPT_PUSH_NOTIFICATION_REMINDER]: ({ postMessage }) => {
-    remindUserToTurnOnNotifications(postMessage)
+  [MessageType.PROMPT_PUSH_NOTIFICATION_REMINDER]: ({ dispatch }) => {
+    const setVisible = (visible: boolean) =>
+      dispatch(setVisibility({ drawer: 'EnablePushNotifications', visible }))
+    remindUserToTurnOnNotifications(setVisible)
   },
   [MessageType.OPEN_NOTIFICATIONS]: ({ dispatch, postMessage }) => {
     dispatch(notificationsActions.open())

@@ -9,9 +9,9 @@ import {
 } from 'react-native'
 import { useDarkMode } from 'react-native-dark-mode'
 import { connect } from 'react-redux'
-import { AppState } from 'src/store'
-import { MessagePostingWebView } from 'src/types/MessagePostingWebView'
 
+import { AppState } from 'app/store'
+import { MessagePostingWebView } from 'app/types/MessagePostingWebView'
 import { light } from 'app/haptics'
 import { MessageType } from 'app/message'
 import { getIsEnabled, getMessageId } from 'app/store/web/selectors'

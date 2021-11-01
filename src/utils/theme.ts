@@ -74,7 +74,9 @@ export const defaultTheme = {
   accentOrangeLight1: '#FFA70F',
   accentPurple: '#8E51CF',
   shadow: '#E3E3E3',
-  staticWhite: '#FFFFFF'
+  staticWhite: '#FFFFFF',
+  pageHeaderGradientColor1: '#5B23E1',
+  pageHeaderGradientColor2: '#A22FEB'
 }
 
 export const darkTheme = {
@@ -115,7 +117,9 @@ export const darkTheme = {
   accentOrangeLight1: '#FFA70F',
   accentPurple: '#8E51CF',
   shadow: '#35364F',
-  staticWhite: '#FFFFFF'
+  staticWhite: '#FFFFFF',
+  pageHeaderGradientColor1: '#7652CC',
+  pageHeaderGradientColor2: '#B05CE6'
 }
 
 const matrixTheme = {
@@ -146,8 +150,15 @@ const matrixTheme = {
   neutralLight9: '#202A1D',
   neutralLight10: '#1D211B',
   white: '#1F211F',
-  staticWhite: '#FFFFFF'
+  staticWhite: '#FFFFFF',
+  pageHeaderGradientColor1: '#1D211B',
+  pageHeaderGradientColor2: '#1D211B'
 }
+
+export type ThemeColors =
+  | typeof defaultTheme
+  | typeof darkTheme
+  | typeof matrixTheme
 
 const themeColorsByThemeVariant = {
   [Theme.DEFAULT]: defaultTheme,
@@ -163,7 +174,7 @@ export const useThemeVariant = (): keyof typeof themeColorsByThemeVariant => {
   return theme === Theme.AUTO ? systemTheme : theme
 }
 
-const useThemeColors = () => {
+export const useThemeColors = () => {
   const themeVariant = useThemeVariant()
   return themeColorsByThemeVariant[themeVariant]
 }

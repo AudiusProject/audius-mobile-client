@@ -26,7 +26,7 @@ const useSessionCount = (
   startAt = 1
 ) => {
   // Memoize each time the callback is invoked to guard against callback
-  // being redefined each rernder and over triggering
+  // being redefined each rerender and over triggering
   const [calledAtCount, setCalledAtCount] = useState<number | null>(null)
 
   useEffect(() => {

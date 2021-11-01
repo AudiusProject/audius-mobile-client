@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react'
 
+import { PortalProvider } from '@gorhom/portal'
 import { Platform } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import WebView from 'react-native-webview'
@@ -9,6 +10,9 @@ import { createStore } from 'redux'
 import Audio from 'app/components/audio/Audio'
 import GoogleCast from 'app/components/audio/GoogleCast'
 // import BottomBar from 'app/components/bottom-bar'
+import CollectibleDetailsDrawer from 'app/components/collectible-details-drawer'
+import EnablePushNotificationsDrawer from 'app/components/enable-push-notifications-drawer'
+import MobileUploadDrawer from 'app/components/mobile-upload-drawer'
 import Notifications from 'app/components/notifications/Notifications'
 import OAuth from 'app/components/oauth/OAuth'
 import Search from 'app/components/search/Search'
@@ -20,11 +24,7 @@ import PushNotifications from 'app/notifications'
 import createRootReducer from 'app/store'
 import { setup as setupAnalytics } from 'app/utils/analytics'
 
-const store = createStore(
-  createRootReducer(),
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-)
-export const dispatch = store.dispatch
+const store = createStore()
 
 const Airplay = Platform.select({
   ios: () => require('./components/audio/Airplay').default,
@@ -55,25 +55,31 @@ const App = () => {
   return (
     <SafeAreaProvider>
       <Provider store={store}>
-        <WebRefContextProvider>
-          <GoogleCast webRef={webRef} />
-          <WebApp webRef={webRef} />
-          <Search />
-          {/*
+        <PortalProvider>
+          <WebRefContextProvider>
+            <GoogleCast webRef={webRef} />
+            <WebApp webRef={webRef} />
+            <SignOnNav />
+            <Search />
+            {/*
         Note: it is very important that Notifications is rendered after WebApp.
         On Android, regardless of position: absolute, WebApp will steal all of Notifications
         touch targets and onPress will not work.
       */}
-          <Notifications webRef={webRef} />
+            <Notifications webRef={webRef} />
 
-          {/*
+            {/*
             Commenting out BottomBar until the drawers and overlays are migrated to RN
           */}
-          {/* <BottomBar /> */}
-          <Audio webRef={webRef} />
-          <OAuth webRef={webRef} />
-          <Airplay webRef={webRef} />
-        </WebRefContextProvider>
+            {/* <BottomBar /> */}
+            <MobileUploadDrawer />
+            <EnablePushNotificationsDrawer />
+            <CollectibleDetailsDrawer />
+            <Audio webRef={webRef} />
+            <OAuth webRef={webRef} />
+            <Airplay webRef={webRef} />
+          </WebRefContextProvider>
+        </PortalProvider>
       </Provider>
     </SafeAreaProvider>
   )
