@@ -82,6 +82,15 @@ const createStyles = (themeColors: ThemeColors) =>
     }
   })
 
+const getHostname = (url: string) => {
+  // React Native does not have URL builtin so use regex to get hostname
+  // Example:
+  // https://audius.co/nft -> audius.co
+
+  // Second matched group which will be the hostname
+  return url.match(/(https*:\/\/)([^\/]+)/)?.[2] ?? ''
+}
+
 const CollectibleDetails = () => {
   const dispatchWeb = useDispatchWeb()
 
@@ -93,7 +102,8 @@ const CollectibleDetails = () => {
   }, [dispatchWeb])
 
   const formattedLink = useMemo(() => {
-    return collectible?.externalLink?.match(/(https*:\/\/)([^/]+)/)?.[2] ?? ''
+    const url = collectible?.externalLink
+    return url ? getHostname(url) : ''
   }, [collectible])
 
   const styles = useThemedStyles(createStyles)

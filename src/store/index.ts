@@ -10,6 +10,7 @@ import web, { WebState } from './web/reducer'
 import lifecycle, { LifecycleState } from './lifecycle/reducer'
 import notifications, { NotificationsState } from './notifications/reducer'
 import search, { SearchState } from './search/reducer'
+import signon, { SignonState } from './signon/reducer'
 import theme, { ThemeState } from './theme/reducer'
 import drawers, { DrawersState } from './drawers/slice'
 import clientStore from './clientStore/slice'
@@ -27,6 +28,7 @@ export type AppState = {
   notifications: NotificationsState
   oauth: OAuthState
   search: SearchState
+  signon: SignonState
   theme: ThemeState
   web: WebState
 }
@@ -41,6 +43,7 @@ const createRootReducer = () =>
     notifications,
     oauth,
     search,
+    signon,
     theme,
     web
   })
