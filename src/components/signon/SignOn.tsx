@@ -418,7 +418,6 @@ const SignOn = ({ navigation }: SignOnProps) => {
 
   useEffect(() => {
     if (dappLoaded) {
-      console.log('dappLOADED')
       animateDrawer()
       fadeCTA()
     }
@@ -426,11 +425,18 @@ const SignOn = ({ navigation }: SignOnProps) => {
 
   useEffect(() => {
     if (
-      (!isSignin || !isSigninError || !showDefaultError) &&
-      (isSignin || emailIsAvailable || email === '') &&
-      !showInvalidEmailError &&
-      !showEmptyPasswordError
+      (isSignin && isSigninError && showDefaultError) ||
+      (!isSignin && !emailIsAvailable && email !== '') ||
+      showInvalidEmailError ||
+      showEmptyPasswordError
     ) {
+      // fade in the error message
+      Animated.timing(errorOpacity, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true
+      }).start()
+    } else {
       errorOpacity = new Animated.Value(0)
     }
   }, [
@@ -445,11 +451,6 @@ const SignOn = ({ navigation }: SignOnProps) => {
 
   const errorView = () => {
     if (isSignin && isSigninError && showDefaultError) {
-      Animated.timing(errorOpacity, {
-        toValue: 1,
-        duration: 300,
-        useNativeDriver: true
-      }).start()
       return (
         <Animated.View
           style={[styles.errorContainer, { opacity: errorOpacity }]}
@@ -460,11 +461,6 @@ const SignOn = ({ navigation }: SignOnProps) => {
       )
     }
     if (!isSignin && !emailIsAvailable && email !== '') {
-      Animated.timing(errorOpacity, {
-        toValue: 1,
-        duration: 300,
-        useNativeDriver: true
-      }).start()
       return (
         <TouchableOpacity
           style={styles.errorButton}
@@ -490,11 +486,6 @@ const SignOn = ({ navigation }: SignOnProps) => {
       )
     }
     if (showInvalidEmailError) {
-      Animated.timing(errorOpacity, {
-        toValue: 1,
-        duration: 300,
-        useNativeDriver: true
-      }).start()
       return (
         <Animated.View
           style={[styles.errorContainer, { opacity: errorOpacity }]}
@@ -505,11 +496,6 @@ const SignOn = ({ navigation }: SignOnProps) => {
       )
     }
     if (showEmptyPasswordError) {
-      Animated.timing(errorOpacity, {
-        toValue: 1,
-        duration: 300,
-        useNativeDriver: true
-      }).start()
       return (
         <Animated.View
           style={[styles.errorContainer, { opacity: errorOpacity }]}
