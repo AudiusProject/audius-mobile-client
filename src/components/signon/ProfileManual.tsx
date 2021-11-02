@@ -40,6 +40,7 @@ import {
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from './NavigationStack'
 import { useColor } from '../../utils/theme'
+import Button from '../../components/button'
 
 const styles = StyleSheet.create({
   container: {
@@ -121,17 +122,16 @@ const styles = StyleSheet.create({
   btnDisabled: {
     backgroundColor: '#E7E6EB'
   },
-  formButtonTitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center'
+  buttonContainer: {
+    width: '100%'
   },
-  formButtonTitle: {
-    color: 'white',
-    fontSize: 18,
-    fontFamily: 'AvenirNextLTPro-Bold',
-    marginRight: 12
+  button: {
+    padding: 12
   },
-  arrow: {
+  buttonText: {
+    fontSize: 18
+  },
+  arrowIcon: {
     height: 20,
     width: 20
   },
@@ -215,22 +215,37 @@ const FormTitle = () => {
   )
 }
 
-const ContinueButton = ({ isWorking }: { isWorking: boolean }) => {
+const ContinueButton = ({
+  isWorking,
+  onPress,
+  disabled
+}: {
+  isWorking: boolean
+  onPress: () => void
+  disabled: boolean
+}) => {
   return (
-    <View style={styles.formButtonTitleContainer}>
-      <Text style={styles.formButtonTitle}>{messages.continue}</Text>
-      {isWorking ? (
-        <View style={styles.loadingIcon}>
-          <LottieView
-            source={require('../../assets/animations/loadingSpinner.json')}
-            autoPlay
-            loop
-          />
-        </View>
-      ) : (
-        <IconArrow style={styles.arrow} fill='white' />
-      )}
-    </View>
+    <Button
+      title={messages.continue}
+      containerStyle={styles.buttonContainer}
+      style={styles.button}
+      textStyle={styles.buttonText}
+      onPress={onPress}
+      disabled={disabled}
+      icon={
+        isWorking ? (
+          <View style={styles.loadingIcon}>
+            <LottieView
+              source={require('../../assets/animations/loadingSpinner.json')}
+              autoPlay
+              loop
+            />
+          </View>
+        ) : (
+          <IconArrow style={styles.arrowIcon} fill='white' />
+        )
+      }
+    />
   )
 }
 
@@ -589,19 +604,11 @@ const ProfileManual = ({ navigation, route }: ProfileManualProps) => {
 
               {errorView({ handleIsValid, handleError })}
 
-              <TouchableOpacity
-                style={[
-                  styles.formBtn,
-                  isSubmitDisabled ? styles.btnDisabled : {}
-                ]}
-                activeOpacity={0.6}
-                disabled={isSubmitDisabled}
+              <ContinueButton
+                isWorking={handleStatus === 'editing' && handleDebounce}
                 onPress={onContinuePress}
-              >
-                <ContinueButton
-                  isWorking={handleStatus === 'editing' && handleDebounce}
-                />
-              </TouchableOpacity>
+                disabled={isSubmitDisabled}
+              />
             </View>
           </View>
         </TouchableWithoutFeedback>
