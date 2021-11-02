@@ -35,6 +35,9 @@ const createStyles = (themeColors: ThemeColors) =>
     },
     icon: {
       marginLeft: 12
+    },
+    disabled: {
+      backgroundColor: '#E7E6EB'
     }
   })
 
@@ -46,6 +49,7 @@ type ButtonProps = {
   style?: ViewStyle
   textStyle?: TextStyle
   disabled?: boolean
+  ignoreDisabledStyle?: boolean
 }
 
 const Button = ({
@@ -55,7 +59,8 @@ const Button = ({
   containerStyle,
   style,
   textStyle,
-  disabled = false
+  disabled = false,
+  ignoreDisabledStyle = false
 }: ButtonProps) => {
   const styles = useThemedStyles(createStyles)
   const { primaryDark1 } = useThemeColors()
@@ -84,7 +89,8 @@ const Button = ({
       style={[
         styles.buttonContainer,
         { transform: [{ scale }] },
-        containerStyle
+        containerStyle,
+        disabled && !ignoreDisabledStyle ? styles.disabled : {}
       ]}
     >
       <TouchableHighlight

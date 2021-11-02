@@ -608,9 +608,7 @@ const SignOn = ({ navigation }: SignOnProps) => {
             ...styles.mainButtonContainer,
             marginTop: formButtonMarginTop
           }}
-          style={{
-            ...styles.mainButton
-          }}
+          style={styles.mainButton}
           textStyle={styles.mainButtonText}
           icon={
             isWorking ? (
@@ -624,6 +622,7 @@ const SignOn = ({ navigation }: SignOnProps) => {
               <IconArrow style={styles.arrowIcon} fill='white' />
             )
           }
+          ignoreDisabledStyle
         />
       </Animated.View>
     )

@@ -30,6 +30,7 @@ import { EventNames } from '../../types/analytics'
 import { useDispatchWeb } from '../../hooks/useDispatchWeb'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from './NavigationStack'
+import Button from '../../components/button'
 
 declare module 'fxa-common-password-list'
 
@@ -83,30 +84,17 @@ const styles = StyleSheet.create({
     fontFamily: 'AvenirNextLTPro-Regular',
     fontSize: 16
   },
-  formBtn: {
-    flexDirection: 'row',
-    marginTop: 26,
-    height: 48,
+  mainButtonContainer: {
     width: '100%',
-    alignItems: 'center',
-    padding: 10,
-    justifyContent: 'center',
-    backgroundColor: '#CC0FE0',
-    borderRadius: 4
+    marginTop: 32
   },
-  btnDisabled: {
-    backgroundColor: '#E7E6EB'
+  mainButton: {
+    padding: 12
   },
-  formButtonTitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center'
+  mainButtonText: {
+    fontSize: 18
   },
-  formButtonTitle: {
-    color: 'white',
-    fontSize: 18,
-    fontFamily: 'AvenirNextLTPro-Bold'
-  },
-  arrow: {
+  arrowIcon: {
     height: 20,
     width: 20
   },
@@ -207,23 +195,6 @@ const FormTitle = () => {
         <Text style={styles.header}>{messages.warning}</Text>
       )}
     </Animated.View>
-  )
-}
-
-const ContinueButton = ({ isWorking }: { isWorking: boolean }) => {
-  return isWorking ? (
-    <View style={styles.loadingIcon}>
-      <LottieView
-        source={require('../../assets/animations/loadingSpinner.json')}
-        autoPlay
-        loop
-      />
-    </View>
-  ) : (
-    <View style={styles.formButtonTitleContainer}>
-      <Text style={styles.formButtonTitle}>{messages.continue}</Text>
-      <IconArrow style={styles.arrow} fill='white' />
-    </View>
   )
 }
 
@@ -460,6 +431,45 @@ const CreatePassword = ({ navigation, route }: CreatePasswordProps) => {
     )
   }
 
+  const ContinueButton = ({ isWorking }: { isWorking: boolean }) => {
+    return (
+      <Button
+        title={messages.continue}
+        onPress={() => {
+          Keyboard.dismiss()
+          setisWorking(true)
+          setOnSignOn()
+          track(
+            make({
+              eventName: EventNames.CREATE_ACCOUNT_COMPLETE_PASSWORD,
+              emailAddress: route.params.email
+            })
+          )
+          navigation.push('ProfileAuto', {
+            email: route.params.email,
+            password
+          })
+        }}
+        disabled={isDisabled}
+        containerStyle={styles.mainButtonContainer}
+        style={styles.mainButton}
+        textStyle={styles.mainButtonText}
+        icon={
+          isWorking ? (
+            <LottieView
+              style={styles.loadingIcon}
+              source={require('../../assets/animations/loadingSpinner.json')}
+              autoPlay
+              loop
+            />
+          ) : (
+            <IconArrow style={styles.arrowIcon} fill='white' />
+          )
+        }
+      />
+    )
+  }
+
   return (
     <SafeAreaView style={{ backgroundColor: 'white' }}>
       <KeyboardAvoidingView
@@ -565,29 +575,7 @@ const CreatePassword = ({ navigation, route }: CreatePasswordProps) => {
                   </Text>
                 </TouchableOpacity>
               </Text>
-
-              <TouchableOpacity
-                style={[styles.formBtn, isDisabled ? styles.btnDisabled : {}]}
-                disabled={isDisabled}
-                activeOpacity={0.6}
-                onPress={() => {
-                  Keyboard.dismiss()
-                  setisWorking(true)
-                  setOnSignOn()
-                  track(
-                    make({
-                      eventName: EventNames.CREATE_ACCOUNT_COMPLETE_PASSWORD,
-                      emailAddress: route.params.email
-                    })
-                  )
-                  navigation.push('ProfileAuto', {
-                    email: route.params.email,
-                    password
-                  })
-                }}
-              >
-                <ContinueButton isWorking={isWorking} />
-              </TouchableOpacity>
+              <ContinueButton isWorking={isWorking} />
             </View>
           </View>
         </TouchableWithoutFeedback>
