@@ -1,4 +1,5 @@
 import React from 'react'
+
 import { StyleSheet, View } from 'react-native'
 
 import HeaderLogo from '../../assets/images/audiusLogoHorizontal.svg'

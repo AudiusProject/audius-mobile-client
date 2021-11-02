@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect } from 'react'
+
 import { checkNotifications, RESULTS } from 'react-native-permissions'
 
 import { useDrawer } from 'app/hooks/useDrawer'

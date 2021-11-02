@@ -11,12 +11,12 @@ import {
   View
 } from 'react-native'
 
-import IconVolume from '../../assets/images/iconVolume.svg'
-import IconMute from '../../assets/images/iconVolume0.svg'
-import AutoSizeImage from '../image/AutoSizeImage'
-import AutoSizeVideo from '../video/AutoSizeVideo'
-import { ThemeColors, useThemedStyles } from '../../hooks/useThemedStyles'
-import { useColor } from '../../utils/theme'
+import IconVolume from 'app/assets/images/iconVolume.svg'
+import IconMute from 'app/assets/images/iconVolume0.svg'
+import { ThemeColors, useThemedStyles } from 'app/hooks/useThemedStyles'
+import { useColor } from 'app/utils/theme'
+import AutoSizeImage from 'app/components/image/AutoSizeImage'
+import AutoSizeVideo from 'app/components/video/AutoSizeVideo'
 
 const createStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({

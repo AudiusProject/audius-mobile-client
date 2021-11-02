@@ -1,4 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react'
+
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { sampleSize } from 'lodash'
 import {
   Animated,
   SafeAreaView,
@@ -8,17 +11,18 @@ import {
   TouchableOpacity,
   View
 } from 'react-native'
+import LinearGradient from 'react-native-linear-gradient'
 import { useDispatch, useSelector } from 'react-redux'
-import { sampleSize } from 'lodash'
+
+import IconArrow from '../../assets/images/iconArrow.svg'
+import IconWand from '../../assets/images/iconWand.svg'
+import { useDispatchWeb } from '../../hooks/useDispatchWeb'
+import { MessageType } from '../../message/types'
 import {
   setFollowArtistsCategory,
   setFollowedArtists,
   submitFollowedArtists
 } from '../../store/signon/actions'
-import IconArrow from '../../assets/images/iconArrow.svg'
-import IconWand from '../../assets/images/iconWand.svg'
-import { useDispatchWeb } from '../../hooks/useDispatchWeb'
-import { MessageType } from '../../message/types'
 import {
   getAllFollowArtists,
   makeGetFollowArtists
@@ -27,14 +31,13 @@ import {
   artistCategories,
   FollowArtistsCategory
 } from '../../store/signon/types'
-import SignupHeader from './SignupHeader'
+import { EventNames } from '../../types/analytics'
+import { track, make } from '../../utils/analytics'
 import UserImage from '../image/UserImage'
 import UserBadges from '../user-badges/UserBadges'
-import LinearGradient from 'react-native-linear-gradient'
-import { track, make } from '../../utils/analytics'
-import { EventNames } from '../../types/analytics'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
+
 import { RootStackParamList } from './NavigationStack'
+import SignupHeader from './SignupHeader'
 
 const styles = StyleSheet.create({
   container: {

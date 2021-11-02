@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react'
+
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import LottieView from 'lottie-react-native'
 import {
   Animated,
   StyleSheet,
@@ -13,10 +16,6 @@ import {
   ActionSheetIOS,
   Alert
 } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { useDispatch, useSelector } from 'react-redux'
-import { useDispatchWeb } from '../../hooks/useDispatchWeb'
-import LottieView from 'lottie-react-native'
 import {
   Asset,
   Callback,
@@ -24,22 +23,25 @@ import {
   launchCamera,
   launchImageLibrary
 } from 'react-native-image-picker'
-import { MessageType } from '../../message/types'
-import SignupHeader from './SignupHeader'
-import PhotoButton from './PhotoButton'
-import ProfileImage from './ProfileImage'
-import * as signonActions from '../../store/signon/actions'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { useDispatch, useSelector } from 'react-redux'
 
 import IconArrow from '../../assets/images/iconArrow.svg'
 import ValidationIconX from '../../assets/images/iconValidationX.svg'
+import { useDispatchWeb } from '../../hooks/useDispatchWeb'
+import { MessageType } from '../../message/types'
+import * as signonActions from '../../store/signon/actions'
 import {
   getHandleIsValid,
   getHandleError,
   getHandleStatus
 } from '../../store/signon/selectors'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { RootStackParamList } from './NavigationStack'
 import { useColor } from '../../utils/theme'
+
+import { RootStackParamList } from './NavigationStack'
+import PhotoButton from './PhotoButton'
+import ProfileImage from './ProfileImage'
+import SignupHeader from './SignupHeader'
 
 const styles = StyleSheet.create({
   container: {

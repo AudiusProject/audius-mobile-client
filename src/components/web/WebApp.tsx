@@ -20,7 +20,6 @@ import RNFS from 'react-native-fs'
 import StaticServer from 'react-native-static-server'
 import VersionNumber from 'react-native-version-number'
 import { WebView } from 'react-native-webview'
-
 import {
   WebViewMessage,
   WebViewNavigation

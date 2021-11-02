@@ -1,14 +1,10 @@
 import React, { useEffect, useState } from 'react'
+
 import { NavigationContainer } from '@react-navigation/native'
-import { useSelector } from 'react-redux'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { View, StyleSheet } from 'react-native'
-import SignOn from './SignOn'
-import CreatePassword from './CreatePassword'
-import ProfileAuto from './ProfileAuto'
-import ProfileManual from './ProfileManual'
-import FirstFollows from './FirstFollows'
-import SignupLoadingPage from './SignupLoadingPage'
+import { useSelector } from 'react-redux'
+
 import {
   getDappLoaded,
   getIsSignedIn,
@@ -20,8 +16,15 @@ import {
   getFinalEmail,
   getFinalHandle
 } from '../../store/signon/selectors'
-import { track, make } from '../../utils/analytics'
 import { EventNames } from '../../types/analytics'
+import { track, make } from '../../utils/analytics'
+
+import CreatePassword from './CreatePassword'
+import FirstFollows from './FirstFollows'
+import ProfileAuto from './ProfileAuto'
+import ProfileManual from './ProfileManual'
+import SignOn from './SignOn'
+import SignupLoadingPage from './SignupLoadingPage'
 
 export type RootStackParamList = {
   SignOn: undefined

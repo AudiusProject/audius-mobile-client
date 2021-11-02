@@ -1,4 +1,8 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
+
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import commonPasswordList from 'fxa-common-password-list'
+import LottieView from 'lottie-react-native'
 import {
   Animated,
   Easing,
@@ -16,20 +20,19 @@ import {
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useSelector, useDispatch } from 'react-redux'
-import SignupHeader from './SignupHeader'
-import LottieView from 'lottie-react-native'
-import * as lifecycleActions from '../../store/lifecycle/actions'
-import { getOnSignUp } from '../../store/lifecycle/selectors'
+
 import IconArrow from '../../assets/images/iconArrow.svg'
 import IconCheck from '../../assets/images/iconValidationCheck.svg'
 import ValidationIconX from '../../assets/images/iconValidationX.svg'
-import commonPasswordList from 'fxa-common-password-list'
-import { MessageType } from '../../message/types'
-import { track, make } from '../../utils/analytics'
-import { EventNames } from '../../types/analytics'
 import { useDispatchWeb } from '../../hooks/useDispatchWeb'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { MessageType } from '../../message/types'
+import * as lifecycleActions from '../../store/lifecycle/actions'
+import { getOnSignUp } from '../../store/lifecycle/selectors'
+import { EventNames } from '../../types/analytics'
+import { track, make } from '../../utils/analytics'
+
 import { RootStackParamList } from './NavigationStack'
+import SignupHeader from './SignupHeader'
 
 declare module 'fxa-common-password-list'
 

@@ -10,11 +10,11 @@ import {
 import { useDarkMode } from 'react-native-dark-mode'
 import { connect } from 'react-redux'
 
-import { AppState } from 'app/store'
-import { MessagePostingWebView } from 'app/types/MessagePostingWebView'
 import { light } from 'app/haptics'
 import { MessageType } from 'app/message'
+import { AppState } from 'app/store'
 import { getIsEnabled, getMessageId } from 'app/store/web/selectors'
+import { MessagePostingWebView } from 'app/types/MessagePostingWebView'
 import { postMessage } from 'app/utils/postMessage'
 
 // How far the user needs to drag before the refresh fires

@@ -1,4 +1,5 @@
-import { MessageType } from 'message'
+import { MessageType } from 'app/message'
+
 import {
   OAuthActions,
   OPEN_POPUP,

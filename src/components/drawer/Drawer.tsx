@@ -18,9 +18,9 @@ import {
 } from 'react-native'
 import { Portal } from '@gorhom/portal'
 import { Edge, SafeAreaView } from 'react-native-safe-area-context'
-import IconRemove from '../../assets/images/iconRemove.svg'
-import { useColor } from '../../utils/theme'
-import { ThemeColors, useThemedStyles } from '../../hooks/useThemedStyles'
+import IconRemove from 'app/assets/images/iconRemove.svg'
+import { useColor } from 'app/utils/theme'
+import { ThemeColors, useThemedStyles } from 'app/hooks/useThemedStyles'
 
 const MAX_SHADOW_OPACITY = 0.4
 const ON_MOVE_RESPONDER_DX = 20

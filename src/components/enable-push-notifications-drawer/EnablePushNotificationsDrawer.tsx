@@ -1,15 +1,18 @@
 import React, { useCallback } from 'react'
 
+import MaskedView from '@react-native-masked-view/masked-view'
+import { togglePushNotificationSetting } from 'audius-client/src/containers/settings-page/store/actions'
+import { PushNotificationSetting } from 'audius-client/src/containers/settings-page/store/types'
 import { StyleSheet, View } from 'react-native'
+import LinearGradient from 'react-native-linear-gradient'
 
-import IconNotification from '../../assets/images/iconGradientNotification.svg'
-import IconHeart from '../../assets/images/iconHeart.svg'
-import IconRepost from '../../assets/images/iconRepost.svg'
-import IconRemix from '../../assets/images/iconRemix.svg'
+import IconCoSign from '../../assets/images/iconCoSign.svg'
 import IconExploreNewReleases from '../../assets/images/iconExploreNewReleases.svg'
 import IconFollow from '../../assets/images/iconFollow.svg'
-import IconCoSign from '../../assets/images/iconCoSign.svg'
-
+import IconNotification from '../../assets/images/iconGradientNotification.svg'
+import IconHeart from '../../assets/images/iconHeart.svg'
+import IconRemix from '../../assets/images/iconRemix.svg'
+import IconRepost from '../../assets/images/iconRepost.svg'
 import Button from '../../components/button'
 import Drawer from '../../components/drawer'
 import Text from '../../components/text'
@@ -17,15 +20,11 @@ import Text from '../../components/text'
 // Importing directly from audius-client temporarily until
 // settings page is migrated because we still need push notification logic to work
 // on settings page and it doesn't necessarily make sense in common
-import { togglePushNotificationSetting } from 'audius-client/src/containers/settings-page/store/actions'
-import { PushNotificationSetting } from 'audius-client/src/containers/settings-page/store/types'
 
+import { useDispatchWeb } from '../../hooks/useDispatchWeb'
 import { useDrawer } from '../../hooks/useDrawer'
 import { ThemeColors, useThemedStyles } from '../../hooks/useThemedStyles'
 import { useThemeColors } from '../../utils/theme'
-import LinearGradient from 'react-native-linear-gradient'
-import MaskedView from '@react-native-masked-view/masked-view'
-import { useDispatchWeb } from '../../hooks/useDispatchWeb'
 
 const messages = {
   dontMiss: "Don't Miss a Beat!",

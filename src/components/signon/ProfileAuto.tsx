@@ -1,4 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
+
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import LottieView from 'lottie-react-native'
 import {
   Animated,
   StyleSheet,
@@ -8,15 +11,15 @@ import {
   Dimensions,
   SafeAreaView
 } from 'react-native'
-import SignupHeader from './SignupHeader'
+import { useDispatch, useSelector } from 'react-redux'
 
+import GradientSave from '../../assets/images/gradientSave.svg'
 import IconInstagram from '../../assets/images/iconInstagram.svg'
 import IconTwitter from '../../assets/images/iconTwitterBird.svg'
 import IconVerified from '../../assets/images/iconVerified.svg'
-import GradientSave from '../../assets/images/gradientSave.svg'
-import { MessageType } from '../../message/types'
 import { useDispatchWeb } from '../../hooks/useDispatchWeb'
-import { useDispatch, useSelector } from 'react-redux'
+import { MessageType } from '../../message/types'
+import * as oauthActions from '../../store/oauth/actions'
 import {
   getInstagramError,
   getInstagramInfo,
@@ -24,13 +27,12 @@ import {
   getTwitterInfo
 } from '../../store/oauth/selectors'
 import { getHandleError, getHandleIsValid } from '../../store/signon/selectors'
-import LottieView from 'lottie-react-native'
-import { useColor } from '../../utils/theme'
-import * as oauthActions from '../../store/oauth/actions'
-import { track, make } from '../../utils/analytics'
 import { EventNames } from '../../types/analytics'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import { track, make } from '../../utils/analytics'
+import { useColor } from '../../utils/theme'
+
 import { RootStackParamList } from './NavigationStack'
+import SignupHeader from './SignupHeader'
 
 const styles = StyleSheet.create({
   container: {

@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { Text as RNText } from 'react-native'
+
 import { useThemeColors } from '../../utils/theme'
 
 const fontByWeight = {

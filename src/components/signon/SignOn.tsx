@@ -1,4 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
+
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import LottieView from 'lottie-react-native'
 import {
   Animated,
   ImageBackground,
@@ -13,18 +16,19 @@ import {
   Keyboard,
   Easing
 } from 'react-native'
-
-import { useSelector, useDispatch } from 'react-redux'
-import { useDispatchWeb } from '../../hooks/useDispatchWeb'
-import { MessageType } from '../../message/types'
-
 import RadialGradient from 'react-native-radial-gradient'
+import { useSelector, useDispatch } from 'react-redux'
+
 import backgImage from '../../assets/images/DJportrait.jpg'
 import audiusLogoHorizontal from '../../assets/images/Horizontal-Logo-Full-Color.png'
-import signupCTA from '../../assets/images/signUpCTA.png'
 import IconArrow from '../../assets/images/iconArrow.svg'
 import ValidationIconX from '../../assets/images/iconValidationX.svg'
-import LottieView from 'lottie-react-native'
+import signupCTA from '../../assets/images/signUpCTA.png'
+import { remindUserToTurnOnNotifications } from '../../components/notification-reminder/NotificationReminder'
+import { useDispatchWeb } from '../../hooks/useDispatchWeb'
+import { MessageType } from '../../message/types'
+import { setVisibility } from '../../store/drawers/slice'
+import { getIsSignedIn, getDappLoaded } from '../../store/lifecycle/selectors'
 import * as signonActions from '../../store/signon/actions'
 import {
   getIsSigninError,
@@ -32,13 +36,10 @@ import {
   getEmailIsValid,
   getEmailStatus
 } from '../../store/signon/selectors'
-import { getIsSignedIn, getDappLoaded } from '../../store/lifecycle/selectors'
-import { track, make } from '../../utils/analytics'
 import { EventNames } from '../../types/analytics'
-import { setVisibility } from '../../store/drawers/slice'
+import { track, make } from '../../utils/analytics'
+
 import { RootStackParamList } from './NavigationStack'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { remindUserToTurnOnNotifications } from '../../components/notification-reminder/NotificationReminder'
 
 const image = backgImage
 const windowWidth = Dimensions.get('window').width

@@ -1,5 +1,5 @@
-import { put } from 'redux-saga/effects'
 import { Keyboard } from 'react-native'
+import { put } from 'redux-saga/effects'
 
 import { open, close } from './slice'
 
