@@ -1,44 +1,45 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react'
+import {
+  NativeStackScreenProps,
+  NativeStackScreenProps
+} from '@react-navigation/native-stack'
+import LottieView from 'lottie-react-native'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import {
   Animated,
+  Dimensions,
+  Easing,
+  Image,
   ImageBackground,
+  Keyboard,
   StyleSheet,
   Text,
-  View,
-  Image,
   TextInput,
   TouchableOpacity,
-  Dimensions,
   TouchableWithoutFeedback,
-  Keyboard,
-  Easing
+  View
 } from 'react-native'
-
-import { useSelector, useDispatch } from 'react-redux'
-import { useDispatchWeb } from '../../hooks/useDispatchWeb'
-import { MessageType } from '../../message/types'
-
 import RadialGradient from 'react-native-radial-gradient'
+import { useDispatch, useSelector } from 'react-redux'
 import backgImage from '../../assets/images/DJportrait.jpg'
 import audiusLogoHorizontal from '../../assets/images/Horizontal-Logo-Full-Color.png'
-import signupCTA from '../../assets/images/signUpCTA.png'
 import IconArrow from '../../assets/images/iconArrow.svg'
 import ValidationIconX from '../../assets/images/iconValidationX.svg'
-import LottieView from 'lottie-react-native'
+import signupCTA from '../../assets/images/signUpCTA.png'
+import { useDispatchWeb } from '../../hooks/useDispatchWeb'
+import { MessageType } from '../../message/types'
+import { getDappLoaded, getIsSignedIn } from '../../store/lifecycle/selectors'
 import * as signonActions from '../../store/signon/actions'
 import {
-  getIsSigninError,
   getEmailIsAvailable,
   getEmailIsValid,
-  getEmailStatus
+  getEmailStatus,
+  getIsSigninError
 } from '../../store/signon/selectors'
-import { getIsSignedIn, getDappLoaded } from '../../store/lifecycle/selectors'
-import { track, make } from '../../utils/analytics'
 import { EventNames } from '../../types/analytics'
 import { setVisibility } from '../../store/drawers/slice'
 import { RootStackParamList } from './NavigationStack'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { remindUserToTurnOnNotifications } from '../../components/notification-reminder/NotificationReminder'
+import { make, track } from '../../utils/analytics'
 
 const image = backgImage
 const windowWidth = Dimensions.get('window').width
@@ -337,6 +338,8 @@ const isValidEmailString = (email: string) => {
   return emailRe.test(String(email).toLowerCase())
 }
 
+let errorOpacity = new Animated.Value(0)
+
 type SignOnProps = NativeStackScreenProps<RootStackParamList, 'SignOn'>
 const SignOn = ({ navigation }: SignOnProps) => {
   const dispatchWeb = useDispatchWeb()
@@ -421,15 +424,47 @@ const SignOn = ({ navigation }: SignOnProps) => {
     }
   }, [dappLoaded, animateDrawer, fadeCTA])
 
+  useEffect(() => {
+    if (
+      (!isSignin || !isSigninError || !showDefaultError) &&
+      (isSignin || emailIsAvailable || email === '') &&
+      !showInvalidEmailError &&
+      !showEmptyPasswordError
+    ) {
+      errorOpacity = new Animated.Value(0)
+    }
+  }, [
+    isSignin,
+    isSigninError,
+    showDefaultError,
+    emailIsAvailable,
+    email,
+    showInvalidEmailError,
+    showEmptyPasswordError
+  ])
+
   const errorView = () => {
     if (isSignin && isSigninError && showDefaultError) {
+      Animated.timing(errorOpacity, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true
+      }).start()
       return (
-        <View style={styles.errorContainer}>
+        <Animated.View
+          style={[styles.errorContainer, { opacity: errorOpacity }]}
+        >
           <ValidationIconX style={styles.errorIcon} />
           <Text style={styles.errorText}>{errorMessages.default}</Text>
-        </View>
+        </Animated.View>
       )
-    } else if (!isSignin && !emailIsAvailable && email !== '') {
+    }
+    if (!isSignin && !emailIsAvailable && email !== '') {
+      Animated.timing(errorOpacity, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true
+      }).start()
       return (
         <TouchableOpacity
           style={styles.errorButton}
@@ -437,7 +472,9 @@ const SignOn = ({ navigation }: SignOnProps) => {
             switchForm(true)
           }}
         >
-          <View style={styles.errorContainer}>
+          <Animated.View
+            style={[styles.errorContainer, { opacity: errorOpacity }]}
+          >
             <ValidationIconX style={styles.errorIcon} />
             <Text
               style={[
@@ -448,31 +485,46 @@ const SignOn = ({ navigation }: SignOnProps) => {
               {errorMessages.emailInUse}
             </Text>
             <Text style={[styles.errorText, { fontSize: 13 }]}> ➔</Text>
-          </View>
+          </Animated.View>
         </TouchableOpacity>
       )
-    } else if (showInvalidEmailError) {
+    }
+    if (showInvalidEmailError) {
+      Animated.timing(errorOpacity, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true
+      }).start()
       return (
-        <View style={styles.errorContainer}>
+        <Animated.View
+          style={[styles.errorContainer, { opacity: errorOpacity }]}
+        >
           <ValidationIconX style={styles.errorIcon} />
           <Text style={styles.errorText}>{errorMessages.invalidEmail}</Text>
-        </View>
-      )
-    } else if (showEmptyPasswordError) {
-      return (
-        <View style={styles.errorContainer}>
-          <ValidationIconX style={styles.errorIcon} />
-          <Text style={styles.errorText}>{errorMessages.emptyPassword}</Text>
-        </View>
-      )
-    } else {
-      return (
-        <View style={styles.errorContainer}>
-          <ValidationIconX style={[styles.errorIcon, { opacity: 0 }]} />
-          <Text />
-        </View>
+        </Animated.View>
       )
     }
+    if (showEmptyPasswordError) {
+      Animated.timing(errorOpacity, {
+        toValue: 1,
+        duration: 300,
+        useNativeDriver: true
+      }).start()
+      return (
+        <Animated.View
+          style={[styles.errorContainer, { opacity: errorOpacity }]}
+        >
+          <ValidationIconX style={styles.errorIcon} />
+          <Text style={styles.errorText}>{errorMessages.emptyPassword}</Text>
+        </Animated.View>
+      )
+    }
+    return (
+      <View style={styles.errorContainer}>
+        <ValidationIconX style={[styles.errorIcon, { opacity: 0 }]} />
+        <Text />
+      </View>
+    )
   }
 
   const FormSwitchButton = () => {
