@@ -497,6 +497,7 @@ const ProfileManual = ({ navigation, route }: ProfileManualProps) => {
     <SafeAreaView style={{ backgroundColor: 'white' }}>
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        style={{ overflow: 'hidden' }}
       >
         <SignupHeader />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
