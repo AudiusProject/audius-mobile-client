@@ -45,22 +45,26 @@ type ButtonProps = {
   title: string
   onPress: () => void
   icon?: React.ReactElement
+  iconPosition?: 'left' | 'right'
   containerStyle?: ViewStyle
   style?: ViewStyle
   textStyle?: TextStyle
   disabled?: boolean
   ignoreDisabledStyle?: boolean
+  underlayColor?: string
 }
 
 const Button = ({
   title,
   onPress,
   icon,
+  iconPosition = 'right',
   containerStyle,
   style,
   textStyle,
   disabled = false,
-  ignoreDisabledStyle = false
+  ignoreDisabledStyle = false,
+  underlayColor
 }: ButtonProps) => {
   const styles = useThemedStyles(createStyles)
   const { primaryDark1 } = useThemeColors()
@@ -98,12 +102,17 @@ const Button = ({
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
         disabled={disabled}
-        underlayColor={primaryDark1}
+        underlayColor={underlayColor || primaryDark1}
         style={[styles.button, style]}
       >
         <View style={styles.buttonContent}>
+          {icon && iconPosition === 'left' ? (
+            <View style={styles.icon}>{icon}</View>
+          ) : null}
           <Text style={[styles.buttonText, textStyle]}>{title}</Text>
-          {icon ? <View style={styles.icon}>{icon}</View> : null}
+          {icon && iconPosition === 'right' ? (
+            <View style={styles.icon}>{icon}</View>
+          ) : null}
         </View>
       </TouchableHighlight>
     </Animated.View>
