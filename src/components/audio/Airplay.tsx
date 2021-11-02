@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, Ref } from 'react'
+import React, { useEffect, useRef, RefObject } from 'react'
 
 import {
   requireNativeComponent,
@@ -17,7 +17,7 @@ const { AirplayEvent } = NativeModules
 const airplayEventListener = new NativeEventEmitter(AirplayEvent)
 
 type OwnProps = {
-  webRef: Ref<WebView>
+  webRef: RefObject<WebView>
 }
 
 /**

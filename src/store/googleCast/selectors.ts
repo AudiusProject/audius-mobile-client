@@ -1,4 +1,4 @@
-import { AppState } from 'src/store'
+import { AppState } from 'app/store'
 
 import { CastStatus } from './actions'
 

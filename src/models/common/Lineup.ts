@@ -1,5 +1,7 @@
+import Kind from 'audius-client/src/common/models/Kind'
+import Status from 'audius-client/src/common/models/Status'
+
 import { UID } from 'app/models/common/Identifiers'
-import { Kind, Status } from 'app/store/types'
 
 export type Lineup<T, ExtraProps = {}> = {
   entries: T[]

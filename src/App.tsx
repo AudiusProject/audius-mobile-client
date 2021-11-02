@@ -29,7 +29,7 @@ const store = createStore()
 const Airplay = Platform.select({
   ios: () => require('./components/audio/Airplay').default,
   android: () => () => null
-})()
+})?.()
 
 // Increment the session count when the App.tsx code is first run
 incrementSessionCount()

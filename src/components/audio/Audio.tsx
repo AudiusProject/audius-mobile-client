@@ -35,15 +35,14 @@ import { postMessage } from 'app/utils/postMessage'
 
 import { logListen } from './listens'
 
-const SKIP_DURATION_SEC = 15
-
 declare global {
-  interface Global {
-    progress: {
-      currentTime: number
-    }
+  var progress: {
+    currentTime: number
+    seekableTime?: number
   }
 }
+
+const SKIP_DURATION_SEC = 15
 
 const RECORD_LISTEN_SECONDS = 1
 
@@ -107,7 +106,6 @@ const Audio = ({
   // Init progress tracking
   useEffect(() => {
     // TODO: Probably don't use global for this
-    // @ts-ignore
     global.progress = {
       currentTime: 0,
       seekableTime: 0
@@ -165,7 +163,6 @@ const Audio = ({
       if (videoRef.current) {
         elapsedTime.current = elapsedTime.current + SKIP_DURATION_SEC
         videoRef.current.seek(elapsedTime.current)
-        // @ts-ignore
         global.progress.currentTime = elapsedTime.current
         MusicControl.updatePlayback({
           elapsedTime: elapsedTime.current
@@ -176,7 +173,6 @@ const Audio = ({
       if (videoRef.current) {
         elapsedTime.current = elapsedTime.current - SKIP_DURATION_SEC
         videoRef.current.seek(elapsedTime.current)
-        // @ts-ignore
         global.progress.currentTime = elapsedTime.current
         MusicControl.updatePlayback({
           elapsedTime: elapsedTime.current
@@ -369,7 +365,6 @@ const Audio = ({
           setListenLoggedForTrack(false)
         )
       }
-      // @ts-ignore
       global.progress = progress
     },
     [track, listenLoggedForTrack, setListenLoggedForTrack, progressInvalidator]

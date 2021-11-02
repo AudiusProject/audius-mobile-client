@@ -236,7 +236,7 @@ const ContinueButton = ({ isWorking }: { isWorking: boolean }) => {
   )
 }
 
-let handleTimeout = 0
+let handleTimeout: NodeJS.Timeout
 const HANDLE_VALIDATION_IN_PROGRESS_DELAY_MS = 1000
 
 export type ProfileManualProps = NativeStackScreenProps<

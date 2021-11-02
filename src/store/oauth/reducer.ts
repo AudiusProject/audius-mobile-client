@@ -67,7 +67,7 @@ const reducer = (
         ...state,
         isOpen: true,
         messageId: action.message.id,
-        messageType: action.message.type,
+        messageType: action.message.type as MessageType,
         url: action.message.authURL,
         provider: action.provider
       }

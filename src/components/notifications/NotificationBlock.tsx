@@ -31,10 +31,14 @@ import { useColor, useTheme } from 'app/utils/theme'
 
 import NotificationContent from './content/NotificationContent'
 import { getNotificationRoute } from './routeUtil'
+import { SvgProps } from 'react-native-svg'
 
 const IS_IOS = Platform.OS === 'ios'
 
-const tierInfoMap: Record<BadgeTier, { title: string; icon: ReactNode }> = {
+const tierInfoMap: Record<
+  BadgeTier,
+  { title: string; icon: React.FC<SvgProps> }
+> = {
   none: {
     title: 'NO TIER',
     icon: IconBronzeBadge
@@ -59,7 +63,7 @@ const tierInfoMap: Record<BadgeTier, { title: string; icon: ReactNode }> = {
 
 const typeIconMap: Record<
   NotificationType,
-  (notification: any) => ReactNode
+  (notification: any) => React.FC<SvgProps>
 > = {
   [NotificationType.Announcement]: () => IconAudius,
   [NotificationType.Follow]: () => IconUser,
@@ -140,7 +144,9 @@ const NotificationBlock = ({
   const notificationRoute = getNotificationRoute(notification)
 
   const onPress = useCallback(() => {
-    onGoToRoute(notificationRoute)
+    if (notificationRoute) {
+      onGoToRoute(notificationRoute)
+    }
   }, [onGoToRoute, notificationRoute])
 
   const itemStyles = useTheme(styles.item, {
@@ -215,12 +221,10 @@ const NotificationBlock = ({
             </Text>
           </View>
           <View style={styles.body}>
-            <View style={styles.content}>
-              <NotificationContent
-                notification={notification}
-                onGoToRoute={onGoToRoute}
-              />
-            </View>
+            <NotificationContent
+              notification={notification}
+              onGoToRoute={onGoToRoute}
+            />
             <Text style={timestampStyles}>{notification.timeLabel}</Text>
           </View>
         </View>

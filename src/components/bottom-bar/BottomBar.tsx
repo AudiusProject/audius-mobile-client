@@ -4,7 +4,6 @@ import { getUserHandle } from 'audius-client/src/common/store/account/selectors'
 import { getIsOpen as getIsMobileOverflowModalOpen } from 'audius-client/src/common/store/ui/mobile-overflow-menu/selectors'
 import { getModalIsOpen } from 'audius-client/src/common/store/ui/modals/slice'
 import { getIsOpen as getIsNowPlayingOpen } from 'audius-client/src/common/store/ui/now-playing/selectors'
-import { getIsOpen as getIsPushNotificationsDrawerOpen } from 'audius-client/src/common/store/ui/push-notifications-drawer/selectors'
 // TODO: move these into /common
 import { setTab } from 'audius-client/src/containers/explore-page/store/actions'
 import { Tabs } from 'audius-client/src/containers/explore-page/store/types'
@@ -68,9 +67,6 @@ const BottomBar = () => {
   const handle = useSelectorWeb(getUserHandle)
   const location = useSelector(getLocation)
   const isOverflowModalOpen = useSelectorWeb(getIsMobileOverflowModalOpen)
-  const isPushNotificationDrawerOpen = useSelectorWeb(
-    getIsPushNotificationsDrawerOpen
-  )
   const isModalOpen = useSelectorWeb(getModalIsOpen)
   const isNowPlayingOpen = useSelectorWeb(getIsNowPlayingOpen)
 
@@ -126,7 +122,6 @@ const BottomBar = () => {
       onSignOn ||
       onErrorPage ||
       isOverflowModalOpen ||
-      isPushNotificationDrawerOpen ||
       isModalOpen ||
       isNowPlayingOpen
     )
@@ -134,7 +129,6 @@ const BottomBar = () => {
     onSignOn,
     onErrorPage,
     isOverflowModalOpen,
-    isPushNotificationDrawerOpen,
     isModalOpen,
     isNowPlayingOpen
   ])

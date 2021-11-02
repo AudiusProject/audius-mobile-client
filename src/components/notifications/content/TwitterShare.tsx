@@ -1,9 +1,10 @@
 import React, { useCallback } from 'react'
 
 import { Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import { BadgeTier } from 'utils/badgeTier'
 
 import IconTwitterBird from 'app/assets/images/iconTwitterBird.svg'
+import Track from 'app/models/Track'
+import User from 'app/models/User'
 import {
   Achievement,
   ChallengeReward,
@@ -13,10 +14,9 @@ import {
   RemixCosign,
   RemixCreate,
   TierChange,
-  Track,
-  TrendingTrack,
-  User
+  TrendingTrack
 } from 'app/store/notifications/types'
+import { BadgeTier } from 'app/utils/badgeTier'
 import { getUserRoute } from 'app/utils/routes'
 
 import { getEntityRoute } from '../routeUtil'

@@ -479,7 +479,7 @@ const WebApp = ({
   const contextRef = useContext(WebRefContext)
 
   const setWebRef = useCallback(
-    (ref: RefObject<MessagePostingWebView>) => {
+    (ref: WebView) => {
       // @ts-ignore
       webRef.current = ref
       // @ts-ignore
@@ -535,9 +535,7 @@ const WebApp = ({
         />
       </PullToRefresh>
       <SplashScreen dappLoaded={dappLoaded} key={`splash-${splashKey}`} />
-      {hasLoaded && (
-        <NotificationReminder isSignedIn={isSignedIn} webRef={webRef} />
-      )}
+      {hasLoaded && <NotificationReminder isSignedIn={!!isSignedIn} />}
     </>
   )
 }
