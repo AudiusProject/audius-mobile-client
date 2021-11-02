@@ -35,6 +35,7 @@ import { track, make } from '../../utils/analytics'
 import { EventNames } from '../../types/analytics'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { RootStackParamList } from './NavigationStack'
+import Button from '../../components/button'
 
 const styles = StyleSheet.create({
   container: {
@@ -111,19 +112,21 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     paddingLeft: 10
   },
-  btnDisabled: {
-    backgroundColor: '#E7E6EB'
+  buttonContainer: {
+    marginTop: 24,
+    width: '100%'
+  },
+  button: {
+    padding: 12
+  },
+  buttonText: {
+    fontSize: 18
   },
   formButtonTitleContainer: {
     flexDirection: 'row',
     alignItems: 'center'
   },
-  formButtonTitle: {
-    color: 'white',
-    fontSize: 18,
-    fontFamily: 'AvenirNextLTPro-Bold'
-  },
-  icon: {
+  arrowIcon: {
     height: 20,
     width: 20
   },
@@ -197,7 +200,8 @@ const styles = StyleSheet.create({
     color: '#858199',
     fontSize: 14,
     textAlign: 'center',
-    fontFamily: 'AvenirNextLTPro-Regular'
+    fontFamily: 'AvenirNextLTPro-Regular',
+    marginTop: 12
   },
   card: {
     width: 140,
@@ -292,12 +296,23 @@ const FormTitle = () => {
   )
 }
 
-const ContinueButton = () => {
+const ContinueButton = ({
+  onPress,
+  disabled
+}: {
+  onPress: () => void
+  disabled: boolean
+}) => {
   return (
-    <View style={styles.formButtonTitleContainer}>
-      <Text style={styles.formButtonTitle}>{messages.continue}</Text>
-      <IconArrow style={styles.icon} fill='white' />
-    </View>
+    <Button
+      title={messages.continue}
+      containerStyle={styles.buttonContainer}
+      style={styles.button}
+      textStyle={styles.buttonText}
+      onPress={onPress}
+      disabled={disabled}
+      icon={<IconArrow style={styles.arrowIcon} fill='white' />}
+    />
   )
 }
 
@@ -560,14 +575,7 @@ const FirstFollows = ({ navigation, route }: FirstFollowsProps) => {
         </ScrollView>
 
         <View style={styles.containerButton}>
-          <TouchableOpacity
-            style={[styles.formBtn, isDisabled ? styles.btnDisabled : {}]}
-            activeOpacity={0.6}
-            disabled={isDisabled}
-            onPress={onContinuePress}
-          >
-            <ContinueButton />
-          </TouchableOpacity>
+          <ContinueButton onPress={onContinuePress} disabled={isDisabled} />
           <Text style={styles.followCounter}>
             {`${messages.following} ${
               followedArtistIds.length > MINIMUM_FOLLOWER_COUNT

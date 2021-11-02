@@ -119,9 +119,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#CC0FE0',
     borderRadius: 4
   },
-  btnDisabled: {
-    backgroundColor: '#E7E6EB'
-  },
   buttonContainer: {
     width: '100%'
   },
