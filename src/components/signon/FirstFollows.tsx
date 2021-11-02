@@ -143,6 +143,9 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: 'AvenirNextLTPro-Regular'
   },
+  underline: {
+    textDecorationLine: 'underline'
+  },
   wandIcon: {
     marginRight: 10
   },
@@ -316,7 +319,7 @@ const ContinueButton = ({
   )
 }
 
-const PickForMeButton = () => {
+const PickForMeButton = ({ active }: { active: boolean }) => {
   return (
     <View style={styles.formButtonTitleContainer}>
       <IconWand
@@ -325,7 +328,9 @@ const PickForMeButton = () => {
         width={16}
         height={16}
       />
-      <Text style={styles.wandButtonTitle}>{messages.pickForMe}</Text>
+      <Text style={[styles.wandButtonTitle, active ? styles.underline : {}]}>
+        {messages.pickForMe}
+      </Text>
     </View>
   )
 }
@@ -388,6 +393,8 @@ const FirstFollows = ({ navigation, route }: FirstFollowsProps) => {
   const [isDisabled, setIsDisabled] = useState(false)
   const [didFetchArtistsToFollow, setDidFetchArtistsToFollow] = useState(false)
   const [isTransitioning, setIsTransitioning] = useState(false)
+  const [isPickForMeActive, setIsPickForMeActive] = useState(false)
+  const pickForMeScale = useRef(new Animated.Value(1)).current
 
   useEffect(() => {
     if (!didFetchArtistsToFollow) {
@@ -545,8 +552,30 @@ const FirstFollows = ({ navigation, route }: FirstFollowsProps) => {
                 style={styles.wandBtn}
                 activeOpacity={0.6}
                 onPress={onPickForMe}
+                onPressIn={() => {
+                  setIsPickForMeActive(true)
+                  Animated.timing(pickForMeScale, {
+                    toValue: 1.03,
+                    duration: 100,
+                    delay: 0,
+                    useNativeDriver: true
+                  }).start()
+                }}
+                onPressOut={() => {
+                  setIsPickForMeActive(false)
+                  Animated.timing(pickForMeScale, {
+                    toValue: 1,
+                    duration: 100,
+                    delay: 0,
+                    useNativeDriver: true
+                  }).start()
+                }}
               >
-                <PickForMeButton />
+                <Animated.View
+                  style={{ transform: [{ scale: pickForMeScale }] }}
+                >
+                  <PickForMeButton active={isPickForMeActive} />
+                </Animated.View>
               </TouchableOpacity>
               <View
                 style={[
