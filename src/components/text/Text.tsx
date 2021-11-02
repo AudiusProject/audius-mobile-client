@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Text as RNText } from 'react-native'
 
-import { useThemeColors } from '../../utils/theme'
+import { useThemeColors } from 'app/utils/theme'
 
 const fontByWeight = {
   heavy: 'AvenirNextLTPro-Heavy',

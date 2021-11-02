@@ -10,11 +10,11 @@ import { StyleSheet, View } from 'react-native'
 
 import LogoEth from 'app/assets/images/logoEth.svg'
 import LogoSol from 'app/assets/images/logoSol.svg'
+import Drawer from 'app/components/drawer'
 import Text from 'app/components/text'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 import { ThemeColors, useThemedStyles } from 'app/hooks/useThemedStyles'
-import Drawer from 'app/components/drawer'
 
 import { CollectibleDate } from './CollectibleDate'
 import { CollectibleLink } from './CollectibleLink'
@@ -88,7 +88,7 @@ const getHostname = (url: string) => {
   // https://audius.co/nft -> audius.co
 
   // Second matched group which will be the hostname
-  return url.match(/(https*:\/\/)([^\/]+)/)?.[2] ?? ''
+  return url.match(/(https*:\/\/)([^/]+)/)?.[2] ?? ''
 }
 
 const CollectibleDetails = () => {

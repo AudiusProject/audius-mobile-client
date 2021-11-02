@@ -13,23 +13,23 @@ import {
 } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 
-import GradientSave from '../../assets/images/gradientSave.svg'
-import IconInstagram from '../../assets/images/iconInstagram.svg'
-import IconTwitter from '../../assets/images/iconTwitterBird.svg'
-import IconVerified from '../../assets/images/iconVerified.svg'
-import { useDispatchWeb } from '../../hooks/useDispatchWeb'
-import { MessageType } from '../../message/types'
-import * as oauthActions from '../../store/oauth/actions'
+import GradientSave from 'app/assets/images/gradientSave.svg'
+import IconInstagram from 'app/assets/images/iconInstagram.svg'
+import IconTwitter from 'app/assets/images/iconTwitterBird.svg'
+import IconVerified from 'app/assets/images/iconVerified.svg'
+import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
+import { MessageType } from 'app/message/types'
+import * as oauthActions from 'app/store/oauth/actions'
 import {
   getInstagramError,
   getInstagramInfo,
   getTwitterError,
   getTwitterInfo
-} from '../../store/oauth/selectors'
-import { getHandleError, getHandleIsValid } from '../../store/signon/selectors'
-import { EventNames } from '../../types/analytics'
-import { track, make } from '../../utils/analytics'
-import { useColor } from '../../utils/theme'
+} from 'app/store/oauth/selectors'
+import { getHandleError, getHandleIsValid } from 'app/store/signon/selectors'
+import { EventNames } from 'app/types/analytics'
+import { track, make } from 'app/utils/analytics'
+import { useColor } from 'app/utils/theme'
 
 import { RootStackParamList } from './NavigationStack'
 import SignupHeader from './SignupHeader'
@@ -455,7 +455,7 @@ const ProfileAuto = ({ navigation, route }: ProfileAutoProps) => {
             <FormTitle />
             <View style={styles.loadingIcon}>
               <LottieView
-                source={require('../../assets/animations/loadingSpinner.json')}
+                source={require('app/assets/animations/loadingSpinner.json')}
                 autoPlay
                 loop
                 colorFilters={[

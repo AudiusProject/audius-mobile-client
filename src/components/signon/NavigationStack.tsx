@@ -9,15 +9,15 @@ import {
   getDappLoaded,
   getIsSignedIn,
   getOnSignUp
-} from '../../store/lifecycle/selectors'
+} from 'app/store/lifecycle/selectors'
 import {
   getAccountAvailable,
   getAllFollowArtists,
   getFinalEmail,
   getFinalHandle
-} from '../../store/signon/selectors'
-import { EventNames } from '../../types/analytics'
-import { track, make } from '../../utils/analytics'
+} from 'app/store/signon/selectors'
+import { EventNames } from 'app/types/analytics'
+import { track, make } from 'app/utils/analytics'
 
 import CreatePassword from './CreatePassword'
 import FirstFollows from './FirstFollows'

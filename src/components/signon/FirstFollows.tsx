@@ -14,25 +14,23 @@ import {
 import LinearGradient from 'react-native-linear-gradient'
 import { useDispatch, useSelector } from 'react-redux'
 
-import IconArrow from '../../assets/images/iconArrow.svg'
-import IconWand from '../../assets/images/iconWand.svg'
-import { useDispatchWeb } from '../../hooks/useDispatchWeb'
-import { MessageType } from '../../message/types'
+import IconArrow from 'app/assets/images/iconArrow.svg'
+import IconWand from 'app/assets/images/iconWand.svg'
+import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
+import { MessageType } from 'app/message/types'
 import {
   setFollowArtistsCategory,
   setFollowedArtists,
   submitFollowedArtists
-} from '../../store/signon/actions'
+} from 'app/store/signon/actions'
 import {
   getAllFollowArtists,
   makeGetFollowArtists
-} from '../../store/signon/selectors'
-import {
-  artistCategories,
-  FollowArtistsCategory
-} from '../../store/signon/types'
-import { EventNames } from '../../types/analytics'
-import { track, make } from '../../utils/analytics'
+} from 'app/store/signon/selectors'
+import { artistCategories, FollowArtistsCategory } from 'app/store/signon/types'
+import { EventNames } from 'app/types/analytics'
+import { track, make } from 'app/utils/analytics'
+
 import UserImage from '../image/UserImage'
 import UserBadges from '../user-badges/UserBadges'
 

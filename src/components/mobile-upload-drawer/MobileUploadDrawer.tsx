@@ -6,12 +6,13 @@ import { hide } from 'audius-client/src/common/store/ui/mobile-upload-drawer/sli
 import { Image, StyleSheet, View } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 
-import HeavyCheckMark from '../../assets/images/emojis/white-heavy-check-mark.png'
-import IconUpload from '../../assets/images/iconGradientUpload.svg'
-import Text from '../../components/text'
-import { useDispatchWeb } from '../../hooks/useDispatchWeb'
-import { useSelectorWeb } from '../../hooks/useSelectorWeb'
-import { useThemeColors } from '../../utils/theme'
+import HeavyCheckMark from 'app/assets/images/emojis/white-heavy-check-mark.png'
+import IconUpload from 'app/assets/images/iconGradientUpload.svg'
+import Text from 'app/components/text'
+import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
+import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
+import { useThemeColors } from 'app/utils/theme'
+
 import Drawer from '../drawer'
 
 const styles = StyleSheet.create({

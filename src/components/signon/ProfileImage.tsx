@@ -8,7 +8,7 @@ import {
   StyleSheet
 } from 'react-native'
 
-import NoPicture from '../../assets/images/noPicture.png'
+import NoPicture from 'app/assets/images/noPicture.png'
 
 const styles = StyleSheet.create({
   profilePicEmpty: {

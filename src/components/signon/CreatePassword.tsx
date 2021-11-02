@@ -21,15 +21,15 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useSelector, useDispatch } from 'react-redux'
 
-import IconArrow from '../../assets/images/iconArrow.svg'
-import IconCheck from '../../assets/images/iconValidationCheck.svg'
-import ValidationIconX from '../../assets/images/iconValidationX.svg'
-import { useDispatchWeb } from '../../hooks/useDispatchWeb'
-import { MessageType } from '../../message/types'
-import * as lifecycleActions from '../../store/lifecycle/actions'
-import { getOnSignUp } from '../../store/lifecycle/selectors'
-import { EventNames } from '../../types/analytics'
-import { track, make } from '../../utils/analytics'
+import IconArrow from 'app/assets/images/iconArrow.svg'
+import IconCheck from 'app/assets/images/iconValidationCheck.svg'
+import ValidationIconX from 'app/assets/images/iconValidationX.svg'
+import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
+import { MessageType } from 'app/message/types'
+import * as lifecycleActions from 'app/store/lifecycle/actions'
+import { getOnSignUp } from 'app/store/lifecycle/selectors'
+import { EventNames } from 'app/types/analytics'
+import { track, make } from 'app/utils/analytics'
 
 import { RootStackParamList } from './NavigationStack'
 import SignupHeader from './SignupHeader'
@@ -217,7 +217,7 @@ const ContinueButton = ({ isWorking }: { isWorking: boolean }) => {
   return isWorking ? (
     <View style={styles.loadingIcon}>
       <LottieView
-        source={require('../../assets/animations/loadingSpinner.json')}
+        source={require('app/assets/animations/loadingSpinner.json')}
         autoPlay
         loop
       />

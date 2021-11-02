@@ -26,17 +26,17 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useDispatch, useSelector } from 'react-redux'
 
-import IconArrow from '../../assets/images/iconArrow.svg'
-import ValidationIconX from '../../assets/images/iconValidationX.svg'
-import { useDispatchWeb } from '../../hooks/useDispatchWeb'
-import { MessageType } from '../../message/types'
-import * as signonActions from '../../store/signon/actions'
+import IconArrow from 'app/assets/images/iconArrow.svg'
+import ValidationIconX from 'app/assets/images/iconValidationX.svg'
+import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
+import { MessageType } from 'app/message/types'
+import * as signonActions from 'app/store/signon/actions'
 import {
   getHandleIsValid,
   getHandleError,
   getHandleStatus
-} from '../../store/signon/selectors'
-import { useColor } from '../../utils/theme'
+} from 'app/store/signon/selectors'
+import { useColor } from 'app/utils/theme'
 
 import { RootStackParamList } from './NavigationStack'
 import PhotoButton from './PhotoButton'
@@ -224,7 +224,7 @@ const ContinueButton = ({ isWorking }: { isWorking: boolean }) => {
       {isWorking ? (
         <View style={styles.loadingIcon}>
           <LottieView
-            source={require('../../assets/animations/loadingSpinner.json')}
+            source={require('app/assets/animations/loadingSpinner.json')}
             autoPlay
             loop
           />
@@ -315,7 +315,7 @@ const ProfileManual = ({ navigation, route }: ProfileManualProps) => {
       <View style={styles.photoLoadingIconContainer}>
         <LottieView
           style={styles.photoLoadingIcon}
-          source={require('../../assets/animations/loadingSpinner.json')}
+          source={require('app/assets/animations/loadingSpinner.json')}
           autoPlay
           loop
           colorFilters={[

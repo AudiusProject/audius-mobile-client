@@ -19,25 +19,25 @@ import {
 import RadialGradient from 'react-native-radial-gradient'
 import { useSelector, useDispatch } from 'react-redux'
 
-import backgImage from '../../assets/images/DJportrait.jpg'
-import audiusLogoHorizontal from '../../assets/images/Horizontal-Logo-Full-Color.png'
-import IconArrow from '../../assets/images/iconArrow.svg'
-import ValidationIconX from '../../assets/images/iconValidationX.svg'
-import signupCTA from '../../assets/images/signUpCTA.png'
-import { remindUserToTurnOnNotifications } from '../../components/notification-reminder/NotificationReminder'
-import { useDispatchWeb } from '../../hooks/useDispatchWeb'
-import { MessageType } from '../../message/types'
-import { setVisibility } from '../../store/drawers/slice'
-import { getIsSignedIn, getDappLoaded } from '../../store/lifecycle/selectors'
-import * as signonActions from '../../store/signon/actions'
+import backgImage from 'app/assets/images/DJportrait.jpg'
+import audiusLogoHorizontal from 'app/assets/images/Horizontal-Logo-Full-Color.png'
+import IconArrow from 'app/assets/images/iconArrow.svg'
+import ValidationIconX from 'app/assets/images/iconValidationX.svg'
+import signupCTA from 'app/assets/images/signUpCTA.png'
+import { remindUserToTurnOnNotifications } from 'app/components/notification-reminder/NotificationReminder'
+import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
+import { MessageType } from 'app/message/types'
+import { setVisibility } from 'app/store/drawers/slice'
+import { getIsSignedIn, getDappLoaded } from 'app/store/lifecycle/selectors'
+import * as signonActions from 'app/store/signon/actions'
 import {
   getIsSigninError,
   getEmailIsAvailable,
   getEmailIsValid,
   getEmailStatus
-} from '../../store/signon/selectors'
-import { EventNames } from '../../types/analytics'
-import { track, make } from '../../utils/analytics'
+} from 'app/store/signon/selectors'
+import { EventNames } from 'app/types/analytics'
+import { track, make } from 'app/utils/analytics'
 
 import { RootStackParamList } from './NavigationStack'
 
@@ -290,7 +290,7 @@ const MainButton = ({
       {isWorking ? (
         <View style={styles.loadingIcon}>
           <LottieView
-            source={require('../../assets/animations/loadingSpinner.json')}
+            source={require('app/assets/animations/loadingSpinner.json')}
             autoPlay
             loop
           />
