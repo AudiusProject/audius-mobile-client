@@ -8,14 +8,21 @@
     "noEmit": true,
     "incremental": true,
     "isolatedModules": true,
-    "strict": true,
     "moduleResolution": "node",
-    "skipLibCheck": true, // Set this to false once audius-client dep is removed
     "paths": {
-      "app/*": ["./src/*"]
+      "app/*": ["./src/*"],
+      // Remove these when no longer dependent on audius-client
+      "common/*": ["./node_modules/audius-client/src/common/*"],
+      "models/*": ["./node_modules/audius-client/src/models/*"],
+      "services/*": ["./node_modules/audius-client/src/services/*"],
+      "store/*": ["./node_modules/audius-client/src/store/*"],
+      "utils/*": ["./node_modules/audius-client/src/utils/*"]
     },
     "allowSyntheticDefaultImports": true,
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    // Update these when no longer dependent on audius-client
+    "strict": false,
+    "skipLibCheck": true
   },
   "exclude": [
     "node_modules",

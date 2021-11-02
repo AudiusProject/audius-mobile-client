@@ -1,4 +1,5 @@
 import { CollectionImage } from 'app/models/Collection'
+import Repost from 'app/models/Repost'
 import { TrackImage } from 'app/models/Track'
 import {
   UserImage,
@@ -7,6 +8,7 @@ import {
   UserName,
   UserVerified
 } from 'app/models/User'
+import { TrackSegment } from 'audius-client/src/common/models/Track'
 
 export type SearchUser = UserMultihash &
   UserImage &
@@ -68,7 +70,7 @@ export type SearchTrack = TrackImage & {
     play_count: boolean
     remixes: null
   }
-  followee_reposts: {}[]
+  followee_reposts: Repost[]
   has_current_user_reposted: null
   is_unlisted: boolean
   has_current_user_saved: null
@@ -79,7 +81,7 @@ export type SearchTrack = TrackImage & {
   owner_id: number
   followee_saves: []
   save_count: null
-  track_segments: { duration: number; multihash: string }[]
+  track_segments: TrackSegment[]
   followee_favorites: null
   user_id: number
   permalink: string

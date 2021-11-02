@@ -1,3 +1,4 @@
+declare module 'fxa-common-password-list'
 declare module 'react-native-static-server'
 
 declare module '*.svg' {
@@ -21,3 +22,9 @@ declare module '*.jpg' {
   const value: ImageSourcePropType
   export default value
 }
+
+// Remove these when no longer dependent on audius-client
+declare var window: any
+declare interface Location {}
+declare var Notification: any
+declare var navigator: any

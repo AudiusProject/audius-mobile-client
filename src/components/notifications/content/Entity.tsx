@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react'
 
 import { StyleSheet, Text } from 'react-native'
-import { Entity as EntityType } from 'src/store/notifications/types'
 
+import { Entity as EntityType } from 'app/store/notifications/types'
 import { useTheme } from 'app/utils/theme'
 
 import { getEntityRoute } from '../routeUtil'

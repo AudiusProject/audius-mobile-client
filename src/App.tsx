@@ -25,6 +25,7 @@ import createStore from 'app/store'
 import { setup as setupAnalytics } from 'app/utils/analytics'
 
 const store = createStore()
+export const dispatch = store.dispatch
 
 const Airplay = Platform.select({
   ios: () => require('./components/audio/Airplay').default,

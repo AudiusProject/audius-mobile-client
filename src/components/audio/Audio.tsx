@@ -264,7 +264,7 @@ const Audio = ({
         isPreviousEnabled = index > 0
         isNextEnabled = index < queueLength - 1
       }
-      if (track.genre === Genre.PODCASTS) {
+      if (track?.genre === Genre.PODCASTS) {
         MusicControl.enableControl('previousTrack', false)
         MusicControl.enableControl('nextTrack', false)
         MusicControl.enableControl('skipBackward', true, { interval: 15 })

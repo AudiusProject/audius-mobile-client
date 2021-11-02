@@ -34,8 +34,6 @@ import { track, make } from 'app/utils/analytics'
 import { RootStackParamList } from './NavigationStack'
 import SignupHeader from './SignupHeader'
 
-declare module 'fxa-common-password-list'
-
 const defaultBorderColor = '#F7F7F9'
 const purpleBorderColor = '#7E1BCC'
 const errorBorderColor = '#E03D51'

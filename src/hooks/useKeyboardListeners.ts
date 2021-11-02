@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { RefObject, useEffect } from 'react'
 
 import { Keyboard } from 'react-native'
 import { WebView } from 'react-native-webview'
@@ -6,7 +6,7 @@ import { WebView } from 'react-native-webview'
 import { MessageType } from '../message'
 import { postMessage } from '../utils/postMessage'
 
-export const useKeyboardListeners = (webRef: React.Ref<WebView>) => {
+export const useKeyboardListeners = (webRef: RefObject<WebView>) => {
   useEffect(() => {
     const didShowListener = Keyboard.addListener('keyboardDidShow', () => {
       if (webRef.current) {

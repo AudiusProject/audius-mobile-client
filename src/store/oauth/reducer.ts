@@ -17,6 +17,7 @@ type TwitterInfo = {
   profileImage: any
   profileBanner: any
   requiresUserReview: any
+  twitterId?: any
 }
 
 type InstagramInfo = {
@@ -24,6 +25,7 @@ type InstagramInfo = {
   profile: any
   profileImage: any
   requiresUserReview: any
+  instagramId?: any
 }
 
 export type OAuthState = {

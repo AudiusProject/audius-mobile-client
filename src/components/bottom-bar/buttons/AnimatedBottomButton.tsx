@@ -2,7 +2,7 @@ import React from 'react'
 
 import AnimatedButtonProvider, {
   AnimatedButtonProviderProps
-} from 'app/animated-button/AnimatedButtonProvider'
+} from 'app/components/animated-button/AnimatedButtonProvider'
 import { StyleSheet } from 'react-native'
 
 const styles = StyleSheet.create({

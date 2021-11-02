@@ -1,5 +1,6 @@
 import { EventNames, PlaybackSource } from 'app/types/analytics'
 import { track, make } from 'app/utils/analytics'
+import { Genre } from 'app/utils/genres'
 
 import {
   AudioActions,
@@ -27,6 +28,8 @@ type Info = {
   ownerId: number
   currentListenCount: number
   uri: Uri
+  isDelete: boolean
+  genre: Genre
 }
 
 export enum RepeatMode {
