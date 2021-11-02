@@ -22,8 +22,11 @@ import audiusLogoHorizontal from '../../assets/images/Horizontal-Logo-Full-Color
 import IconArrow from '../../assets/images/iconArrow.svg'
 import ValidationIconX from '../../assets/images/iconValidationX.svg'
 import signupCTA from '../../assets/images/signUpCTA.png'
+import Button from '../../components/button'
+import { remindUserToTurnOnNotifications } from '../../components/notification-reminder/NotificationReminder'
 import { useDispatchWeb } from '../../hooks/useDispatchWeb'
 import { MessageType } from '../../message/types'
+import { setVisibility } from '../../store/drawers/slice'
 import { getDappLoaded, getIsSignedIn } from '../../store/lifecycle/selectors'
 import * as signonActions from '../../store/signon/actions'
 import {
@@ -33,10 +36,8 @@ import {
   getIsSigninError
 } from '../../store/signon/selectors'
 import { EventNames } from '../../types/analytics'
-import { setVisibility } from '../../store/drawers/slice'
-import { RootStackParamList } from './NavigationStack'
-import { remindUserToTurnOnNotifications } from '../../components/notification-reminder/NotificationReminder'
 import { make, track } from '../../utils/analytics'
+import { RootStackParamList } from './NavigationStack'
 
 const image = backgImage
 const windowWidth = Dimensions.get('window').width
@@ -185,7 +186,16 @@ const styles = StyleSheet.create({
     fontFamily: 'AvenirNextLTPro-Bold',
     marginRight: 12
   },
-  arrow: {
+  mainButtonContainer: {
+    width: '100%'
+  },
+  mainButton: {
+    padding: 12
+  },
+  mainButtonText: {
+    fontSize: 18
+  },
+  arrowIcon: {
     height: 20,
     width: 20
   },
@@ -256,48 +266,8 @@ const errorMessages = {
 }
 
 let formContainerHeight = 0
-
 let lastIsSignin = false
-const MainButton = ({
-  isSignin,
-  isWorking
-}: {
-  isSignin: boolean
-  isWorking: boolean
-}) => {
-  let opacity = new Animated.Value(1)
-
-  // fade the sign up/in button out and in when switch between signup and signin
-  if (lastIsSignin !== isSignin) {
-    opacity = new Animated.Value(0)
-    Animated.timing(opacity, {
-      toValue: 1,
-      duration: 500,
-      useNativeDriver: true
-    }).start(() => {
-      lastIsSignin = isSignin
-    })
-  }
-
-  return (
-    <Animated.View style={[styles.formButtonTitleContainer, { opacity }]}>
-      <Text style={styles.formButtonTitle}>
-        {isSignin ? messages.signIn : messages.signUp}
-      </Text>
-      {isWorking ? (
-        <View style={styles.loadingIcon}>
-          <LottieView
-            source={require('../../assets/animations/loadingSpinner.json')}
-            autoPlay
-            loop
-          />
-        </View>
-      ) : (
-        <IconArrow style={styles.arrow} fill='white' />
-      )}
-    </Animated.View>
-  )
-}
+let errorOpacity = new Animated.Value(0)
 
 const FormTitle = ({ isSignin }: { isSignin: boolean }) => {
   let opacity = new Animated.Value(1)
@@ -334,8 +304,6 @@ const isValidEmailString = (email: string) => {
   const emailRe = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
   return emailRe.test(String(email).toLowerCase())
 }
-
-let errorOpacity = new Animated.Value(0)
 
 type SignOnProps = NativeStackScreenProps<RootStackParamList, 'SignOn'>
 const SignOn = ({ navigation }: SignOnProps) => {
@@ -588,6 +556,79 @@ const SignOn = ({ navigation }: SignOnProps) => {
     return <></>
   }
 
+  const MainButton = ({
+    isSignin,
+    isWorking
+  }: {
+    isSignin: boolean
+    isWorking: boolean
+  }) => {
+    let opacity = new Animated.Value(1)
+
+    // fade the sign up/in button out and in when switch between signup and signin
+    if (lastIsSignin !== isSignin) {
+      opacity = new Animated.Value(0)
+      Animated.timing(opacity, {
+        toValue: 1,
+        duration: 500,
+        useNativeDriver: true
+      }).start(() => {
+        lastIsSignin = isSignin
+      })
+    }
+
+    return (
+      <Animated.View style={[styles.formButtonTitleContainer, { opacity }]}>
+        <Button
+          title={isSignin ? messages.signIn : messages.signUp}
+          onPress={() => {
+            Keyboard.dismiss()
+            setAttemptedEmail(true)
+            if (isValidEmailString(email)) {
+              if (isSignin) {
+                setAttemptedPassword(true)
+                if (password === '') {
+                  setShowEmptyPasswordError(true)
+                } else {
+                  signIn()
+                  // in case email is what was wrong with the credentials
+                  setShowDefaultError(true)
+                }
+              } else if (emailIsAvailable && emailStatus === 'done') {
+                dispatch(signonActions.signinFailedReset())
+                setIsWorking(false)
+                navigation.push('CreatePassword', { email })
+              }
+            } else {
+              setShowInvalidEmailError(true)
+            }
+          }}
+          disabled={isWorking}
+          containerStyle={{
+            ...styles.mainButtonContainer,
+            marginTop: formButtonMarginTop
+          }}
+          style={{
+            ...styles.mainButton
+          }}
+          textStyle={styles.mainButtonText}
+          icon={
+            isWorking ? (
+              <LottieView
+                style={styles.loadingIcon}
+                source={require('../../assets/animations/loadingSpinner.json')}
+                autoPlay
+                loop
+              />
+            ) : (
+              <IconArrow style={styles.arrowIcon} fill='white' />
+            )
+          }
+        />
+      </Animated.View>
+    )
+  }
+
   const validateEmail = (email: string) => {
     dispatch(signonActions.setEmailStatus('editing'))
     dispatchWeb({
@@ -679,40 +720,9 @@ const SignOn = ({ navigation }: SignOnProps) => {
                 }
               }}
             />
-
             {passwordField()}
-
             {errorView()}
-
-            <TouchableOpacity
-              style={[styles.formBtn, { marginTop: formButtonMarginTop }]}
-              activeOpacity={0.6}
-              disabled={isWorking}
-              onPress={() => {
-                Keyboard.dismiss()
-                setAttemptedEmail(true)
-                if (isValidEmailString(email)) {
-                  if (isSignin) {
-                    setAttemptedPassword(true)
-                    if (password === '') {
-                      setShowEmptyPasswordError(true)
-                    } else {
-                      signIn()
-                      // in case email is what was wrong with the credentials
-                      setShowDefaultError(true)
-                    }
-                  } else if (emailIsAvailable && emailStatus === 'done') {
-                    dispatch(signonActions.signinFailedReset())
-                    setIsWorking(false)
-                    navigation.push('CreatePassword', { email })
-                  }
-                } else {
-                  setShowInvalidEmailError(true)
-                }
-              }}
-            >
-              <MainButton isWorking={isWorking} isSignin={isSignin} />
-            </TouchableOpacity>
+            <MainButton isWorking={isWorking} isSignin={isSignin} />
           </Animated.View>
         </TouchableWithoutFeedback>
         <Animated.View
