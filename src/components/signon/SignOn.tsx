@@ -1,7 +1,4 @@
-import {
-  NativeStackScreenProps,
-  NativeStackScreenProps
-} from '@react-navigation/native-stack'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import LottieView from 'lottie-react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import {
