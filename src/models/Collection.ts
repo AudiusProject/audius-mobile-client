@@ -1,8 +1,8 @@
 import { ReactNode } from 'react'
 
-import Repost from 'models/Repost'
-import { CID, ID, UID } from 'models/common/Identifiers'
-import { CoverArtSizes } from 'models/common/ImageSizes'
+import Repost from 'app/models/Repost'
+import { CID, ID, UID } from 'app/models/common/Identifiers'
+import { CoverArtSizes } from 'app/models/common/ImageSizes'
 
 import { Nullable } from '../utils/typeUtils'
 

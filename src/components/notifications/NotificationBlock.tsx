@@ -8,7 +8,6 @@ import {
   Animated,
   Platform
 } from 'react-native'
-import { BadgeTier } from 'utils/badgeTier'
 
 import IconBronzeBadge from 'app/assets/images/IconBronzeBadge.svg'
 import IconGoldBadge from 'app/assets/images/IconGoldBadge.svg'
@@ -27,6 +26,7 @@ import {
   NotificationType,
   TierChange
 } from 'app/store/notifications/types'
+import { BadgeTier } from 'app/utils/badgeTier'
 import { useColor, useTheme } from 'app/utils/theme'
 
 import NotificationContent from './content/NotificationContent'

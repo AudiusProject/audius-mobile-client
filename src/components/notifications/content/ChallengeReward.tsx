@@ -1,11 +1,11 @@
 import React from 'react'
 
 import { StyleSheet, Text, View } from 'react-native'
+
 import {
   ChallengeReward as ChallengeRewardType,
   ChallengeRewardID
-} from 'store/notifications/types'
-
+} from 'app/store/notifications/types'
 import { useTheme } from 'app/utils/theme'
 
 import TwitterShare from './TwitterShare'

@@ -1,8 +1,7 @@
-import { BadgeTier } from 'utils/badgeTier'
-
 import Collection from 'app/models/Collection'
 import Track from 'app/models/Track'
 import User from 'app/models/User'
+import { BadgeTier } from 'app/utils/badgeTier'
 
 export type ID = number
 

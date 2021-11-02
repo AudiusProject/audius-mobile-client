@@ -1,5 +1,5 @@
-import { UID } from 'models/common/Identifiers'
-import { Kind, Status } from 'store/types'
+import { UID } from 'app/models/common/Identifiers'
+import { Kind, Status } from 'app/store/types'
 
 export type Lineup<T, ExtraProps = {}> = {
   entries: T[]

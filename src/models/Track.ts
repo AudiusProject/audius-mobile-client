@@ -1,8 +1,8 @@
-import Favorite from 'models/Favorite'
-import Repost from 'models/Repost'
-import User, { UserMetadata } from 'models/User'
-import { CID, ID, UID } from 'models/common/Identifiers'
-import { CoverArtSizes } from 'models/common/ImageSizes'
+import Favorite from 'app/models/Favorite'
+import Repost from 'app/models/Repost'
+import User, { UserMetadata } from 'app/models/User'
+import { CID, ID, UID } from 'app/models/common/Identifiers'
+import { CoverArtSizes } from 'app/models/common/ImageSizes'
 
 import { Nullable } from '../utils/typeUtils'
 

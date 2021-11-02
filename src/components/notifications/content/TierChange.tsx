@@ -1,9 +1,9 @@
 import React from 'react'
 
 import { StyleSheet, Text, View } from 'react-native'
-import { TierChange as TierChangeType } from 'store/notifications/types'
-import { BadgeTier } from 'utils/badgeTier'
 
+import { TierChange as TierChangeType } from 'app/store/notifications/types'
+import { BadgeTier } from 'app/utils/badgeTier'
 import { useTheme } from 'app/utils/theme'
 
 import TwitterShare from './TwitterShare'
