@@ -10,7 +10,8 @@ import {
   KeyboardAvoidingView,
   Platform,
   ActionSheetIOS,
-  Alert
+  Alert,
+  ScrollView
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useDispatch, useSelector } from 'react-redux'
@@ -45,7 +46,6 @@ const defaultBorderColor = '#F2F2F4'
 
 const styles = StyleSheet.create({
   container: {
-    top: -67,
     width: '100%',
     height: '100%',
     backgroundColor: 'white',
@@ -506,104 +506,114 @@ const ProfileManual = ({ navigation, route }: ProfileManualProps) => {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={{ overflow: 'hidden' }}
       >
-        <SignupHeader />
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={styles.container}>
-            <View style={styles.containerForm}>
-              <FormTitle />
-              <View style={styles.profilePicContainer}>
-                <ProfileImage
-                  isPhotoLoading={isPhotoLoading}
-                  setIsPhotoLoading={setIsPhotoLoading}
-                  imageSet={imageSet}
-                  photoBtnIsHidden={photoBtnIsHidden}
-                  setPhotoBtnIsHidden={setPhotoBtnIsHidden}
-                  profileImage={profileImage}
-                />
-                <PhotoButton
-                  imageSet={imageSet}
-                  photoBtnIsHidden={photoBtnIsHidden}
-                  doAction={openPhotoMenu}
-                />
-                <LoadingPhoto />
+        <ScrollView
+          style={{ height: '100%' }}
+          keyboardShouldPersistTaps='always'
+        >
+          <View>
+            <SignupHeader />
+            <TouchableWithoutFeedback
+              onPress={Keyboard.dismiss}
+              accessible={false}
+            >
+              <View style={styles.container}>
+                <View style={styles.containerForm}>
+                  <FormTitle />
+                  <View style={styles.profilePicContainer}>
+                    <ProfileImage
+                      isPhotoLoading={isPhotoLoading}
+                      setIsPhotoLoading={setIsPhotoLoading}
+                      imageSet={imageSet}
+                      photoBtnIsHidden={photoBtnIsHidden}
+                      setPhotoBtnIsHidden={setPhotoBtnIsHidden}
+                      profileImage={profileImage}
+                    />
+                    <PhotoButton
+                      imageSet={imageSet}
+                      photoBtnIsHidden={photoBtnIsHidden}
+                      doAction={openPhotoMenu}
+                    />
+                    <LoadingPhoto />
+                  </View>
+                  <TextInput
+                    style={[styles.input, { borderColor: nameBorderColor }]}
+                    placeholderTextColor='#C2C0CC'
+                    underlineColorAndroid='transparent'
+                    placeholder='Display Name'
+                    keyboardType='default'
+                    autoCompleteType='off'
+                    autoCorrect={false}
+                    autoCapitalize='words'
+                    enablesReturnKeyAutomatically={true}
+                    maxLength={32}
+                    textContentType='name'
+                    value={name}
+                    onChangeText={newText => {
+                      setName(newText)
+                    }}
+                    onFocus={() => {
+                      setNameBorderColor('#7E1BCC')
+                    }}
+                    onBlur={() => {
+                      setNameBorderColor(defaultBorderColor)
+                    }}
+                  />
+
+                  <View
+                    style={[
+                      styles.handleInputContainer,
+                      { borderColor: handleBorderColor }
+                    ]}
+                  >
+                    <Text style={styles.atLabel}>@</Text>
+                    <TextInput
+                      style={styles.handleInput}
+                      placeholderTextColor='#C2C0CC'
+                      underlineColorAndroid='transparent'
+                      placeholder='Handle'
+                      keyboardType='email-address'
+                      autoCompleteType='off'
+                      autoCorrect={false}
+                      autoCapitalize='none'
+                      enablesReturnKeyAutomatically={true}
+                      maxLength={16}
+                      textContentType='nickname'
+                      value={handle}
+                      onChangeText={newText => {
+                        clearTimeout(handleTimeout)
+                        handleTimeout = setTimeout(() => {
+                          // if the handle validation has not returned yet, then set to true
+                          // to denote that validation is still in progess after the 1s delay
+                          if (handleStatus === 'editing') {
+                            setHandleDebounce(true)
+                          }
+                        }, HANDLE_VALIDATION_IN_PROGRESS_DELAY_MS)
+                        dispatch(signonActions.setHandleStatus('editing'))
+                        const newHandle = newText.trim()
+                        setHandle(newHandle)
+                        validateHandle(newHandle)
+                      }}
+                      onFocus={() => {
+                        setHandleBorderColor('#7E1BCC')
+                      }}
+                      onBlur={() => {
+                        setHandleBorderColor(defaultBorderColor)
+                      }}
+                    />
+                  </View>
+
+                  {errorView({ handleIsValid, handleError })}
+
+                  <ContinueButton
+                    isWorking={handleStatus === 'editing' && handleDebounce}
+                    onPress={onContinuePress}
+                    disabled={isSubmitDisabled}
+                  />
+                </View>
               </View>
-              <TextInput
-                style={[styles.input, { borderColor: nameBorderColor }]}
-                placeholderTextColor='#C2C0CC'
-                underlineColorAndroid='transparent'
-                placeholder='Display Name'
-                keyboardType='default'
-                autoCompleteType='off'
-                autoCorrect={false}
-                autoCapitalize='words'
-                enablesReturnKeyAutomatically={true}
-                maxLength={32}
-                textContentType='name'
-                value={name}
-                onChangeText={newText => {
-                  setName(newText)
-                }}
-                onFocus={() => {
-                  setNameBorderColor('#7E1BCC')
-                }}
-                onBlur={() => {
-                  setNameBorderColor(defaultBorderColor)
-                }}
-              />
-
-              <View
-                style={[
-                  styles.handleInputContainer,
-                  { borderColor: handleBorderColor }
-                ]}
-              >
-                <Text style={styles.atLabel}>@</Text>
-                <TextInput
-                  style={styles.handleInput}
-                  placeholderTextColor='#C2C0CC'
-                  underlineColorAndroid='transparent'
-                  placeholder='Handle'
-                  keyboardType='email-address'
-                  autoCompleteType='off'
-                  autoCorrect={false}
-                  autoCapitalize='none'
-                  enablesReturnKeyAutomatically={true}
-                  maxLength={16}
-                  textContentType='nickname'
-                  value={handle}
-                  onChangeText={newText => {
-                    clearTimeout(handleTimeout)
-                    handleTimeout = setTimeout(() => {
-                      // if the handle validation has not returned yet, then set to true
-                      // to denote that validation is still in progess after the 1s delay
-                      if (handleStatus === 'editing') {
-                        setHandleDebounce(true)
-                      }
-                    }, HANDLE_VALIDATION_IN_PROGRESS_DELAY_MS)
-                    dispatch(signonActions.setHandleStatus('editing'))
-                    const newHandle = newText.trim()
-                    setHandle(newHandle)
-                    validateHandle(newHandle)
-                  }}
-                  onFocus={() => {
-                    setHandleBorderColor('#7E1BCC')
-                  }}
-                  onBlur={() => {
-                    setHandleBorderColor(defaultBorderColor)
-                  }}
-                />
-              </View>
-
-              {errorView({ handleIsValid, handleError })}
-
-              <ContinueButton
-                isWorking={handleStatus === 'editing' && handleDebounce}
-                onPress={onContinuePress}
-                disabled={isSubmitDisabled}
-              />
-            </View>
+            </TouchableWithoutFeedback>
           </View>
-        </TouchableWithoutFeedback>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   )

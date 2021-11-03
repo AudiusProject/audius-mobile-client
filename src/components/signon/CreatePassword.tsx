@@ -12,7 +12,8 @@ import {
   Keyboard,
   Linking,
   KeyboardAvoidingView,
-  Platform
+  Platform,
+  ScrollView
 } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useSelector, useDispatch } from 'react-redux'
@@ -41,7 +42,6 @@ const errorBorderColor = '#E03D51'
 
 const styles = StyleSheet.create({
   container: {
-    top: -47,
     width: '100%',
     height: '100%',
     backgroundColor: 'white',
@@ -473,109 +473,133 @@ const CreatePassword = ({ navigation, route }: CreatePasswordProps) => {
         behavior={Platform.OS === 'ios' ? 'padding' : undefined}
         style={{ overflow: 'hidden' }}
       >
-        <SignupHeader />
-        <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-          <View style={styles.container}>
-            <View style={styles.containerForm}>
-              <FormTitle />
-              <TextInput
-                style={[styles.input, { borderColor: passwordBorderColor }]}
-                placeholderTextColor='#C2C0CC'
-                underlineColorAndroid='transparent'
-                placeholder='Password'
-                autoCompleteType='off'
-                autoCorrect={false}
-                autoCapitalize='none'
-                enablesReturnKeyAutomatically={true}
-                maxLength={100}
-                textContentType='newPassword'
-                secureTextEntry={true}
-                onChangeText={newText => {
-                  setPassword(newText)
-                  updateRequirementsStatus(
-                    { ...areRequirementsMet },
-                    newText,
-                    passwordConfirmation,
-                    false
-                  )
-                }}
-                onFocus={() => {
-                  setIsPasswordFocused(true)
-                }}
-                onBlur={() => {
-                  setIsPasswordFocused(false)
-                  updateRequirementsStatus(
-                    { ...areRequirementsMet },
-                    password,
-                    passwordConfirmation,
-                    true
-                  )
-                }}
-                keyboardAppearance='dark'
-              />
-              <TextInput
-                style={[
-                  styles.input,
-                  {
-                    borderColor: passwordConfirmationBorderColor,
-                    marginBottom: 10
-                  }
-                ]}
-                placeholderTextColor='#C2C0CC'
-                underlineColorAndroid='transparent'
-                placeholder='Confirm Password'
-                autoCompleteType='off'
-                autoCorrect={false}
-                autoCapitalize='none'
-                enablesReturnKeyAutomatically={true}
-                maxLength={100}
-                textContentType='newPassword'
-                secureTextEntry={true}
-                onChangeText={newText => {
-                  setPasswordConfirmation(newText)
-                  updateRequirementsStatus(
-                    { ...areRequirementsMet },
-                    password,
-                    newText,
-                    false
-                  )
-                }}
-                onFocus={() => {
-                  setIsPasswordConfirmationFocused(true)
-                }}
-                onBlur={() => {
-                  setIsPasswordConfirmationFocused(false)
-                  updateRequirementsStatus(
-                    { ...areRequirementsMet },
-                    password,
-                    passwordConfirmation,
-                    true
-                  )
-                }}
-                keyboardAppearance='dark'
-              />
-              {Object.values(areRequirementsMet).map(({ met, error }, i) => (
-                <Checkbox key={i} i={i} met={met} error={error} />
-              ))}
+        <ScrollView
+          style={{ height: '100%' }}
+          keyboardShouldPersistTaps='always'
+        >
+          <View>
+            <SignupHeader />
+            <TouchableWithoutFeedback
+              onPress={Keyboard.dismiss}
+              accessible={false}
+            >
+              <View style={styles.container}>
+                <View style={styles.containerForm}>
+                  <FormTitle />
+                  <TextInput
+                    style={[styles.input, { borderColor: passwordBorderColor }]}
+                    placeholderTextColor='#C2C0CC'
+                    underlineColorAndroid='transparent'
+                    placeholder='Password'
+                    autoCompleteType='off'
+                    autoCorrect={false}
+                    autoCapitalize='none'
+                    enablesReturnKeyAutomatically={true}
+                    maxLength={100}
+                    textContentType='newPassword'
+                    secureTextEntry={true}
+                    onChangeText={newText => {
+                      setPassword(newText)
+                      updateRequirementsStatus(
+                        { ...areRequirementsMet },
+                        newText,
+                        passwordConfirmation,
+                        false
+                      )
+                    }}
+                    onFocus={() => {
+                      setIsPasswordFocused(true)
+                    }}
+                    onBlur={() => {
+                      setIsPasswordFocused(false)
+                      updateRequirementsStatus(
+                        { ...areRequirementsMet },
+                        password,
+                        passwordConfirmation,
+                        true
+                      )
+                    }}
+                    keyboardAppearance='dark'
+                  />
+                  <TextInput
+                    style={[
+                      styles.input,
+                      {
+                        borderColor: passwordConfirmationBorderColor,
+                        marginBottom: 10
+                      }
+                    ]}
+                    placeholderTextColor='#C2C0CC'
+                    underlineColorAndroid='transparent'
+                    placeholder='Confirm Password'
+                    autoCompleteType='off'
+                    autoCorrect={false}
+                    autoCapitalize='none'
+                    enablesReturnKeyAutomatically={true}
+                    maxLength={100}
+                    textContentType='newPassword'
+                    secureTextEntry={true}
+                    onChangeText={newText => {
+                      setPasswordConfirmation(newText)
+                      updateRequirementsStatus(
+                        { ...areRequirementsMet },
+                        password,
+                        newText,
+                        false
+                      )
+                    }}
+                    onFocus={() => {
+                      setIsPasswordConfirmationFocused(true)
+                    }}
+                    onBlur={() => {
+                      setIsPasswordConfirmationFocused(false)
+                      updateRequirementsStatus(
+                        { ...areRequirementsMet },
+                        password,
+                        passwordConfirmation,
+                        true
+                      )
+                    }}
+                    keyboardAppearance='dark'
+                  />
+                  {Object.values(areRequirementsMet).map(
+                    ({ met, error }, i) => (
+                      <Checkbox key={i} i={i} met={met} error={error} />
+                    )
+                  )}
 
-              <Text style={styles.terms}>
-                <Text style={styles.termsText}>{messages.termsAndPrivacy}</Text>
-                <TouchableOpacity activeOpacity={0.6} onPress={onTermsOfUse}>
-                  <Text style={{ ...styles.termsText, ...styles.clickable }}>
-                    &nbsp;{messages.terms}
+                  <Text style={styles.terms}>
+                    <Text style={styles.termsText}>
+                      {messages.termsAndPrivacy}
+                    </Text>
+                    <TouchableOpacity
+                      activeOpacity={0.6}
+                      onPress={onTermsOfUse}
+                    >
+                      <Text
+                        style={{ ...styles.termsText, ...styles.clickable }}
+                      >
+                        &nbsp;{messages.terms}
+                      </Text>
+                    </TouchableOpacity>
+                    <Text style={styles.termsText}> {messages.and}</Text>
+                    <TouchableOpacity
+                      activeOpacity={0.6}
+                      onPress={onPrivacyPolicy}
+                    >
+                      <Text
+                        style={{ ...styles.termsText, ...styles.clickable }}
+                      >
+                        &nbsp;{messages.privacy}
+                      </Text>
+                    </TouchableOpacity>
                   </Text>
-                </TouchableOpacity>
-                <Text style={styles.termsText}> {messages.and}</Text>
-                <TouchableOpacity activeOpacity={0.6} onPress={onPrivacyPolicy}>
-                  <Text style={{ ...styles.termsText, ...styles.clickable }}>
-                    &nbsp;{messages.privacy}
-                  </Text>
-                </TouchableOpacity>
-              </Text>
-              <ContinueButton isWorking={isWorking} />
-            </View>
+                  <ContinueButton isWorking={isWorking} />
+                </View>
+              </View>
+            </TouchableWithoutFeedback>
           </View>
-        </TouchableWithoutFeedback>
+        </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
   )
