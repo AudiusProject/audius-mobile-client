@@ -294,7 +294,7 @@ const CreatePassword = ({ navigation, route }: CreatePasswordProps) => {
 
   // the first 3 requirements are based on the password field
   // the last one is based on both fields as it requires a match
-  const [areRequirementsMet, setAreRequirementsAreMet] = useState({
+  const [areRequirementsMet, setAreRequirementsMet] = useState({
     number: {
       met: false,
       error: false
@@ -360,8 +360,8 @@ const CreatePassword = ({ navigation, route }: CreatePasswordProps) => {
     ) => {
       // set error if field in question is not empty and
       // - requirement previously met, or
-      // - on blur (except hard to guess?)
-      setAreRequirementsAreMet({
+      // - on blur
+      setAreRequirementsMet({
         number: {
           ...previousRequirements.number,
           met: /\d/.test(newPassword),
