@@ -30,8 +30,8 @@ const createStyles = (themeColors: ThemeColors) =>
     },
     buttonText: {
       color: themeColors.staticWhite,
-      fontSize: 16,
-      fontWeight: 'bold'
+      fontSize: 18,
+      fontFamily: 'AvenirNextLTPro-Bold'
     },
     icon: {
       marginLeft: 12

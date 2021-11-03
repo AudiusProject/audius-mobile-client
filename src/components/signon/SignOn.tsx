@@ -41,6 +41,7 @@ import { RootStackParamList } from './NavigationStack'
 
 const image = backgImage
 const windowWidth = Dimensions.get('window').width
+const defaultBorderColor = '#F2F2F4'
 
 const styles = StyleSheet.create({
   container: {
@@ -142,12 +143,12 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
     borderWidth: 1,
-    borderColor: '#F7F7F9',
+    borderColor: defaultBorderColor,
     backgroundColor: '#FCFCFC',
     borderRadius: 4,
     padding: 10,
     color: '#858199',
-    fontFamily: 'AvenirNextLTPro-Regular',
+    fontFamily: 'AvenirNextLTPro-Demi',
     fontSize: 16
   },
   inputPass: {
@@ -156,13 +157,13 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     paddingRight: 16,
     borderWidth: 1,
-    borderColor: '#F7F7F9',
+    borderColor: defaultBorderColor,
     backgroundColor: '#FCFCFC',
     borderRadius: 4,
     marginTop: 16,
     padding: 10,
     color: '#858199',
-    fontFamily: 'AvenirNextLTPro-Regular',
+    fontFamily: 'AvenirNextLTPro-Demi',
     fontSize: 16
   },
   formBtn: {
@@ -177,23 +178,13 @@ const styles = StyleSheet.create({
     borderRadius: 4
   },
   formButtonTitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center'
-  },
-  formButtonTitle: {
-    color: 'white',
-    fontSize: 18,
-    fontFamily: 'AvenirNextLTPro-Bold',
-    marginRight: 12
+    width: '100%'
   },
   mainButtonContainer: {
     width: '100%'
   },
   mainButton: {
     padding: 12
-  },
-  mainButtonText: {
-    fontSize: 18
   },
   arrowIcon: {
     height: 20,
@@ -314,8 +305,8 @@ const SignOn = ({ navigation }: SignOnProps) => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [isSignin, setisSignIn] = useState(false)
-  const [emailBorderColor, setEmailBorderColor] = useState('#F7F7F9')
-  const [passBorderColor, setPassBorderColor] = useState('#F7F7F9')
+  const [emailBorderColor, setEmailBorderColor] = useState(defaultBorderColor)
+  const [passBorderColor, setPassBorderColor] = useState(defaultBorderColor)
   const [formButtonMarginTop, setFormButtonMarginTop] = useState(28)
   const [cpaContainerHeight, setcpaContainerHeight] = useState(0)
   const [attemptedEmail, setAttemptedEmail] = useState(false)
@@ -548,7 +539,7 @@ const SignOn = ({ navigation }: SignOnProps) => {
             setPassBorderColor('#7E1BCC')
           }}
           onBlur={() => {
-            setPassBorderColor('#F7F7F9')
+            setPassBorderColor(defaultBorderColor)
           }}
         />
       )
@@ -609,7 +600,6 @@ const SignOn = ({ navigation }: SignOnProps) => {
             marginTop: formButtonMarginTop
           }}
           style={styles.mainButton}
-          textStyle={styles.mainButtonText}
           icon={
             isWorking ? (
               <LottieView
@@ -711,7 +701,7 @@ const SignOn = ({ navigation }: SignOnProps) => {
                 setEmailBorderColor('#7E1BCC')
               }}
               onBlur={() => {
-                setEmailBorderColor('#F7F7F9')
+                setEmailBorderColor(defaultBorderColor)
                 if (email !== '') {
                   setShowInvalidEmailError(!isValidEmailString(email))
                   // wait a bit for email validation to come back

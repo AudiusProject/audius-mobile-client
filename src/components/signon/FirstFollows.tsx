@@ -119,9 +119,6 @@ const styles = StyleSheet.create({
   button: {
     padding: 12
   },
-  buttonText: {
-    fontSize: 18
-  },
   formButtonTitleContainer: {
     flexDirection: 'row',
     alignItems: 'center'
@@ -140,8 +137,8 @@ const styles = StyleSheet.create({
   },
   wandButtonTitle: {
     color: '#858199',
-    fontSize: 14,
-    fontFamily: 'AvenirNextLTPro-Regular'
+    fontSize: 16,
+    fontFamily: 'AvenirNextLTPro-Demi'
   },
   underline: {
     textDecorationLine: 'underline'
@@ -179,7 +176,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 24,
     borderRadius: 8,
-    borderColor: '#858199',
+    borderColor: '#C2C0CC',
     borderWidth: 1,
     paddingHorizontal: 12,
     backgroundColor: 'white',
@@ -194,7 +191,7 @@ const styles = StyleSheet.create({
     fontFamily: 'AvenirNextLTPro-Medium',
     textAlign: 'center',
     fontSize: 14,
-    color: '#858199'
+    color: '#AAA7B8'
   },
   pillTextActive: {
     color: 'white'
@@ -207,8 +204,8 @@ const styles = StyleSheet.create({
     marginTop: 12
   },
   card: {
-    width: 140,
-    height: 160,
+    width: 168,
+    height: 208,
     borderRadius: 8,
     borderColor: '#6A677A40',
     borderWidth: 0.7,
@@ -238,27 +235,28 @@ const styles = StyleSheet.create({
   },
   cardName: {
     color: '#858199',
-    fontSize: 14,
+    fontSize: 16,
     textAlign: 'center',
-    fontFamily: 'AvenirNextLTPro-Bold'
+    fontFamily: 'AvenirNextLTPro-Bold',
+    marginBottom: 8
   },
   cardFollowers: {
     color: '#858199',
-    fontSize: 12,
+    fontSize: 14,
     textAlign: 'center',
     fontFamily: 'AvenirNextLTPro-Regular',
     paddingHorizontal: 8
   },
   cardImage: {
-    height: 80,
-    width: 80,
-    borderRadius: 40,
+    height: 120,
+    width: 120,
+    borderRadius: 60,
     borderWidth: 2,
     borderColor: '#F7F7F9',
-    marginBottom: 10
+    marginBottom: 14
   },
   userImage: {
-    borderRadius: 50,
+    borderRadius: 60,
     height: '100%',
     width: '100%',
     marginRight: 12
@@ -311,7 +309,6 @@ const ContinueButton = ({
       title={messages.continue}
       containerStyle={styles.buttonContainer}
       style={styles.button}
-      textStyle={styles.buttonText}
       onPress={onPress}
       disabled={disabled}
       icon={<IconArrow style={styles.arrowIcon} fill='white' />}

@@ -34,7 +34,8 @@ import Button from '../../components/button'
 
 declare module 'fxa-common-password-list'
 
-const defaultBorderColor = '#F7F7F9'
+const isIos = Platform.OS === 'ios'
+const defaultBorderColor = '#F2F2F4'
 const purpleBorderColor = '#7E1BCC'
 const errorBorderColor = '#E03D51'
 
@@ -81,7 +82,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 10,
     color: '#858199',
-    fontFamily: 'AvenirNextLTPro-Regular',
+    fontFamily: 'AvenirNextLTPro-Demi',
     fontSize: 16
   },
   mainButtonContainer: {
@@ -90,9 +91,6 @@ const styles = StyleSheet.create({
   },
   mainButton: {
     padding: 12
-  },
-  mainButtonText: {
-    fontSize: 18
   },
   arrowIcon: {
     height: 20,
@@ -144,7 +142,7 @@ const styles = StyleSheet.create({
     fontFamily: 'AvenirNextLTPro-Regular'
   },
   clickable: {
-    marginTop: 24,
+    marginTop: isIos ? 24 : 30,
     color: '#CC0FE0'
   }
 })
@@ -213,8 +211,8 @@ const Checkbox = ({
   if (met || error) {
     Animated.timing(opacity, {
       toValue: 1,
-      duration: 700,
-      easing: Easing.in(Easing.bounce),
+      duration: 300,
+      easing: Easing.in(Easing.quad),
       useNativeDriver: true
     }).start(() => {})
   }
@@ -453,7 +451,6 @@ const CreatePassword = ({ navigation, route }: CreatePasswordProps) => {
         disabled={isDisabled}
         containerStyle={styles.mainButtonContainer}
         style={styles.mainButton}
-        textStyle={styles.mainButtonText}
         icon={
           isWorking ? (
             <LottieView

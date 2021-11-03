@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#CC0FE0'
   },
   buttonText: {
-    fontSize: 18
+    fontSize: 20
   },
   formButtonTitleContainer: {
     flexDirection: 'row',
