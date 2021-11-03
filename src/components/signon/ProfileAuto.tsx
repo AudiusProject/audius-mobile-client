@@ -276,7 +276,7 @@ const ProfileAuto = ({ navigation, route }: ProfileAutoProps) => {
         }
       }
 
-      navigation.push(page, routeParams)
+      navigation.replace(page, routeParams)
     },
     [navigation, email, password, twitterInfo, instagramInfo]
   )

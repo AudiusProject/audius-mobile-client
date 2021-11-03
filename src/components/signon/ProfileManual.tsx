@@ -494,7 +494,7 @@ const ProfileManual = ({ navigation, route }: ProfileManualProps) => {
       isAction: true
     })
 
-    navigation.push('FirstFollows', {
+    navigation.replace('FirstFollows', {
       email,
       handle
     })

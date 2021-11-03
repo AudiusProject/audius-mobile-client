@@ -588,7 +588,7 @@ const SignOn = ({ navigation }: SignOnProps) => {
               } else if (emailIsAvailable && emailStatus === 'done') {
                 dispatch(signonActions.signinFailedReset())
                 setIsWorking(false)
-                navigation.push('CreatePassword', { email })
+                navigation.replace('CreatePassword', { email })
               }
             } else {
               setShowInvalidEmailError(true)

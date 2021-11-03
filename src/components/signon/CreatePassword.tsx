@@ -443,7 +443,7 @@ const CreatePassword = ({ navigation, route }: CreatePasswordProps) => {
               emailAddress: route.params.email
             })
           )
-          navigation.push('ProfileAuto', {
+          navigation.replace('ProfileAuto', {
             email: route.params.email,
             password
           })
