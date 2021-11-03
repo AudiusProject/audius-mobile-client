@@ -63,6 +63,7 @@
 		<string>AvenirNextLTPro-UltLt.otf</string>
 		<string>AvenirNextLTPro-Light.otf</string>
 		<string>AvenirNextLTPro-Thin.otf</string>
+		<string>AvenirNextLTPro-Demi.otf</string>
 	</array>
 	<key>UIBackgroundModes</key>
 	<array>
