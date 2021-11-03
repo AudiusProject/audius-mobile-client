@@ -23,7 +23,7 @@
 		9A21B5C22EF94A738EBABFED /* AvenirNextLTPro-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = BAEB40775EC64F48AC1983F7 /* AvenirNextLTPro-Thin.otf */; };
 		C48560F6F96345AC8C69506F /* AvenirNextLTPro-Heavy.otf in Resources */ = {isa = PBXBuildFile; fileRef = D40C2F0A0A4641D18D426558 /* AvenirNextLTPro-Heavy.otf */; };
 		CFE33B15004249189EB75CDC /* AvenirNextLTPro-UltLt.otf in Resources */ = {isa = PBXBuildFile; fileRef = D83DC634C3DC44B588896E10 /* AvenirNextLTPro-UltLt.otf */; };
-		F246AEF22732421B005676E3 /* AvenirNextLTPro-Demi.otf in Resources */ = {isa = PBXBuildFile; fileRef = F246AEF12732421A005676E3 /* AvenirNextLTPro-Demi.otf */; };
+		F2E727B42732F52F008E4614 /* AvenirNextLTPro-Demi.otf in Resources */ = {isa = PBXBuildFile; fileRef = F2E727B32732F52F008E4614 /* AvenirNextLTPro-Demi.otf */; };
 		F50849B3CA2D48F3852465FA /* AvenirNextLTPro-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8FFE615B56774422849C5A08 /* AvenirNextLTPro-Light.otf */; };
 		F9F3A776979EEF8D33271AB9 /* libPods-AudiusReactNative.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DED245DC8DB76DAFD6E76495 /* libPods-AudiusReactNative.a */; };
 /* End PBXBuildFile section */
@@ -60,7 +60,7 @@
 		EA6D8E31A68B4451B423AFF0 /* AvenirNextLTPro-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "AvenirNextLTPro-Bold.otf"; path = "../src/assets/fonts/AvenirNextLTPro-Bold.otf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
-		F246AEF12732421A005676E3 /* AvenirNextLTPro-Demi.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "AvenirNextLTPro-Demi.otf"; path = "../src/assets/fonts/AvenirNextLTPro-Demi.otf"; sourceTree = "<group>"; };
+		F2E727B32732F52F008E4614 /* AvenirNextLTPro-Demi.otf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "AvenirNextLTPro-Demi.otf"; path = "../src/assets/fonts/AvenirNextLTPro-Demi.otf"; sourceTree = "<group>"; };
 		F4D37B0991FA43E4EB05CA25 /* Pods-AudiusReactNative.bounce.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AudiusReactNative.bounce.debug.xcconfig"; path = "Target Support Files/Pods-AudiusReactNative/Pods-AudiusReactNative.bounce.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -142,6 +142,7 @@
 				9203ADA7911C8949B98165F4 /* Pods */,
 				13B32CE523D2782A002F0526 /* AudiusReactNative-Bridging-Header.h */,
 				A5F065694F9E40CE97972CFA /* Resources */,
+				F2E727A52732EE4F008E4614 /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -170,7 +171,7 @@
 		A5F065694F9E40CE97972CFA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				F2890C6E273238EC00D49CF4 /* AvenirNextLTPro-Demi.otf */,
+				F2E727B32732F52F008E4614 /* AvenirNextLTPro-Demi.otf */,
 				EA6D8E31A68B4451B423AFF0 /* AvenirNextLTPro-Bold.otf */,
 				D40C2F0A0A4641D18D426558 /* AvenirNextLTPro-Heavy.otf */,
 				33E11CC84EEA4109B8A1AE2C /* AvenirNextLTPro-Medium.otf */,
@@ -180,6 +181,13 @@
 				BAEB40775EC64F48AC1983F7 /* AvenirNextLTPro-Thin.otf */,
 			);
 			name = Resources;
+			sourceTree = "<group>";
+		};
+		F2E727A52732EE4F008E4614 /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -252,11 +260,11 @@
 				838AABE023CE3813004B2DA3 /* GoogleService-Info.plist in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
-				F246AEF22732421B005676E3 /* AvenirNextLTPro-Demi.otf in Resources */,
 				32FE1B49FE7E47B69CF28E06 /* AvenirNextLTPro-Bold.otf in Resources */,
 				C48560F6F96345AC8C69506F /* AvenirNextLTPro-Heavy.otf in Resources */,
 				5983D8FED74747CCA45F8FC4 /* AvenirNextLTPro-Medium.otf in Resources */,
 				9204DC5D38C1495FA330CF12 /* AvenirNextLTPro-Regular.otf in Resources */,
+				F2E727B42732F52F008E4614 /* AvenirNextLTPro-Demi.otf in Resources */,
 				CFE33B15004249189EB75CDC /* AvenirNextLTPro-UltLt.otf in Resources */,
 				F50849B3CA2D48F3852465FA /* AvenirNextLTPro-Light.otf in Resources */,
 				9A21B5C22EF94A738EBABFED /* AvenirNextLTPro-Thin.otf in Resources */,
