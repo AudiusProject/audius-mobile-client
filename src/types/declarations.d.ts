@@ -23,8 +23,31 @@ declare module '*.jpg' {
   export default value
 }
 
-// Remove these when no longer dependent on audius-client
-declare var window: any
-declare interface Location {}
-declare var Notification: any
-declare var navigator: any
+declare module '@react-native-masked-view/masked-view' {
+  import * as React from 'react'
+  import * as ReactNative from 'react-native'
+
+  interface MaskedViewProps extends ReactNative.ViewProps {
+    maskElement: React.ReactElement
+    androidRenderingMode?: 'software' | 'hardware'
+  }
+  export default class MaskedViewComponent extends React.Component<
+    MaskedViewProps
+  > {}
+}
+
+// Remove everything below when audius-mobile-client id no longer dependent on audius-client
+// These are needed because we currently have to include audius-client in the typechecking
+declare module '*.module.css' {
+  const value: any
+  export default value
+}
+
+declare module '*.json' {
+  const value: any
+  export default value
+}
+
+interface Window {
+  MSStream: any
+}
