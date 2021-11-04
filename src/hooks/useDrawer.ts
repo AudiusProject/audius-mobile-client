@@ -5,7 +5,7 @@ import { Drawer, setVisibility } from 'app/store/drawers/slice'
 
 /**
  * Hook to get and set the visibility of a drawer
- * @param drawer.
+ * @param drawer
  * @returns [isOpen, setIsOpen]
  *
  * Example:
