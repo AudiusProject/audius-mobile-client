@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 10,
     color: '#858199',
-    fontFamily: 'AvenirNextLTPro-Demi',
+    fontFamily: 'AvenirNextLTPro-DemiBold',
     fontSize: 16
   },
   inputPass: {
@@ -163,7 +163,7 @@ const styles = StyleSheet.create({
     marginTop: 16,
     padding: 10,
     color: '#858199',
-    fontFamily: 'AvenirNextLTPro-Demi',
+    fontFamily: 'AvenirNextLTPro-DemiBold',
     fontSize: 16
   },
   formBtn: {

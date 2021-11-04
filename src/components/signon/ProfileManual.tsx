@@ -91,7 +91,7 @@ const styles = StyleSheet.create({
   handleInput: {
     height: 42,
     color: '#858199',
-    fontFamily: 'AvenirNextLTPro-Demi',
+    fontFamily: 'AvenirNextLTPro-DemiBold',
     fontSize: 16,
     flex: 1
   },
@@ -107,7 +107,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 10,
     color: '#858199',
-    fontFamily: 'AvenirNextLTPro-Demi',
+    fontFamily: 'AvenirNextLTPro-DemiBold',
     fontSize: 16
   },
   formBtn: {

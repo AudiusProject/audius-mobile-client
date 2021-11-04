@@ -131,7 +131,7 @@ const styles = StyleSheet.create({
   wandButtonTitle: {
     color: '#858199',
     fontSize: 16,
-    fontFamily: 'AvenirNextLTPro-Demi'
+    fontFamily: 'AvenirNextLTPro-DemiBold'
   },
   underline: {
     textDecorationLine: 'underline'

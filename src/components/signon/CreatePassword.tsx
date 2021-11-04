@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     padding: 10,
     color: '#858199',
-    fontFamily: 'AvenirNextLTPro-Demi',
+    fontFamily: 'AvenirNextLTPro-DemiBold',
     fontSize: 16
   },
   mainButtonContainer: {
