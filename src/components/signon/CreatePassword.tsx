@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     fontFamily: 'AvenirNextLTPro-Regular'
   },
   clickable: {
-    marginTop: isIos ? 24 : 30,
+    marginTop: isIos ? 24.5 : 30,
     color: '#CC0FE0'
   }
 })
