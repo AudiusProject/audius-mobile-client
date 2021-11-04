@@ -12,8 +12,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { sampleSize } from 'lodash'
 import {
   setFollowArtistsCategory,
-  setFollowedArtists,
-  submitFollowedArtists
+  setFollowedArtists
 } from '../../store/signon/actions'
 import IconArrow from '../../assets/images/iconArrow.svg'
 import IconWand from '../../assets/images/iconWand.svg'
@@ -504,8 +503,6 @@ const FirstFollows = ({ navigation, route }: FirstFollowsProps) => {
       followArtists,
       isAction: true
     })
-
-    dispatch(submitFollowedArtists())
 
     track(
       make({
