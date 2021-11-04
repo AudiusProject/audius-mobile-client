@@ -55,7 +55,7 @@ const SearchResults = () => {
   const sectionWithMore: {
     title: SectionHeader | 'more'
     data: (SearchUser | SearchTrack | SearchPlaylist)[]
-  }[] = [...sections, { title: 'more' as 'more', data: [] }]
+  }[] = [...sections, { title: 'more', data: [] }]
 
   return (
     <View style={styles.container} onTouchStart={Keyboard.dismiss}>

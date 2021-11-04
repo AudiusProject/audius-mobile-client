@@ -27,7 +27,7 @@ module.exports = (async () => {
 
       extraNodeModules: {
         // Alias for 'src' to allow for absolute paths
-        'app': `${__dirname}/src`,
+        app: `${__dirname}/src`,
 
         // This is used to resolve the absolute paths found in audius-client.
         // Eventually all shared state logic will live in @audius/client-common

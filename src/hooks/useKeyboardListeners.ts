@@ -1,4 +1,4 @@
-import React, { RefObject, useEffect } from 'react'
+import { RefObject, useEffect } from 'react'
 
 import { Keyboard } from 'react-native'
 import { WebView } from 'react-native-webview'

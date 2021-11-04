@@ -1,11 +1,11 @@
 import { useDispatch, useSelector } from 'react-redux'
 
-import { getVisibility } from '../store/drawers/selectors'
-import { Drawer, setVisibility } from '../store/drawers/slice'
+import { getVisibility } from 'app/store/drawers/selectors'
+import { Drawer, setVisibility } from 'app/store/drawers/slice'
 
 /**
  * Hook to get and set the visibility of a drawer
- * @param drawer
+ * @param drawer.
  * @returns [isOpen, setIsOpen]
  *
  * Example:

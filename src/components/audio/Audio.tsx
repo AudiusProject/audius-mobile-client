@@ -36,6 +36,7 @@ import { postMessage } from 'app/utils/postMessage'
 import { logListen } from './listens'
 
 declare global {
+  // eslint-disable-next-line no-var
   var progress: {
     currentTime: number
     seekableTime?: number

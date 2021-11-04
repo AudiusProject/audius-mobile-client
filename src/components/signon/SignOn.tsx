@@ -27,7 +27,6 @@ import signupCTA from 'app/assets/images/signUpCTA.png'
 import { remindUserToTurnOnNotifications } from 'app/components/notification-reminder/NotificationReminder'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { MessageType } from 'app/message/types'
-import { setVisibility } from 'app/store/drawers/slice'
 import { getIsSignedIn, getDappLoaded } from 'app/store/lifecycle/selectors'
 import * as signonActions from 'app/store/signon/actions'
 import {
@@ -364,9 +363,6 @@ const SignOn = ({ navigation }: SignOnProps) => {
   const emailIsValid = useSelector(getEmailIsValid)
   const emailStatus = useSelector(getEmailStatus)
 
-  const setPushNotificationsReminderVisible = (visible: boolean) =>
-    dispatch(setVisibility({ drawer: 'EnablePushNotifications', visible }))
-
   const topDrawer = useRef(new Animated.Value(-800)).current
   const animateDrawer = useCallback(() => {
     Animated.timing(topDrawer, {
@@ -409,10 +405,10 @@ const SignOn = ({ navigation }: SignOnProps) => {
       setPassword('')
 
       if (isSignin) {
-        remindUserToTurnOnNotifications(setPushNotificationsReminderVisible)
+        remindUserToTurnOnNotifications(dispatch)
       }
     }
-  }, [signedIn, isSignin])
+  }, [signedIn, isSignin, dispatch])
 
   useEffect(() => {
     if (dappLoaded) {

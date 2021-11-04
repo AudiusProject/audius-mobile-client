@@ -1,3 +1,5 @@
+/* eslint-disable import/order, import/no-duplicates */
+
 declare module 'fxa-common-password-list'
 declare module 'react-native-static-server'
 

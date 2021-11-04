@@ -48,9 +48,9 @@ const initialSignonState: SignonState = {
   emailIsAvailable: true,
   emailIsValid: false,
   handleIsValid: false,
-  emailStatus: 'editing' as 'editing',
+  emailStatus: 'editing',
   handleError: '',
-  handleStatus: 'editing' as 'editing',
+  handleStatus: 'editing',
   accountAvailable: false,
   userId: 0,
   followArtists: {

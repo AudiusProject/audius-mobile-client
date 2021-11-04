@@ -44,7 +44,7 @@ const createStyles = (themeColors: ThemeColors) =>
 export const CollectibleMedia: React.FC<{
   collectible: Collectible
 }> = ({ collectible }) => {
-  const { mediaType, imageUrl, videoUrl, gifUrl, threeDUrl } = collectible
+  const { mediaType, imageUrl, videoUrl, gifUrl } = collectible
 
   const styles = useThemedStyles(createStyles)
   const neutralLight5 = useColor('neutralLight5')

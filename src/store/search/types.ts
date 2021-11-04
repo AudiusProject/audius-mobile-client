@@ -1,3 +1,5 @@
+import { TrackSegment } from 'audius-client/src/common/models/Track'
+
 import { CollectionImage } from 'app/models/Collection'
 import Repost from 'app/models/Repost'
 import { TrackImage } from 'app/models/Track'
@@ -8,7 +10,6 @@ import {
   UserName,
   UserVerified
 } from 'app/models/User'
-import { TrackSegment } from 'audius-client/src/common/models/Track'
 
 export type SearchUser = UserMultihash &
   UserImage &

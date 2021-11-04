@@ -3,7 +3,6 @@ import { useDarkMode } from 'react-native-dark-mode'
 import { useSelector } from 'react-redux'
 
 import { getTheme } from 'app/store/theme/selectors'
-import { AppState } from 'app/store'
 
 export enum Theme {
   DEFAULT = 'default',

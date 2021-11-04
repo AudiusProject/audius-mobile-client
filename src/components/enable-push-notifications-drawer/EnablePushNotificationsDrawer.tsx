@@ -4,7 +4,6 @@ import MaskedView from '@react-native-masked-view/masked-view'
 // Importing directly from audius-client temporarily until
 // settings page is migrated because we still need push notification logic to work
 // on settings page and it doesn't necessarily make sense in common
-import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { togglePushNotificationSetting } from 'audius-client/src/containers/settings-page/store/actions'
 import { PushNotificationSetting } from 'audius-client/src/containers/settings-page/store/types'
 import { StyleSheet, View } from 'react-native'
@@ -20,6 +19,7 @@ import IconRepost from 'app/assets/images/iconRepost.svg'
 import Button from 'app/components/button'
 import Drawer from 'app/components/drawer'
 import Text from 'app/components/text'
+import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { useDrawer } from 'app/hooks/useDrawer'
 import { ThemeColors, useThemedStyles } from 'app/hooks/useThemedStyles'
 import { useThemeColors } from 'app/utils/theme'

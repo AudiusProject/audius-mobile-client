@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback } from 'react'
+import React, { useCallback } from 'react'
 
 import {
   StyleSheet,
@@ -8,6 +8,7 @@ import {
   Animated,
   Platform
 } from 'react-native'
+import { SvgProps } from 'react-native-svg'
 
 import IconBronzeBadge from 'app/assets/images/IconBronzeBadge.svg'
 import IconGoldBadge from 'app/assets/images/IconGoldBadge.svg'
@@ -31,7 +32,6 @@ import { useColor, useTheme } from 'app/utils/theme'
 
 import NotificationContent from './content/NotificationContent'
 import { getNotificationRoute } from './routeUtil'
-import { SvgProps } from 'react-native-svg'
 
 const IS_IOS = Platform.OS === 'ios'
 

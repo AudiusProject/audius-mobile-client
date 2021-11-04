@@ -3,7 +3,7 @@ import Status from 'audius-client/src/common/models/Status'
 
 import { UID } from 'app/models/common/Identifiers'
 
-export type Lineup<T, ExtraProps = {}> = {
+export type Lineup<T, ExtraProps> = {
   entries: T[]
   order: {
     [uid: string]: number
