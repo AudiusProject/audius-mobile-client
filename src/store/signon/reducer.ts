@@ -17,7 +17,8 @@ import {
   RESET_SIGNON_STATE,
   SignupHandleStatusType,
   SET_EMAIL_STATUS,
-  SignupEmailStatusType
+  SignupEmailStatusType,
+  SET_KEYBOARD_VISIBLE
 } from './actions'
 import { FollowArtistsCategory } from './types'
 
@@ -39,6 +40,7 @@ export type SignonState = {
   }
   finalEmail: string
   finalHandle: string
+  isKeyboardVisible: boolean
 }
 
 const initialSignonState: SignonState = {
@@ -58,7 +60,8 @@ const initialSignonState: SignonState = {
     usersToFollow: []
   },
   finalEmail: '',
-  finalHandle: ''
+  finalHandle: '',
+  isKeyboardVisible: false
 }
 
 const reducer = (
@@ -168,6 +171,11 @@ const reducer = (
       return {
         ...state,
         userId: action.userId
+      }
+    case SET_KEYBOARD_VISIBLE:
+      return {
+        ...state,
+        isKeyboardVisible: action.visible
       }
     case RESET_SIGNON_STATE:
       return {

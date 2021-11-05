@@ -8,6 +8,7 @@ import {
   Image,
   ImageBackground,
   Keyboard,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -33,12 +34,14 @@ import {
   getEmailIsAvailable,
   getEmailIsValid,
   getEmailStatus,
+  getIsKeyboardVisible,
   getIsSigninError
 } from '../../store/signon/selectors'
 import { EventNames } from '../../types/analytics'
 import { make, track } from '../../utils/analytics'
 import { RootStackParamList } from './NavigationStack'
 
+const isAndroid = Platform.OS === 'android'
 const image = backgImage
 const windowWidth = Dimensions.get('window').width
 const defaultBorderColor = '#F2F2F4'
@@ -321,6 +324,7 @@ const SignOn = ({ navigation }: SignOnProps) => {
   const emailIsAvailable = useSelector(getEmailIsAvailable)
   const emailIsValid = useSelector(getEmailIsValid)
   const emailStatus = useSelector(getEmailStatus)
+  const isKeyboardVisible = useSelector(getIsKeyboardVisible)
 
   const setPushNotificationsReminderVisible = useCallback(
     (visible: boolean) =>
@@ -723,6 +727,10 @@ const SignOn = ({ navigation }: SignOnProps) => {
         >
           {Dimensions.get('window').height < 720 ? (
             <></>
+          ) : isAndroid && isKeyboardVisible ? (
+            // on android, if keyboard is showing and user is navigating away to the next screen
+            // the image below shows up above the keyboard and causes a weird transition */
+            <View style={styles.signupCTAContainer} />
           ) : (
             <View style={styles.signupCTAContainer}>
               <Image source={signupCTA} style={styles.signupCTA} />

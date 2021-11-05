@@ -26,6 +26,8 @@ export const getAccountAvailable = (state: AppState) =>
 export const getFinalEmail = (state: AppState) => getBaseState(state).finalEmail
 export const getFinalHandle = (state: AppState) =>
   getBaseState(state).finalHandle
+export const getIsKeyboardVisible = (state: AppState) =>
+  getBaseState(state).isKeyboardVisible
 
 const getSuggestedFollowIds = (state: AppState) => {
   const { selectedCategory, categories } = getBaseState(state).followArtists
