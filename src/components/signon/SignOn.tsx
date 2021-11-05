@@ -322,8 +322,11 @@ const SignOn = ({ navigation }: SignOnProps) => {
   const emailIsValid = useSelector(getEmailIsValid)
   const emailStatus = useSelector(getEmailStatus)
 
-  const setPushNotificationsReminderVisible = (visible: boolean) =>
-    dispatch(setVisibility({ drawer: 'EnablePushNotifications', visible }))
+  const setPushNotificationsReminderVisible = useCallback(
+    (visible: boolean) =>
+      dispatch(setVisibility({ drawer: 'EnablePushNotifications', visible })),
+    [dispatch]
+  )
 
   const topDrawer = useRef(new Animated.Value(-800)).current
   const animateDrawer = useCallback(() => {
