@@ -198,7 +198,7 @@ const styles = StyleSheet.create({
     height: 32,
     width: '100%',
     alignItems: 'center',
-    margin: 38
+    marginTop: 38
   },
   switchFormBtnTitle: {
     color: 'white',
