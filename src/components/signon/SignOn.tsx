@@ -366,11 +366,9 @@ const SignOn = ({ navigation }: SignOnProps) => {
       setEmail('')
       setPassword('')
 
-      if (isSignin) {
-        remindUserToTurnOnNotifications(setPushNotificationsReminderVisible)
-      }
+      remindUserToTurnOnNotifications(setPushNotificationsReminderVisible)
     }
-  }, [signedIn, isSignin])
+  }, [signedIn, setPushNotificationsReminderVisible])
 
   useEffect(() => {
     if (dappLoaded) {
