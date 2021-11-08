@@ -118,8 +118,7 @@ const styles = StyleSheet.create({
     color: '#7E1BCC',
     fontSize: 14,
     lineHeight: 16,
-    fontFamily: 'AvenirNextLTPro-Regular',
-    fontWeight: '600',
+    fontFamily: 'AvenirNextLTPro-DemiBold',
     textAlign: 'center',
     paddingTop: 3,
     paddingBottom: 3
@@ -692,7 +691,6 @@ const SignOn = ({ navigation }: SignOnProps) => {
               autoCapitalize='none'
               enablesReturnKeyAutomatically={true}
               maxLength={100}
-              value={email}
               textContentType='emailAddress'
               onChangeText={newText => {
                 setShowDefaultError(false)
