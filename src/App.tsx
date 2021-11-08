@@ -20,6 +20,7 @@ import SignOnNav from './components/signon/NavigationStack'
 import { WebRefContextProvider } from './components/web/WebRef'
 import BottomBar from './components/bottom-bar'
 import MobileUploadDrawer from './components/mobile-upload-drawer'
+import OverflowMenuDrawer from './components/overflow-menu-drawer'
 import EnablePushNotificationsDrawer from './components/enable-push-notifications-drawer'
 import CollectibleDetailsDrawer from './components/collectible-details-drawer'
 
@@ -33,6 +34,17 @@ const Airplay = Platform.select({
 
 // Increment the session count when the App.tsx code is first run
 incrementSessionCount()
+
+const Drawers = () => {
+  return (
+    <>
+      <MobileUploadDrawer />
+      <EnablePushNotificationsDrawer />
+      <CollectibleDetailsDrawer />
+      <OverflowMenuDrawer />
+    </>
+  )
+}
 
 const App = () => {
   // Track the web view as a top-level ref so that any children can use it
@@ -72,9 +84,7 @@ const App = () => {
             Commenting out BottomBar until the drawers and overlays are migrated to RN
           */}
             {/* <BottomBar /> */}
-            <MobileUploadDrawer />
-            <EnablePushNotificationsDrawer />
-            <CollectibleDetailsDrawer />
+            <Drawers />
             <Audio webRef={webRef} />
             <OAuth webRef={webRef} />
             <Airplay webRef={webRef} />
