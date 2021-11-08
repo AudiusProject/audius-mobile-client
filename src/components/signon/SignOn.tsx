@@ -18,6 +18,7 @@ import {
 } from 'react-native'
 import RadialGradient from 'react-native-radial-gradient'
 import { useDispatch, useSelector } from 'react-redux'
+import { getIsKeyboardOpen } from '../../store/keyboard/selectors'
 import backgImage from '../../assets/images/DJportrait.jpg'
 import audiusLogoHorizontal from '../../assets/images/Horizontal-Logo-Full-Color.png'
 import IconArrow from '../../assets/images/iconArrow.svg'
@@ -34,7 +35,6 @@ import {
   getEmailIsAvailable,
   getEmailIsValid,
   getEmailStatus,
-  getIsKeyboardVisible,
   getIsSigninError
 } from '../../store/signon/selectors'
 import { EventNames } from '../../types/analytics'
@@ -323,7 +323,7 @@ const SignOn = ({ navigation }: SignOnProps) => {
   const emailIsAvailable = useSelector(getEmailIsAvailable)
   const emailIsValid = useSelector(getEmailIsValid)
   const emailStatus = useSelector(getEmailStatus)
-  const isKeyboardVisible = useSelector(getIsKeyboardVisible)
+  const isKeyboardOpen = useSelector(getIsKeyboardOpen)
 
   const setPushNotificationsReminderVisible = useCallback(
     (visible: boolean) =>
@@ -725,7 +725,7 @@ const SignOn = ({ navigation }: SignOnProps) => {
         >
           {Dimensions.get('window').height < 720 ? (
             <></>
-          ) : isAndroid && isKeyboardVisible ? (
+          ) : isAndroid && isKeyboardOpen ? (
             // on android, if keyboard is showing and user is navigating away to the next screen
             // the image below shows up above the keyboard and causes a weird transition */
             <View style={styles.signupCTAContainer} />

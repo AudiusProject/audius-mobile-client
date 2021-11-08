@@ -18,7 +18,6 @@ export const SET_FOLLOWED_ARTISTS = 'SIGN_ON/SET_FOLLOWED_ARTISTS'
 export const SET_USERS_TO_FOLLOW = 'SIGN_ON/SET_USERS_TO_FOLLOW'
 export const SET_ACCOUNT_AVAILABLE = 'SIGN_ON/SET_ACCOUNT_AVAILABLE'
 export const SIGN_UP_SUCCEEDED = 'SIGN_ON/SIGN_UP_SUCCEEDED'
-export const SET_KEYBOARD_VISIBLE = 'SIGN_ON/SET_KEYBOARD_VISIBLE'
 export const RESET_SIGNON_STATE = 'SIGN_ON/RESET_SIGNON_STATE'
 
 type SignupFieldStatusType = 'editing' | 'done'
@@ -100,11 +99,6 @@ type SignupSuceededAction = {
   userId: number | null
 }
 
-type SetKeyboardVisibleAction = {
-  type: typeof SET_KEYBOARD_VISIBLE
-  visible: boolean
-}
-
 type ResetSignonStateAction = {
   type: typeof RESET_SIGNON_STATE
 }
@@ -125,7 +119,6 @@ export type SignonActions =
   | SignupSuceededAction
   | SetUsersToFollowAction
   | SetAccountAvailableAction
-  | SetKeyboardVisibleAction
   | ResetSignonStateAction
 
 export const signinFailed = (error: string): SigninFailedAction => ({
@@ -213,12 +206,6 @@ export const setAccountAvailable = (
 export const signupSuceeded = (userId: number): SignupSuceededAction => ({
   type: SIGN_UP_SUCCEEDED,
   userId
-})
-export const setKeyboardVisible = (
-  visible: boolean
-): SetKeyboardVisibleAction => ({
-  type: SET_KEYBOARD_VISIBLE,
-  visible
 })
 export const resetSignonState = (): ResetSignonStateAction => ({
   type: RESET_SIGNON_STATE

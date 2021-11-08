@@ -17,8 +17,7 @@ import {
   RESET_SIGNON_STATE,
   SignupHandleStatusType,
   SET_EMAIL_STATUS,
-  SignupEmailStatusType,
-  SET_KEYBOARD_VISIBLE
+  SignupEmailStatusType
 } from './actions'
 import { FollowArtistsCategory } from './types'
 
@@ -171,11 +170,6 @@ const reducer = (
       return {
         ...state,
         userId: action.userId
-      }
-    case SET_KEYBOARD_VISIBLE:
-      return {
-        ...state,
-        isKeyboardVisible: action.visible
       }
     case RESET_SIGNON_STATE:
       return {
