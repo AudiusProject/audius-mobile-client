@@ -73,6 +73,7 @@ const createStyles = (themeColors: ThemeColors) =>
       flexDirection: 'column',
       justifyContent: 'space-evenly',
       alignItems: 'center',
+      padding: 16,
       paddingTop: 32,
       paddingBottom: 64
     },

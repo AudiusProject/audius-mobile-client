@@ -23,8 +23,6 @@ import { useColor } from '../../utils/theme'
 import { ThemeColors, useThemedStyles } from '../../hooks/useThemedStyles'
 
 const MAX_SHADOW_OPACITY = 0.4
-const ON_MOVE_RESPONDER_DX = 20
-const ON_MOVE_RESPONDER_DY = 10
 const MOVE_CUTOFF_CLOSE = 0.8
 const BORDER_RADIUS = 40
 
@@ -46,19 +44,15 @@ const createStyles = (themeColors: ThemeColors) =>
       borderTopLeftRadius: BORDER_RADIUS
     },
 
-    drawerContent: {
-      padding: 24
-    },
-
     fullDrawer: {
       top: 0,
       height: '100%'
     },
 
     dismissContainer: {
-      position: 'absolute',
-      top: 16,
-      left: 16
+      marginLeft: 24,
+      marginTop: 24,
+      width: 30
     },
 
     isOpen: {
@@ -165,13 +159,7 @@ const Drawer = ({ isOpen, children, onClose, isFullscreen }: DrawerProps) => {
   }, [slideIn, slideOut, isOpen])
 
   const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: () => true,
-    onMoveShouldSetPanResponder: (e, gestureState) => {
-      return (
-        Math.abs(gestureState.dx) > ON_MOVE_RESPONDER_DX &&
-        Math.abs(gestureState.dy) < ON_MOVE_RESPONDER_DY
-      )
-    },
+    onMoveShouldSetPanResponder: () => true,
     onPanResponderMove: (e, gestureState) => {
       if (isOpen) {
         if (gestureState.dy > 0) {
@@ -242,28 +230,26 @@ const Drawer = ({ isOpen, children, onClose, isFullscreen }: DrawerProps) => {
             }
           ]}
         >
-          <View style={styles.drawerContent}>
-            <SafeAreaView
-              edges={['bottom', ...((isFullscreen ? ['top'] : []) as Edge[])]}
-              onLayout={(event: LayoutChangeEvent) => {
-                if (!isFullscreen) {
-                  const { height } = event.nativeEvent.layout
-                  setDrawerHeight(height)
-                }
-              }}
-            >
-              {isFullscreen && (
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  onPress={onClose}
-                  style={{ marginBottom: 8, width: 30 }}
-                >
-                  <IconRemove width={30} height={30} fill={closeColor} />
-                </TouchableOpacity>
-              )}
-              {children}
-            </SafeAreaView>
-          </View>
+          <SafeAreaView
+            edges={['bottom', ...((isFullscreen ? ['top'] : []) as Edge[])]}
+            onLayout={(event: LayoutChangeEvent) => {
+              if (!isFullscreen) {
+                const { height } = event.nativeEvent.layout
+                setDrawerHeight(height)
+              }
+            }}
+          >
+            {isFullscreen && (
+              <TouchableOpacity
+                activeOpacity={0.7}
+                onPress={onClose}
+                style={styles.dismissContainer}
+              >
+                <IconRemove width={30} height={30} fill={closeColor} />
+              </TouchableOpacity>
+            )}
+            {children}
+          </SafeAreaView>
           <View style={styles.skirt} />
         </Animated.View>
       </>

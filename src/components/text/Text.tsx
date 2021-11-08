@@ -6,6 +6,7 @@ import { useThemeColors } from '../../utils/theme'
 const fontByWeight = {
   heavy: 'AvenirNextLTPro-Heavy',
   bold: 'AvenirNextLTPro-Bold',
+  demiBold: 'AvenirNextLTPro-DemiBold',
   medium: 'AvenirNextLTPro-Medium',
   regular: 'AvenirNextLTPro-Regular',
   light: 'AvenirNextLTPro-Light',
