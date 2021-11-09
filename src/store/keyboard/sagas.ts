@@ -1,4 +1,4 @@
-import { fork, put, take } from 'redux-saga/effects'
+import { put, take } from 'redux-saga/effects'
 import { Keyboard } from 'react-native'
 
 import { open, close } from './slice'
@@ -15,16 +15,14 @@ function* initKeyboardEvents() {
     return () => {}
   })
 
-  yield fork(function* () {
-    while (true) {
-      const keyboardAction = yield take(keyboardChannel)
-      if (keyboardAction === 'show') {
-        yield put(open())
-      } else if (keyboardAction === 'hide') {
-        yield put(close())
-      }
+  while (true) {
+    const keyboardAction = yield take(keyboardChannel)
+    if (keyboardAction === 'show') {
+      yield put(open())
+    } else if (keyboardAction === 'hide') {
+      yield put(close())
     }
-  })
+  }
 }
 
 export default initKeyboardEvents

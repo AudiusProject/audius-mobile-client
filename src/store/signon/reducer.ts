@@ -39,7 +39,6 @@ export type SignonState = {
   }
   finalEmail: string
   finalHandle: string
-  isKeyboardVisible: boolean
 }
 
 const initialSignonState: SignonState = {
@@ -59,8 +58,7 @@ const initialSignonState: SignonState = {
     usersToFollow: []
   },
   finalEmail: '',
-  finalHandle: '',
-  isKeyboardVisible: false
+  finalHandle: ''
 }
 
 const reducer = (
