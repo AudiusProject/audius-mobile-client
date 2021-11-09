@@ -75,8 +75,8 @@ const ActionDrawer = ({
 }: ActionSheetModalProps) => {
   const didSelectRow = (index: number) => {
     const { action } = rows[index]
-    callbacks?.[action]?.()
     onClose()
+    callbacks?.[action]?.()
   }
   const styles = useThemedStyles(createStyles)
 
