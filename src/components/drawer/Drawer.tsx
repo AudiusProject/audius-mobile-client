@@ -23,6 +23,7 @@ import { useColor } from '../../utils/theme'
 import { ThemeColors, useThemedStyles } from '../../hooks/useThemedStyles'
 
 const MAX_SHADOW_OPACITY = 0.4
+const ON_MOVE_RESPONDER_DY = 10
 const MOVE_CUTOFF_CLOSE = 0.8
 const BORDER_RADIUS = 40
 const BACKGROUND_OPACITY = 0.5
@@ -173,7 +174,9 @@ const Drawer = ({ isOpen, children, onClose, isFullscreen }: DrawerProps) => {
   }, [slideIn, slideOut, isOpen])
 
   const panResponder = PanResponder.create({
-    onMoveShouldSetPanResponder: () => true,
+    onMoveShouldSetPanResponder: (e, gestureState) => {
+      return Math.abs(gestureState.dy) > ON_MOVE_RESPONDER_DY
+    },
     onPanResponderMove: (e, gestureState) => {
       if (isOpen) {
         if (gestureState.dy > 0) {

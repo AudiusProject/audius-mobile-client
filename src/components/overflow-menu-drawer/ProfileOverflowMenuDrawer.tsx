@@ -38,9 +38,9 @@ const ProfileOverflowMenuDrawer = ({ render }: Props) => {
   }
 
   const callbacks = {
-    [OverflowAction.FOLLOW_ARTIST]: () =>
+    [OverflowAction.FOLLOW]: () =>
       dispatchWeb(followUser(id, FollowSource.OVERFLOW)),
-    [OverflowAction.UNFOLLOW_ARTIST]: () =>
+    [OverflowAction.UNFOLLOW]: () =>
       dispatchWeb(unfollowUser(id, FollowSource.OVERFLOW)),
     [OverflowAction.SHARE]: () =>
       dispatchWeb(shareUser(id as ID, ShareSource.OVERFLOW))
