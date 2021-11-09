@@ -9,6 +9,7 @@ import {
   Image,
   ImageBackground,
   Keyboard,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -28,6 +29,7 @@ import Button from 'app/components/button'
 import { remindUserToTurnOnNotifications } from 'app/components/notification-reminder/NotificationReminder'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { MessageType } from 'app/message/types'
+import { getIsKeyboardOpen } from 'app/store/keyboard/selectors'
 import { getIsSignedIn, getDappLoaded } from 'app/store/lifecycle/selectors'
 import * as signonActions from 'app/store/signon/actions'
 import {
@@ -41,6 +43,7 @@ import { track, make } from 'app/utils/analytics'
 
 import { RootStackParamList } from './NavigationStack'
 
+const isAndroid = Platform.OS === 'android'
 const image = backgImage
 const windowWidth = Dimensions.get('window').width
 const defaultBorderColor = '#F2F2F4'
@@ -117,8 +120,7 @@ const styles = StyleSheet.create({
     color: '#7E1BCC',
     fontSize: 14,
     lineHeight: 16,
-    fontFamily: 'AvenirNextLTPro-Regular',
-    fontWeight: '600',
+    fontFamily: 'AvenirNextLTPro-DemiBold',
     textAlign: 'center',
     paddingTop: 3,
     paddingBottom: 3
@@ -200,7 +202,7 @@ const styles = StyleSheet.create({
     height: 32,
     width: '100%',
     alignItems: 'center',
-    margin: 38
+    marginTop: 38
   },
   switchFormBtnTitle: {
     color: 'white',
@@ -323,6 +325,7 @@ const SignOn = ({ navigation }: SignOnProps) => {
   const emailIsAvailable = useSelector(getEmailIsAvailable)
   const emailIsValid = useSelector(getEmailIsValid)
   const emailStatus = useSelector(getEmailStatus)
+  const isKeyboardOpen = useSelector(getIsKeyboardOpen)
 
   const topDrawer = useRef(new Animated.Value(-800)).current
   const animateDrawer = useCallback(() => {
@@ -365,11 +368,9 @@ const SignOn = ({ navigation }: SignOnProps) => {
       setEmail('')
       setPassword('')
 
-      if (isSignin) {
-        remindUserToTurnOnNotifications(dispatch)
-      }
+      remindUserToTurnOnNotifications(dispatch)
     }
-  }, [signedIn, isSignin, dispatch])
+  }, [signedIn, dispatch])
 
   useEffect(() => {
     if (dappLoaded) {
@@ -686,7 +687,6 @@ const SignOn = ({ navigation }: SignOnProps) => {
               autoCapitalize='none'
               enablesReturnKeyAutomatically={true}
               maxLength={100}
-              value={email}
               textContentType='emailAddress'
               onChangeText={newText => {
                 setShowDefaultError(false)
@@ -721,6 +721,10 @@ const SignOn = ({ navigation }: SignOnProps) => {
         >
           {Dimensions.get('window').height < 720 ? (
             <></>
+          ) : isAndroid && isKeyboardOpen ? (
+            // on android, if keyboard is showing and user is navigating away to the next screen
+            // the image below shows up above the keyboard and causes a weird transition */
+            <View style={styles.signupCTAContainer} />
           ) : (
             <View style={styles.signupCTAContainer}>
               <Image source={signupCTA} style={styles.signupCTA} />

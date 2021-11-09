@@ -7,7 +7,7 @@ import audio, { AudioState } from './audio/reducer'
 import clientStore from './clientStore/slice'
 import drawers, { DrawersState } from './drawers/slice'
 import googleCast, { GoogleCastState } from './googleCast/reducer'
-import { KeyboardState } from './keyboard/slice'
+import keyboard, { KeyboardState } from './keyboard/slice'
 import lifecycle, { LifecycleState } from './lifecycle/reducer'
 import notifications, { NotificationsState } from './notifications/reducer'
 import oauth, { OAuthState } from './oauth/reducer'
@@ -38,6 +38,7 @@ const createRootReducer = () =>
     clientStore,
     drawers,
     googleCast,
+    keyboard,
     lifecycle,
     notifications,
     oauth,

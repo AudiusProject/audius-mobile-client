@@ -3,8 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { View, StyleSheet } from 'react-native'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
+import { remindUserToTurnOnNotifications } from 'app/components/notification-reminder/NotificationReminder'
 import {
   getDappLoaded,
   getIsSignedIn,
@@ -63,6 +64,8 @@ const styles = StyleSheet.create({
 const Stack = createNativeStackNavigator()
 
 const SignOnNav = () => {
+  const dispatch = useDispatch()
+
   const dappLoaded = useSelector(getDappLoaded)
   const signedIn = useSelector(getIsSignedIn)
   const onSignUp = useSelector(getOnSignUp)
@@ -89,8 +92,9 @@ const SignOnNav = () => {
           handle: finalHandle
         })
       )
+      remindUserToTurnOnNotifications(dispatch)
     }
-  }, [onSignUp, isAccountAvailable, finalEmail, finalHandle])
+  }, [onSignUp, isAccountAvailable, finalEmail, finalHandle, dispatch])
 
   const screenProps = [
     {

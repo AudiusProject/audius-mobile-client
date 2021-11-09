@@ -293,7 +293,7 @@ const Notifications = ({
 
   const panProps = canShowNotifications ? panResponder.panHandlers : {}
 
-  return (
+  return isSignedIn ? (
     <>
       {/* animated drawer */}
       <Animated.View
@@ -330,7 +330,7 @@ const Notifications = ({
         ]}
       />
     </>
-  )
+  ) : null
 }
 
 const mapStateToProps = (state: AppState) => ({

@@ -10,7 +10,6 @@ import {
   Text,
   View,
   TextInput,
-  TouchableOpacity,
   Dimensions,
   TouchableWithoutFeedback,
   Keyboard,
@@ -36,7 +35,6 @@ import { track, make } from 'app/utils/analytics'
 import { RootStackParamList } from './NavigationStack'
 import SignupHeader from './SignupHeader'
 
-const isIos = Platform.OS === 'ios'
 const defaultBorderColor = '#F2F2F4'
 const purpleBorderColor = '#7E1BCC'
 const errorBorderColor = '#E03D51'
@@ -143,7 +141,6 @@ const styles = StyleSheet.create({
     fontFamily: 'AvenirNextLTPro-Regular'
   },
   clickable: {
-    marginTop: isIos ? 24.5 : 30,
     color: '#CC0FE0'
   }
 })
@@ -573,27 +570,19 @@ const CreatePassword = ({ navigation, route }: CreatePasswordProps) => {
                     <Text style={styles.termsText}>
                       {messages.termsAndPrivacy}
                     </Text>
-                    <TouchableOpacity
-                      activeOpacity={0.6}
+                    <Text
+                      style={{ ...styles.termsText, ...styles.clickable }}
                       onPress={onTermsOfUse}
                     >
-                      <Text
-                        style={{ ...styles.termsText, ...styles.clickable }}
-                      >
-                        &nbsp;{messages.terms}
-                      </Text>
-                    </TouchableOpacity>
-                    <Text style={styles.termsText}> {messages.and}</Text>
-                    <TouchableOpacity
-                      activeOpacity={0.6}
+                      &nbsp;{messages.terms}
+                    </Text>
+                    <Text style={styles.termsText}>&nbsp;{messages.and}</Text>
+                    <Text
+                      style={{ ...styles.termsText, ...styles.clickable }}
                       onPress={onPrivacyPolicy}
                     >
-                      <Text
-                        style={{ ...styles.termsText, ...styles.clickable }}
-                      >
-                        &nbsp;{messages.privacy}
-                      </Text>
-                    </TouchableOpacity>
+                      &nbsp;{messages.privacy}
+                    </Text>
                   </Text>
                   <ContinueButton isWorking={isWorking} />
                 </View>
