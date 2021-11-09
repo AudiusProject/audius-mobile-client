@@ -119,6 +119,7 @@ const Drawer = ({ isOpen, children, onClose, isFullscreen }: DrawerProps) => {
 
   const { height } = Dimensions.get('window')
   const [drawerHeight, setDrawerHeight] = useState(height)
+  // isBackgroundVisible will be true until the close animation finishes
   const [isBackgroundVisible, setIsBackgroundVisible] = useState(false)
   const initialPosition = height
   const openPosition = height - drawerHeight
@@ -221,23 +222,34 @@ const Drawer = ({ isOpen, children, onClose, isFullscreen }: DrawerProps) => {
     outputRange: [0, 0, 1, BORDER_RADIUS]
   })
 
+  const renderBackground = () => {
+    const renderBackgroundView = (options?: { pointerEvents: string }) => (
+      <Animated.View
+        pointerEvents={options?.pointerEvents}
+        style={[styles.background, { opacity: backgroundOpacityAnim }]}
+      />
+    )
+    // The background should be visible and touchable when the drawer is open
+    if (isOpen) {
+      return (
+        <TouchableWithoutFeedback onPress={onClose}>
+          {renderBackgroundView()}
+        </TouchableWithoutFeedback>
+      )
+    }
+
+    // The background should be visible and not touchable as the drawer is closing
+    // (isOpen is false but isBackgroundVisible is true)
+    // This is to prevent blocking touches as the drawer is closing
+    if (isBackgroundVisible) {
+      return renderBackgroundView({ pointerEvents: 'none' })
+    }
+  }
+
   return (
     <Portal>
       <>
-        {isOpen ? (
-          <TouchableWithoutFeedback onPress={onClose}>
-            <Animated.View
-              style={[styles.background, { opacity: backgroundOpacityAnim }]}
-            />
-          </TouchableWithoutFeedback>
-        ) : (
-          isBackgroundVisible && (
-            <Animated.View
-              pointerEvents='none'
-              style={[styles.background, { opacity: backgroundOpacityAnim }]}
-            />
-          )
-        )}
+        {renderBackground()}
         <Animated.View
           {...panResponder.panHandlers}
           style={[
