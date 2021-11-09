@@ -10,6 +10,7 @@ import { close } from 'audius-client/src/common/store/ui/mobile-overflow-menu/ac
 import { useSelectorWeb } from '../../hooks/useSelectorWeb'
 import { useDispatchWeb } from '../../hooks/useDispatchWeb'
 import TrackOverflowMenuDrawer from './TrackOverflowMenuDrawer'
+import CollectionOverflowMenuDrawer from './CollectionOverflowMenuDrawer'
 import ActionDrawer from '../action-drawer/ActionDrawer'
 
 const rowMessageMap = {
@@ -50,7 +51,8 @@ const OverflowMenuDrawer = () => {
 
   const OverflowDrawerComponent =
     {
-      [OverflowSource.TRACKS]: TrackOverflowMenuDrawer
+      [OverflowSource.TRACKS]: TrackOverflowMenuDrawer,
+      [OverflowSource.COLLECTIONS]: CollectionOverflowMenuDrawer
     }[source] ?? TrackOverflowMenuDrawer
 
   const rows = (overflowActions ?? []).map(action => ({
