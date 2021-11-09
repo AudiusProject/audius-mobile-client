@@ -11,6 +11,7 @@ import { useSelectorWeb } from '../../hooks/useSelectorWeb'
 import { useDispatchWeb } from '../../hooks/useDispatchWeb'
 import TrackOverflowMenuDrawer from './TrackOverflowMenuDrawer'
 import CollectionOverflowMenuDrawer from './CollectionOverflowMenuDrawer'
+import ProfileOverflowMenuDrawer from './ProfileOverflowMenuDrawer'
 import ActionDrawer from '../action-drawer/ActionDrawer'
 
 const rowMessageMap = {
@@ -52,7 +53,9 @@ const OverflowMenuDrawer = () => {
   const OverflowDrawerComponent =
     {
       [OverflowSource.TRACKS]: TrackOverflowMenuDrawer,
-      [OverflowSource.COLLECTIONS]: CollectionOverflowMenuDrawer
+      [OverflowSource.COLLECTIONS]: CollectionOverflowMenuDrawer,
+      // No case for NOTIFICATIONS because there currently isn't an overflow menu on notifications
+      [OverflowSource.PROFILE]: ProfileOverflowMenuDrawer
     }[source] ?? TrackOverflowMenuDrawer
 
   const rows = (overflowActions ?? []).map(action => ({

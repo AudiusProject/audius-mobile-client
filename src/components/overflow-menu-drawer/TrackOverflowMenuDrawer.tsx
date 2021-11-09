@@ -80,7 +80,7 @@ const TrackOverflowMenuDrawer = ({ render }: Props) => {
       dispatchWeb(push(profilePage(handle))),
     [OverflowAction.FOLLOW_ARTIST]: () =>
       dispatchWeb(followUser(owner_id, FollowSource.OVERFLOW)),
-    [OverflowAction.FOLLOW_ARTIST]: () =>
+    [OverflowAction.UNFOLLOW_ARTIST]: () =>
       dispatchWeb(unfollowUser(owner_id, FollowSource.OVERFLOW))
   }
 
