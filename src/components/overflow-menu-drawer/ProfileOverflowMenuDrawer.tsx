@@ -1,26 +1,25 @@
 import React from 'react'
 
-import { getMobileOverflowModal } from 'audius-client/src/common/store/ui/mobile-overflow-menu/selectors'
-
-import { CommonState } from 'audius-client/src/common/store'
-import { ID } from 'audius-client/src/common/models/Identifiers'
-import { getUser } from 'audius-client/src/common/store/cache/users/selectors'
-import {
-  OverflowAction,
-  OverflowActionCallbacks
-} from 'audius-client/src/common/store/ui/mobile-overflow-menu/types'
 import {
   FollowSource,
   ShareSource
 } from 'audius-client/src/common/models/Analytics'
+import { ID } from 'audius-client/src/common/models/Identifiers'
+import { CommonState } from 'audius-client/src/common/store'
+import { getUser } from 'audius-client/src/common/store/cache/users/selectors'
 import {
   followUser,
   unfollowUser,
   shareUser
 } from 'audius-client/src/common/store/social/users/actions'
+import { getMobileOverflowModal } from 'audius-client/src/common/store/ui/mobile-overflow-menu/selectors'
+import {
+  OverflowAction,
+  OverflowActionCallbacks
+} from 'audius-client/src/common/store/ui/mobile-overflow-menu/types'
 
-import { useDispatchWeb } from '../../hooks/useDispatchWeb'
-import { useSelectorWeb } from '../../hooks/useSelectorWeb'
+import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
+import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 
 type Props = {
   render: (callbacks: OverflowActionCallbacks) => React.ReactNode
@@ -28,9 +27,10 @@ type Props = {
 
 const ProfileOverflowMenuDrawer = ({ render }: Props) => {
   const dispatchWeb = useDispatchWeb()
-  const { id } = useSelectorWeb(getMobileOverflowModal)
+  const { id: modalId } = useSelectorWeb(getMobileOverflowModal)
+  const id = modalId as ID
   const { handle, name } = useSelectorWeb((state: CommonState) =>
-    getUser(state, { id })
+    getUser(state, { id: id })
   )
 
   if (!id || !handle || !name) {
@@ -43,7 +43,7 @@ const ProfileOverflowMenuDrawer = ({ render }: Props) => {
     [OverflowAction.UNFOLLOW]: () =>
       dispatchWeb(unfollowUser(id, FollowSource.OVERFLOW)),
     [OverflowAction.SHARE]: () =>
-      dispatchWeb(shareUser(id as ID, ShareSource.OVERFLOW))
+      dispatchWeb(shareUser(id, ShareSource.OVERFLOW))
   }
 
   return render(callbacks)

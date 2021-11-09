@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react'
+
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import LottieView from 'lottie-react-native'
 import {
   Animated,
   StyleSheet,
@@ -13,10 +16,6 @@ import {
   Alert,
   ScrollView
 } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import { useDispatch, useSelector } from 'react-redux'
-import { useDispatchWeb } from '../../hooks/useDispatchWeb'
-import LottieView from 'lottie-react-native'
 import {
   Asset,
   Callback,
@@ -24,23 +23,26 @@ import {
   launchCamera,
   launchImageLibrary
 } from 'react-native-image-picker'
-import { MessageType } from '../../message/types'
-import SignupHeader from './SignupHeader'
-import PhotoButton from './PhotoButton'
-import ProfileImage from './ProfileImage'
-import * as signonActions from '../../store/signon/actions'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import { useDispatch, useSelector } from 'react-redux'
 
-import IconArrow from '../../assets/images/iconArrow.svg'
-import ValidationIconX from '../../assets/images/iconValidationX.svg'
+import IconArrow from 'app/assets/images/iconArrow.svg'
+import ValidationIconX from 'app/assets/images/iconValidationX.svg'
+import Button from 'app/components/button'
+import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
+import { MessageType } from 'app/message/types'
+import * as signonActions from 'app/store/signon/actions'
 import {
   getHandleIsValid,
   getHandleError,
   getHandleStatus
-} from '../../store/signon/selectors'
-import { NativeStackScreenProps } from '@react-navigation/native-stack'
+} from 'app/store/signon/selectors'
+import { useColor } from 'app/utils/theme'
+
 import { RootStackParamList } from './NavigationStack'
-import { useColor } from '../../utils/theme'
-import Button from '../../components/button'
+import PhotoButton from './PhotoButton'
+import ProfileImage from './ProfileImage'
+import SignupHeader from './SignupHeader'
 
 const defaultBorderColor = '#F2F2F4'
 
@@ -121,7 +123,8 @@ const styles = StyleSheet.create({
     borderRadius: 4
   },
   buttonContainer: {
-    width: '100%'
+    width: '100%',
+    marginTop: 16
   },
   button: {
     padding: 12
@@ -228,7 +231,7 @@ const ContinueButton = ({
         isWorking ? (
           <View style={styles.loadingIcon}>
             <LottieView
-              source={require('../../assets/animations/loadingSpinner.json')}
+              source={require('app/assets/animations/loadingSpinner.json')}
               autoPlay
               loop
             />
@@ -241,7 +244,7 @@ const ContinueButton = ({
   )
 }
 
-let handleTimeout = 0
+let handleTimeout: NodeJS.Timeout
 const HANDLE_VALIDATION_IN_PROGRESS_DELAY_MS = 1000
 
 export type ProfileManualProps = NativeStackScreenProps<
@@ -320,7 +323,7 @@ const ProfileManual = ({ navigation, route }: ProfileManualProps) => {
       <View style={styles.photoLoadingIconContainer}>
         <LottieView
           style={styles.photoLoadingIcon}
-          source={require('../../assets/animations/loadingSpinner.json')}
+          source={require('app/assets/animations/loadingSpinner.json')}
           autoPlay
           loop
           colorFilters={[
@@ -515,101 +518,100 @@ const ProfileManual = ({ navigation, route }: ProfileManualProps) => {
             <TouchableWithoutFeedback
               onPress={Keyboard.dismiss}
               accessible={false}
+              style={styles.container}
             >
-              <View style={styles.container}>
-                <View style={styles.containerForm}>
-                  <FormTitle />
-                  <View style={styles.profilePicContainer}>
-                    <ProfileImage
-                      isPhotoLoading={isPhotoLoading}
-                      setIsPhotoLoading={setIsPhotoLoading}
-                      imageSet={imageSet}
-                      photoBtnIsHidden={photoBtnIsHidden}
-                      setPhotoBtnIsHidden={setPhotoBtnIsHidden}
-                      profileImage={profileImage}
-                    />
-                    <PhotoButton
-                      imageSet={imageSet}
-                      photoBtnIsHidden={photoBtnIsHidden}
-                      doAction={openPhotoMenu}
-                    />
-                    <LoadingPhoto />
-                  </View>
+              <View style={styles.containerForm}>
+                <FormTitle />
+                <View style={styles.profilePicContainer}>
+                  <ProfileImage
+                    isPhotoLoading={isPhotoLoading}
+                    setIsPhotoLoading={setIsPhotoLoading}
+                    imageSet={imageSet}
+                    photoBtnIsHidden={photoBtnIsHidden}
+                    setPhotoBtnIsHidden={setPhotoBtnIsHidden}
+                    profileImage={profileImage}
+                  />
+                  <PhotoButton
+                    imageSet={imageSet}
+                    photoBtnIsHidden={photoBtnIsHidden}
+                    doAction={openPhotoMenu}
+                  />
+                  <LoadingPhoto />
+                </View>
+                <TextInput
+                  style={[styles.input, { borderColor: nameBorderColor }]}
+                  placeholderTextColor='#C2C0CC'
+                  underlineColorAndroid='transparent'
+                  placeholder='Display Name'
+                  keyboardType='default'
+                  autoCompleteType='off'
+                  autoCorrect={false}
+                  autoCapitalize='words'
+                  enablesReturnKeyAutomatically={true}
+                  maxLength={32}
+                  textContentType='name'
+                  value={name}
+                  onChangeText={newText => {
+                    setName(newText)
+                  }}
+                  onFocus={() => {
+                    setNameBorderColor('#7E1BCC')
+                  }}
+                  onBlur={() => {
+                    setNameBorderColor(defaultBorderColor)
+                  }}
+                />
+
+                <View
+                  style={[
+                    styles.handleInputContainer,
+                    { borderColor: handleBorderColor }
+                  ]}
+                >
+                  <Text style={styles.atLabel}>@</Text>
                   <TextInput
-                    style={[styles.input, { borderColor: nameBorderColor }]}
+                    style={styles.handleInput}
                     placeholderTextColor='#C2C0CC'
                     underlineColorAndroid='transparent'
-                    placeholder='Display Name'
-                    keyboardType='default'
+                    placeholder='Handle'
+                    keyboardType='email-address'
                     autoCompleteType='off'
                     autoCorrect={false}
-                    autoCapitalize='words'
+                    autoCapitalize='none'
                     enablesReturnKeyAutomatically={true}
-                    maxLength={32}
-                    textContentType='name'
-                    value={name}
+                    maxLength={16}
+                    textContentType='nickname'
+                    value={handle}
                     onChangeText={newText => {
-                      setName(newText)
+                      clearTimeout(handleTimeout)
+                      handleTimeout = setTimeout(() => {
+                        // if the handle validation has not returned yet, then set to true
+                        // to denote that validation is still in progess after the 1s delay
+                        if (handleStatus === 'editing') {
+                          setHandleDebounce(true)
+                        }
+                      }, HANDLE_VALIDATION_IN_PROGRESS_DELAY_MS)
+                      dispatch(signonActions.setHandleStatus('editing'))
+                      const newHandle = newText.trim()
+                      setHandle(newHandle)
+                      validateHandle(newHandle)
                     }}
                     onFocus={() => {
-                      setNameBorderColor('#7E1BCC')
+                      setHandleBorderColor('#7E1BCC')
                     }}
                     onBlur={() => {
-                      setNameBorderColor(defaultBorderColor)
+                      setHandleBorderColor(defaultBorderColor)
                     }}
                   />
-
-                  <View
-                    style={[
-                      styles.handleInputContainer,
-                      { borderColor: handleBorderColor }
-                    ]}
-                  >
-                    <Text style={styles.atLabel}>@</Text>
-                    <TextInput
-                      style={styles.handleInput}
-                      placeholderTextColor='#C2C0CC'
-                      underlineColorAndroid='transparent'
-                      placeholder='Handle'
-                      keyboardType='email-address'
-                      autoCompleteType='off'
-                      autoCorrect={false}
-                      autoCapitalize='none'
-                      enablesReturnKeyAutomatically={true}
-                      maxLength={16}
-                      textContentType='nickname'
-                      value={handle}
-                      onChangeText={newText => {
-                        clearTimeout(handleTimeout)
-                        handleTimeout = setTimeout(() => {
-                          // if the handle validation has not returned yet, then set to true
-                          // to denote that validation is still in progess after the 1s delay
-                          if (handleStatus === 'editing') {
-                            setHandleDebounce(true)
-                          }
-                        }, HANDLE_VALIDATION_IN_PROGRESS_DELAY_MS)
-                        dispatch(signonActions.setHandleStatus('editing'))
-                        const newHandle = newText.trim()
-                        setHandle(newHandle)
-                        validateHandle(newHandle)
-                      }}
-                      onFocus={() => {
-                        setHandleBorderColor('#7E1BCC')
-                      }}
-                      onBlur={() => {
-                        setHandleBorderColor(defaultBorderColor)
-                      }}
-                    />
-                  </View>
-
-                  {errorView({ handleIsValid, handleError })}
-
-                  <ContinueButton
-                    isWorking={handleStatus === 'editing' && handleDebounce}
-                    onPress={onContinuePress}
-                    disabled={isSubmitDisabled}
-                  />
                 </View>
+
+                {errorView({ handleIsValid, handleError })}
+
+                <ContinueButton
+                  isWorking={handleStatus === 'editing' && handleDebounce}
+                  onPress={onContinuePress}
+                  disabled={isSubmitDisabled}
+                />
               </View>
             </TouchableWithoutFeedback>
           </View>

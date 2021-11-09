@@ -1,18 +1,19 @@
 import React, { useCallback } from 'react'
 
+import { close } from 'audius-client/src/common/store/ui/mobile-overflow-menu/actions'
 import { getMobileOverflowModal } from 'audius-client/src/common/store/ui/mobile-overflow-menu/selectors'
 import {
   OverflowAction,
   OverflowSource
 } from 'audius-client/src/common/store/ui/mobile-overflow-menu/types'
-import { close } from 'audius-client/src/common/store/ui/mobile-overflow-menu/actions'
 
-import { useSelectorWeb } from '../../hooks/useSelectorWeb'
-import { useDispatchWeb } from '../../hooks/useDispatchWeb'
-import TrackOverflowMenuDrawer from './TrackOverflowMenuDrawer'
+import ActionDrawer from 'app/components/action-drawer'
+import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
+import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
+
 import CollectionOverflowMenuDrawer from './CollectionOverflowMenuDrawer'
 import ProfileOverflowMenuDrawer from './ProfileOverflowMenuDrawer'
-import ActionDrawer from '../action-drawer/ActionDrawer'
+import TrackOverflowMenuDrawer from './TrackOverflowMenuDrawer'
 
 const rowMessageMap = {
   [OverflowAction.REPOST]: 'Repost',

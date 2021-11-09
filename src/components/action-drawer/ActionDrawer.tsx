@@ -1,19 +1,20 @@
+import React from 'react'
+
 import {
   OverflowAction,
   OverflowActionCallbacks
 } from 'audius-client/src/common/store/ui/mobile-overflow-menu/types'
-import React from 'react'
 import { StyleSheet, TouchableHighlight, View } from 'react-native'
+
+import Drawer from 'app/components/drawer'
+import Text from 'app/components/text'
+import { useThemedStyles } from 'app/hooks/useThemedStyles'
 import {
   Theme,
   ThemeColors,
   useThemeColors,
   useThemeVariant
-} from '../../utils/theme'
-import { useThemedStyles } from '../../hooks/useThemedStyles'
-
-import Drawer from '../../components/drawer'
-import Text from '../../components/text'
+} from 'app/utils/theme'
 
 export type ActionDrawerRow = {
   text: string

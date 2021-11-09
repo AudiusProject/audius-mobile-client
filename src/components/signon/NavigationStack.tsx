@@ -1,26 +1,30 @@
 import React, { useEffect, useState } from 'react'
+
 import { NavigationContainer } from '@react-navigation/native'
-import { useSelector } from 'react-redux'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { View, StyleSheet } from 'react-native'
-import SignOn from './SignOn'
-import CreatePassword from './CreatePassword'
-import ProfileAuto from './ProfileAuto'
-import ProfileManual from './ProfileManual'
-import FirstFollows from './FirstFollows'
-import SignupLoadingPage from './SignupLoadingPage'
+import { useDispatch, useSelector } from 'react-redux'
+
+import { remindUserToTurnOnNotifications } from 'app/components/notification-reminder/NotificationReminder'
 import {
   getDappLoaded,
   getIsSignedIn,
   getOnSignUp
-} from '../../store/lifecycle/selectors'
+} from 'app/store/lifecycle/selectors'
 import {
   getAccountAvailable,
   getFinalEmail,
   getFinalHandle
-} from '../../store/signon/selectors'
-import { track, make } from '../../utils/analytics'
-import { EventNames } from '../../types/analytics'
+} from 'app/store/signon/selectors'
+import { EventNames } from 'app/types/analytics'
+import { track, make } from 'app/utils/analytics'
+
+import CreatePassword from './CreatePassword'
+import FirstFollows from './FirstFollows'
+import ProfileAuto from './ProfileAuto'
+import ProfileManual from './ProfileManual'
+import SignOn from './SignOn'
+import SignupLoadingPage from './SignupLoadingPage'
 
 export type RootStackParamList = {
   SignOn: undefined
@@ -60,6 +64,8 @@ const styles = StyleSheet.create({
 const Stack = createNativeStackNavigator()
 
 const SignOnNav = () => {
+  const dispatch = useDispatch()
+
   const dappLoaded = useSelector(getDappLoaded)
   const signedIn = useSelector(getIsSignedIn)
   const onSignUp = useSelector(getOnSignUp)
@@ -86,8 +92,9 @@ const SignOnNav = () => {
           handle: finalHandle
         })
       )
+      remindUserToTurnOnNotifications(dispatch)
     }
-  }, [onSignUp, isAccountAvailable, finalEmail, finalHandle])
+  }, [onSignUp, isAccountAvailable, finalEmail, finalHandle, dispatch])
 
   const screenProps = [
     {

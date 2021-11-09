@@ -1,6 +1,7 @@
+import React, { useState, useRef, useEffect, useCallback } from 'react'
+
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import LottieView from 'lottie-react-native'
-import React, { useCallback, useEffect, useRef, useState } from 'react'
 import {
   Animated,
   Dimensions,
@@ -8,6 +9,7 @@ import {
   Image,
   ImageBackground,
   Keyboard,
+  Platform,
   StyleSheet,
   Text,
   TextInput,
@@ -16,29 +18,32 @@ import {
   View
 } from 'react-native'
 import RadialGradient from 'react-native-radial-gradient'
-import { useDispatch, useSelector } from 'react-redux'
-import backgImage from '../../assets/images/DJportrait.jpg'
-import audiusLogoHorizontal from '../../assets/images/Horizontal-Logo-Full-Color.png'
-import IconArrow from '../../assets/images/iconArrow.svg'
-import ValidationIconX from '../../assets/images/iconValidationX.svg'
-import signupCTA from '../../assets/images/signUpCTA.png'
-import Button from '../../components/button'
-import { remindUserToTurnOnNotifications } from '../../components/notification-reminder/NotificationReminder'
-import { useDispatchWeb } from '../../hooks/useDispatchWeb'
-import { MessageType } from '../../message/types'
-import { setVisibility } from '../../store/drawers/slice'
-import { getDappLoaded, getIsSignedIn } from '../../store/lifecycle/selectors'
-import * as signonActions from '../../store/signon/actions'
+import { useSelector, useDispatch } from 'react-redux'
+
+import backgImage from 'app/assets/images/DJportrait.jpg'
+import audiusLogoHorizontal from 'app/assets/images/Horizontal-Logo-Full-Color.png'
+import IconArrow from 'app/assets/images/iconArrow.svg'
+import ValidationIconX from 'app/assets/images/iconValidationX.svg'
+import signupCTA from 'app/assets/images/signUpCTA.png'
+import Button from 'app/components/button'
+import { remindUserToTurnOnNotifications } from 'app/components/notification-reminder/NotificationReminder'
+import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
+import { MessageType } from 'app/message/types'
+import { getIsKeyboardOpen } from 'app/store/keyboard/selectors'
+import { getIsSignedIn, getDappLoaded } from 'app/store/lifecycle/selectors'
+import * as signonActions from 'app/store/signon/actions'
 import {
   getEmailIsAvailable,
   getEmailIsValid,
   getEmailStatus,
   getIsSigninError
-} from '../../store/signon/selectors'
-import { EventNames } from '../../types/analytics'
-import { make, track } from '../../utils/analytics'
+} from 'app/store/signon/selectors'
+import { EventNames } from 'app/types/analytics'
+import { track, make } from 'app/utils/analytics'
+
 import { RootStackParamList } from './NavigationStack'
 
+const isAndroid = Platform.OS === 'android'
 const image = backgImage
 const windowWidth = Dimensions.get('window').width
 const defaultBorderColor = '#F2F2F4'
@@ -115,8 +120,7 @@ const styles = StyleSheet.create({
     color: '#7E1BCC',
     fontSize: 14,
     lineHeight: 16,
-    fontFamily: 'AvenirNextLTPro-Regular',
-    fontWeight: '600',
+    fontFamily: 'AvenirNextLTPro-DemiBold',
     textAlign: 'center',
     paddingTop: 3,
     paddingBottom: 3
@@ -198,7 +202,7 @@ const styles = StyleSheet.create({
     height: 32,
     width: '100%',
     alignItems: 'center',
-    margin: 38
+    marginTop: 38
   },
   switchFormBtnTitle: {
     color: 'white',
@@ -321,9 +325,7 @@ const SignOn = ({ navigation }: SignOnProps) => {
   const emailIsAvailable = useSelector(getEmailIsAvailable)
   const emailIsValid = useSelector(getEmailIsValid)
   const emailStatus = useSelector(getEmailStatus)
-
-  const setPushNotificationsReminderVisible = (visible: boolean) =>
-    dispatch(setVisibility({ drawer: 'EnablePushNotifications', visible }))
+  const isKeyboardOpen = useSelector(getIsKeyboardOpen)
 
   const topDrawer = useRef(new Animated.Value(-800)).current
   const animateDrawer = useCallback(() => {
@@ -366,11 +368,9 @@ const SignOn = ({ navigation }: SignOnProps) => {
       setEmail('')
       setPassword('')
 
-      if (isSignin) {
-        remindUserToTurnOnNotifications(setPushNotificationsReminderVisible)
-      }
+      remindUserToTurnOnNotifications(dispatch)
     }
-  }, [signedIn, isSignin])
+  }, [signedIn, dispatch])
 
   useEffect(() => {
     if (dappLoaded) {
@@ -687,7 +687,6 @@ const SignOn = ({ navigation }: SignOnProps) => {
               autoCapitalize='none'
               enablesReturnKeyAutomatically={true}
               maxLength={100}
-              value={email}
               textContentType='emailAddress'
               onChangeText={newText => {
                 setShowDefaultError(false)
@@ -722,6 +721,10 @@ const SignOn = ({ navigation }: SignOnProps) => {
         >
           {Dimensions.get('window').height < 720 ? (
             <></>
+          ) : isAndroid && isKeyboardOpen ? (
+            // on android, if keyboard is showing and user is navigating away to the next screen
+            // the image below shows up above the keyboard and causes a weird transition */
+            <View style={styles.signupCTAContainer} />
           ) : (
             <View style={styles.signupCTAContainer}>
               <Image source={signupCTA} style={styles.signupCTA} />
