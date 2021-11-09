@@ -25,6 +25,7 @@ import { ThemeColors, useThemedStyles } from '../../hooks/useThemedStyles'
 const MAX_SHADOW_OPACITY = 0.4
 const MOVE_CUTOFF_CLOSE = 0.8
 const BORDER_RADIUS = 40
+const BACKGROUND_OPACITY = 0.5
 
 // Controls the amount of friction in swiping when overflowing up or down
 const OVERFLOW_FRICTION = 4
@@ -41,7 +42,8 @@ const createStyles = (themeColors: ThemeColors) =>
       shadowOpacity: 0,
       shadowRadius: 40,
       borderTopRightRadius: BORDER_RADIUS,
-      borderTopLeftRadius: BORDER_RADIUS
+      borderTopLeftRadius: BORDER_RADIUS,
+      overflow: 'hidden'
     },
 
     fullDrawer: {
@@ -65,10 +67,10 @@ const createStyles = (themeColors: ThemeColors) =>
 
     background: {
       position: 'absolute',
+      backgroundColor: 'black',
       top: 0,
       height: '100%',
-      width: '100%',
-      opacity: 0
+      width: '100%'
     },
 
     skirt: {
@@ -85,13 +87,17 @@ export type DrawerProps = {
   isFullscreen?: boolean
 }
 
-const springToValue = (animation: Animated.Value, value: number) => {
+const springToValue = (
+  animation: Animated.Value,
+  value: number,
+  finished?: () => void
+) => {
   Animated.spring(animation, {
     toValue: value,
     tension: 150,
     friction: 25,
     useNativeDriver: true
-  }).start()
+  }).start(finished)
 }
 
 const attachToDy = (animation: Animated.Value, newValue: number) => (
@@ -113,18 +119,21 @@ const Drawer = ({ isOpen, children, onClose, isFullscreen }: DrawerProps) => {
 
   const { height } = Dimensions.get('window')
   const [drawerHeight, setDrawerHeight] = useState(height)
+  const [isBackgroundVisible, setIsBackgroundVisible] = useState(false)
   const initialPosition = height
   const openPosition = height - drawerHeight
 
   const translationAnim = useRef(new Animated.Value(initialPosition)).current
   const shadowAnim = useRef(new Animated.Value(0)).current
   const borderRadiusAnim = useRef(new Animated.Value(BORDER_RADIUS)).current
+  const backgroundOpacityAnim = useRef(new Animated.Value(0)).current
 
   const closeColor = useColor('neutralLight4')
 
   const slideIn = useCallback(() => {
     springToValue(translationAnim, openPosition)
     springToValue(shadowAnim, MAX_SHADOW_OPACITY)
+    springToValue(backgroundOpacityAnim, BACKGROUND_OPACITY)
     if (isFullscreen) {
       springToValue(borderRadiusAnim, 0)
     }
@@ -137,8 +146,11 @@ const Drawer = ({ isOpen, children, onClose, isFullscreen }: DrawerProps) => {
   ])
 
   const slideOut = useCallback(() => {
-    springToValue(translationAnim, initialPosition)
+    springToValue(translationAnim, initialPosition, () =>
+      setIsBackgroundVisible(false)
+    )
     springToValue(shadowAnim, 0)
+    springToValue(backgroundOpacityAnim, 0)
     if (isFullscreen) {
       springToValue(borderRadiusAnim, BORDER_RADIUS)
     }
@@ -153,6 +165,7 @@ const Drawer = ({ isOpen, children, onClose, isFullscreen }: DrawerProps) => {
   useEffect(() => {
     if (isOpen) {
       slideIn()
+      setIsBackgroundVisible(true)
     } else {
       slideOut()
     }
@@ -167,10 +180,13 @@ const Drawer = ({ isOpen, children, onClose, isFullscreen }: DrawerProps) => {
           const newTranslation = openPosition + gestureState.dy
           attachToDy(translationAnim, newTranslation)(e)
 
+          const percentOpen = (drawerHeight - gestureState.dy) / drawerHeight
+
+          const newOpacity = BACKGROUND_OPACITY * percentOpen
+          attachToDy(backgroundOpacityAnim, newOpacity)(e)
+
           if (isFullscreen) {
-            const newBorderRadius =
-              BORDER_RADIUS *
-              (1 - (drawerHeight - gestureState.dy) / drawerHeight)
+            const newBorderRadius = BORDER_RADIUS * (1 - percentOpen)
 
             attachToDy(borderRadiusAnim, newBorderRadius)(e)
           }
@@ -208,10 +224,19 @@ const Drawer = ({ isOpen, children, onClose, isFullscreen }: DrawerProps) => {
   return (
     <Portal>
       <>
-        {isOpen && (
+        {isOpen ? (
           <TouchableWithoutFeedback onPress={onClose}>
-            <View style={styles.background} />
+            <Animated.View
+              style={[styles.background, { opacity: backgroundOpacityAnim }]}
+            />
           </TouchableWithoutFeedback>
+        ) : (
+          isBackgroundVisible && (
+            <Animated.View
+              pointerEvents='none'
+              style={[styles.background, { opacity: backgroundOpacityAnim }]}
+            />
+          )
         )}
         <Animated.View
           {...panResponder.panHandlers}
