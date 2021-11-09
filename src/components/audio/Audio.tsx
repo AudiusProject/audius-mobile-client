@@ -6,13 +6,6 @@ import React, {
   useCallback
 } from 'react'
 
-import { Platform, StyleSheet, View } from 'react-native'
-import MusicControl from 'react-native-music-control'
-import { Command } from 'react-native-music-control/lib/types'
-import Video, { OnProgressData } from 'react-native-video'
-import { connect } from 'react-redux'
-import { Dispatch } from 'redux'
-
 import { MessageType } from 'app/message'
 import { AppState } from 'app/store'
 import * as audioActions from 'app/store/audio/actions'
@@ -25,13 +18,20 @@ import {
   getQueueLength,
   getRepeatMode,
   getIsShuffleOn,
-  getShuffleIndex
+  getShuffleIndex,
+  getQueueAutoplay
 } from 'app/store/audio/selectors'
 import { CastStatus, setPlayPosition } from 'app/store/googleCast/actions'
 import { getGoogleCastStatus } from 'app/store/googleCast/selectors'
 import { MessagePostingWebView } from 'app/types/MessagePostingWebView'
 import { Genre } from 'app/utils/genres'
 import { postMessage } from 'app/utils/postMessage'
+import { Platform, StyleSheet, View } from 'react-native'
+import MusicControl from 'react-native-music-control'
+import { Command } from 'react-native-music-control/lib/types'
+import Video, { OnProgressData } from 'react-native-video'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
 
 import { logListen } from './listens'
 
@@ -81,6 +81,7 @@ const Audio = ({
   repeatMode,
   isShuffleOn,
   shuffleIndex,
+  queueAutoplay,
   googleCastStatus,
   setCastPlayPosition
 }: Props) => {
@@ -265,7 +266,7 @@ const Audio = ({
         isPreviousEnabled = index > 0
         isNextEnabled = index < queueLength - 1
       }
-      if (track?.genre === Genre.PODCASTS) {
+      if (track && track.genre === Genre.PODCASTS) {
         MusicControl.enableControl('previousTrack', false)
         MusicControl.enableControl('nextTrack', false)
         MusicControl.enableControl('skipBackward', true, { interval: 15 })
@@ -343,6 +344,41 @@ const Audio = ({
     }
   }, [elapsedTime, isPlaying])
 
+  // handle triggering of autoplay when current track ends
+  // (this is the flow when the next button is NOT clicked by the user)
+  // (if the next button is clicked by the user, the dapp client will handle autoplay logic)
+  const onNext = useCallback(() => {
+    // if autoplay is enabled and current song is close to end of queue,
+    // then trigger queueing of recommended tracks for autoplay
+    const isCloseToEndOfQueue = index + 2 >= queueLength
+    const isNotRepeating = repeatMode === RepeatMode.OFF
+    if (
+      webRef.current &&
+      queueAutoplay &&
+      !isShuffleOn &&
+      isNotRepeating &&
+      isCloseToEndOfQueue
+    ) {
+      postMessage(webRef.current, {
+        type: MessageType.QUEUE_AUTOPLAY,
+        genre: (track && track.genre) || undefined,
+        trackId: (track && track.track_id) || undefined,
+        isAction: true
+      })
+    }
+
+    next()
+  }, [
+    next,
+    webRef,
+    queueAutoplay,
+    index,
+    queueLength,
+    isShuffleOn,
+    repeatMode,
+    track
+  ])
+
   const onProgress = useCallback(
     (progress: OnProgressData) => {
       if (!track) return
@@ -391,7 +427,7 @@ const Audio = ({
             setDuration(0)
             setCastPlayPosition(0)
             pause()
-            next()
+            onNext()
           }}
           progressUpdateInterval={100}
           onLoad={payload => {
@@ -416,7 +452,8 @@ const mapStateToProps = (state: AppState) => ({
   repeatMode: getRepeatMode(state),
   googleCastStatus: getGoogleCastStatus(state),
   isShuffleOn: getIsShuffleOn(state),
-  shuffleIndex: getShuffleIndex(state)
+  shuffleIndex: getShuffleIndex(state),
+  queueAutoplay: getQueueAutoplay(state)
 })
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
