@@ -46,11 +46,6 @@ const createStyles = (themeColors: ThemeColors) =>
       borderBottomColor: themeColors.neutralLight8
     },
 
-    firstRow: {
-      borderTopWidth: 1,
-      borderTopColor: themeColors.neutralLight8
-    },
-
     title: {
       fontSize: 16
     },
@@ -97,7 +92,7 @@ const ActionDrawer = ({
             }}
             underlayColor={neutralLight9}
           >
-            <View style={[styles.row, index === 0 ? styles.firstRow : {}]}>
+            <View style={styles.row}>
               <Text
                 style={[
                   styles.action,
