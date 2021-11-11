@@ -6,6 +6,13 @@ import React, {
   useCallback
 } from 'react'
 
+import { Platform, StyleSheet, View } from 'react-native'
+import MusicControl from 'react-native-music-control'
+import { Command } from 'react-native-music-control/lib/types'
+import Video, { OnProgressData } from 'react-native-video'
+import { connect } from 'react-redux'
+import { Dispatch } from 'redux'
+
 import { MessageType } from 'app/message'
 import { AppState } from 'app/store'
 import * as audioActions from 'app/store/audio/actions'
@@ -26,12 +33,6 @@ import { getGoogleCastStatus } from 'app/store/googleCast/selectors'
 import { MessagePostingWebView } from 'app/types/MessagePostingWebView'
 import { Genre } from 'app/utils/genres'
 import { postMessage } from 'app/utils/postMessage'
-import { Platform, StyleSheet, View } from 'react-native'
-import MusicControl from 'react-native-music-control'
-import { Command } from 'react-native-music-control/lib/types'
-import Video, { OnProgressData } from 'react-native-video'
-import { connect } from 'react-redux'
-import { Dispatch } from 'redux'
 
 import { logListen } from './listens'
 
@@ -39,7 +40,8 @@ declare global {
   // eslint-disable-next-line no-var
   var progress: {
     currentTime: number
-    seekableTime?: number
+    playableDuration?: number
+    seekableDuration?: number
   }
 }
 
@@ -109,8 +111,7 @@ const Audio = ({
   useEffect(() => {
     // TODO: Probably don't use global for this
     global.progress = {
-      currentTime: 0,
-      seekableTime: 0
+      currentTime: 0
     }
   }, [])
 
@@ -186,6 +187,7 @@ const Audio = ({
         postMessage(webRef.current, {
           type: MessageType.SYNC_PLAYER,
           isPlaying: true,
+          incrementCounter: false,
           isAction: true
         })
       }
@@ -196,6 +198,7 @@ const Audio = ({
         postMessage(webRef.current, {
           type: MessageType.SYNC_PLAYER,
           isPlaying: false,
+          incrementCounter: false,
           isAction: true
         })
       }
@@ -231,6 +234,7 @@ const Audio = ({
         postMessage(webRef.current, {
           type: MessageType.SYNC_PLAYER,
           isPlaying: true,
+          incrementCounter: false,
           isAction: true
         })
       }
@@ -240,6 +244,7 @@ const Audio = ({
         postMessage(webRef.current, {
           type: MessageType.SYNC_PLAYER,
           isPlaying: false,
+          incrementCounter: false,
           isAction: true
         })
       }
@@ -362,7 +367,20 @@ const Audio = ({
       postMessage(webRef.current, {
         type: MessageType.QUEUE_AUTOPLAY,
         genre: (track && track.genre) || undefined,
-        trackId: (track && track.track_id) || undefined,
+        trackId: (track && track.trackId) || undefined,
+        isAction: true
+      })
+    }
+
+    const isSingleRepeating = repeatMode === RepeatMode.SINGLE
+    if (webRef.current && isSingleRepeating) {
+      global.progress.currentTime = 0
+      // Sync w/ incrementCounter true to update mediaKey in client NowPlaying
+      // which will eventually restart the scrubber location
+      postMessage(webRef.current, {
+        type: MessageType.SYNC_PLAYER,
+        isPlaying: true,
+        incrementCounter: true,
         isAction: true
       })
     }
