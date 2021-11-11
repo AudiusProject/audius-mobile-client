@@ -365,7 +365,7 @@ const Audio = ({
       isCloseToEndOfQueue
     ) {
       postMessage(webRef.current, {
-        type: MessageType.QUEUE_AUTOPLAY,
+        type: MessageType.REQUEST_QUEUE_AUTOPLAY,
         genre: (track && track.genre) || undefined,
         trackId: (track && track.trackId) || undefined,
         isAction: true
