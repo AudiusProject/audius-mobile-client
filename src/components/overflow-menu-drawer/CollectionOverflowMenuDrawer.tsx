@@ -56,7 +56,7 @@ const CollectionOverflowMenuDrawer = ({ render }: Props) => {
   )
 
   if (!id || !handle || !playlist_name || is_album === undefined) {
-    return <></>
+    return null
   }
 
   const callbacks = {

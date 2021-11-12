@@ -34,7 +34,7 @@ const ProfileOverflowMenuDrawer = ({ render }: Props) => {
   )
 
   if (!id || !handle || !name) {
-    return <></>
+    return null
   }
 
   const callbacks = {

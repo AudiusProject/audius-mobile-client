@@ -54,7 +54,7 @@ const TrackOverflowMenuDrawer = ({ render }: Props) => {
   )
 
   if (!id || !owner_id || !handle || !title) {
-    return <></>
+    return null
   }
 
   const callbacks = {
