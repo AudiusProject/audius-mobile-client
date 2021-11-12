@@ -6,7 +6,7 @@ import { TouchableHighlight, View, ViewStyle } from 'react-native'
 import { useColor } from 'app/utils/theme'
 
 export type BaseAnimatedButtonProps = {
-  onClick: () => void
+  onPress: () => void
   uniqueKey: string
   isActive: boolean
   isDisabled?: boolean
@@ -22,7 +22,7 @@ type AnimatedButtonProps = {
 
 const AnimatedButton = ({
   iconJSON,
-  onClick,
+  onPress,
   isActive,
   isDisabled = false,
   style,
@@ -48,8 +48,8 @@ const AnimatedButton = ({
       animationRef.current?.play()
     }
 
-    onClick()
-  }, [isDisabled, onClick, isActive])
+    onPress()
+  }, [isDisabled, onPress, isActive])
 
   return (
     <TouchableHighlight

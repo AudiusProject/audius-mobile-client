@@ -6,9 +6,10 @@ import { SafeAreaProvider } from 'react-native-safe-area-context'
 import WebView from 'react-native-webview'
 import { Provider } from 'react-redux'
 
+import AppNavigator from 'app/components/app-navigator/AppNavigator'
 import Audio from 'app/components/audio/Audio'
 import GoogleCast from 'app/components/audio/GoogleCast'
-// import BottomBar from 'app/components/bottom-bar'
+// import BottomTabBar from 'app/components/bottom-tab-bar'
 import CollectibleDetailsDrawer from 'app/components/collectible-details-drawer'
 import EnablePushNotificationsDrawer from 'app/components/enable-push-notifications-drawer'
 import MobileUploadDrawer from 'app/components/mobile-upload-drawer'
@@ -70,9 +71,10 @@ const App = () => {
             <Notifications webRef={webRef} />
 
             {/*
-            Commenting out BottomBar until the drawers and overlays are migrated to RN
+            Commenting out BottomTabBar until the drawers and overlays are migrated to RN
           */}
-            {/* <BottomBar /> */}
+            {/* <BottomTabBar /> */}
+            <AppNavigator />
             <MobileUploadDrawer />
             <EnablePushNotificationsDrawer />
             <CollectibleDetailsDrawer />
