@@ -70,8 +70,8 @@ const AnimatedButton = ({
 
 export type AnimatedButtonProviderProps = {
   isDarkMode: boolean
-  iconDarkJSON: () => any
-  iconLightJSON: () => any
+  iconDarkJSON: any
+  iconLightJSON: any
 } & BaseAnimatedButtonProps
 
 const AnimatedButtonProvider = ({
@@ -87,12 +87,12 @@ const AnimatedButtonProvider = ({
   useEffect(() => {
     if (isDarkMode) {
       if (!darkAnimations.current) {
-        darkAnimations.current = iconDarkJSON()
+        darkAnimations.current = iconDarkJSON
       }
       setIconJSON({ ...darkAnimations.current })
     } else {
       if (!defaultAnimations.current) {
-        defaultAnimations.current = iconLightJSON()
+        defaultAnimations.current = iconLightJSON
       }
       setIconJSON({ ...defaultAnimations.current })
     }

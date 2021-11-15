@@ -22,6 +22,16 @@ import { StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useSelector } from 'react-redux'
 
+import IconExploreDark from 'app/assets/animations/iconExploreDark.json'
+import IconExploreLight from 'app/assets/animations/iconExploreLight.json'
+import IconFavoriteDark from 'app/assets/animations/iconFavoriteDark.json'
+import IconFavoriteLight from 'app/assets/animations/iconFavoriteLight.json'
+import IconFeedDark from 'app/assets/animations/iconFeedDark.json'
+import IconFeedLight from 'app/assets/animations/iconFeedLight.json'
+import IconProfileDark from 'app/assets/animations/iconProfileDark.json'
+import IconProfileLight from 'app/assets/animations/iconProfileLight.json'
+import IconTrendingDark from 'app/assets/animations/iconTrendingDark.json'
+import IconTrendingLight from 'app/assets/animations/iconTrendingLight.json'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 import { MessageType } from 'app/message/types'
@@ -53,18 +63,18 @@ const styles = StyleSheet.create({
 
 const icons = {
   light: {
-    Feed: () => require('app/assets/animations/iconFeedLight.json'),
-    Trending: () => require('app/assets/animations/iconTrendingLight.json'),
-    Explore: () => require('app/assets/animations/iconExploreLight.json'),
-    Favorites: () => require('app/assets/animations/iconFavoriteLight.json'),
-    Profile: () => require('app/assets/animations/iconProfileLight.json')
+    feed: IconFeedLight,
+    trending: IconTrendingLight,
+    explore: IconExploreLight,
+    favorites: IconFavoriteLight,
+    profile: IconProfileLight
   },
   dark: {
-    Feed: () => require('app/assets/animations/iconFeedDark.json'),
-    Trending: () => require('app/assets/animations/iconTrendingDark.json'),
-    Explore: () => require('app/assets/animations/iconExploreDark.json'),
-    Favorites: () => require('app/assets/animations/iconFavoriteDark.json'),
-    Profile: () => require('app/assets/animations/iconProfileDark.json')
+    feed: IconFeedDark,
+    trending: IconTrendingDark,
+    explore: IconExploreDark,
+    favorites: IconFavoriteDark,
+    profile: IconProfileDark
   }
 }
 
@@ -145,6 +155,9 @@ const BottomTabBar = ({
         trending: () => {
           goToRoute(TRENDING_PAGE)
         },
+        explore: () => {
+          goToRoute(EXPLORE_PAGE)
+        },
         favorites: () => {
           if (!handle) {
             openSignOn()
@@ -178,10 +191,15 @@ const BottomTabBar = ({
   )
 
   return (
-    <SafeAreaView style={bottomBarStyle} edges={['bottom']}>
+    <SafeAreaView
+      style={bottomBarStyle}
+      edges={['bottom']}
+      pointerEvents='auto'
+    >
       {state.routes.map((route, index) => {
         const isFocused = state.index === index
         const key = `${route.name}-button`
+        console.log(isFocused, key)
         return (
           <AnimatedBottomButton
             key={key}
