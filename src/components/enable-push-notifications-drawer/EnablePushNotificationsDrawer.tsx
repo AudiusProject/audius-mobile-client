@@ -71,8 +71,8 @@ const createStyles = (themeColors: ThemeColors) =>
       justifyContent: 'space-evenly',
       alignItems: 'center',
       padding: 16,
-      paddingTop: 32,
-      paddingBottom: 64
+      paddingTop: 64,
+      paddingBottom: 32
     },
 
     cta: {
