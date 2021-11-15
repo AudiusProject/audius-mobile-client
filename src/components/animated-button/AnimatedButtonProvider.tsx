@@ -28,16 +28,20 @@ const AnimatedButton = ({
   style,
   wrapperStyle
 }: AnimatedButtonProps) => {
+  const [isPlaying, setIsPlaying] = useState(false)
   const underlayColor = useColor('neutralLight8')
   const animationRef = useRef<LottieView | null>()
+
   useEffect(() => {
-    if (isActive) {
-      const lastFrame = iconJSON.op
-      animationRef.current?.play(lastFrame, lastFrame)
-    } else {
-      animationRef.current?.play(0, 0)
+    if (!isPlaying) {
+      if (isActive) {
+        const lastFrame = iconJSON.op
+        animationRef.current?.play(lastFrame, lastFrame)
+      } else {
+        animationRef.current?.play(0, 0)
+      }
     }
-  }, [isActive, iconJSON])
+  }, [isActive, isPlaying, iconJSON])
 
   const handleClick = useCallback(() => {
     if (isDisabled) {
@@ -45,6 +49,7 @@ const AnimatedButton = ({
     }
 
     if (!isActive) {
+      setIsPlaying(true)
       animationRef.current?.play()
     }
 
@@ -60,6 +65,7 @@ const AnimatedButton = ({
       <View style={wrapperStyle}>
         <LottieView
           ref={animation => (animationRef.current = animation)}
+          onAnimationFinish={() => setIsPlaying(false)}
           loop={false}
           source={iconJSON}
         />

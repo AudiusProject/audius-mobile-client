@@ -199,7 +199,6 @@ const BottomTabBar = ({
       {state.routes.map((route, index) => {
         const isFocused = state.index === index
         const key = `${route.name}-button`
-        console.log(isFocused, key)
         return (
           <AnimatedBottomButton
             key={key}
