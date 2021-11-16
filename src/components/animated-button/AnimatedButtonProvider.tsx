@@ -59,6 +59,7 @@ const AnimatedButton = ({
   return (
     <TouchableHighlight
       onPress={handleClick}
+      onLongPress={handleClick}
       style={style}
       underlayColor={underlayColor}
     >
