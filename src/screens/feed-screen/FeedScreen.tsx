@@ -12,6 +12,7 @@ const FeedScreen = ({ navigation }: Props) => {
   const handlePress = useCallback(() => {
     navigation.navigate('track', { id: 1 })
   }, [navigation])
+
   return (
     <View>
       <Text>Example feed screen</Text>

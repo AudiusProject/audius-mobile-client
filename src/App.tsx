@@ -1,6 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 
 import { PortalProvider } from '@gorhom/portal'
+import { NavigationContainer } from '@react-navigation/native'
 import { Platform } from 'react-native'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import WebView from 'react-native-webview'
@@ -56,34 +57,36 @@ const App = () => {
 
   return (
     <SafeAreaProvider>
-      <Provider store={store}>
-        <PortalProvider>
-          <WebRefContextProvider>
-            <GoogleCast webRef={webRef} />
-            <WebApp webRef={webRef} />
-            <SignOnNav />
-            <Search />
-            {/*
+      <NavigationContainer>
+        <Provider store={store}>
+          <PortalProvider>
+            <WebRefContextProvider>
+              <GoogleCast webRef={webRef} />
+              <WebApp webRef={webRef} />
+              <SignOnNav />
+              <Search />
+              {/*
         Note: it is very important that Notifications is rendered after WebApp.
         On Android, regardless of position: absolute, WebApp will steal all of Notifications
         touch targets and onPress will not work.
       */}
-            <Notifications webRef={webRef} />
+              <Notifications webRef={webRef} />
 
-            {/*
+              {/*
             Commenting out BottomTabBar until the drawers and overlays are migrated to RN
           */}
-            {/* <BottomTabBar /> */}
-            <AppNavigator />
-            <MobileUploadDrawer />
-            <EnablePushNotificationsDrawer />
-            <CollectibleDetailsDrawer />
-            <Audio webRef={webRef} />
-            <OAuth webRef={webRef} />
-            <Airplay webRef={webRef} />
-          </WebRefContextProvider>
-        </PortalProvider>
-      </Provider>
+              {/* <BottomTabBar /> */}
+              <AppNavigator />
+              <MobileUploadDrawer />
+              <EnablePushNotificationsDrawer />
+              <CollectibleDetailsDrawer />
+              <Audio webRef={webRef} />
+              <OAuth webRef={webRef} />
+              <Airplay webRef={webRef} />
+            </WebRefContextProvider>
+          </PortalProvider>
+        </Provider>
+      </NavigationContainer>
     </SafeAreaProvider>
   )
 }

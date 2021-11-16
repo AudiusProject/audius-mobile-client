@@ -1,8 +1,8 @@
 import React from 'react'
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { NavigationContainer, ParamListBase } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
+import { ParamListBase } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
 import { StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
 
@@ -16,8 +16,6 @@ import { FeedStackParamList } from './types'
 
 // As screens get migrated to RN, add them to this set
 const nativeScreens = new Set(['feed'])
-
-const Tab = createBottomTabNavigator()
 
 const EmptyScreen = () => {
   return <View style={{ backgroundColor: 'blue' }} />
@@ -36,12 +34,17 @@ const styles = StyleSheet.create({
 // track and profile
 const createStackScreen = <StackParamList extends ParamListBase>(
   baseScreen: (
-    Stack: ReturnType<typeof createNativeStackNavigator>
+    Stack: ReturnType<typeof createStackNavigator>
   ) => React.ReactNode
 ) => {
-  const Stack = createNativeStackNavigator<StackParamList>()
+  const Stack = createStackNavigator<StackParamList>()
   return () => (
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        cardOverlayEnabled: true,
+        gestureResponseDistance: 1000
+      }}
+    >
       {baseScreen(Stack)}
       <Stack.Screen name='track' component={TrackScreen} />
       <Stack.Screen name='profile' component={ProfileScreen} />
@@ -53,6 +56,8 @@ const FeedStackScreen = createStackScreen<FeedStackParamList>(Stack => (
   <Stack.Screen name='feed' component={FeedScreen} />
 ))
 
+const Tab = createBottomTabNavigator()
+
 const TabNavigator = () => {
   const location = useSelector(getLocation)
 
@@ -60,7 +65,7 @@ const TabNavigator = () => {
     location?.pathname.match(/[^/]+/)?.[0]
   )
 
-  // NOTE: We are hiding the screenContainer for web screens so the WebView is shown
+  // NOTE: We are hiding the navContainer for web screens so the WebView is shown
   return (
     <View
       style={[styles.navContainer, { height: isNativeScreen ? '100%' : 0 }]}
@@ -86,11 +91,7 @@ const TabNavigator = () => {
 }
 
 const AppNavigator = () => {
-  return (
-    <NavigationContainer>
-      <TabNavigator />
-    </NavigationContainer>
-  )
+  return <TabNavigator />
 }
 
 export default AppNavigator
