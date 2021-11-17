@@ -75,6 +75,7 @@ export const CollectibleMedia: React.FC<{
         <View>
           <AutoSizeVideo
             repeat={true}
+            ignoreSilentSwitch={'ignore'}
             fullscreen={false}
             muted={isMuted}
             source={{ uri: videoUrl }}
