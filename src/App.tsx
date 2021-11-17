@@ -17,7 +17,6 @@ import MobileUploadDrawer from 'app/components/mobile-upload-drawer'
 import Notifications from 'app/components/notifications/Notifications'
 import OAuth from 'app/components/oauth/OAuth'
 import Search from 'app/components/search/Search'
-import SignOnNav from 'app/components/signon/NavigationStack'
 import WebApp from 'app/components/web/WebApp'
 import { WebRefContextProvider } from 'app/components/web/WebRef'
 import useConnectivity from 'app/components/web/useConnectivity'
@@ -63,7 +62,7 @@ const App = () => {
             <WebRefContextProvider>
               <GoogleCast webRef={webRef} />
               <WebApp webRef={webRef} />
-              <SignOnNav />
+              <AppNavigator />
               <Search />
               {/*
         Note: it is very important that Notifications is rendered after WebApp.
@@ -71,12 +70,6 @@ const App = () => {
         touch targets and onPress will not work.
       */}
               <Notifications webRef={webRef} />
-
-              {/*
-            Commenting out BottomTabBar until the drawers and overlays are migrated to RN
-          */}
-              {/* <BottomTabBar /> */}
-              <AppNavigator />
               <MobileUploadDrawer />
               <EnablePushNotificationsDrawer />
               <CollectibleDetailsDrawer />

@@ -18,7 +18,7 @@ import {
   profilePage
 } from 'audius-client/src/utils/route'
 import { push } from 'connected-react-router'
-import { StyleSheet } from 'react-native'
+import { LayoutChangeEvent, StyleSheet } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { useSelector } from 'react-redux'
 
@@ -78,11 +78,11 @@ const icons = {
   }
 }
 
-const BottomTabBar = ({
-  state,
-  descriptors,
-  navigation
-}: BottomTabBarProps) => {
+type Props = {
+  onLayout: (e: LayoutChangeEvent) => void
+} & BottomTabBarProps
+
+const BottomTabBar = ({ state, navigation, onLayout }: Props) => {
   const bottomBarStyle = useTheme(styles.bottomBar, {
     borderTopColor: 'neutralLight8',
     backgroundColor: 'neutralLight10'
@@ -195,6 +195,7 @@ const BottomTabBar = ({
       style={bottomBarStyle}
       edges={['bottom']}
       pointerEvents='auto'
+      onLayout={onLayout}
     >
       {state.routes.map((route, index) => {
         const isFocused = state.index === index

@@ -1,34 +1,48 @@
-import React from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { ParamListBase } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
-import { StyleSheet, View } from 'react-native'
+import { LayoutChangeEvent, StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
 
 import BottomTabBar from 'app/components/bottom-tab-bar'
+import SignOnNavigator from 'app/components/signon/SignOnNavigator'
 import FeedScreen from 'app/screens/feed-screen'
 import ProfileScreen from 'app/screens/profile-screen/ProfileScreen'
 import TrackScreen from 'app/screens/track-screen'
-import { getLocation } from 'app/store/lifecycle/selectors'
+import {
+  getDappLoaded,
+  getIsSignedIn,
+  getLocation,
+  getOnSignUp
+} from 'app/store/lifecycle/selectors'
+import { getAccountAvailable } from 'app/store/signon/selectors'
 
 import { FeedStackParamList } from './types'
 
 // As screens get migrated to RN, add them to this set
 const nativeScreens = new Set(['feed'])
 
-const EmptyScreen = () => {
-  return <View style={{ backgroundColor: 'blue' }} />
-}
-
 const styles = StyleSheet.create({
-  navContainer: {
+  tabNavigator: {
     position: 'absolute',
     bottom: 0,
     height: '100%',
     width: '100%'
+  },
+  appNavigator: {
+    backgroundColor: 'blue',
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    height: '100%'
   }
 })
+
+const EmptyScreen = () => {
+  return <View />
+}
 
 // This function is used to create a stack containing common screens like
 // track and profile
@@ -58,23 +72,24 @@ const FeedStackScreen = createStackScreen<FeedStackParamList>(Stack => (
 
 const Tab = createBottomTabNavigator()
 
-const TabNavigator = () => {
-  const location = useSelector(getLocation)
+type TabNavigatorProps = {
+  isNativeScreen: boolean
+  onBottomTabBarLayout: (e: LayoutChangeEvent) => void
+}
 
-  const isNativeScreen = nativeScreens.has(
-    location?.pathname.match(/[^/]+/)?.[0]
-  )
-
-  // NOTE: We are hiding the navContainer for web screens so the WebView is shown
+const TabNavigator = ({
+  isNativeScreen,
+  onBottomTabBarLayout
+}: TabNavigatorProps) => {
+  // Hide the navContainer for web screens so the WebView is shown
   return (
     <View
-      style={[styles.navContainer, { height: isNativeScreen ? '100%' : 0 }]}
+      style={[styles.tabNavigator, { height: isNativeScreen ? '100%' : 0 }]}
     >
       <Tab.Navigator
-        tabBar={props => <BottomTabBar {...props} />}
-        screenOptions={{
-          headerShown: isNativeScreen
-        }}
+        tabBar={props => (
+          <BottomTabBar {...props} onLayout={onBottomTabBarLayout} />
+        )}
       >
         <Tab.Screen
           name='feed'
@@ -90,8 +105,67 @@ const TabNavigator = () => {
   )
 }
 
+const Stack = createStackNavigator()
+
 const AppNavigator = () => {
-  return <TabNavigator />
+  const [bottomTabBarHeight, setBottomTabBarHeight] = useState(0)
+
+  const dappLoaded = useSelector(getDappLoaded)
+  const signedIn = useSelector(getIsSignedIn)
+  const onSignUp = useSelector(getOnSignUp)
+  const isAccountAvailable = useSelector(getAccountAvailable)
+
+  const isAuthed = useMemo(() => {
+    return (
+      !dappLoaded ||
+      signedIn === null ||
+      (signedIn && !onSignUp) ||
+      isAccountAvailable
+    )
+  }, [dappLoaded, isAccountAvailable, signedIn, onSignUp])
+
+  const location = useSelector(getLocation)
+
+  const isNativeScreen = nativeScreens.has(
+    location?.pathname.match(/[^/]+/)?.[0]
+  )
+
+  // Set the height of the navigator to be the height of the bottom tab bar
+  // in cases where the webview needs to be shown
+  const handleBottomTabBarLayout = useCallback((e: LayoutChangeEvent) => {
+    const { height } = e.nativeEvent.layout
+    setBottomTabBarHeight(height)
+  }, [])
+
+  return (
+    <View
+      style={[
+        styles.appNavigator,
+        { height: isAuthed && !isNativeScreen ? bottomTabBarHeight : '100%' }
+      ]}
+    >
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+          gestureEnabled: false
+        }}
+      >
+        {isAuthed ? (
+          <Stack.Screen name='main'>
+            {props => (
+              <TabNavigator
+                {...props}
+                isNativeScreen={isNativeScreen}
+                onBottomTabBarLayout={handleBottomTabBarLayout}
+              />
+            )}
+          </Stack.Screen>
+        ) : (
+          <Stack.Screen name='sign-on' component={SignOnNavigator} />
+        )}
+      </Stack.Navigator>
+    </View>
+  )
 }
 
 export default AppNavigator
