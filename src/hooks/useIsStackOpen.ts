@@ -11,7 +11,12 @@ const useIsStackOpen = () => {
     return false
   }
 
-  const activeRoute = state.routes[state.index]
+  const mainRoute = state.routes[0]
+
+  if (mainRoute?.key === 'main') {
+    return false
+  }
+  const activeRoute = mainRoute.state.routes[mainRoute.state.index]
   return activeRoute.state?.index > 0
 }
 
