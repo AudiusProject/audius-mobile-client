@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react'
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import { ParamListBase } from '@react-navigation/native'
+import { ParamListBase, useNavigationState } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { LayoutChangeEvent, StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
@@ -14,10 +14,10 @@ import TrackScreen from 'app/screens/track-screen'
 import {
   getDappLoaded,
   getIsSignedIn,
-  getLocation,
   getOnSignUp
 } from 'app/store/lifecycle/selectors'
 import { getAccountAvailable } from 'app/store/signon/selectors'
+import { getNavigationStateAtRoute } from 'app/utils/navigation'
 
 import { FeedStackParamList } from './types'
 
@@ -109,6 +109,9 @@ const Stack = createStackNavigator()
 
 const AppNavigator = () => {
   const [bottomTabBarHeight, setBottomTabBarHeight] = useState(0)
+  const mainNavigationState = useNavigationState(
+    getNavigationStateAtRoute(['main'])
+  )
 
   const dappLoaded = useSelector(getDappLoaded)
   const signedIn = useSelector(getIsSignedIn)
@@ -124,11 +127,11 @@ const AppNavigator = () => {
     )
   }, [dappLoaded, isAccountAvailable, signedIn, onSignUp])
 
-  const location = useSelector(getLocation)
-
-  const isNativeScreen = nativeScreens.has(
-    location?.pathname.match(/[^/]+/)?.[0]
-  )
+  const isNativeScreen =
+    !mainNavigationState ||
+    nativeScreens.has(
+      mainNavigationState.routes[mainNavigationState.index]?.name
+    )
 
   // Set the height of the navigator to be the height of the bottom tab bar
   // in cases where the webview needs to be shown
@@ -141,7 +144,7 @@ const AppNavigator = () => {
     <View
       style={[
         styles.appNavigator,
-        { height: isAuthed && !isNativeScreen ? bottomTabBarHeight : '100%' }
+        { height: isNativeScreen ? '100%' : bottomTabBarHeight }
       ]}
     >
       <Stack.Navigator
@@ -151,7 +154,7 @@ const AppNavigator = () => {
         }}
       >
         {isAuthed ? (
-          <Stack.Screen name='main'>
+          <Stack.Screen name='main' navigationKey='main'>
             {props => (
               <TabNavigator
                 {...props}

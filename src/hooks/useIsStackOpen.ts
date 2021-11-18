@@ -1,22 +1,20 @@
 import { useNavigationState } from '@react-navigation/native'
 
+import { getNavigationStateAtRoute } from 'app/utils/navigation'
+
 /**
  * Hook that returns whether the StackNavigator nested in the top level
  * TabNavigator is open
  * @returns boolean
  */
 const useIsStackOpen = () => {
-  const state = useNavigationState(state => state)
+  const state = useNavigationState(getNavigationStateAtRoute(['main']))
+
   if (!state) {
     return false
   }
 
-  const mainRoute = state.routes[0]
-
-  if (mainRoute?.key === 'main') {
-    return false
-  }
-  const activeRoute = mainRoute.state.routes[mainRoute.state.index]
+  const activeRoute = state.routes[state.index]
   return activeRoute.state?.index > 0
 }
 
