@@ -66,22 +66,16 @@ const FeedStackScreen = createStackScreen<FeedStackParamList>(Stack => (
 const Tab = createBottomTabNavigator()
 
 type TabNavigatorProps = {
-  isNativeScreen: boolean
   onBottomTabBarLayout?: (e: LayoutChangeEvent) => void
 }
 
 /**
  * The bottom tab navigator
  */
-const TabNavigator = ({
-  isNativeScreen,
-  onBottomTabBarLayout
-}: TabNavigatorProps) => {
+const TabNavigator = ({ onBottomTabBarLayout }: TabNavigatorProps) => {
   // Hide the navContainer for web screens so the WebView is shown
   return (
-    <View
-      style={[styles.tabNavigator, { height: isNativeScreen ? '100%' : 0 }]}
-    >
+    <View style={styles.tabNavigator}>
       <Tab.Navigator
         tabBar={props => (
           <BottomTabBar {...props} onLayout={onBottomTabBarLayout} />
