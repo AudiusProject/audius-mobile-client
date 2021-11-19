@@ -73,7 +73,6 @@ type TabNavigatorProps = {
  * The bottom tab navigator
  */
 const TabNavigator = ({ onBottomTabBarLayout }: TabNavigatorProps) => {
-  // Hide the navContainer for web screens so the WebView is shown
   return (
     <View style={styles.tabNavigator}>
       <Tab.Navigator

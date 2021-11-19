@@ -37,7 +37,7 @@ const linking: LinkingOptions<AppStackParamList> = {
 
 /**
  * NavigationContainer contains the react-navigation context
- * and configures the linking
+ * and configures linking
  */
 const NavigationContainer = ({ children }: Props) => {
   return (

@@ -244,7 +244,7 @@ const ContinueButton = ({
   )
 }
 
-let handleTimeout: NodeJS.Timeout
+let handleTimeout: number
 const HANDLE_VALIDATION_IN_PROGRESS_DELAY_MS = 1000
 
 export type ProfileManualProps = NativeStackScreenProps<
