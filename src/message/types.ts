@@ -124,7 +124,10 @@ export enum MessageType {
   // Theme
   THEME_CHANGE = 'theme-change',
 
-  SYNC_CLIENT_STORE = 'sync-client-store'
+  SYNC_CLIENT_STORE = 'sync-client-store',
+
+  // hCaptcha
+  UPDATE_HCAPTCHA_SCORE = 'UPDATE_HCAPTCHA_SCORE'
 }
 
 export type Message = {

@@ -11,6 +11,7 @@ import GoogleCast from 'app/components/audio/GoogleCast'
 // import BottomBar from 'app/components/bottom-bar'
 import CollectibleDetailsDrawer from 'app/components/collectible-details-drawer'
 import EnablePushNotificationsDrawer from 'app/components/enable-push-notifications-drawer'
+import HCaptcha from 'app/components/hcaptcha'
 import MobileUploadDrawer from 'app/components/mobile-upload-drawer'
 import Notifications from 'app/components/notifications/Notifications'
 import OAuth from 'app/components/oauth/OAuth'
@@ -86,6 +87,7 @@ const App = () => {
           */}
             {/* <BottomBar /> */}
             <Drawers />
+            <HCaptcha />
             <Audio webRef={webRef} />
             <OAuth webRef={webRef} />
             <Airplay webRef={webRef} />
