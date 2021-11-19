@@ -2,7 +2,10 @@ import React, { useCallback, useMemo, useState } from 'react'
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { ParamListBase, useNavigationState } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
+import {
+  CardStyleInterpolators,
+  createStackNavigator
+} from '@react-navigation/stack'
 import { LayoutChangeEvent, StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
 
@@ -44,8 +47,12 @@ const EmptyScreen = () => {
   return <View />
 }
 
-// This function is used to create a stack containing common screens like
-// track and profile
+/**
+ * This function is used to create a stack containing common screens like
+ * track and profile
+ * @param baseScreen The screen to use as the base of the stack
+ * @returns Stack.Navigator
+ */
 const createStackScreen = <StackParamList extends ParamListBase>(
   baseScreen: (
     Stack: ReturnType<typeof createStackNavigator>
@@ -56,6 +63,8 @@ const createStackScreen = <StackParamList extends ParamListBase>(
     <Stack.Navigator
       screenOptions={{
         cardOverlayEnabled: true,
+        cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+        gestureEnabled: true,
         gestureResponseDistance: 1000
       }}
     >
@@ -67,14 +76,14 @@ const createStackScreen = <StackParamList extends ParamListBase>(
 }
 
 const FeedStackScreen = createStackScreen<FeedStackParamList>(Stack => (
-  <Stack.Screen name='feed' component={FeedScreen} />
+  <Stack.Screen name='feed-screen' component={FeedScreen} />
 ))
 
 const Tab = createBottomTabNavigator()
 
 type TabNavigatorProps = {
   isNativeScreen: boolean
-  onBottomTabBarLayout: (e: LayoutChangeEvent) => void
+  onBottomTabBarLayout?: (e: LayoutChangeEvent) => void
 }
 
 const TabNavigator = ({
@@ -90,12 +99,9 @@ const TabNavigator = ({
         tabBar={props => (
           <BottomTabBar {...props} onLayout={onBottomTabBarLayout} />
         )}
+        screenOptions={{ headerShown: false }}
       >
-        <Tab.Screen
-          name='feed'
-          component={FeedStackScreen}
-          options={{ headerShown: false }}
-        />
+        <Tab.Screen name='feed' component={FeedStackScreen} />
         <Tab.Screen name='trending' component={EmptyScreen} />
         <Tab.Screen name='explore' component={EmptyScreen} />
         <Tab.Screen name='favorites' component={EmptyScreen} />
@@ -134,7 +140,9 @@ const AppNavigator = () => {
     )
 
   // Set the height of the navigator to be the height of the bottom tab bar
-  // in cases where the webview needs to be shown
+  // in cases where the webview needs to be shown.
+  // Janky but required to get touch events etc. working properly
+  // Can be removed when fully migrated to RN
   const handleBottomTabBarLayout = useCallback((e: LayoutChangeEvent) => {
     const { height } = e.nativeEvent.layout
     setBottomTabBarHeight(height)
@@ -158,7 +166,7 @@ const AppNavigator = () => {
             {props => (
               <TabNavigator
                 {...props}
-                isNativeScreen={isNativeScreen}
+                isNativeScreen={true}
                 onBottomTabBarLayout={handleBottomTabBarLayout}
               />
             )}

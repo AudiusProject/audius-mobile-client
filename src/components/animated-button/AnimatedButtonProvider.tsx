@@ -1,4 +1,11 @@
-import React, { memo, useState, useEffect, useRef, useCallback } from 'react'
+import React, {
+  memo,
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo
+} from 'react'
 
 import LottieView from 'lottie-react-native'
 import { TouchableHighlight, View, ViewStyle } from 'react-native'
@@ -32,16 +39,9 @@ const AnimatedButton = ({
   const underlayColor = useColor('neutralLight8')
   const animationRef = useRef<LottieView | null>()
 
-  useEffect(() => {
-    if (!isPlaying) {
-      if (isActive) {
-        const lastFrame = iconJSON.op
-        animationRef.current?.play(lastFrame, lastFrame)
-      } else {
-        animationRef.current?.play(0, 0)
-      }
-    }
-  }, [isActive, isPlaying, iconJSON])
+  const handleAnimationFinish = useCallback(() => setIsPlaying(false), [
+    setIsPlaying
+  ])
 
   const handleClick = useCallback(() => {
     if (isDisabled) {
@@ -54,7 +54,15 @@ const AnimatedButton = ({
     }
 
     onPress()
-  }, [isDisabled, onPress, isActive])
+  }, [isDisabled, onPress, isActive, setIsPlaying])
+
+  const progress = useMemo(() => {
+    if (isPlaying) {
+      return undefined
+    }
+
+    return isActive ? 1 : 0
+  }, [isPlaying, isActive])
 
   return (
     <TouchableHighlight
@@ -66,7 +74,8 @@ const AnimatedButton = ({
       <View style={wrapperStyle}>
         <LottieView
           ref={animation => (animationRef.current = animation)}
-          onAnimationFinish={() => setIsPlaying(false)}
+          onAnimationFinish={handleAnimationFinish}
+          progress={progress}
           loop={false}
           source={iconJSON}
         />
