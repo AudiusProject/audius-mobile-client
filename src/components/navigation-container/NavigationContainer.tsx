@@ -13,7 +13,7 @@ type Props = {
 
 const linking: LinkingOptions<AppStackParamList> = {
   prefixes: ['https://audius.co'],
-  /* configuration for matching screens with paths */
+  // configuration for matching screens with paths
   config: {
     screens: {
       main: {
@@ -35,6 +35,10 @@ const linking: LinkingOptions<AppStackParamList> = {
   }
 }
 
+/**
+ * NavigationContainer contains the react-navigation context
+ * and configures the linking
+ */
 const NavigationContainer = ({ children }: Props) => {
   return (
     <RNNavigationContainer linking={linking}>{children}</RNNavigationContainer>
