@@ -16,6 +16,7 @@ import MobileUploadDrawer from 'app/components/mobile-upload-drawer'
 import NavigationContainer from 'app/components/navigation-container'
 import Notifications from 'app/components/notifications/Notifications'
 import OAuth from 'app/components/oauth/OAuth'
+import OverflowMenuDrawer from 'app/components/overflow-menu-drawer'
 import Search from 'app/components/search/Search'
 import WebApp from 'app/components/web/WebApp'
 import { WebRefContextProvider } from 'app/components/web/WebRef'
@@ -35,6 +36,17 @@ const Airplay = Platform.select({
 
 // Increment the session count when the App.tsx code is first run
 incrementSessionCount()
+
+const Drawers = () => {
+  return (
+    <>
+      <MobileUploadDrawer />
+      <EnablePushNotificationsDrawer />
+      <CollectibleDetailsDrawer />
+      <OverflowMenuDrawer />
+    </>
+  )
+}
 
 const App = () => {
   // Track the web view as a top-level ref so that any children can use it
@@ -65,14 +77,17 @@ const App = () => {
               <AppNavigator />
               <Search />
               {/*
-        Note: it is very important that Notifications is rendered after WebApp.
-        On Android, regardless of position: absolute, WebApp will steal all of Notifications
-        touch targets and onPress will not work.
-      */}
+                Note: it is very important that Notifications is rendered after WebApp.
+                On Android, regardless of position: absolute, WebApp will steal all of Notifications
+                touch targets and onPress will not work.
+              */}
               <Notifications webRef={webRef} />
-              <MobileUploadDrawer />
-              <EnablePushNotificationsDrawer />
-              <CollectibleDetailsDrawer />
+
+              {/*
+                Commenting out BottomBar until the drawers and overlays are migrated to RN
+              */}
+              {/* <BottomBar /> */}
+              <Drawers />
               <Audio webRef={webRef} />
               <OAuth webRef={webRef} />
               <Airplay webRef={webRef} />
