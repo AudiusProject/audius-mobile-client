@@ -48,6 +48,14 @@ const Drawers = () => {
   )
 }
 
+const Modals = () => {
+  return (
+    <>
+      <HCaptcha />
+    </>
+  )
+}
+
 const App = () => {
   // Track the web view as a top-level ref so that any children can use it
   // to send messages to the dapp
@@ -87,7 +95,7 @@ const App = () => {
           */}
             {/* <BottomBar /> */}
             <Drawers />
-            <HCaptcha />
+            <Modals />
             <Audio webRef={webRef} />
             <OAuth webRef={webRef} />
             <Airplay webRef={webRef} />

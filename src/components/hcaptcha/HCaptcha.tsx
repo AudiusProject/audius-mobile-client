@@ -7,11 +7,16 @@ import {
   getModalVisibility,
   setVisibility
 } from 'audius-client/src/common/store/ui/modals/slice'
+import { NativeSyntheticEvent } from 'react-native'
 import Config from 'react-native-config'
 
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 import { MessageType } from 'app/message/types'
+
+type HCaptchaMessage = {
+  data: string
+}
 
 const siteKey = Config.HCAPTCHA_SITE_KEY
 const baseUrl = Config.HCAPTCHA_BASE_URL
@@ -65,9 +70,8 @@ const HCaptchaModal = () => {
     handleClose()
   }, [hCaptchaStatus, handleClose])
 
-  // todo: update any type
   const onMessage = useCallback(
-    (event: any) => {
+    (event: NativeSyntheticEvent<HCaptchaMessage>) => {
       if (!hasMessageFired) {
         hasMessageFired = true
         if (event && event.nativeEvent.data && !hasCode) {
