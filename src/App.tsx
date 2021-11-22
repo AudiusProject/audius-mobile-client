@@ -11,6 +11,7 @@ import Audio from 'app/components/audio/Audio'
 import GoogleCast from 'app/components/audio/GoogleCast'
 import CollectibleDetailsDrawer from 'app/components/collectible-details-drawer'
 import EnablePushNotificationsDrawer from 'app/components/enable-push-notifications-drawer'
+import HCaptcha from 'app/components/hcaptcha'
 import MobileUploadDrawer from 'app/components/mobile-upload-drawer'
 import NavigationContainer from 'app/components/navigation-container'
 import Notifications from 'app/components/notifications/Notifications'
@@ -43,6 +44,14 @@ const Drawers = () => {
       <EnablePushNotificationsDrawer />
       <CollectibleDetailsDrawer />
       <OverflowMenuDrawer />
+    </>
+  )
+}
+
+const Modals = () => {
+  return (
+    <>
+      <HCaptcha />
     </>
   )
 }
@@ -81,12 +90,8 @@ const App = () => {
                 touch targets and onPress will not work.
               */}
               <Notifications webRef={webRef} />
-
-              {/*
-                Commenting out BottomBar until the drawers and overlays are migrated to RN
-              */}
-              {/* <BottomBar /> */}
               <Drawers />
+              <Modals />
               <Audio webRef={webRef} />
               <OAuth webRef={webRef} />
               <Airplay webRef={webRef} />
