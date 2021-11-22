@@ -52,7 +52,7 @@ export enum EventNames {
   // Notifications
   NOTIFICATIONS_OPEN_PUSH_NOTIFICATION = 'Notifications: Open Push Notification',
 
-  // Notifications
+  // Page View
   PAGE_VIEW = 'PAGE VIEW'
 }
 
