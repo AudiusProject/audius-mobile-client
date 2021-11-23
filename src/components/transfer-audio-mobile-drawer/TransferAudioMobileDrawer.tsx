@@ -14,7 +14,7 @@ import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 import { useThemeColors } from 'app/utils/theme'
 
-import Drawer from '../drawer'
+import Drawer from 'app/components/drawer'
 
 const TRANSFER_AUDIO_MODAL_NAME = 'TransferAudioMobileWarning'
 
@@ -72,7 +72,7 @@ const TransferAudioMobileDrawer = () => {
         <IconGold style={styles.badge} height={134} width={134} />
         <MaskedView
           maskElement={
-            <Text style={styles.title} weight='heavy'>
+            <Text style={styles.title}>
               {messages.title}
             </Text>
           }

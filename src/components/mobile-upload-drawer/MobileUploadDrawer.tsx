@@ -13,7 +13,7 @@ import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 import { useThemeColors } from 'app/utils/theme'
 
-import Drawer from '../drawer'
+import Drawer from 'app/components/drawer'
 
 const styles = StyleSheet.create({
   drawer: {
