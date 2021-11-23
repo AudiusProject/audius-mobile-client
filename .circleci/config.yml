@@ -194,6 +194,9 @@ jobs:
           command: |
             npm run jetifier
       - run:
+          name: increment build number
+          command: cd android && bundle exec fastlane incrementBuildNumber track:alpha
+      - run:
           name: generating the staging release apk & bundle
           command: |
             echo "yes" | $ANDROID_HOME/tools/bin/sdkmanager "platforms;android-30" && cd android && ./gradlew bundleBounceRelease
@@ -287,17 +290,17 @@ workflows:
           context: Audius Mobile Client
           requires:
             - pull-staging-web-app
-          # filters:
-          #   branches:
-          #     only: /^master$/
+          filters:
+            branches:
+              only: /^master$/
 
       - upload-staging-android:
           context: Audius Mobile Client
           requires:
             - pull-staging-web-app
-          filters:
-            branches:
-              only: /^master$/
+          # filters:
+          #   branches:
+          #     only: /^master$/
 
       - upload-ios:
           context: Audius Mobile Client
