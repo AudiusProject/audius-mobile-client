@@ -45,6 +45,14 @@ platform :ios do
       puts "ENVFILE: #{ENV['ENVFILE']}"
     end
 
+    # Increment build
+    increment_build_number(
+      build_number: app_store_build_number(
+        initial_build_number: 1,
+        version: get_version_number(xcodeproj: "AudiusReactNative.xcodeproj"),
+        live: false
+      ) + 1,
+    )
 
     # Build ios
     gym(
@@ -89,6 +97,14 @@ platform :ios do
       puts "ENVFILE: #{ENV['ENVFILE']}"
     end
 
+    # Increment build
+    increment_build_number(
+      build_number: app_store_build_number(
+        initial_build_number: 1,
+        version: get_version_number(xcodeproj: "AudiusReactNative.xcodeproj"),
+        live: false
+      ) + 1,
+    )
 
     # Build ios
     gym(
