@@ -312,6 +312,6 @@ workflows:
           requires:
             - init
             - pull-web-app
-          # filters:
-          #   branches:
-          #     only: /^master$/
+          filters:
+            branches:
+              only: /^master$/
