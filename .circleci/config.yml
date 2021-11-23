@@ -190,7 +190,7 @@ jobs:
           name: Move Staging build
           command: mv web-app-staging web-app
       - run:
-          name: migrate support libraried for androidX packages
+          name: migrate support libraries for androidX packages
           command: |
             npm run jetifier
       - restore_cache:
@@ -230,7 +230,7 @@ jobs:
       - attach_workspace:
           at: ./
       - run:
-          name: migrate support libraried for androidX packages
+          name: migrate support libraries for androidX packages
           command: |
             npm run jetifier
       - run:
