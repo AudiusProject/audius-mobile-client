@@ -201,6 +201,11 @@ jobs:
           paths:
             - android/vendor/bundle
       - run:
+          name: fetch app fastlane json config to upload to play store
+          command: |
+            echo "$FASTLANE_PLAYSTORE_JSON" > android/app/api.txt
+            base64 --decode android/app/api.txt > android/app/api.json
+      - run:
           name: increment build number
           command: cd android && bundle exec fastlane incrementBuildNumber track:alpha
       - run:
@@ -211,11 +216,6 @@ jobs:
           name: install-awscli
           command: sudo pip install awscli
       - run: aws s3 sync ~/react-native-wrapper/android/app/build/outputs s3://audius-mobile-staging/android --delete
-      - run:
-          name: fetch app fastlane json config to upload to play store
-          command: |
-            echo "$FASTLANE_PLAYSTORE_JSON" > android/app/api.txt
-            base64 --decode android/app/api.txt > android/app/api.json
       - run:
           name: Upload to Play Store
           command: cd android && bundle exec fastlane bounce
