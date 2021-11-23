@@ -193,11 +193,6 @@ jobs:
           name: migrate support libraried for androidX packages
           command: |
             npm run jetifier
-      - run:
-          name: install-awscli
-          command: sudo pip install awscli
-      - run: aws s3 sync ~/react-native-wrapper/android/app/build/outputs s3://audius-mobile-staging/android --delete
-
       - restore_cache:
           key: 1-gems-{{ checksum "android/Gemfile.lock" }}
       - run: cd android && (bundle check || bundle install --path vendor/bundle)
@@ -212,13 +207,15 @@ jobs:
           name: generating the staging release apk & bundle
           command: |
             echo "yes" | $ANDROID_HOME/tools/bin/sdkmanager "platforms;android-30" && cd android && ./gradlew bundleBounceRelease
-
+      - run:
+          name: install-awscli
+          command: sudo pip install awscli
+      - run: aws s3 sync ~/react-native-wrapper/android/app/build/outputs s3://audius-mobile-staging/android --delete
       - run:
           name: fetch app fastlane json config to upload to play store
           command: |
             echo "$FASTLANE_PLAYSTORE_JSON" > android/app/api.txt
             base64 --decode android/app/api.txt > android/app/api.json
-
       - run:
           name: Upload to Play Store
           command: cd android && bundle exec fastlane bounce
