@@ -194,13 +194,6 @@ jobs:
           command: |
             npm run jetifier
       - run:
-          name: increment build number
-          command: cd android && bundle exec fastlane incrementBuildNumber track:alpha
-      - run:
-          name: generating the staging release apk & bundle
-          command: |
-            echo "yes" | $ANDROID_HOME/tools/bin/sdkmanager "platforms;android-30" && cd android && ./gradlew bundleBounceRelease
-      - run:
           name: install-awscli
           command: sudo pip install awscli
       - run: aws s3 sync ~/react-native-wrapper/android/app/build/outputs s3://audius-mobile-staging/android --delete
@@ -212,6 +205,13 @@ jobs:
           key: 1-gems-{{ checksum "android/Gemfile.lock" }}
           paths:
             - android/vendor/bundle
+      - run:
+          name: increment build number
+          command: cd android && bundle exec fastlane incrementBuildNumber track:alpha
+      - run:
+          name: generating the staging release apk & bundle
+          command: |
+            echo "yes" | $ANDROID_HOME/tools/bin/sdkmanager "platforms;android-30" && cd android && ./gradlew bundleBounceRelease
 
       - run:
           name: fetch app fastlane json config to upload to play store
