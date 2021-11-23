@@ -196,7 +196,7 @@ jobs:
       - run:
           name: generating the staging release apk & bundle
           command: |
-            echo "yes" | $ANDROID_HOME/tools/bin/sdkmanager "platforms;android-28" && cd android && ./gradlew bundleBounceRelease
+            echo "yes" | $ANDROID_HOME/tools/bin/sdkmanager "platforms;android-30" && cd android && ./gradlew bundleBounceRelease
       - run:
           name: install-awscli
           command: sudo pip install awscli
@@ -221,6 +221,7 @@ jobs:
           command: cd android && bundle exec fastlane bounce
 
   upload-android:
+    resource_class: large
     working_directory: ~/react-native-wrapper
     docker:
       - image: circleci/android:api-27-node8-alpha
