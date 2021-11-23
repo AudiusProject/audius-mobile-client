@@ -279,9 +279,9 @@ workflows:
           context: Audius Mobile Client
           requires:
             - init
-          filters:
-            branches:
-              only: /^master$/
+          # filters:
+          #   branches:
+          #     only: /^master$/
 
       - upload-staging-ios:
           context: Audius Mobile Client
