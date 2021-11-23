@@ -181,7 +181,7 @@ jobs:
   upload-staging-android:
     working_directory: ~/react-native-wrapper
     docker:
-      - image: circleci/android:api-27-node8-alpha
+      - image: circleci/android:api-30-node
     steps:
       - checkout
       - attach_workspace:
@@ -196,7 +196,7 @@ jobs:
       - run:
           name: generating the staging release apk & bundle
           command: |
-            echo "yes" | $ANDROID_HOME/tools/bin/sdkmanager "platforms;android-28" && cd android && ./gradlew bundleBounceRelease
+            echo "yes" | $ANDROID_HOME/tools/bin/sdkmanager "platforms;android-30" && cd android && ./gradlew bundleBounceRelease
       - run:
           name: install-awscli
           command: sudo pip install awscli
@@ -223,7 +223,7 @@ jobs:
   upload-android:
     working_directory: ~/react-native-wrapper
     docker:
-      - image: circleci/android:api-27-node8-alpha
+      - image: circleci/android:api-30-node
     steps:
       - checkout
       - attach_workspace:
