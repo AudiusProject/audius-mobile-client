@@ -111,9 +111,9 @@ jobs:
           name: build-staging-web-app
           command: cd ../staging-web-app && npm run build:mobile-stage
       - persist_to_workspace:
-          root: ./
+          root: ../
           paths:
-            - ../staging-web-app
+            - staging-web-app
 
   upload-staging-ios:
     working_directory: ~/react-native-wrapper
