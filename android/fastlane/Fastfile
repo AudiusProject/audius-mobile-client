@@ -62,10 +62,11 @@ platform :android do
     )
   end
 
+
   lane :incrementBuildNumber do |options|
       previousVersion = google_play_track_version_codes(track: options[:track]).max
-      path = '~/react-native-wrapper/android/app/build.gradle'
       re = /versionCode\s+(\d+)/
+      path = '../app/build.gradle'
       s = File.read(path)
       s[re, 1] = (previousVersion + 1).to_s
       f = File.new(path, 'w')
