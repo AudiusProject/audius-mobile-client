@@ -96,21 +96,24 @@ jobs:
       - checkout
       - attach_workspace:
           at: ./
+      - run:
+          name: copy-audius-client
+          command: cp -R ./node_modules/audius-client ../staging-web-app
 
       - restore_cache:
           keys:
-            - dependency-cache-{{ checksum "node_modules/audius-client/package.json" }}
+            - dependency-cache-{{ checksum "../staging-web-app/package.json" }}
             # fallback to using the latest cache if no exact match is found
             - dependency-cache-
-      - run: cd ./node_modules/audius-client && npm install
+      - run: cd ../staging-web-app && npm install
 
       - run:
-          name: build-mobile-staging
-          command: cd ./node_modules/audius-client && npm run build:mobile-stage
+          name: build-staging-web-app
+          command: cd ../staging-web-app && npm run build:mobile-stage
       - persist_to_workspace:
           root: ./
           paths:
-            - node_modules/audius-client/build-mobile-staging
+            - ../staging-web-app
 
   upload-staging-ios:
     working_directory: ~/react-native-wrapper
