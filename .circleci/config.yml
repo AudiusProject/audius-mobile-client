@@ -129,7 +129,7 @@ jobs:
           at: ./
       - run:
           name: Move Staging build
-          command: mv node_modules/audius-client/build-mobile-staging web-app/Web.bundle/build
+          command: mv ../staging-web-app web-app/Web.bundle/build
       - run:
           name: Set Ruby Version
           command: echo 'chruby ruby-2.6' >> ~/.bash_profile
