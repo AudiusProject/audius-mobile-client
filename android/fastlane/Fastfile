@@ -64,7 +64,10 @@ platform :android do
 
 
   lane :incrementBuildNumber do |options|
-      previousVersion = google_play_track_version_codes(track: options[:track]).max
+      previousVersion = google_play_track_version_codes(
+        package_name: options[:package_name),
+        track: options[:track]
+      ).max
       re = /versionCode\s+(\d+)/
       path = '../app/build.gradle'
       s = File.read(path)

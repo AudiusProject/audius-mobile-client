@@ -87,6 +87,23 @@ jobs:
           paths:
             - web-app-staging
 
+  build-staging-web-app:
+    working_directory: ~/react-native-wrapper
+    docker:
+      - image: circleci/node:14.18
+    resource_class: large
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ./
+      - run:
+          name: build-mobile-staging
+          command: cd ./node_modules/audius-client && npm run build:mobile-stage
+      - persist_to_workspace:
+          root: ./
+          paths:
+            - node_modules/audius-client/build-mobile-staging
+
   upload-staging-ios:
     working_directory: ~/react-native-wrapper
     macos: # Run on osx so app can be created and signed.
@@ -101,7 +118,7 @@ jobs:
           at: ./
       - run:
           name: Move Staging build
-          command: mv web-app-staging web-app
+          command: mv node_modules/audius-client/build-mobile-staging web-app/Web.bundle/build
       - run:
           name: Set Ruby Version
           command: echo 'chruby ruby-2.6' >> ~/.bash_profile
@@ -207,7 +224,7 @@ jobs:
             base64 --decode android/app/api.txt > android/app/api.json
       - run:
           name: increment build number
-          command: cd android && bundle exec fastlane incrementBuildNumber track:alpha
+          command: cd android && bundle exec fastlane incrementBuildNumber package_name:co.audius.app.bounce track:alpha
       - run:
           name: generating the staging release apk & bundle
           command: |
@@ -233,6 +250,21 @@ jobs:
           name: migrate support libraries for androidX packages
           command: |
             npm run jetifier
+      - restore_cache:
+          key: 1-gems-{{ checksum "android/Gemfile.lock" }}
+      - run: cd android && (bundle check || bundle install --path vendor/bundle)
+      - save_cache:
+          key: 1-gems-{{ checksum "android/Gemfile.lock" }}
+          paths:
+            - android/vendor/bundle
+      - run:
+          name: fetch app fastlane json config to upload to play store
+          command: |
+            echo "$FASTLANE_PLAYSTORE_JSON" > android/app/api.txt
+            base64 --decode android/app/api.txt > android/app/api.json
+      - run:
+          name: increment build number
+          command: cd android && bundle exec fastlane incrementBuildNumber package_name:co.audius.app track:alpha
       - run:
           name: generating the release apk & bundle
           command: |
@@ -241,21 +273,6 @@ jobs:
           name: install-awscli
           command: sudo pip install awscli
       - run: aws s3 sync ~/react-native-wrapper/android/app/build/outputs s3://audius-mobile/android --delete
-
-      - restore_cache:
-          key: 1-gems-{{ checksum "android/Gemfile.lock" }}
-      - run: cd android && (bundle check || bundle install --path vendor/bundle)
-      - save_cache:
-          key: 1-gems-{{ checksum "android/Gemfile.lock" }}
-          paths:
-            - android/vendor/bundle
-
-      - run:
-          name: fetch app fastlane json config to upload to play store
-          command: |
-            echo "$FASTLANE_PLAYSTORE_JSON" > android/app/api.txt
-            base64 --decode android/app/api.txt > android/app/api.json
-
       - run:
           name: Upload to Play Store
           command: cd android && bundle exec fastlane alpha
@@ -273,23 +290,31 @@ workflows:
             - init
           filters:
             branches:
-              only: /^master$/
+              only: /(^release.*)$/
 
       - pull-staging-web-app:
           context: Audius Mobile Client
           requires:
             - init
+          filters:
+            branches:
+              only: /(^release.*)$/
+
+      - build-staging-web-app:
+          context: Audius Mobile Client
+          requires:
+            - init
           # filters:
           #   branches:
-          #     only: /^master$/
+          # only: /(^release.*)$/
 
       - upload-staging-ios:
           context: Audius Mobile Client
           requires:
-            - pull-staging-web-app
+            - build-staging-web-app
           # filters:
           #   branches:
-          #     only: /^master$/
+          # only: /(^release.*)$/
 
       - upload-staging-android:
           context: Audius Mobile Client
@@ -297,7 +322,7 @@ workflows:
             - pull-staging-web-app
           filters:
             branches:
-              only: /^master$/
+              only: /(^release.*)$/
 
       - upload-ios:
           context: Audius Mobile Client
@@ -305,7 +330,7 @@ workflows:
             - pull-web-app
           filters:
             branches:
-              only: /^master$/
+              only: /(^release.*)$/
 
       - upload-android:
           context: Audius Mobile Client
@@ -314,4 +339,4 @@ workflows:
             - pull-web-app
           filters:
             branches:
-              only: /^master$/
+              only: /(^release.*)$/
