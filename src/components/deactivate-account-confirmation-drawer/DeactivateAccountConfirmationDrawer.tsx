@@ -34,15 +34,13 @@ const createStyles = (themeColors: ThemeColors) =>
       marginTop: 8,
       marginBottom: 16,
       textAlign: 'center',
-      fontSize: 18,
-      fontWeight: 'bold'
+      fontSize: 18
     },
     customDrawerTitleWarning: {
       paddingBottom: 24,
       textAlign: 'center',
       fontSize: 18,
-      color: themeColors.accentRed,
-      fontWeight: '500'
+      color: themeColors.accentRed
     }
   })
 
@@ -71,10 +69,10 @@ export const DeactivateAccountConfirmationDrawer = () => {
       ]}
       renderTitle={() => (
         <View style={styles.customDrawerTitle}>
-          <Text style={styles.customDrawerTitleHeader}>
+          <Text weight={'bold'} style={styles.customDrawerTitleHeader}>
             {messages.confirmTitle}
           </Text>
-          <Text style={styles.customDrawerTitleWarning}>
+          <Text weight={'demiBold'} style={styles.customDrawerTitleWarning}>
             {messages.confirm}
           </Text>
         </View>
