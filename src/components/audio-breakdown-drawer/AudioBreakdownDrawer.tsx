@@ -50,14 +50,12 @@ const createStyles = (themeColors: ThemeColors) =>
     },
 
     amount: {
-      fontFamily: 'AvenirNextLTPro-Heavy',
       fontSize: 48
     },
 
     total: {
       marginTop: 8,
       marginBottom: 24,
-      fontFamily: 'AvenirNextLTPro-Bold',
       fontSize: 18,
       color: themeColors.neutralLight4
     },
@@ -79,14 +77,12 @@ const createStyles = (themeColors: ThemeColors) =>
     },
 
     titleLabel: {
-      fontFamily: 'AvenirNextLTPro-Bold',
       fontSize: 18,
       color: themeColors.neutral
     },
 
     titleAmount: {
       marginLeft: 12,
-      fontFamily: 'AvenirNextLTPro-Heavy',
       fontSize: 18
     },
 
@@ -98,7 +94,6 @@ const createStyles = (themeColors: ThemeColors) =>
       textAlign: 'center',
       textTransform: 'uppercase',
       color: themeColors.neutralLight4,
-      fontFamily: 'AvenirNextLTPro-Bold',
       fontSize: 12
     },
 
@@ -140,7 +135,6 @@ const createStyles = (themeColors: ThemeColors) =>
     },
 
     headerLabel: {
-      fontFamily: 'AvenirNextLTPro-Bold',
       color: themeColors.neutralLight4
     },
 
@@ -169,12 +163,10 @@ const createStyles = (themeColors: ThemeColors) =>
 
     walletAddress: {
       marginLeft: 16,
-      fontFamily: 'AvenirNextLTPro-DemiBold',
       fontSize: 14
     },
 
     linkedAmount: {
-      fontFamily: 'AvenirNextLTPro-DemiBold',
       fontSize: 14
     }
   })
@@ -241,7 +233,9 @@ const AudioBreakdownDrawer = () => {
       <View style={styles.drawer}>
         <MaskedView
           maskElement={
-            <Text style={styles.amount}>{formatWei(totalBalance, true)}</Text>
+            <Text style={styles.amount} weight='heavy'>
+              {formatWei(totalBalance, true)}
+            </Text>
           }
         >
           <LinearGradient
@@ -249,21 +243,25 @@ const AudioBreakdownDrawer = () => {
             start={{ x: 1, y: 1 }}
             end={{ x: 0, y: 0 }}
           >
-            <Text style={[styles.amount, { opacity: 0 }]}>
+            <Text style={[styles.amount, { opacity: 0 }]} weight='heavy'>
               {formatWei(totalBalance, true)}
             </Text>
           </LinearGradient>
         </MaskedView>
 
-        <Text style={styles.total}>{messages.total}</Text>
+        <Text style={styles.total} weight='bold'>
+          {messages.total}
+        </Text>
 
         <View style={styles.section}>
           <View style={styles.sectionTitle}>
-            <Text style={styles.titleLabel}>{messages.audiusWallet}</Text>
+            <Text style={styles.titleLabel} weight='bold'>
+              {messages.audiusWallet}
+            </Text>
 
             <MaskedView
               maskElement={
-                <Text style={styles.titleAmount}>
+                <Text style={styles.titleAmount} weight='heavy'>
                   {formatWei(accountBalance, true)}
                 </Text>
               }
@@ -273,7 +271,10 @@ const AudioBreakdownDrawer = () => {
                 start={{ x: 1, y: 1 }}
                 end={{ x: 0, y: 0 }}
               >
-                <Text style={[styles.titleAmount, { opacity: 0 }]}>
+                <Text
+                  style={[styles.titleAmount, { opacity: 0 }]}
+                  weight='heavy'
+                >
                   {formatWei(accountBalance, true)}
                 </Text>
               </LinearGradient>
@@ -281,7 +282,7 @@ const AudioBreakdownDrawer = () => {
           </View>
 
           <View style={styles.sectionDescription}>
-            <Text style={styles.description}>
+            <Text style={styles.description} weight='bold'>
               {messages.audiusWalletDescription}
             </Text>
           </View>
@@ -289,11 +290,13 @@ const AudioBreakdownDrawer = () => {
 
         <View style={styles.section}>
           <View style={styles.sectionTitle}>
-            <Text style={styles.titleLabel}>{messages.linkedWallets}</Text>
+            <Text style={styles.titleLabel} weight='bold'>
+              {messages.linkedWallets}
+            </Text>
 
             <MaskedView
               maskElement={
-                <Text style={styles.titleAmount}>
+                <Text style={styles.titleAmount} weight='heavy'>
                   {formatWei(linkedWalletsBalance, true)}
                 </Text>
               }
@@ -303,7 +306,10 @@ const AudioBreakdownDrawer = () => {
                 start={{ x: 1, y: 1 }}
                 end={{ x: 0, y: 0 }}
               >
-                <Text style={[styles.titleAmount, { opacity: 0 }]}>
+                <Text
+                  style={[styles.titleAmount, { opacity: 0 }]}
+                  weight='heavy'
+                >
                   {formatWei(linkedWalletsBalance, true)}
                 </Text>
               </LinearGradient>
@@ -311,8 +317,12 @@ const AudioBreakdownDrawer = () => {
           </View>
 
           <View style={styles.walletsHeader}>
-            <Text style={styles.headerLabel}>{messages.linkedWallets}</Text>
-            <Text style={styles.headerLabel}>{messages.audio}</Text>
+            <Text style={styles.headerLabel} weight='bold'>
+              {messages.linkedWallets}
+            </Text>
+            <Text style={styles.headerLabel} weight='bold'>
+              {messages.audio}
+            </Text>
           </View>
 
           <View style={styles.walletsBody}>
@@ -337,7 +347,7 @@ const AudioBreakdownDrawer = () => {
           </View>
 
           <View style={styles.sectionDescription}>
-            <Text style={styles.description}>
+            <Text style={styles.description} weight='bold'>
               {messages.linkedWalletsDescription}
               <IconInfo style={styles.infoIcon} height={12} width={12} />
             </Text>
@@ -401,13 +411,17 @@ const Wallet = ({ chain, address, balance }: WalletProps) => {
                 <LogoSol height={16} width={16} />
               )}
             </View>
-            <Text style={styles.walletAddress}>{displayAddress(address)}</Text>
+            <Text style={styles.walletAddress} weight='demiBold'>
+              {displayAddress(address)}
+            </Text>
             <IconCopy style={styles.copyIcon} height={16} width={16} />
           </View>
         </TouchableWithoutFeedback>
       </Animated.View>
       {(chain === Chain.Eth || solWalletAudioEnabled) && (
-        <Text style={styles.linkedAmount}>{balance}</Text>
+        <Text style={styles.linkedAmount} weight='demiBold'>
+          {balance}
+        </Text>
       )}
     </View>
   )
