@@ -47,45 +47,33 @@ jobs:
             - .env.stage
             - .env.prod
 
-  pull-web-app:
+  build-web-app:
     working_directory: ~/react-native-wrapper
     docker:
-      - image: circleci/python:2.7-jessie
+      - image: circleci/node:14.18
+    resource_class: large
     steps:
       - checkout
-      - run:
-          name: install-awscli
-          command: sudo pip install awscli
       - attach_workspace:
           at: ./
-      - run: mkdir -p web-app/Web.bundle/build
-      - run: rm -rf web-app/Web.bundle/build
-      - run: aws s3 sync s3://audius-mobile/build web-app/Web.bundle/build
-      # Persist the web app build directory to a workspace
-      - persist_to_workspace:
-          root: ./
-          paths:
-            - web-app
+      - run:
+          name: copy-audius-client
+          command: cp -R ./node_modules/audius-client ../audius-client
 
-  pull-staging-web-app:
-    working_directory: ~/react-native-wrapper
-    docker:
-      - image: circleci/python:2.7-jessie
-    steps:
-      - checkout
+      - restore_cache:
+          keys:
+            - dependency-cache-{{ checksum "../audius-client/package.json" }}
+            # fallback to using the latest cache if no exact match is found
+            - dependency-cache-
+      - run: cd ../audius-client && npm install
+
       - run:
-          name: install-awscli
-          command: sudo pip install awscli
-      - attach_workspace:
-          at: ./
-      - run: mkdir -p web-app-staging/Web.bundle/build
-      - run: rm -rf web-app-staging/Web.bundle/build
-      - run: aws s3 sync s3://audius-mobile-staging/build web-app-staging/Web.bundle/build
-      # Persist the web app build directory to a workspace
+          name: build-production-web-app
+          command: cd ../audius-client && npm run build:mobile-prod
       - persist_to_workspace:
-          root: ./
+          root: ../
           paths:
-            - web-app-staging
+            - audius-client/build-mobile-production
 
   build-staging-web-app:
     working_directory: ~/react-native-wrapper
@@ -98,22 +86,22 @@ jobs:
           at: ./
       - run:
           name: copy-audius-client
-          command: cp -R ./node_modules/audius-client ../staging-web-app
+          command: cp -R ./node_modules/audius-client ../audius-client
 
       - restore_cache:
           keys:
-            - dependency-cache-{{ checksum "../staging-web-app/package.json" }}
+            - dependency-cache-{{ checksum "../audius-client/package.json" }}
             # fallback to using the latest cache if no exact match is found
             - dependency-cache-
-      - run: cd ../staging-web-app && npm install
+      - run: cd ../audius-client && npm install
 
       - run:
           name: build-staging-web-app
-          command: cd ../staging-web-app && npm run build:mobile-stage
+          command: cd ../audius-client && npm run build:mobile-stage
       - persist_to_workspace:
           root: ../
           paths:
-            - staging-web-app/build-mobile-staging
+            - audius-client/build-mobile-staging
 
   upload-staging-ios:
     working_directory: ~/react-native-wrapper
@@ -129,7 +117,7 @@ jobs:
           at: ./
       - run:
           name: Move Staging build
-          command: mkdir -p web-app/Web.bundle/build && mv ./staging-web-app/build-mobile-staging web-app/Web.bundle/build
+          command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-staging web-app/Web.bundle/build
       - run:
           name: Set Ruby Version
           command: echo 'chruby ruby-2.6' >> ~/.bash_profile
@@ -175,6 +163,9 @@ jobs:
       - attach_workspace:
           at: ./
       - run:
+          name: Move build
+          command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-staging web-app/Web.bundle/build
+      - run:
           name: Set Ruby Version
           command: echo 'chruby ruby-2.6' >> ~/.bash_profile
       - run:
@@ -216,7 +207,7 @@ jobs:
           at: ./
       - run:
           name: Move Staging build
-          command: mv web-app-staging web-app
+          command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-staging web-app/Web.bundle/build
       - run:
           name: migrate support libraries for androidX packages
           command: |
@@ -258,6 +249,9 @@ jobs:
       - attach_workspace:
           at: ./
       - run:
+          name: Move build
+          command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-staging web-app/Web.bundle/build
+      - run:
           name: migrate support libraries for androidX packages
           command: |
             npm run jetifier
@@ -295,21 +289,13 @@ workflows:
       - init:
           context: Audius Mobile Client
 
-      - pull-web-app:
+      - build-web-app:
           context: Audius Mobile Client
           requires:
             - init
-          filters:
-            branches:
-              only: /(^release.*)$/
-
-      - pull-staging-web-app:
-          context: Audius Mobile Client
-          requires:
-            - init
-          filters:
-            branches:
-              only: /(^release.*)$/
+          # filters:
+          #   branches:
+          # only: /(^release.*)$/
 
       - build-staging-web-app:
           context: Audius Mobile Client
@@ -330,24 +316,23 @@ workflows:
       - upload-staging-android:
           context: Audius Mobile Client
           requires:
-            - pull-staging-web-app
-          filters:
-            branches:
-              only: /(^release.*)$/
+            - build-staging-web-app
+          # filters:
+          #   branches:
+          #     only: /(^release.*)$/
 
       - upload-ios:
           context: Audius Mobile Client
           requires:
-            - pull-web-app
-          filters:
-            branches:
-              only: /(^release.*)$/
+            - build-web-app
+          # filters:
+          #   branches:
+          #     only: /(^release.*)$/
 
       - upload-android:
           context: Audius Mobile Client
           requires:
-            - init
-            - pull-web-app
-          filters:
-            branches:
-              only: /(^release.*)$/
+            - build-web-app
+          # filters:
+          #   branches:
+          #     only: /(^release.*)$/
