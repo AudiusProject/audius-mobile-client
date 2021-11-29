@@ -65,7 +65,7 @@ platform :android do
 
   lane :incrementBuildNumber do |options|
       previousVersion = google_play_track_version_codes(
-        package_name: options[:package_name),
+        package_name: options[:package_name],
         track: options[:track]
       ).max
       re = /versionCode\s+(\d+)/
