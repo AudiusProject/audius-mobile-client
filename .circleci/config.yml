@@ -227,8 +227,11 @@ jobs:
             echo "$FASTLANE_PLAYSTORE_JSON" > android/app/api.txt
             base64 --decode android/app/api.txt > android/app/api.json
       - run:
-          name: increment build number
-          command: cd android && bundle exec fastlane incrementBuildNumber package_name:co.audius.app.bounce track:alpha
+          name: increment version code
+          command: |
+            cd android
+            bundle exec fastlane incrementVersionCode package_name:co.audius.app.bounce track:alpha
+            bundle exec fastlane incrementVersionName package_name:co.audius.app.bounce track:alpha
       - run:
           name: generating the staging release apk & bundle
           command: |
@@ -270,8 +273,11 @@ jobs:
             echo "$FASTLANE_PLAYSTORE_JSON" > android/app/api.txt
             base64 --decode android/app/api.txt > android/app/api.json
       - run:
-          name: increment build number
-          command: cd android && bundle exec fastlane incrementBuildNumber package_name:co.audius.app track:alpha
+          name: increment version code
+          command: |
+            cd android
+            bundle exec fastlane incrementVersionCode package_name:co.audius.app track:alpha
+            bundle exec fastlane incrementVersionName package_name:co.audius.app track:alpha
       - run:
           name: generating the release apk & bundle
           command: |
@@ -295,9 +301,9 @@ workflows:
           context: Audius Mobile Client
           requires:
             - init
-          # filters:
-          #   branches:
-          # only: /(^release.*)$/
+          filters:
+            branches:
+          only: /(^release.*)$/
 
       - build-staging-web-app:
           context: Audius Mobile Client
@@ -311,9 +317,9 @@ workflows:
           context: Audius Mobile Client
           requires:
             - build-staging-web-app
-          # filters:
-          #   branches:
-          # only: /(^release.*)$/
+          filters:
+            branches:
+          only: /(^release.*)$/
 
       - upload-staging-android:
           context: Audius Mobile Client
@@ -327,14 +333,14 @@ workflows:
           context: Audius Mobile Client
           requires:
             - build-web-app
-          # filters:
-          #   branches:
-          #     only: /(^release.*)$/
+          filters:
+            branches:
+              only: /(^release.*)$/
 
       - upload-android:
           context: Audius Mobile Client
           requires:
             - build-web-app
-          # filters:
-          #   branches:
-          #     only: /(^release.*)$/
+          filters:
+            branches:
+              only: /(^release.*)$/

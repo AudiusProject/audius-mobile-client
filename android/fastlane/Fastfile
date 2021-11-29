@@ -63,17 +63,47 @@ platform :android do
   end
 
 
-  lane :incrementBuildNumber do |options|
+  lane :incrementVersionCode do |options|
+      # Get the max existing version code
       previousVersion = google_play_track_version_codes(
         package_name: options[:package_name],
         track: options[:track]
       ).max
+
+      # Increment the version code in build.gradle by 1
       re = /versionCode\s+(\d+)/
       path = '../app/build.gradle'
       s = File.read(path)
       s[re, 1] = (previousVersion + 1).to_s
       f = File.new(path, 'w')
       f.write(s)
+      f.close
+  end
+
+  lane :incrementVersionName do |options|
+      # Get the max existing version name
+      previousVersionName = google_play_track_release_names(
+        package_name: options[:package_name],
+        track: options[:track]
+      ).map {|v| Gem::Version.new v}.max
+
+      re = /versionName\s+(\d+)/
+      path = '../app/build.gradle'
+      s = File.read(path)
+      versionName = Gem::Version.new s[re, 1]
+
+      # If the version specified in build.gradle is greater than
+      # the previous version name, there is no need to modify version name build.gradle
+      if versionName <= previousVersionName
+        # Increment the patch version
+        # This is not strictly necessary but will allow the builds to be identified more easily
+        patchRegex = /\d+.\d+.(\d+)/
+        previousPatch = previousVersion[patchRegex, 1]
+        previousVersion[patchRegex, 1] = (previousPatch + 1).to_s
+        s[re, 1] = previousVersion
+        f = File.new(path, 'w')
+        f.write(s)
+
       f.close
   end
 end
