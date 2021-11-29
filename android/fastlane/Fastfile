@@ -103,6 +103,7 @@ platform :android do
         s[re, 1] = previousVersion
         f = File.new(path, 'w')
         f.write(s)
+      end
 
       f.close
   end

@@ -68,6 +68,11 @@ jobs:
             - dependency-cache-
       - run: cd ../audius-client && npm install
 
+      - save_cache:
+          key: dependency-cache-{{ checksum "../audius-client/package.json" }}
+          paths:
+            - ../audius-client/node_modules
+
       - run:
           name: build-production-web-app
           command: cd ../audius-client && npm run build:mobile-prod
@@ -96,6 +101,11 @@ jobs:
             # fallback to using the latest cache if no exact match is found
             - dependency-cache-
       - run: cd ../audius-client && npm install
+
+      - save_cache:
+          key: dependency-cache-{{ checksum "../audius-client/package.json" }}
+          paths:
+            - ../audius-client/node_modules
 
       - run:
           name: build-staging-web-app
