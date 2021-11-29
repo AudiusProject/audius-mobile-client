@@ -113,7 +113,7 @@ jobs:
       - persist_to_workspace:
           root: ../
           paths:
-            - staging-web-app
+            - staging-web-app/build-mobile-staging
 
   upload-staging-ios:
     working_directory: ~/react-native-wrapper
@@ -129,7 +129,7 @@ jobs:
           at: ./
       - run:
           name: Move Staging build
-          command: mv ../staging-web-app web-app/Web.bundle/build
+          command: mv ./staging-web-app/build-mobile-staging web-app/Web.bundle/build
       - run:
           name: Set Ruby Version
           command: echo 'chruby ruby-2.6' >> ~/.bash_profile
