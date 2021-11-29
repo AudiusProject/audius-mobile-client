@@ -209,7 +209,7 @@ jobs:
           at: ./
       - run:
           name: Move Staging build
-          command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-production web-app/Web.bundle/build
+          command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-staging web-app/Web.bundle/build
       - run:
           name: migrate support libraries for androidX packages
           command: |
@@ -252,7 +252,7 @@ jobs:
           at: ./
       - run:
           name: Move build
-          command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-staging web-app/Web.bundle/build
+          command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-production web-app/Web.bundle/build
       - run:
           name: migrate support libraries for androidX packages
           command: |
