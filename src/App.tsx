@@ -7,6 +7,7 @@ import WebView from 'react-native-webview'
 import { Provider } from 'react-redux'
 
 import AppNavigator from 'app/components/app-navigator/AppNavigator'
+// import AudioBreakdownDrawer from 'app/components/audio-breakdown-drawer'
 import Audio from 'app/components/audio/Audio'
 import GoogleCast from 'app/components/audio/GoogleCast'
 import CollectibleDetailsDrawer from 'app/components/collectible-details-drawer'
@@ -27,6 +28,8 @@ import PushNotifications from 'app/notifications'
 import createStore from 'app/store'
 import { setup as setupAnalytics } from 'app/utils/analytics'
 
+import { DeactivateAccountConfirmationDrawer } from './components/deactivate-account-confirmation-drawer/DeactivateAccountConfirmationDrawer'
+
 const store = createStore()
 export const dispatch = store.dispatch
 
@@ -45,7 +48,11 @@ const Drawers = () => {
       <EnablePushNotificationsDrawer />
       <CollectibleDetailsDrawer />
       <OverflowMenuDrawer />
+      <DeactivateAccountConfirmationDrawer />
       <TransferAudioMobileDrawer />
+      {/* Disable the audio breakdown drawer until we get
+      the feature flags to work for native mobile */}
+      {/* <AudioBreakdownDrawer /> */}
     </>
   )
 }
