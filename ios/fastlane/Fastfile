@@ -68,10 +68,10 @@ platform :ios do
       # Increment the patch version
       # This is necessary because the same version number cannot be used twice on the app store
       increment_version_number_in_plist(
-        version_source: 'appstore',
+        version_source: 'appstore'
       )
       increment_version_number_in_xcodeproj
-        version_source: 'appstore',
+        version_source: 'appstore'
       )
     end
 
@@ -141,10 +141,10 @@ platform :ios do
       # Increment the patch version
       # This is necessary because the same version number cannot be used twice on the app store
       increment_version_number_in_plist(
-        version_source: 'appstore',
+        version_source: 'appstore'
       )
       increment_version_number_in_xcodeproj
-        version_source: 'appstore',
+        version_source: 'appstore'
       )
     end
 
