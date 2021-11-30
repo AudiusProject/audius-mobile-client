@@ -212,7 +212,7 @@ jobs:
   upload-staging-android:
     working_directory: ~/react-native-wrapper
     docker:
-      - image: circleci/android:api-27-node8-alpha
+      - image: circleci/android:api-30-node
     steps:
       - checkout
       - attach_workspace:
@@ -261,7 +261,7 @@ jobs:
     resource_class: large
     working_directory: ~/react-native-wrapper
     docker:
-      - image: circleci/android:api-27-node8-alpha
+      - image: circleci/android:api-30-node
     steps:
       - checkout
       - attach_workspace:
