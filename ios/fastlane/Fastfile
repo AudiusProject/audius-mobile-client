@@ -70,7 +70,7 @@ platform :ios do
       increment_version_number_in_plist(
         version_source: 'appstore'
       )
-      increment_version_number_in_xcodeproj
+      increment_version_number_in_xcodeproj(
         version_source: 'appstore'
       )
     end
@@ -143,7 +143,7 @@ platform :ios do
       increment_version_number_in_plist(
         version_source: 'appstore'
       )
-      increment_version_number_in_xcodeproj
+      increment_version_number_in_xcodeproj(
         version_source: 'appstore'
       )
     end
