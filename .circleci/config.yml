@@ -248,7 +248,7 @@ jobs:
       - run:
           name: generating the staging release apk & bundle
           command: |
-            echo "yes" | $ANDROID_HOME/tools/bin/sdkmanager "platforms;android-30" && cd android && ./gradlew bundleBounceRelease
+            echo "yes" | sdkmanager "platforms;android-30" && cd android && ./gradlew bundleBounceRelease
       - run:
           name: install-awscli
           command: sudo pip install awscli
@@ -297,7 +297,7 @@ jobs:
       - run:
           name: generating the release apk & bundle
           command: |
-            echo "yes" | $ANDROID_HOME/tools/bin/sdkmanager "platforms;android-30" && cd android && ./gradlew bundleRelease
+            echo "yes" | sdkmanager "platforms;android-30" && cd android && ./gradlew bundleRelease
       - run:
           name: install-awscli
           command: sudo pip install awscli
