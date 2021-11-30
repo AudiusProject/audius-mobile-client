@@ -46,32 +46,40 @@ platform :ios do
     end
 
     # Increment build
+    previousVersionNumberString = get_app_store_version_number(
+      bundle_id: 'co.audius.audiusmusic'
+    )
+
     app_store_connect_api_key
     increment_build_number(
       build_number: app_store_build_number(
         app_identifier: "co.audius.audiusmusic",
         initial_build_number: 1,
-        version: get_version_number(xcodeproj: "AudiusReactNative.xcodeproj"),
+        version: previousVersionNumberString,
         live: false
       ) + 1,
     )
 
     # Increment version
-    previousVersionNumber = Gem::Version.new get_app_store_version_number(
-      bundle_id: 'co.audius.audiusmusic'
+    previousVersionNumber = Gem::Version.new previousVersionNumberString
+    versionNumber = Gem::Version.new get_version_number_from_plist(
+      scheme: 'AudiusReactNative'
     )
-    versionNumber = Gem::Version.new get_version_number_from_plist
 
     # If the version specified in project is greater than
     # the previous version number, there is no need to modify version number in the project
-    if versionName <= previousVersionName
+    if versionNumber <= previousVersionNumber
       # Increment the patch version
       # This is necessary because the same version number cannot be used twice on the app store
       increment_version_number_in_plist(
-        version_source: 'appstore'
+        bundle_id: 'co.audius.audiusmusic',
+        xcodeproj: "AudiusReactNative.xcodeproj",
+        version_source: 'appstore',
       )
       increment_version_number_in_xcodeproj(
-        version_source: 'appstore'
+        bundle_id: 'co.audius.audiusmusic',
+        xcodeproj: "AudiusReactNative.xcodeproj",
+        version_source: 'appstore',
       )
     end
 
@@ -119,32 +127,42 @@ platform :ios do
     end
 
     # Increment build
+    previousVersionNumberString = get_app_store_version_number(
+      # Pulling non-bounce version number here, because bounce is not available via
+      # the itunes api. The version number should always be in sync with bounce
+      bundle_id: 'co.audius.audiusmusic'
+    )
+
     app_store_connect_api_key
     increment_build_number(
       build_number: app_store_build_number(
         app_identifier: "co.audius.audiusmusic.bounce",
         initial_build_number: 1,
-        version: get_version_number(xcodeproj: "AudiusReactNative.xcodeproj"),
+        version: previousVersionNumberString,
         live: false
       ) + 1,
     )
 
     # Increment version
-    previousVersionNumber = Gem::Version.new get_app_store_version_number(
-      bundle_id: 'co.audius.audiusmusic.bounce'
+    previousVersionNumber = Gem::Version.new previousVersionNumberString
+    versionNumber = Gem::Version.new get_version_number_from_plist(
+      scheme: 'Bounce'
     )
-    versionNumber = Gem::Version.new get_version_number_from_plist
 
     # If the version specified in project is greater than
     # the previous version number, there is no need to modify version number in the project
-    if versionName <= previousVersionName
+    if versionNumber <= previousVersionNumber
       # Increment the patch version
       # This is necessary because the same version number cannot be used twice on the app store
       increment_version_number_in_plist(
-        version_source: 'appstore'
+        bundle_id: 'co.audius.audiusmusic',
+        xcodeproj: "AudiusReactNative.xcodeproj",
+        version_source: 'appstore',
       )
       increment_version_number_in_xcodeproj(
-        version_source: 'appstore'
+        bundle_id: 'co.audius.audiusmusic',
+        xcodeproj: "AudiusReactNative.xcodeproj",
+        version_source: 'appstore',
       )
     end
 
