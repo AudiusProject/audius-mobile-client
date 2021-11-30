@@ -218,6 +218,9 @@ jobs:
       - attach_workspace:
           at: ./
       - run:
+          name: Set Ruby Version
+          command: echo 'chruby ruby-2.6' >> ~/.bash_profile
+      - run:
           name: Move Staging build
           command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-staging web-app/Web.bundle/build
       - run:
@@ -263,6 +266,9 @@ jobs:
       - checkout
       - attach_workspace:
           at: ./
+      - run:
+          name: Set Ruby Version
+          command: echo 'chruby ruby-2.6' >> ~/.bash_profile
       - run:
           name: Move build
           command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-production web-app/Web.bundle/build
