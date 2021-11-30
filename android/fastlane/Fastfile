@@ -87,7 +87,7 @@ platform :android do
         track: options[:track]
       ).map {|v| Gem::Version.new v}.max
 
-      re = /versionName\s+(\d+)/
+      re = /versionName\s+"([\d\.]+)"/
       path = '../app/build.gradle'
       s = File.read(path)
       versionName = Gem::Version.new s[re, 1]
@@ -100,7 +100,7 @@ platform :android do
         patchRegex = /\d+.\d+.(\d+)/
         previousVersionNameString = previousVersionName.to_s
         previousPatch = previousVersionNameString[patchRegex, 1]
-        previousVersionNameString[patchRegex, 1] = (previousPatch + 1).to_s
+        previousVersionNameString[patchRegex, 1] = (previousPatch.to_i + 1).to_s
         s[re, 1] = previousVersionNameString
         f = File.new(path, 'w')
         f.write(s)
