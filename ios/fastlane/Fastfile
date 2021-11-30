@@ -71,15 +71,18 @@ platform :ios do
     if versionNumber <= previousVersionNumber
       # Increment the patch version
       # This is necessary because the same version number cannot be used twice on the app store
+      patchRegex = /\d+.\d+.(\d+)/
+      previousPatch = previousVersionNumberString[patchRegex, 1]
+      previousVersionNumberString[patchRegex, 1] = (previousPatch.to_i + 1).to_s
+
       increment_version_number_in_plist(
-        bundle_id: 'co.audius.audiusmusic',
-        xcodeproj: "AudiusReactNative.xcodeproj",
-        version_source: 'appstore',
+        version_number: previousVersionNumberString,
+        scheme: 'AudiusReactNative'
       )
+
       increment_version_number_in_xcodeproj(
-        bundle_id: 'co.audius.audiusmusic',
-        xcodeproj: "AudiusReactNative.xcodeproj",
-        version_source: 'appstore',
+        version_number: previousVersionNumberString,
+        scheme: 'AudiusReactNative'
       )
     end
 
@@ -154,15 +157,18 @@ platform :ios do
     if versionNumber <= previousVersionNumber
       # Increment the patch version
       # This is necessary because the same version number cannot be used twice on the app store
+      patchRegex = /\d+.\d+.(\d+)/
+      previousPatch = previousVersionNumberString[patchRegex, 1]
+      previousVersionNumberString[patchRegex, 1] = (previousPatch.to_i + 1).to_s
+
       increment_version_number_in_plist(
-        bundle_id: 'co.audius.audiusmusic',
-        xcodeproj: "AudiusReactNative.xcodeproj",
-        version_source: 'appstore',
+        version_number: previousVersionNumberString,
+        scheme: 'Bounce'
       )
+
       increment_version_number_in_xcodeproj(
-        bundle_id: 'co.audius.audiusmusic',
-        xcodeproj: "AudiusReactNative.xcodeproj",
-        version_source: 'appstore',
+        version_number: previousVersionNumberString,
+        scheme: 'Bounce'
       )
     end
 
