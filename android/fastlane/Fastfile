@@ -98,9 +98,9 @@ platform :android do
         # Increment the patch version
         # This is not strictly necessary but will allow the builds to be identified more easily
         patchRegex = /\d+.\d+.(\d+)/
-        previousPatch = previousVersion[patchRegex, 1]
-        previousVersion[patchRegex, 1] = (previousPatch + 1).to_s
-        s[re, 1] = previousVersion
+        previousPatch = previousVersionName[patchRegex, 1]
+        previousVersionName[patchRegex, 1] = (previousPatch + 1).to_s
+        s[re, 1] = previousVersionName
         f = File.new(path, 'w')
         f.write(s)
       end
