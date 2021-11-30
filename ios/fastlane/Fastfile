@@ -56,6 +56,24 @@ platform :ios do
       ) + 1,
     )
 
+    # Increment version
+    previousVersionNumber = Gem::Version.new get_app_store_version_number(
+      bundle_id: 'co.audius.audiusmusic'
+    )
+    versionNumber = Gem::Version.new get_version_number_from_plist
+
+    # If the version specified in project is greater than
+    # the previous version number, there is no need to modify version number in the project
+    if versionName <= previousVersionName
+      # Increment the patch version
+      # This is necessary because the same version number cannot be used twice on the app store
+      increment_version_number_in_plist(
+        version_source: 'appstore',
+      )
+      increment_version_number_in_xcodeproj
+        version_source: 'appstore',
+      )
+    end
 
     # Build ios
     gym(
@@ -110,6 +128,25 @@ platform :ios do
         live: false
       ) + 1,
     )
+
+    # Increment version
+    previousVersionNumber = Gem::Version.new get_app_store_version_number(
+      bundle_id: 'co.audius.audiusmusic.bounce'
+    )
+    versionNumber = Gem::Version.new get_version_number_from_plist
+
+    # If the version specified in project is greater than
+    # the previous version number, there is no need to modify version number in the project
+    if versionName <= previousVersionName
+      # Increment the patch version
+      # This is necessary because the same version number cannot be used twice on the app store
+      increment_version_number_in_plist(
+        version_source: 'appstore',
+      )
+      increment_version_number_in_xcodeproj
+        version_source: 'appstore',
+      )
+    end
 
     # Build ios
     gym(

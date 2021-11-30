@@ -333,17 +333,17 @@ workflows:
           context: Audius Mobile Client
           requires:
             - build-staging-web-app
-          filters:
-            branches:
-              only: /(^release.*)$/
+          # filters:
+          #   branches:
+          #     only: /(^release.*)$/
 
       - upload-staging-android:
           context: Audius Mobile Client
           requires:
             - build-staging-web-app
-          # filters:
-          #   branches:
-          #     only: /(^release.*)$/
+          filters:
+            branches:
+              only: /(^release.*)$/
 
       - upload-ios:
           context: Audius Mobile Client

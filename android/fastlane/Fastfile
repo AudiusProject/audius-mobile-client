@@ -93,7 +93,7 @@ platform :android do
       versionName = Gem::Version.new s[re, 1]
 
       # If the version specified in build.gradle is greater than
-      # the previous version name, there is no need to modify version name build.gradle
+      # the previous version name, there is no need to modify version name in build.gradle
       if versionName <= previousVersionName
         # Increment the patch version
         # This is not strictly necessary but will allow the builds to be identified more easily
