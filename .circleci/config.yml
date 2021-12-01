@@ -181,7 +181,7 @@ jobs:
       - attach_workspace:
           at: ./
       - run:
-          name: Move build
+          name: Move production build
           command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-production/* web-app/Web.bundle/build
       - run:
           name: Set Ruby Version
@@ -276,7 +276,7 @@ jobs:
           name: Set Ruby Version
           command: echo 'chruby ruby-2.6' >> ~/.bash_profile
       - run:
-          name: Move build
+          name: Move production build
           command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-production/* web-app/Web.bundle/build
       - run:
           name: migrate support libraries for androidX packages
