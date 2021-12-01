@@ -4,6 +4,22 @@ orbs:
   ruby: circleci/ruby@0.2.1
 
 jobs:
+  typecheck-lint:
+    working_directory: ~/react-native-wrapper
+    docker:
+      - image: circleci/node:14.18
+    steps:
+      - checkout
+      - run:
+          name: update-npm
+          command: 'sudo npm install -g npm@latest'
+      - run:
+          name: typecheck
+          command: 'npm run typecheck'
+      - run:
+          name: lint
+          command: 'npm run lint'
+
   init:
     working_directory: ~/react-native-wrapper
     docker:
@@ -129,7 +145,7 @@ jobs:
           at: ./
       - run:
           name: Move Staging build
-          command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-staging web-app/Web.bundle/build
+          command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-staging/* web-app/Web.bundle/build
       - run:
           name: Set Ruby Version
           command: echo 'chruby ruby-2.6' >> ~/.bash_profile
@@ -176,7 +192,7 @@ jobs:
           at: ./
       - run:
           name: Move build
-          command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-production web-app/Web.bundle/build
+          command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-production/* web-app/Web.bundle/build
       - run:
           name: Set Ruby Version
           command: echo 'chruby ruby-2.6' >> ~/.bash_profile
@@ -222,7 +238,7 @@ jobs:
           command: echo 'chruby ruby-2.6' >> ~/.bash_profile
       - run:
           name: Move Staging build
-          command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-staging web-app/Web.bundle/build
+          command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-staging/* web-app/Web.bundle/build
       - run:
           name: migrate support libraries for androidX packages
           command: |
@@ -271,7 +287,7 @@ jobs:
           command: echo 'chruby ruby-2.6' >> ~/.bash_profile
       - run:
           name: Move build
-          command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-production web-app/Web.bundle/build
+          command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-production/* web-app/Web.bundle/build
       - run:
           name: migrate support libraries for androidX packages
           command: |
@@ -308,6 +324,11 @@ jobs:
 
 workflows:
   version: 2
+  typecheck-lint:
+    jobs:
+      - typecheck-lint:
+          context: Audius Mobile Client
+
   build-upload:
     jobs:
       - init:
