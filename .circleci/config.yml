@@ -317,9 +317,9 @@ workflows:
           context: Audius Mobile Client
           requires:
             - init
-          filters:
-            branches:
-              only: /(^release.*)$/
+          # filters:
+          #   branches:
+          #     only: /(^release.*)$/
 
       - build-staging-web-app:
           context: Audius Mobile Client
@@ -341,22 +341,22 @@ workflows:
           context: Audius Mobile Client
           requires:
             - build-staging-web-app
-          filters:
-            branches:
-              only: /(^release.*)$/
+          # filters:
+          #   branches:
+          #     only: /(^release.*)$/
 
       - upload-ios:
           context: Audius Mobile Client
           requires:
             - build-web-app
-          filters:
-            branches:
-              only: /(^release.*)$/
+          # filters:
+          #   branches:
+          #     only: /(^release.*)$/
 
       - upload-android:
           context: Audius Mobile Client
           requires:
             - build-web-app
-          filters:
-            branches:
-              only: /(^release.*)$/
+          # filters:
+          #   branches:
+          #     only: /(^release.*)$/
