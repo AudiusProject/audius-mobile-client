@@ -67,14 +67,12 @@ const NowPlayingDrawer = ({
   }, [isOpen])
 
   const onDrawerClose = useCallback(() => {
-    console.log('on drawer close')
     setIsOpen(false)
     setIsPlayBarShowing(true)
     onClose()
   }, [setIsOpen, setIsPlayBarShowing, onClose])
 
   const onDrawerOpen = useCallback(() => {
-    console.log('on drawer open')
     setIsOpen(true)
     setIsPlayBarShowing(false)
     onOpen()

@@ -155,6 +155,11 @@ export type DrawerProps = {
    */
   isOpenToInitialOffset?: boolean
   /**
+   * Whether or not we should be showing rounded or straight borders at
+   * the initial offset if one is enabled.
+   */
+  shouldHaveRoundedBordersAtInitialOffset?: boolean
+  /**
    * Drawer zIndex. Default to 5.
    */
   zIndex?: number
@@ -262,6 +267,7 @@ const Drawer = ({
   animationStyle = DrawerAnimationStyle.STIFF,
   initialOffsetPosition,
   isOpenToInitialOffset,
+  shouldHaveRoundedBordersAtInitialOffset = false,
   zIndex,
   drawerStyle,
   onPercentOpen,
@@ -386,14 +392,17 @@ const Drawer = ({
               attachToDy(borderRadiusAnim, newBorderRadius)(e)
             }
 
-            // If we are "closing" the drawer to a offset position
-            if (initialOffsetOpenPosition) {
+            // If we are "closing" the drawer to an offset position
+            if (initialOffsetPosition) {
               // Set up border animations so that
-              // - In the offset position, they are 0
+              // - In the offset position, they are either 0 or BORDER_RADIUS
               // - While dragging open, they have BORDER_RADIUS
               // - While fully open, they are 0
+              const borderRadiusInitialOffset = shouldHaveRoundedBordersAtInitialOffset
+                ? BORDER_RADIUS
+                : BORDER_RADIUS * percentOpen * 5
               const newBorderRadius = Math.min(
-                BORDER_RADIUS * percentOpen * 5,
+                borderRadiusInitialOffset,
                 BORDER_RADIUS,
                 BORDER_RADIUS * 2 * (1 - percentOpen)
               )
@@ -425,11 +434,14 @@ const Drawer = ({
             attachToDy(translationAnim, newTranslation)(e)
 
             // Set up border animations so that
-            // - In the offset position, they are 0
+            // - In the offset position, they are either 0 or BORDER_RADIUS
             // - While dragging open, they have BORDER_RADIUS
             // - While fully open, they are 0
+            const borderRadiusInitialOffset = shouldHaveRoundedBordersAtInitialOffset
+              ? BORDER_RADIUS
+              : BORDER_RADIUS * percentOpen * 5
             const newBorderRadius = Math.min(
-              BORDER_RADIUS * percentOpen * 5,
+              borderRadiusInitialOffset,
               BORDER_RADIUS,
               BORDER_RADIUS * 2 * (1 - percentOpen)
             )
