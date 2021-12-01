@@ -93,7 +93,7 @@ const App = () => {
   }, [])
 
   /**
-  // Set handlers for the NowPlayingDrawer and BottomBar
+  // Set handlers for the NowPlayingDrawer and BottomTabBar
   // When the drawer is open, the bottom bar should hide (animated away).
   // When the drawer is closed, the bottom bar should reappear (animated in).
   const bottomBarTranslationAnim = useRef(new Animated.Value(0)).current
@@ -128,18 +128,14 @@ const App = () => {
               <Notifications webRef={webRef} />
 
               {/*
-                Commenting out NowPlayingDrawer and
-                BottomBar until all drawers and overlays are migrated to RN
+                Commenting out NowPlayingDrawer until all drawers and overlays are migrated to RN
               */}
               {/* <NowPlayingDrawer
                 onOpen={onNowPlayingDrawerOpen}
                 onClose={onNowPlayingDrawerClose}
                 bottomBarTranslationAnim={bottomBarTranslationAnim}
               />
-              <BottomBar
-                display={bottomBarDisplay}
-                translationAnim={bottomBarTranslationAnim}
-              /> */}
+              */}
 
               <Drawers />
               <Modals />
