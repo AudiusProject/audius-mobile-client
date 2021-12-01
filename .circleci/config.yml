@@ -4,22 +4,6 @@ orbs:
   ruby: circleci/ruby@0.2.1
 
 jobs:
-  typecheck-lint:
-    working_directory: ~/react-native-wrapper
-    docker:
-      - image: circleci/node:14.18
-    steps:
-      - checkout
-      - run:
-          name: update-npm
-          command: 'sudo npm install -g npm@latest'
-      - run:
-          name: typecheck
-          command: 'npm run typecheck'
-      - run:
-          name: lint
-          command: 'npm run lint'
-
   init:
     working_directory: ~/react-native-wrapper
     docker:
@@ -56,6 +40,12 @@ jobs:
           key: dependency-cache-{{ checksum "package.json" }}
           paths:
             - ./node_modules
+      - run:
+          name: typecheck
+          command: npm run typecheck
+      - run:
+          name: lint
+          command: npm run lint
       - persist_to_workspace:
           root: ./
           paths:
@@ -324,11 +314,6 @@ jobs:
 
 workflows:
   version: 2
-  typecheck-lint:
-    jobs:
-      - typecheck-lint:
-          context: Audius Mobile Client
-
   build-upload:
     jobs:
       - init:
@@ -338,46 +323,46 @@ workflows:
           context: Audius Mobile Client
           requires:
             - init
-          # filters:
-          #   branches:
-          #     only: /(^release.*)$/
+          filters:
+            branches:
+              only: /(^release.*)$/
 
       - build-staging-web-app:
           context: Audius Mobile Client
           requires:
             - init
-          # filters:
-          #   branches:
-          # only: /(^release.*)$/
+          filters:
+            branches:
+              only: /(^release.*)$/
 
       - upload-staging-ios:
           context: Audius Mobile Client
           requires:
             - build-staging-web-app
-          # filters:
-          #   branches:
-          #     only: /(^release.*)$/
+          filters:
+            branches:
+              only: /(^release.*)$/
 
       - upload-staging-android:
           context: Audius Mobile Client
           requires:
             - build-staging-web-app
-          # filters:
-          #   branches:
-          #     only: /(^release.*)$/
+          filters:
+            branches:
+              only: /(^release.*)$/
 
       - upload-ios:
           context: Audius Mobile Client
           requires:
             - build-web-app
-          # filters:
-          #   branches:
-          #     only: /(^release.*)$/
+          filters:
+            branches:
+              only: /(^release.*)$/
 
       - upload-android:
           context: Audius Mobile Client
           requires:
             - build-web-app
-          # filters:
-          #   branches:
-          #     only: /(^release.*)$/
+          filters:
+            branches:
+              only: /(^release.*)$/
