@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { ParamListBase } from '@react-navigation/native'
@@ -6,11 +6,12 @@ import {
   CardStyleInterpolators,
   createStackNavigator
 } from '@react-navigation/stack'
-import { LayoutChangeEvent, StyleSheet, View } from 'react-native'
+import { Animated, StyleSheet, View } from 'react-native'
 
-import BottomTabBar from 'app/components/bottom-tab-bar'
+import BottomTabBar, { BottomTabBarProps } from 'app/components/bottom-tab-bar'
+import NowPlayingDrawer from 'app/components/now-playing-drawer/NowPlayingDrawer'
 import FeedScreen from 'app/screens/feed-screen'
-import ProfileScreen from 'app/screens/profile-screen/ProfileScreen'
+import ProfileScreen from 'app/screens/profile-screen'
 import TrackScreen from 'app/screens/track-screen'
 
 import { FeedStackParamList } from './types'
@@ -65,30 +66,67 @@ const FeedStackScreen = createStackScreen<FeedStackParamList>(Stack => (
 
 const Tab = createBottomTabNavigator()
 
-type TabNavigatorProps = {
-  onBottomTabBarLayout?: (e: LayoutChangeEvent) => void
+type BottomTabNavigatorProps = {
+  onBottomTabBarLayout: BottomTabBarProps['onLayout']
 }
 
 /**
  * The bottom tab navigator
+ *
+ * TODO: This navigator is only displayed when the user is authed, so we should
+ * move drawers, modals, notifications in here. Need to wait until fully migrated to RN
+ * because of the way the top level navigator is hidden to display the WebView
  */
-const TabNavigator = ({ onBottomTabBarLayout }: TabNavigatorProps) => {
+const BottomTabNavigator = ({
+  onBottomTabBarLayout
+}: BottomTabNavigatorProps) => {
+  // Set handlers for the NowPlayingDrawer and BottomTabBar
+  // When the drawer is open, the bottom bar should hide (animated away).
+  // When the drawer is closed, the bottom bar should reappear (animated in).
+  const bottomBarTranslationAnim = useRef(new Animated.Value(0)).current
+  // Track bottom bar display properties as an object, so every update
+  // can be listened to, even if we go from hidden => hidden
+  const [bottomBarDisplay, setBottomBarDisplay] = useState({
+    isShowing: true
+  })
+
+  const onNowPlayingDrawerOpen = useCallback(() => {
+    setBottomBarDisplay({ isShowing: false })
+  }, [setBottomBarDisplay])
+  const onNowPlayingDrawerClose = useCallback(() => {
+    setBottomBarDisplay({ isShowing: true })
+  }, [setBottomBarDisplay])
+
   return (
-    <View style={styles.tabNavigator}>
-      <Tab.Navigator
-        tabBar={props => (
-          <BottomTabBar {...props} onLayout={onBottomTabBarLayout} />
-        )}
-        screenOptions={{ headerShown: false }}
-      >
-        <Tab.Screen name='feed' component={FeedStackScreen} />
-        <Tab.Screen name='trending' component={EmptyScreen} />
-        <Tab.Screen name='explore' component={EmptyScreen} />
-        <Tab.Screen name='favorites' component={EmptyScreen} />
-        <Tab.Screen name='profile' component={EmptyScreen} />
-      </Tab.Navigator>
-    </View>
+    <>
+      <View style={styles.tabNavigator}>
+        <Tab.Navigator
+          tabBar={props => (
+            <>
+              <NowPlayingDrawer
+                onOpen={onNowPlayingDrawerOpen}
+                onClose={onNowPlayingDrawerClose}
+                bottomBarTranslationAnim={bottomBarTranslationAnim}
+              />
+              <BottomTabBar
+                {...props}
+                onLayout={onBottomTabBarLayout}
+                display={bottomBarDisplay}
+                translationAnim={bottomBarTranslationAnim}
+              />
+            </>
+          )}
+          screenOptions={{ headerShown: false }}
+        >
+          <Tab.Screen name='feed' component={FeedStackScreen} />
+          <Tab.Screen name='trending' component={EmptyScreen} />
+          <Tab.Screen name='explore' component={EmptyScreen} />
+          <Tab.Screen name='favorites' component={EmptyScreen} />
+          <Tab.Screen name='profile' component={EmptyScreen} />
+        </Tab.Navigator>
+      </View>
+    </>
   )
 }
 
-export default TabNavigator
+export default BottomTabNavigator

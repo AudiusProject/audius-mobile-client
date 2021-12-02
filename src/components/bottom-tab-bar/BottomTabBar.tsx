@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 
-import { BottomTabBarProps } from '@react-navigation/bottom-tabs'
+import { BottomTabBarProps as RNBottomTabBarProps } from '@react-navigation/bottom-tabs'
 import { getUserHandle } from 'audius-client/src/common/store/account/selectors'
 // TODO: move these into /common
 import { setTab } from 'audius-client/src/containers/explore-page/store/actions'
@@ -40,11 +40,10 @@ import { Theme, useTheme, useThemeVariant } from 'app/utils/theme'
 
 import AnimatedBottomButton from './buttons/AnimatedBottomButton'
 
-type NavigationRoute = BottomTabBarProps['state']['routes'][0]
+type NavigationRoute = RNBottomTabBarProps['state']['routes'][0]
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'red',
     position: 'absolute',
     bottom: 0,
     left: 0,
@@ -95,7 +94,7 @@ const springToValue = (
   }).start(finished)
 }
 
-type Props = {
+export type BottomTabBarProps = {
   /**
    * Display properties on the bottom bar to control whether
    * the bottom bar is showing
@@ -110,7 +109,7 @@ type Props = {
    * are opened behind it
    */
   translationAnim: Animated.Value
-} & BottomTabBarProps
+}
 
 const BottomTabBar = ({
   display,
@@ -118,7 +117,7 @@ const BottomTabBar = ({
   navigation,
   translationAnim,
   onLayout
-}: Props) => {
+}: BottomTabBarProps & RNBottomTabBarProps) => {
   const bottomBarStyle = useTheme(styles.bottomBar, {
     borderTopColor: 'neutralLight8',
     backgroundColor: 'neutralLight10'

@@ -95,9 +95,8 @@ const AppNavigator = () => {
       >
         {isAuthed ? (
           <Stack.Screen name='main' navigationKey='main'>
-            {props => (
+            {() => (
               <BottomTabNavigator
-                {...props}
                 onBottomTabBarLayout={handleBottomTabBarLayout}
               />
             )}
