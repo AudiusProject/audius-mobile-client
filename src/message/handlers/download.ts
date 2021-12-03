@@ -1,18 +1,26 @@
-import Share from 'react-native-share'
+import RNFetchBlob from 'rn-fetch-blob'
 
 import { MessageType, MessageHandlers } from 'app/message/types'
 
 export const messageHandlers: Partial<MessageHandlers> = {
   [MessageType.DOWNLOAD_TRACK]: async ({ message }) => {
-    console.log('inside downloadFile handler', message)
-    const url = message.urls[0]
+    const fileUrl = message.urls.find(url => url !== null && url !== undefined)
+    const fileExtension = fileUrl.split('.').pop()
 
-    Share.open({
-      message: message.title,
-      url: url,
-      saveToFiles: message.saveToFiles
+    // TODO (milind): Figure out why it won't save in the MusicDir
+    console.log(RNFetchBlob.fs.dirs)
+    const dirToSave = RNFetchBlob.fs.dirs.DocumentDir
+
+    RNFetchBlob.config({
+      fileCache: true,
+      path: dirToSave + '/' + message.title + '.' + fileExtension
     })
-      .then(res => console.log('success: ', res))
-      .catch(err => console.log('error: ', err))
+      .fetch('GET', fileUrl)
+      .then(res => {
+        // TODO: Show some kind of toast suggesting the file was downloaded
+        console.log('The file saved to ', res.path())
+      })
+      // TODO: How do we do error handling?
+      .catch(err => console.log('error', err))
   }
 }
