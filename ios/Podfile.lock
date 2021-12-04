@@ -399,8 +399,6 @@ PODS:
   - RNScreens (3.6.0):
     - React-Core
     - React-RCTImage
-  - RNShare (7.3.2):
-    - React-Core
   - RNSVG (12.1.1):
     - React
   - SRSRadialGradient (1.0.8):
@@ -463,7 +461,6 @@ DEPENDENCIES:
   - RNPermissions (from `../node_modules/react-native-permissions`)
   - RNReactNativeHapticFeedback (from `../node_modules/react-native-haptic-feedback`)
   - RNScreens (from `../node_modules/react-native-screens`)
-  - RNShare (from `../node_modules/react-native-share`)
   - RNSVG (from `../node_modules/react-native-svg`)
   - SRSRadialGradient (from `../node_modules/react-native-radial-gradient/ios`)
   - Yoga (from `../node_modules/react-native/ReactCommon/yoga`)
@@ -589,8 +586,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-haptic-feedback"
   RNScreens:
     :path: "../node_modules/react-native-screens"
-  RNShare:
-    :path: "../node_modules/react-native-share"
   RNSVG:
     :path: "../node_modules/react-native-svg"
   SRSRadialGradient:
@@ -666,11 +661,10 @@ SPEC CHECKSUMS:
   RNPermissions: 3e5bb8afd93c787681bbacbf54d586a6272ecc92
   RNReactNativeHapticFeedback: 653a8c126a0f5e88ce15ffe280b3ff37e1fbb285
   RNScreens: eb0dfb2d6b21d2d7f980ad46b14eb306d2f1062e
-  RNShare: d76b8c9c6e6ffb38fc18f40b4338c9d867592ed3
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   SRSRadialGradient: 71378a83e52b616c40367c37ee7cb6865f9f7c6e
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
-PODFILE CHECKSUM: 483596fd3a4afe3c50ea6c8479be70f39b0b01fd
+PODFILE CHECKSUM: ac10077bb4c0d3335fc2f37502eb51a3596d8ec3
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.10.2
