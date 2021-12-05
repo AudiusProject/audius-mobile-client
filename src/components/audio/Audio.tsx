@@ -14,6 +14,7 @@ import { connect } from 'react-redux'
 import { Dispatch } from 'redux'
 
 import { MessageType } from 'app/message'
+import { MobileOS } from 'app/models/OS'
 import { AppState } from 'app/store'
 import * as audioActions from 'app/store/audio/actions'
 import { RepeatMode } from 'app/store/audio/reducer'
@@ -142,7 +143,7 @@ const Audio = ({
       hasEnabledControls.current = true
       MusicControl.enableControl('play', true)
       MusicControl.enableControl('pause', true)
-      if (Platform.OS === 'android') {
+      if (Platform.OS === MobileOS.ANDROID) {
         MusicControl.enableControl('closeNotification', true, {
           when: 'paused'
         })
@@ -152,7 +153,7 @@ const Audio = ({
 
   // Init MusicControl
   useEffect(() => {
-    if (Platform.OS === 'ios') {
+    if (Platform.OS === MobileOS.IOS) {
       MusicControl.handleAudioInterruptions(true)
     }
 
@@ -225,7 +226,8 @@ const Audio = ({
       MusicControl.enableBackgroundMode(true)
       MusicControl.setNowPlaying({
         title: track.title,
-        artwork: Platform.OS === 'ios' ? track.artwork : track.largeArtwork,
+        artwork:
+          Platform.OS === MobileOS.IOS ? track.artwork : track.largeArtwork,
         artist: track.artist,
         duration
       })
@@ -250,7 +252,7 @@ const Audio = ({
       }
       MusicControl.resetNowPlaying()
     } else {
-      if (Platform.OS === 'ios') {
+      if (Platform.OS === MobileOS.IOS) {
         MusicControl.handleAudioInterruptions(false)
       }
     }
@@ -337,7 +339,7 @@ const Audio = ({
   }
 
   useEffect(() => {
-    if (Platform.OS === 'android') {
+    if (Platform.OS === MobileOS.ANDROID) {
       const updateInterval = setInterval(() => {
         if (isPlaying.current) {
           MusicControl.updatePlayback({

@@ -30,6 +30,7 @@ import { Dispatch } from 'redux'
 import useAppState from 'app/hooks/useAppState'
 import useKeyboardListeners from 'app/hooks/useKeyboardListeners'
 import { Message, MessageType, handleMessage } from 'app/message'
+import { MobileOS } from 'app/models/OS'
 import { AppState } from 'app/store'
 import { getTrack, getIndex } from 'app/store/audio/selectors'
 import { getIsOnFirstPage, getIsSignedIn } from 'app/store/lifecycle/selectors'
@@ -68,7 +69,7 @@ const AUDIUS_WEBLINK_WHITELIST = new Set([
 ])
 
 const getPath = async () => {
-  if (Platform.OS === 'android') {
+  if (Platform.OS === MobileOS.ANDROID) {
     return copyAndroidAssets()
   } else {
     return RNFS.MainBundlePath + '/Web.bundle/build'
@@ -256,10 +257,10 @@ const WebApp = ({
 
   const backHandler = useCallback(() => {
     if (webRef.current) {
-      if (isOnFirstPage && Platform.OS === 'android') {
+      if (isOnFirstPage && Platform.OS === MobileOS.ANDROID) {
         BackHandler.exitApp()
       } else {
-        if (Platform.OS === 'android') {
+        if (Platform.OS === MobileOS.ANDROID) {
           postMessage(webRef.current, {
             type: MessageType.GO_BACK,
             isAction: true
@@ -275,11 +276,11 @@ const WebApp = ({
   }, [webRef, isOnFirstPage])
 
   useEffect(() => {
-    if (Platform.OS === 'android') {
+    if (Platform.OS === MobileOS.ANDROID) {
       BackHandler.addEventListener('hardwareBackPress', backHandler)
     }
     return () => {
-      if (Platform.OS === 'android') {
+      if (Platform.OS === MobileOS.ANDROID) {
         BackHandler.removeEventListener('hardwareBackPress', backHandler)
       }
     }
@@ -490,7 +491,7 @@ const WebApp = ({
 
   const [atTop, setAtTop] = useState(true)
   const onScroll = (navState: any) => {
-    if (Platform.OS === 'ios') return
+    if (Platform.OS === MobileOS.IOS) return
     setAtTop(navState.nativeEvent.contentOffset.y <= 1)
   }
 

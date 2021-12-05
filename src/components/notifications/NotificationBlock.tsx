@@ -22,6 +22,7 @@ import IconStars from 'app/assets/images/iconStars.svg'
 import IconTrending from 'app/assets/images/iconTrending.svg'
 import IconTrophy from 'app/assets/images/iconTrophy.svg'
 import IconUser from 'app/assets/images/iconUser.svg'
+import { MobileOS } from 'app/models/OS'
 import {
   Notification,
   NotificationType,
@@ -33,7 +34,7 @@ import { useColor, useTheme } from 'app/utils/theme'
 import NotificationContent from './content/NotificationContent'
 import { getNotificationRoute } from './routeUtil'
 
-const IS_IOS = Platform.OS === 'ios'
+const IS_IOS = Platform.OS === MobileOS.IOS
 
 const tierInfoMap: Record<
   BadgeTier,

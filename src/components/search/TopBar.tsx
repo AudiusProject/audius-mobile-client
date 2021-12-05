@@ -14,6 +14,7 @@ import IconCaretRight from 'app/assets/images/iconCaretRight.svg'
 import IconRemove from 'app/assets/images/iconRemove.svg'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { MessageType } from 'app/message'
+import { MobileOS } from 'app/models/OS'
 import { updateQuery } from 'app/store/search/actions'
 import useSearchHistory from 'app/store/search/hooks'
 import {
@@ -25,7 +26,7 @@ import { useColor, useTheme } from 'app/utils/theme'
 
 import { usePushSearchRoute } from './utils'
 
-const IS_IOS = Platform.OS === 'ios'
+const IS_IOS = Platform.OS === MobileOS.IOS
 
 const styles = StyleSheet.create({
   topBar: {

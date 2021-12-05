@@ -31,6 +31,7 @@ import ValidationIconX from 'app/assets/images/iconValidationX.svg'
 import Button from 'app/components/button'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { MessageType } from 'app/message/types'
+import { MobileOS } from 'app/models/OS'
 import * as signonActions from 'app/store/signon/actions'
 import {
   getHandleIsValid,
@@ -388,7 +389,7 @@ const ProfileManual = ({ navigation, route }: ProfileManualProps) => {
   }
 
   const openPhotoMenu = () => {
-    if (Platform.OS === 'ios') {
+    if (Platform.OS === MobileOS.IOS) {
       // iOS ActionSheet
       ActionSheetIOS.showActionSheetWithOptions(
         {
@@ -506,7 +507,7 @@ const ProfileManual = ({ navigation, route }: ProfileManualProps) => {
   return (
     <SafeAreaView style={{ backgroundColor: 'white' }}>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        behavior={Platform.OS === MobileOS.IOS ? 'padding' : undefined}
         style={{ overflow: 'hidden' }}
       >
         <ScrollView

@@ -27,6 +27,7 @@ import ValidationIconX from 'app/assets/images/iconValidationX.svg'
 import Button from 'app/components/button'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { MessageType } from 'app/message/types'
+import { MobileOS } from 'app/models/OS'
 import * as lifecycleActions from 'app/store/lifecycle/actions'
 import { getOnSignUp } from 'app/store/lifecycle/selectors'
 import { EventNames } from 'app/types/analytics'
@@ -468,7 +469,7 @@ const CreatePassword = ({ navigation, route }: CreatePasswordProps) => {
   return (
     <SafeAreaView style={{ backgroundColor: 'white' }}>
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        behavior={Platform.OS === MobileOS.IOS ? 'padding' : undefined}
         style={{ overflow: 'hidden' }}
       >
         <ScrollView

@@ -12,6 +12,7 @@ import { connect } from 'react-redux'
 
 import { light } from 'app/haptics'
 import { MessageType } from 'app/message'
+import { MobileOS } from 'app/models/OS'
 import { AppState } from 'app/store'
 import { getIsEnabled, getMessageId } from 'app/store/web/selectors'
 import { MessagePostingWebView } from 'app/types/MessagePostingWebView'
@@ -128,7 +129,7 @@ const PullToRefresh = ({
     hasReachedTop.current = false
   }
 
-  if (Platform.OS === 'ios') return <>{children}</>
+  if (Platform.OS === MobileOS.IOS) return <>{children}</>
 
   return (
     <View

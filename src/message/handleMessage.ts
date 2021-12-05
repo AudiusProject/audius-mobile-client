@@ -1,6 +1,8 @@
 import { Platform } from 'react-native'
 import { Dispatch } from 'redux'
 
+import { MobileOS } from 'app/models/OS'
+
 import { AnalyticsMessage } from '../types/analytics'
 
 import { messageHandlers as analytics } from './handlers/analytics'
@@ -20,7 +22,7 @@ import { messageHandlers as theme } from './handlers/theme'
 import { messageHandlers as version } from './handlers/version'
 import { Message, MessageHandlers } from './types'
 
-const isIos = Platform.OS === 'ios'
+const isIos = Platform.OS === MobileOS.IOS
 
 const messageHandlers: Partial<MessageHandlers> = {
   ...analytics,

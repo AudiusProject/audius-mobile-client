@@ -9,9 +9,10 @@ import {
 } from 'react-native'
 
 import IconRemove from 'app/assets/images/iconRemove.svg'
+import { MobileOS } from 'app/models/OS'
 import { useSpecialColor, useTheme } from 'app/utils/theme'
 
-const IS_IOS = Platform.OS === 'ios'
+const IS_IOS = Platform.OS === MobileOS.IOS
 
 const messages = {
   notifications: 'NOTIFICATIONS'

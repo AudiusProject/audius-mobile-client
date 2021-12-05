@@ -29,6 +29,7 @@ import Button from 'app/components/button'
 import { remindUserToTurnOnNotifications } from 'app/components/notification-reminder/NotificationReminder'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { MessageType } from 'app/message/types'
+import { MobileOS } from 'app/models/OS'
 import { getIsKeyboardOpen } from 'app/store/keyboard/selectors'
 import { getIsSignedIn, getDappLoaded } from 'app/store/lifecycle/selectors'
 import * as signonActions from 'app/store/signon/actions'
@@ -43,7 +44,7 @@ import { track, make } from 'app/utils/analytics'
 
 import { RootStackParamList } from './NavigationStack'
 
-const isAndroid = Platform.OS === 'android'
+const isAndroid = Platform.OS === MobileOS.ANDROID
 const image = backgImage
 const windowWidth = Dimensions.get('window').width
 const defaultBorderColor = '#F2F2F4'

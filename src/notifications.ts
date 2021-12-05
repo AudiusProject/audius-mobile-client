@@ -12,6 +12,8 @@ import { MessagePostingWebView } from 'app/types/MessagePostingWebView'
 import { EventNames } from 'app/types/analytics'
 import { track, make } from 'app/utils/analytics'
 
+import { MobileOS } from './models/OS'
+
 type Token = {
   token: string
   os: string
@@ -23,7 +25,7 @@ let isRegistering = false
 let webRef: RefObject<MessagePostingWebView>
 
 const getPlatformConfiguration = () => {
-  if (Platform.OS === 'android') {
+  if (Platform.OS === MobileOS.ANDROID) {
     console.info('Fcm Sender ID:', Config.FCM_SENDER_ID)
     return {
       senderID: Config.FCM_SENDER_ID,
@@ -64,7 +66,7 @@ class PushNotifications {
 
   onNotification(notification: any) {
     console.info(`Received notification ${JSON.stringify(notification)}`)
-    if (notification.userInteraction || Platform.OS === 'android') {
+    if (notification.userInteraction || Platform.OS === MobileOS.ANDROID) {
       track(
         make({
           eventName: EventNames.NOTIFICATIONS_OPEN_PUSH_NOTIFICATION,
