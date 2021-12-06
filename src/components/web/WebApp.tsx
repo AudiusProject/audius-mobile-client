@@ -153,7 +153,7 @@ const WebApp = ({
   const serverContainer = useRef<any | null>(null)
   const path = useRef<string | null>(null)
   const serverRestarting = useRef(false)
-  const checkServerInterval = useRef<NodeJS.Timeout | null>(null)
+  const checkServerInterval = useRef<number | null>(null)
 
   const [key, setKey] = useState(0)
   const reload = useCallback(() => {
@@ -531,6 +531,12 @@ const WebApp = ({
             const { nativeEvent } = syntheticEvent
             const { title, url: eventUrl } = nativeEvent
             if (eventUrl === '' || title === '') reloadViewOnServerError()
+          }}
+          onContentProcessDidTerminate={() => {
+            // On iOS, when the webview is in the background for a long time
+            // it becomes blank. Reload when this happens
+            // See: https://github.com/react-native-webview/react-native-webview/issues/2199
+            webRef.current.reload()
           }}
         />
       </PullToRefresh>
