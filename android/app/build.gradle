@@ -1,7 +1,5 @@
 apply plugin: "com.android.application"
 
-apply plugin: 'io.fabric'
-
 import com.android.build.OutputFile
 
 /**
@@ -241,12 +239,6 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     implementation 'com.google.firebase:firebase-perf:19.0.5'
 
-    // Setting version of okhttp to temporarily fix android 11 crash
-    // This can be removed when react-native is upgraded to 0.66
-    // See https://stackoverflow.com/questions/67982247/react-native-app-crashes-on-android-11-on-launch-without-giving-error
-    implementation("com.squareup.okhttp3:okhttp:4.9.1")
-    implementation("com.squareup.okhttp3:okhttp-urlconnection:4.9.1")
-
     if (enableHermes) {
         def hermesPath = "../../node_modules/hermes-engine/android/";
         debugImplementation files(hermesPath + "hermes-debug.aar")
@@ -266,4 +258,5 @@ task copyDownloadableDepsToLibs(type: Copy) {
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
 // Google Services Gradle plugin
 apply plugin: 'com.google.gms.google-services' 
+apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'com.google.firebase.firebase-perf'
