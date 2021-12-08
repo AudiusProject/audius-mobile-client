@@ -9,7 +9,7 @@ export const remoteConfigInstance = remoteConfig({
   createOptimizelyClient: async () => {
     return optimizely.createInstance({
       sdkKey: Config.OPTIMIZELY_KEY
-    }) as any
+    })
   },
   getFeatureFlagSessionId: async () =>
     AsyncStorage.getItem(FEATURE_FLAG_ASYNC_STORAGE_SESSION_KEY),
