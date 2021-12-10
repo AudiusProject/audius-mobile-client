@@ -1,14 +1,22 @@
 import { Platform, Share } from 'react-native'
-import RNFetchBlob from 'rn-fetch-blob'
+import RNFetchBlob, { FetchBlobResponse, StatefulPromise } from 'rn-fetch-blob'
 
 import { dispatch } from 'app/App'
 import { MessageType, MessageHandlers } from 'app/message/types'
 import {
   setDownloadedPercentage,
   setFileInfo,
-  setFetchTask
+  setFetchCancel
 } from 'app/store/download/slice'
 import { setVisibility } from 'app/store/drawers/slice'
+
+let fetchTask: StatefulPromise<FetchBlobResponse> = null
+
+const cancelDownloadTask = () => {
+  if (fetchTask) {
+    fetchTask.cancel()
+  }
+}
 
 export const messageHandlers: Partial<MessageHandlers> = {
   [MessageType.DOWNLOAD_TRACK]: async ({ message }) => {
@@ -18,19 +26,19 @@ export const messageHandlers: Partial<MessageHandlers> = {
 
     dispatch(setVisibility({ drawer: 'DownloadTrackProgress', visible: true }))
     dispatch(setFileInfo({ trackName: message.title, fileName: fileName }))
+    dispatch(setFetchCancel(cancelDownloadTask))
 
     if (Platform.OS === 'ios') {
       const filePath = RNFetchBlob.fs.dirs.DocumentDir + '/' + fileName
       // On iOS fetch & cache the track, let user choose where to download it
       // with the share sheet, then delete the cached copy of the track
       try {
-        const fetchTask = RNFetchBlob.config({
+        fetchTask = RNFetchBlob.config({
           fileCache: true,
           path: filePath
         }).fetch('GET', fileUrl)
 
         // Do this while download is occuring
-        dispatch(setFetchTask(fetchTask))
         fetchTask.progress({ interval: 250 }, (received, total) => {
           dispatch(setDownloadedPercentage((received / total) * 100))
         })
@@ -65,7 +73,6 @@ export const messageHandlers: Partial<MessageHandlers> = {
         }).fetch('GET', fileUrl)
 
         // Do this while download is occuring
-        dispatch(setFetchTask(fetchTask))
         // TODO: The RNFetchBlob library is currently broken for download progress events on Android.
         fetchTask.progress({ interval: 250 }, (received, total) => {
           dispatch(setDownloadedPercentage((received / total) * 100))

@@ -11,7 +11,7 @@ import { useThemedStyles } from 'app/hooks/useThemedStyles'
 import {
   getDownloadedPercentage,
   getFileName,
-  getFetchTask
+  getFetchCancel
 } from 'app/store/download/selectors'
 import { useColor, ThemeColors } from 'app/utils/theme'
 
@@ -69,15 +69,13 @@ const DownloadTrackProgressDrawer = () => {
   const [isOpen, setIsOpen] = useDrawer('DownloadTrackProgress')
 
   const downloadPercentage = useSelector(getDownloadedPercentage)
-  const fetchTask = useSelector(getFetchTask)
+  const fetchCancel = useSelector(getFetchCancel)
   const fileName = useSelector(getFileName)
 
   const handleClose = useCallback(() => {
-    if (fetchTask) {
-      fetchTask.cancel()
-    }
+    fetchCancel()
     setIsOpen(false)
-  }, [fetchTask, setIsOpen])
+  }, [fetchCancel, setIsOpen])
 
   const styles = useThemedStyles(createStyles)
   const spinnerColor = useColor('actionSheetText')

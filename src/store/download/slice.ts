@@ -1,18 +1,17 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { FetchBlobResponse, StatefulPromise } from 'rn-fetch-blob'
 
 export type DownloadState = typeof initialState
 
 type State = {
   downloadedPercentage: number
-  fetchTask: StatefulPromise<FetchBlobResponse>
+  fetchCancel: () => void
   trackName: string
   fileName: string
 }
 
 const initialState: State = {
   downloadedPercentage: 0,
-  fetchTask: null,
+  fetchCancel: null,
   trackName: null,
   fileName: null
 }
@@ -34,11 +33,8 @@ const slice = createSlice({
       state.trackName = action.payload.trackName
       state.fileName = action.payload.fileName
     },
-    setFetchTask: (
-      state,
-      action: PayloadAction<StatefulPromise<FetchBlobResponse>>
-    ) => {
-      state.fetchTask = action.payload
+    setFetchCancel: (state, action: PayloadAction<() => void>) => {
+      state.fetchCancel = action.payload
     }
   }
 })
@@ -46,7 +42,7 @@ const slice = createSlice({
 export const {
   setDownloadedPercentage,
   setFileInfo,
-  setFetchTask
+  setFetchCancel
 } = slice.actions
 
 export default slice.reducer
