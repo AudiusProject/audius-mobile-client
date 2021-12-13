@@ -254,7 +254,8 @@ jobs:
           env: '.env.stage'
       - when:
           condition:
-            matches: { pattern: "^release.*$", value: << pipeline.git.branch >> }
+            matches:
+              { pattern: '^release.*$', value: << pipeline.git.branch >> }
           steps:
             - upload-ios:
                 bundle-id: 'co.audius.audiusmusic.bounce'
@@ -273,7 +274,8 @@ jobs:
           env: '.env.prod'
       - when:
           condition:
-            matches: { pattern: "^release.*$", value: << pipeline.git.branch >> }
+            matches:
+              { pattern: '^release.*$', value: << pipeline.git.branch >> }
           steps:
             - upload-ios:
                 bundle-id: 'co.audius.audiusmusic'
@@ -283,7 +285,7 @@ jobs:
     docker:
       - image: circleci/android:api-30-node
     steps:
-      - build-android
+      - build-android:
           build-directory: 'build-mobile-staging'
           build-type: 'bundleBounceRelease'
           bundle-id: 'co.audius.app.bounce'
@@ -291,7 +293,8 @@ jobs:
           remote-directory: 'audius-mobile-staging'
       - when:
           condition:
-            matches: { pattern: "^release.*$", value: << pipeline.git.branch >> }
+            matches:
+              { pattern: '^release.*$', value: << pipeline.git.branch >> }
           steps:
             - upload-android:
                 upload-type: 'bounce'
@@ -301,7 +304,7 @@ jobs:
     docker:
       - image: circleci/android:api-30-node
     steps:
-      - build-android
+      - build-android:
           build-directory: 'build-mobile-production'
           build-type: 'bundleRelease'
           bundle-id: 'co.audius.app'
@@ -309,7 +312,8 @@ jobs:
           remote-directory: 'audius-mobile'
       - when:
           condition:
-            matches: { pattern: "^release.*$", value: << pipeline.git.branch >> }
+            matches:
+              { pattern: '^release.*$', value: << pipeline.git.branch >> }
           steps:
             - upload-android:
                 upload-type: 'bounce'
