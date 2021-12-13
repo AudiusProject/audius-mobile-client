@@ -149,6 +149,9 @@ jobs:
           command: cd ios && pod install
       - restore_cache:
           key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
+      - run:
+          name: update bundler
+          command: gem install bundler:1.17.3
       - run: cd ios && (bundle check || bundle install --path vendor/bundle)
       - save_cache:
           key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
@@ -196,6 +199,9 @@ jobs:
           command: cd ios && pod install
       - restore_cache:
           key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
+      - run:
+          name: update bundler
+          command: gem install bundler:1.17.3
       - run: cd ios && (bundle check || bundle install --path vendor/bundle)
       - save_cache:
           key: 1-gems-{{ checksum "ios/Gemfile.lock" }}
@@ -233,6 +239,9 @@ jobs:
             npm run jetifier
       - restore_cache:
           key: 1-gems-{{ checksum "android/Gemfile.lock" }}
+      - run:
+          name: update bundler
+          command: gem install bundler:1.17.3
       - run: cd android && (bundle check || bundle install --path vendor/bundle)
       - save_cache:
           key: 1-gems-{{ checksum "android/Gemfile.lock" }}
@@ -282,6 +291,9 @@ jobs:
             npm run jetifier
       - restore_cache:
           key: 1-gems-{{ checksum "android/Gemfile.lock" }}
+      - run:
+          name: update bundler
+          command: gem install bundler:1.17.3
       - run: cd android && (bundle check || bundle install --path vendor/bundle)
       - save_cache:
           key: 1-gems-{{ checksum "android/Gemfile.lock" }}
