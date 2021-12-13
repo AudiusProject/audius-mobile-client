@@ -127,7 +127,7 @@ platform :ios do
     )
   end
 
-  descr "Push a build to TestFlight"
+  desc "Push a build to TestFlight"
   lane :upload do
 
     if (options[:bundle_id] === 'co.audius.audiusmusic') 
