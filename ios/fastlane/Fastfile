@@ -44,7 +44,8 @@ platform :ios do
 
     match(
       type: "appstore",
-      readonly: is_ci
+      readonly: is_ci,
+      app_identifier: options[:bundle_id]
     )
 
     settings_to_override = {

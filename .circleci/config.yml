@@ -282,6 +282,7 @@ jobs:
 
   build-upload-staging-android:
     working_directory: ~/audius-mobile-client
+    resource_class: large
     docker:
       - image: circleci/android:api-30-node
     steps:
@@ -301,6 +302,7 @@ jobs:
 
   build-upload-production-android:
     working_directory: ~/audius-mobile-client
+    resource_class: large
     docker:
       - image: circleci/android:api-30-node
     steps:
