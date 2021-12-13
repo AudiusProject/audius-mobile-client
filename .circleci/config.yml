@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  ruby: circleci/ruby@0.2.1
+  ruby: circleci/ruby@1.2.0
 
 jobs:
   init:
@@ -136,7 +136,7 @@ jobs:
           command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-staging/* web-app/Web.bundle/build
       - run:
           name: Set Ruby Version
-          command: echo 'chruby ruby-2.6' >> ~/.bash_profile
+          command: echo 'chruby ruby-3.0' >> ~/.bash_profile
       - run:
           name: update cocoapods
           command: sudo gem install cocoapods
@@ -183,7 +183,7 @@ jobs:
           command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-production/* web-app/Web.bundle/build
       - run:
           name: Set Ruby Version
-          command: echo 'chruby ruby-2.6' >> ~/.bash_profile
+          command: echo 'chruby ruby-3.0' >> ~/.bash_profile
       - run:
           name: update cocoapods
           command: sudo gem install cocoapods
@@ -223,7 +223,7 @@ jobs:
           at: ./
       - run:
           name: Set Ruby Version
-          command: echo 'chruby ruby-2.6' >> ~/.bash_profile
+          command: echo 'chruby ruby-3.0' >> ~/.bash_profile
       - run:
           name: Move Staging build
           command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-staging/* web-app/Web.bundle/build
@@ -272,7 +272,7 @@ jobs:
           at: ./
       - run:
           name: Set Ruby Version
-          command: echo 'chruby ruby-2.6' >> ~/.bash_profile
+          command: echo 'chruby ruby-3.0' >> ~/.bash_profile
       - run:
           name: Move production build
           command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-production/* web-app/Web.bundle/build
