@@ -252,7 +252,7 @@ jobs:
           build-directory: 'build-mobile-staging'
           bundle-id: 'co.audius.audiusmusic.bounce'
           env: '.env.stage'
-      when:
+      - when:
           condition:
             matches: { pattern: "^release.*$", value: << pipeline.git.branch >> }
           steps:
@@ -271,7 +271,7 @@ jobs:
           build-directory: 'build-mobile-production'
           bundle-id: 'co.audius.audiusmusic'
           env: '.env.prod'
-      when:
+      - when:
           condition:
             matches: { pattern: "^release.*$", value: << pipeline.git.branch >> }
           steps:
@@ -289,7 +289,7 @@ jobs:
           bundle-id: 'co.audius.app.bounce'
           track: 'alpha'
           remote-directory: 'audius-mobile-staging'
-      when:
+      - when:
           condition:
             matches: { pattern: "^release.*$", value: << pipeline.git.branch >> }
           steps:
@@ -307,7 +307,7 @@ jobs:
           bundle-id: 'co.audius.app'
           track: 'alpha'
           remote-directory: 'audius-mobile'
-      when:
+      - when:
           condition:
             matches: { pattern: "^release.*$", value: << pipeline.git.branch >> }
           steps:
@@ -344,9 +344,9 @@ workflows:
       - build-upload-production-ios:
           context: Audius Mobile Client
           requires:
-            - build-web-app
+            - build-production-web-app
 
       - build-upload-production-android:
           context: Audius Mobile Client
           requires:
-            - build-web-app
+            - build-production-web-app
