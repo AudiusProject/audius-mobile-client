@@ -314,8 +314,10 @@ PODS:
   - React-jsinspector (0.66.3)
   - React-logger (0.66.3):
     - glog
-  - react-native-config (0.12.0):
-    - React
+  - react-native-config (1.4.5):
+    - react-native-config/App (= 1.4.5)
+  - react-native-config/App (1.4.5):
+    - React-Core
   - react-native-google-cast/NoBluetooth (3.4.1):
     - google-cast-sdk-no-bluetooth
     - React
@@ -669,7 +671,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 433a691aee158533a6a6ee9c86cb4a1684fa2853
   React-jsinspector: d9c8eb0b53f0da206fed56612b289fec84991157
   React-logger: e522e76fa3e9ec3e7d7115b49485cc065cf4ae06
-  react-native-config: f2c2ae45625a068c35681a16b9bfb1ca58b0adc7
+  react-native-config: 6502b1879f97ed5ac570a029961fc35ea606cd14
   react-native-google-cast: 9ead682d0026c857318efa8ea9c6f58b6142651a
   react-native-image-picker: 7bda3c7297c3ea16f4f504ad6174aa7e548192ef
   react-native-music-control: 0eef94942456152af21316afd53923e1dd6360b0

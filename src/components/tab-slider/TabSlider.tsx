@@ -77,13 +77,15 @@ const createStyles = (themeColors: ThemeColors) =>
     },
     tab: {
       elevation: 3,
-      paddingTop: 4,
-      paddingRight: 12,
-      paddingBottom: 4,
-      paddingLeft: 12,
-      borderRadius: 4,
+      paddingTop: 10,
+      paddingRight: 16,
+      paddingBottom: 8,
+      paddingLeft: 16,
+      borderRadius: 4
+    },
+    text: {
       color: themeColors.neutral,
-      fontSize: 24
+      fontSize: 13
     },
     separator: {
       width: 1,
@@ -187,7 +189,7 @@ const TabSlider = (props: TabSliderProps) => {
               ]}
               onPress={() => onSetSelected(option.key)}
             >
-              <Text weight='demiBold' style={props.textStyle}>
+              <Text weight='demiBold' style={[styles.text, props.textStyle]}>
                 {option.text}
               </Text>
             </TouchableWithoutFeedback>
