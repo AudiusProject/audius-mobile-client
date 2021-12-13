@@ -298,7 +298,7 @@ jobs:
           track: 'alpha'
           remote-directory: 'audius-mobile'
       - upload-android:
-          upload-type: 'bounce'
+          upload-type: 'alpha'
 
 workflows:
   version: 2
