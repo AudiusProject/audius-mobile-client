@@ -34,7 +34,7 @@ platform :ios do
       environment = 'production'
       scheme = 'AudiusReactNative'
       configuration = 'Release'
-    else if options[:bundle_id] === 'co.audius.audiusmusic.bounce'
+    else
       appId = MY_STAGING_APP_ID
       provisioningProfile = MY_STAGING_PROFILE
       environment = 'staging'
@@ -132,7 +132,7 @@ platform :ios do
 
     if (options[:bundle_id] === 'co.audius.audiusmusic') 
       appleId = "1491270519"
-    else if options[:bundle_id] === 'co.audius.audiusmusic.bounce'
+    else
       appleId = "1510764836"
     end
    
