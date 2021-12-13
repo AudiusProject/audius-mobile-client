@@ -134,9 +134,8 @@ jobs:
       - run:
           name: Move Staging build
           command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-staging/* web-app/Web.bundle/build
-      - run:
-          name: Set Ruby Version
-          command: echo '\nchruby ruby-3.0\n' >> ~/.bash_profile
+      - ruby/install:
+          version: '3.0'
       - run:
           name: update cocoapods
           command: sudo gem install cocoapods
@@ -181,9 +180,8 @@ jobs:
       - run:
           name: Move production build
           command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-production/* web-app/Web.bundle/build
-      - run:
-          name: Set Ruby Version
-          command: echo '\nchruby ruby-3.0\n' >> ~/.bash_profile
+      - ruby/install:
+          version: '3.0'
       - run:
           name: update cocoapods
           command: sudo gem install cocoapods
@@ -221,9 +219,8 @@ jobs:
       - checkout
       - attach_workspace:
           at: ./
-      - run:
-          name: Set Ruby Version
-          command: echo '\nchruby ruby-3.0\n' >> ~/.bash_profile
+      - ruby/install:
+          version: '3.0'
       - run:
           name: Move Staging build
           command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-staging/* web-app/Web.bundle/build
@@ -270,9 +267,8 @@ jobs:
       - checkout
       - attach_workspace:
           at: ./
-      - run:
-          name: Set Ruby Version
-          command: echo '\nchruby ruby-3.0\n' >> ~/.bash_profile
+      - ruby/install:
+          version: '3.0'
       - run:
           name: Move production build
           command: mkdir -p web-app/Web.bundle/build && mv ./audius-client/build-mobile-production/* web-app/Web.bundle/build
