@@ -167,6 +167,7 @@ commands:
       upload-type:
         default: 'prod'
         type: string
+    steps:
       - run:
           name: Upload to Play Store
           command: cd android && bundle exec fastlane <<parameters.upload-type>>
