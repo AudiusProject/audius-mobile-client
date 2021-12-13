@@ -129,7 +129,7 @@ platform :ios do
   end
 
   desc "Push a build to TestFlight"
-  lane :upload do
+  lane :upload do |options|
 
     if (options[:bundle_id] === 'co.audius.audiusmusic') 
       appleId = "1491270519"
