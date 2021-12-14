@@ -133,8 +133,10 @@ platform :ios do
 
     if (options[:bundle_id] === 'co.audius.audiusmusic') 
       appleId = "1491270519"
+      ipa = './output/gym/Audius Music.ipa'
     else
       appleId = "1510764836"
+      ipa = './output/gym/Audius Bounce Music.ipa'
     end
    
     # Upload to test flight
@@ -142,6 +144,7 @@ platform :ios do
       skip_waiting_for_build_processing: true,
       apple_id: appleId,
       app_identifier: options[:bundle_id],
+      ipa: ipa,
       # Don't actually distribute, just upload
       skip_submission: true
     )
