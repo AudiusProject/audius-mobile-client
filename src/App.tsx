@@ -11,6 +11,7 @@ import Audio from 'app/components/audio/Audio'
 import GoogleCast from 'app/components/audio/GoogleCast'
 import CollectibleDetailsDrawer from 'app/components/collectible-details-drawer'
 import ConnectWalletsDrawer from 'app/components/connect-wallets-drawer'
+import DownloadTrackProgressDrawer from 'app/components/download-track-progress-drawer'
 import EnablePushNotificationsDrawer from 'app/components/enable-push-notifications-drawer'
 import HCaptcha from 'app/components/hcaptcha'
 import MobileUploadDrawer from 'app/components/mobile-upload-drawer'
@@ -51,6 +52,7 @@ const Drawers = () => {
       <ConnectWalletsDrawer />
       <OverflowMenuDrawer />
       <DeactivateAccountConfirmationDrawer />
+      <DownloadTrackProgressDrawer />
       <TransferAudioMobileDrawer />
       <TrendingRewardsDrawer />
       {/* Disable the audio breakdown drawer until we get
