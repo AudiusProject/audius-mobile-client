@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
 
+import { StringKeys } from 'audius-client/src/common/services/remote-config'
 import { getTrendingRewardsModalType } from 'audius-client/src/common/store/pages/audio-rewards/selectors'
 import {
   setTrendingRewardsModalType,
@@ -9,17 +10,20 @@ import {
   getModalVisibility,
   setVisibility
 } from 'audius-client/src/common/store/ui/modals/slice'
-import { Image, ImageStyle, StyleSheet, View } from 'react-native'
+import { Image, ImageStyle, ScrollView, StyleSheet, View } from 'react-native'
 
 import ChartIncreasing from 'app/assets/images/emojis/chart-increasing.png'
 import Drawer from 'app/components/drawer'
 import GradientText from 'app/components/gradient-text'
 import TabSlider from 'app/components/tab-slider'
 import Text from 'app/components/text'
+import TweetEmbed from 'app/components/tweet-embed'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
+import { useRemoteVar } from 'app/hooks/useRemoteConfig'
 import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
-import { ThemeColors } from 'app/utils/theme'
+import Theme from 'app/models/Theme'
+import { ThemeColors, useThemeVariant } from 'app/utils/theme'
 
 const TRENDING_REWARDS_DRAWER_NAME = 'TrendingRewardsExplainer'
 
@@ -68,15 +72,16 @@ const textMap = {
 const createStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
     content: {
-      paddingRight: 32,
-      paddingBottom: 32,
-      paddingLeft: 32
+      height: '100%',
+      width: '100%',
+      paddingBottom: 32
     },
     modalTitleContainer: {
       display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
+      paddingHorizontal: 32,
       marginTop: 8,
       marginBottom: 16
     },
@@ -127,14 +132,33 @@ const useRewardsType = (): [
   return [rewardsType ?? 'tracks', setTrendingRewardsType]
 }
 
+const useTweetId = (type: TrendingRewardsModalType) => {
+  const tracksId = useRemoteVar(StringKeys.REWARDS_TWEET_ID_TRACKS)
+  const playlistsId = useRemoteVar(StringKeys.REWARDS_TWEET_ID_PLAYLISTS)
+  const undergroundId = useRemoteVar(StringKeys.REWARDS_TWEET_ID_UNDERGROUND)
+  return {
+    tracks: tracksId,
+    playlists: playlistsId,
+    underground: undergroundId
+  }[type]
+}
+
+const useIsDark = () => {
+  const themeVariant = useThemeVariant()
+  return themeVariant === Theme.DARK
+}
+
 const TrendingRewardsDrawer = () => {
   const dispatchWeb = useDispatchWeb()
   const styles = useThemedStyles(createStyles)
   const [modalType, setModalType] = useRewardsType()
+  const isDark = useIsDark()
 
   const isOpen = useSelectorWeb(state =>
     getModalVisibility(state, TRENDING_REWARDS_DRAWER_NAME)
   )
+
+  const tweetId = useTweetId(modalType)
 
   const handleClose = useCallback(() => {
     dispatchWeb(
@@ -158,7 +182,12 @@ const TrendingRewardsDrawer = () => {
   ]
 
   return (
-    <Drawer isFullscreen isOpen={isOpen} onClose={handleClose}>
+    <Drawer
+      isFullscreen
+      isOpen={isOpen}
+      onClose={handleClose}
+      isGestureSupported={false}
+    >
       <View style={styles.content}>
         <View style={styles.modalTitleContainer}>
           <Image
@@ -170,27 +199,40 @@ const TrendingRewardsDrawer = () => {
             style={styles.modalTitle}
           />
         </View>
-        <TabSlider
-          options={tabOptions}
-          selected={modalType}
-          onSelectOption={option =>
-            setModalType(option as TrendingRewardsModalType)
-          }
-          key={`rewards-slider-${tabOptions.length}`}
-        />
-        <View style={styles.titles}>
-          <Text style={styles.title} weight='bold'>
-            {textMap[modalType].title}
-          </Text>
-          <Text style={styles.subtitle} weight='bold'>
-            {messages.winners}
-          </Text>
-        </View>
 
-        <GradientText
-          text={messages.lastWeek}
-          style={styles.lastWeek}
-        ></GradientText>
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <TabSlider
+            options={tabOptions}
+            selected={modalType}
+            onSelectOption={option =>
+              setModalType(option as TrendingRewardsModalType)
+            }
+            key={`rewards-slider-${tabOptions.length}`}
+          />
+          <View style={styles.titles}>
+            <Text style={styles.title} weight='bold'>
+              {textMap[modalType].title}
+            </Text>
+            <Text style={styles.subtitle} weight='bold'>
+              {messages.winners}
+            </Text>
+          </View>
+
+          <GradientText text={messages.lastWeek} style={styles.lastWeek} />
+          <TweetEmbed
+            // Refresh it when we toggle
+            key={`twitter-${tweetId}`}
+            tweetId={tweetId}
+            options={{
+              theme: isDark ? 'dark' : 'light',
+              cards: 'none',
+              conversation: 'none',
+              hide_thread: true,
+              width: 554,
+              height: 390
+            }}
+          />
+        </ScrollView>
       </View>
     </Drawer>
   )

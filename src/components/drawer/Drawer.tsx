@@ -534,6 +534,7 @@ const Drawer = ({
       >
         <SafeAreaView
           edges={['bottom', ...((isFullscreen ? ['top'] : []) as Edge[])]}
+          style={{ height: isFullscreen ? '100%' : 'auto' }}
           onLayout={(event: LayoutChangeEvent) => {
             if (!isFullscreen) {
               const { height } = event.nativeEvent.layout
