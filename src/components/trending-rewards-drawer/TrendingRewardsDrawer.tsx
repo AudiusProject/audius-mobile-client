@@ -10,9 +10,24 @@ import {
   getModalVisibility,
   setVisibility
 } from 'audius-client/src/common/store/ui/modals/slice'
-import { Image, ImageStyle, ScrollView, StyleSheet, View } from 'react-native'
+import {
+  TRENDING_PAGE,
+  TRENDING_PLAYLISTS_PAGE,
+  TRENDING_UNDERGROUND_PAGE
+} from 'audius-client/src/utils/route'
+import { push } from 'connected-react-router'
+import {
+  Image,
+  ImageStyle,
+  Linking,
+  ScrollView,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View
+} from 'react-native'
 
 import ChartIncreasing from 'app/assets/images/emojis/chart-increasing.png'
+import ButtonWithArrow from 'app/components/button-with-arrow'
 import Drawer from 'app/components/drawer'
 import GradientText from 'app/components/gradient-text'
 import TabSlider from 'app/components/tab-slider'
@@ -26,6 +41,7 @@ import Theme from 'app/models/Theme'
 import { ThemeColors, useThemeVariant } from 'app/utils/theme'
 
 const TRENDING_REWARDS_DRAWER_NAME = 'TrendingRewardsExplainer'
+const TOS_URL = 'https://blog.audius.co/posts/audio-rewards'
 
 const messages = {
   tracksTitle: 'Top 5 Tracks Each Week Receive 100 $AUDIO',
@@ -40,32 +56,33 @@ const messages = {
   tracksModalTitle: 'Top 5 Trending Tracks',
   playlistsModalTitle: 'Top 5 Trending Playlists',
   undergroundModalTitle: 'Top 5 Underground Trending Tracks',
-  buttonTextTracks: 'Current Trending Tracks',
-  buttonTextPlaylists: 'Current Trending Playlists',
-  buttonTextUnderground: 'Current Underground Trending Tracks',
-  mobileButtonTextTracks: 'Trending Tracks',
-  mobileButtonTextPlaylists: 'Trending Playlists',
-  mobileButtonTextUnderground: 'Underground Trending Tracks'
+  buttonTextTracks: 'Trending Tracks',
+  buttonTextPlaylists: 'Trending Playlists',
+  buttonTextUnderground: 'Underground Trending Tracks'
+}
+
+// TODO: Update these when RN pages are built
+const TRENDING_PAGES = {
+  tracks: TRENDING_PAGE,
+  playlists: TRENDING_PLAYLISTS_PAGE,
+  underground: TRENDING_UNDERGROUND_PAGE
 }
 
 const textMap = {
   playlists: {
     modalTitle: messages.playlistsModalTitle,
     title: messages.playlistTitle,
-    button: messages.buttonTextPlaylists,
-    buttonMobile: messages.mobileButtonTextPlaylists
+    button: messages.buttonTextPlaylists
   },
   tracks: {
     modalTitle: messages.tracksModalTitle,
     title: messages.tracksTitle,
-    button: messages.buttonTextTracks,
-    buttonMobile: messages.mobileButtonTextTracks
+    button: messages.buttonTextTracks
   },
   underground: {
     modalTitle: messages.undergroundModalTitle,
     title: messages.undergroundTitle,
-    button: messages.buttonTextUnderground,
-    buttonMobile: messages.mobileButtonTextUnderground
+    button: messages.buttonTextUnderground
   }
 }
 
@@ -112,6 +129,14 @@ const createStyles = (themeColors: ThemeColors) =>
       textAlign: 'center',
       marginBottom: 16,
       fontSize: 24
+    },
+    button: { marginTop: 16, marginHorizontal: 16, marginBottom: 8 },
+    terms: {
+      marginBottom: 16,
+      fontSize: 12,
+      textAlign: 'center',
+      width: '100%',
+      textDecorationLine: 'underline'
     }
   })
 
@@ -181,6 +206,16 @@ const TrendingRewardsDrawer = () => {
     }
   ]
 
+  const onButtonPress = useCallback(() => {
+    const page = TRENDING_PAGES[modalType]
+    dispatchWeb(push(page))
+    handleClose()
+  }, [dispatchWeb, modalType, handleClose])
+
+  const onPressToS = useCallback(() => {
+    Linking.openURL(TOS_URL)
+  }, [])
+
   return (
     <Drawer
       isFullscreen
@@ -232,6 +267,16 @@ const TrendingRewardsDrawer = () => {
               height: 390
             }}
           />
+
+          <View style={styles.button}>
+            <ButtonWithArrow
+              title={textMap[modalType].button}
+              onPress={onButtonPress}
+            />
+          </View>
+          <TouchableWithoutFeedback onPress={onPressToS}>
+            <Text style={styles.terms}>{messages.terms}</Text>
+          </TouchableWithoutFeedback>
         </ScrollView>
       </View>
     </Drawer>

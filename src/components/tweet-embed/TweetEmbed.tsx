@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
-    height: 100
+    height: 300
   }
 })
 
@@ -46,23 +46,25 @@ const TweetEmbed = ({ options, tweetId }: Props) => {
 `
 
   return (
-    <View style={{ width: '100%', height }}>
+    <>
       {isLoading && (
         <View style={styles.spinnerContainer}>
           <LoadingSpinner color={neutralLight4} />
         </View>
       )}
-      <WebView
-        onMessage={event => {
-          setHeight(parseInt(event.nativeEvent.data, 10))
-          setIsLoading(false)
-        }}
-        scrollEnabled={false}
-        source={{
-          html
-        }}
-      />
-    </View>
+      <View style={{ width: '100%', height }}>
+        <WebView
+          onMessage={event => {
+            setHeight(parseInt(event.nativeEvent.data, 10))
+            setIsLoading(false)
+          }}
+          scrollEnabled={false}
+          source={{
+            html
+          }}
+        />
+      </View>
+    </>
   )
 }
 
