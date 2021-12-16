@@ -96,18 +96,20 @@ const createStyles = (themeColors: ThemeColors) =>
     modalTitleContainer: {
       display: 'flex',
       flexDirection: 'row',
-      alignItems: 'center',
+      alignItems: 'flex-start',
       justifyContent: 'center',
       paddingHorizontal: 32,
       marginTop: 8,
       marginBottom: 16
     },
     modalTitle: {
+      textAlign: 'center',
       fontSize: 24
     },
     chartEmoji: {
       height: 24,
       width: 24,
+      marginTop: 4,
       marginRight: 12
     },
     titles: {
