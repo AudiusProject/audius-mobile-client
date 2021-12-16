@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-import { StyleSheet, View } from 'react-native'
+import { Linking, StyleSheet, View } from 'react-native'
 import { WebView } from 'react-native-webview'
 
 import LoadingSpinner from 'app/components/loading-spinner'
@@ -70,6 +70,13 @@ const TweetEmbed = ({ options, tweetId }: Props) => {
           scrollEnabled={false}
           source={{
             html
+          }}
+          onShouldStartLoadWithRequest={request => {
+            // Open subsequent links in browser
+            if (!isLoading) {
+              Linking.openURL(request.url)
+            }
+            return isLoading
           }}
         />
       </View>
