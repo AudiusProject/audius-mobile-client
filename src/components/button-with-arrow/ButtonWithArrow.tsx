@@ -12,13 +12,13 @@ const styles = StyleSheet.create({
 
 const ButtonWithArrow = (props: ButtonProps) => {
   const { style } = props
-  const { white } = useThemeColors()
+  const { staticWhite } = useThemeColors()
   return (
     <>
       <Button
         style={[styles.button, style]}
         type={ButtonType.PRIMARY}
-        icon={<IconArrow fill={white} />}
+        icon={<IconArrow fill={staticWhite} />}
         {...props}
       />
     </>

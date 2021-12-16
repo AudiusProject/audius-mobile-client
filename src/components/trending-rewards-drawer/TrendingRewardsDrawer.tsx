@@ -123,7 +123,7 @@ const createStyles = (themeColors: ThemeColors) =>
     },
     subtitle: {
       color: themeColors.neutralLight4,
-      fontSize: 12
+      fontSize: 13
     },
     lastWeek: {
       textAlign: 'center',
@@ -262,9 +262,7 @@ const TrendingRewardsDrawer = () => {
               theme: isDark ? 'dark' : 'light',
               cards: 'none',
               conversation: 'none',
-              hide_thread: true,
-              width: 554,
-              height: 390
+              hide_thread: true
             }}
           />
 

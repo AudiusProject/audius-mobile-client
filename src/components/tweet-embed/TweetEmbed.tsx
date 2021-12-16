@@ -18,27 +18,36 @@ const styles = StyleSheet.create({
 })
 
 type Props = {
+  /**
+   * The id of the tweet to show
+   */
   tweetId: string
+  /**
+   * Options for the tweet embed
+   * see: https://developer.twitter.com/en/docs/twitter-for-websites/embedded-tweets/guides/embedded-tweet-parameter-reference
+   */
   options?: Record<string, any>
 }
-// TODO: Options
 
 const TweetEmbed = ({ options, tweetId }: Props) => {
   const [isLoading, setIsLoading] = useState(true)
   const [height, setHeight] = useState(0)
-  const { neutralLight4 } = useThemeColors()
+  const { neutralLight4, neutralLight10 } = useThemeColors()
+
+  const optionsString = JSON.stringify(options).replace(/"/g, "'")
 
   const html = `
     <head>
         <meta content="width=width, initial-scale=1, maximum-scale=1" name="viewport"></meta>
     </head>
-    <body>
+    <body  style="background-color: ${neutralLight10}">
         <div id="embed-container"></div>
         <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"
             onload="
                 window.twttr.widgets.createTweet(
                     '${tweetId}',
-                    document.getElementById('embed-container')
+                    document.getElementById('embed-container'),
+                    ${optionsString}
                 ).then(() => window.ReactNativeWebView.postMessage(document.documentElement.scrollHeight))
             "
         ></script>
