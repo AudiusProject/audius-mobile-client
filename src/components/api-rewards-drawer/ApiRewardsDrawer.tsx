@@ -4,11 +4,13 @@ import {
   getModalVisibility,
   setVisibility
 } from 'audius-client/src/common/store/ui/modals/slice'
-import { Image, Linking, StyleSheet, Text, View } from 'react-native'
+import { Image, Linking, StyleSheet, View } from 'react-native'
 
 import AudiusAPI from 'app/assets/images/audiusAPI.png'
 import ButtonWithArrow from 'app/components/button-with-arrow'
 import Drawer from 'app/components/drawer'
+import GradientText from 'app/components/gradient-text'
+import Text from 'app/components/text'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
@@ -26,9 +28,34 @@ const MODAL_NAME = 'APIRewardsExplainer'
 
 const createStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
-    title: {},
-    subtitle: {},
-    button: {}
+    content: {
+      padding: 32,
+      display: 'flex',
+      alignItems: 'center'
+    },
+    drawerTitle: {
+      marginTop: 8,
+      marginBottom: 32,
+      fontSize: 28
+    },
+    image: {
+      height: 100,
+      width: 120,
+      marginBottom: 32
+    },
+    title: {
+      marginBottom: 24,
+      color: themeColors.secondary,
+      fontSize: 24,
+      textAlign: 'center'
+    },
+    subtitle: {
+      color: themeColors.neutralLight4,
+      marginBottom: 24
+    },
+    buttonText: {
+      fontSize: 16
+    }
   })
 
 const ApiRewardsDrawer = () => {
@@ -46,13 +73,22 @@ const ApiRewardsDrawer = () => {
   }, [])
 
   return (
-    <Drawer isOpen={isOpen} onClose={handleClose} title={messages.modalTitle}>
-      <View>
-        <Image source={AudiusAPI} />
-        <Text style={styles.title}>{messages.title}</Text>
-        <Text style={styles.subtitle}>{messages.description}</Text>
+    <Drawer isOpen={isOpen} onClose={handleClose}>
+      <View style={styles.content}>
+        <GradientText
+          style={styles.drawerTitle}
+          text={messages.modalTitle}
+        ></GradientText>
+        <Image style={styles.image} source={AudiusAPI} />
+        <Text style={styles.title} weight='bold'>
+          {messages.title}
+        </Text>
+        <Text style={styles.subtitle} weight='bold'>
+          {messages.description}
+        </Text>
         <ButtonWithArrow
-          text={messages.button}
+          title={messages.button}
+          textStyle={styles.buttonText}
           style={styles.button}
           onPress={onClickAudiusAPI}
         />
