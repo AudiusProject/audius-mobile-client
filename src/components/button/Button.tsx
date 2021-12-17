@@ -7,7 +7,8 @@ import {
   StyleSheet,
   TextStyle,
   View,
-  Animated
+  Animated,
+  StyleProp
 } from 'react-native'
 
 import Text from 'app/components/text'
@@ -73,7 +74,7 @@ const createStyles = (type: ButtonType = ButtonType.PRIMARY) => (
           fontFamily: 'AvenirNextLTPro-Bold'
         },
         icon: {
-          marginLeft: 12
+          marginLeft: 6
         },
         disabled: {
           backgroundColor: '#E7E6EB'
@@ -83,15 +84,15 @@ const createStyles = (type: ButtonType = ButtonType.PRIMARY) => (
     ) as ButtonStyle
   )
 
-type ButtonProps = {
+export type ButtonProps = {
   title: string
   onPress: () => void
   type?: ButtonType
   icon?: React.ReactElement
   iconPosition?: 'left' | 'right'
-  containerStyle?: ViewStyle
-  style?: ViewStyle
-  textStyle?: TextStyle
+  containerStyle?: StyleProp<ViewStyle>
+  style?: StyleProp<ViewStyle>
+  textStyle?: StyleProp<TextStyle>
   disabled?: boolean
   ignoreDisabledStyle?: boolean
   underlayColor?: string
