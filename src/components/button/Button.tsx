@@ -74,7 +74,7 @@ const createStyles = (type: ButtonType = ButtonType.PRIMARY) => (
           fontFamily: 'AvenirNextLTPro-Bold'
         },
         icon: {
-          marginLeft: 6
+          marginLeft: 12
         },
         disabled: {
           backgroundColor: '#E7E6EB'
