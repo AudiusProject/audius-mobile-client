@@ -19,14 +19,47 @@ const linking: LinkingOptions<AppStackParamList> = {
       main: {
         initialRouteName: 'feed',
         screens: {
+          // This is the stack for the feed
           feed: {
             screens: {
-              feed: 'feed',
+              // This is actual feed screen
+              feed: {
+                screens: {
+                  feed: 'feed',
+                  banana: 'banana'
+                }
+              },
               track: '*/*'
+              // profile: '*'
             }
           },
-          trending: 'trending',
-          explore: 'explore',
+          trending: {
+            screens: {
+              trending: {
+                screens: {
+                  thisWeek: 'thisWeek',
+                  thisMonth: 'thisMonth',
+                  thisYear: 'thisYear'
+                }
+              }
+              // track: '*/*',
+              // profile: '*'
+            }
+          },
+          explore: {
+            screens: {
+              explore: {
+                screens: {
+                  forYou: 'forYou',
+                  moods: 'moods',
+                  playlists: 'playlists',
+                  artists: '404'
+                }
+              }
+              // track: '*/*',
+              // profile: '*'
+            }
+          },
           favorites: 'favorites',
           profile: '*'
         }

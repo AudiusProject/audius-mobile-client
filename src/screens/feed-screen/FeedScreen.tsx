@@ -14,7 +14,7 @@ const FeedScreen = ({ navigation }: Props) => {
   }, [navigation])
 
   return (
-    <View>
+    <View style={{ display: 'flex', flexDirection: 'column' }}>
       <Text>Example feed screen</Text>
       <Button title='Go to track screen' onPress={handlePress} />
     </View>
