@@ -23,6 +23,7 @@ import OAuth from 'app/components/oauth/OAuth'
 import OverflowMenuDrawer from 'app/components/overflow-menu-drawer'
 import Search from 'app/components/search/Search'
 import TransferAudioMobileDrawer from 'app/components/transfer-audio-mobile-drawer'
+import TrendingRewardsDrawer from 'app/components/trending-rewards-drawer'
 import WebApp from 'app/components/web/WebApp'
 import { WebRefContextProvider } from 'app/components/web/WebRef'
 import useConnectivity from 'app/components/web/useConnectivity'
@@ -59,6 +60,7 @@ const Drawers = () => {
       <DeactivateAccountConfirmationDrawer />
       <DownloadTrackProgressDrawer />
       <TransferAudioMobileDrawer />
+      <TrendingRewardsDrawer />
       {/* Disable the audio breakdown drawer until we get
       the feature flags to work for native mobile */}
       {/* <AudioBreakdownDrawer /> */}
