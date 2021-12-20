@@ -1,9 +1,11 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
 
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
+import * as signOnActionsWeb from 'audius-client/src/containers/sign-on/store/actions.js'
 import LottieView from 'lottie-react-native'
 import {
   Animated,
+  Clipboard,
   Dimensions,
   Easing,
   Image,
@@ -404,6 +406,23 @@ const SignOn = ({ navigation }: SignOnProps) => {
     showInvalidEmailError,
     showEmptyPasswordError
   ])
+
+  useEffect(() => {
+    Clipboard.getString().then(contents => {
+      console.info(
+        '======================================== CLIPBOARD STUFF ========================================='
+      )
+      console.info('')
+      console.info(contents)
+      console.info('')
+      if (contents) {
+        const url = new URL(contents)
+        const queryParams = url.searchParams
+        console.info(queryParams)
+        dispatchWeb(signOnActionsWeb.fetchReferrer())
+      }
+    })
+  }, [])
 
   const errorView = () => {
     if (isSignin && isSigninError && showDefaultError) {
