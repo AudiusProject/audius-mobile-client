@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect, useCallback } from 'react'
 
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import * as signOnActionsWeb from 'audius-client/src/containers/sign-on/store/actions.js'
-import LottieView from 'lottie-react-native'
 import {
   Animated,
   Clipboard,
@@ -28,6 +27,7 @@ import IconArrow from 'app/assets/images/iconArrow.svg'
 import ValidationIconX from 'app/assets/images/iconValidationX.svg'
 import signupCTA from 'app/assets/images/signUpCTA.png'
 import Button from 'app/components/button'
+import LoadingSpinner from 'app/components/loading-spinner'
 import { remindUserToTurnOnNotifications } from 'app/components/notification-reminder/NotificationReminder'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { MessageType } from 'app/message/types'
@@ -621,12 +621,7 @@ const SignOn = ({ navigation }: SignOnProps) => {
           style={styles.mainButton}
           icon={
             isWorking ? (
-              <LottieView
-                style={styles.loadingIcon}
-                source={require('../../assets/animations/loadingSpinner.json')}
-                autoPlay
-                loop
-              />
+              <LoadingSpinner style={styles.loadingIcon} />
             ) : (
               <IconArrow style={styles.arrowIcon} fill='white' />
             )

@@ -15,6 +15,7 @@ import {
 } from 'audius-client/src/common/services/remote-config'
 import { getAccountUser } from 'audius-client/src/common/store/account/selectors'
 import { isRemoteConfigLoaded } from 'audius-client/src/common/store/remote-config/selectors'
+import { useSelector } from 'react-redux'
 
 import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 import { remoteConfigInstance } from 'app/services/remote-config/remote-config-instance'
@@ -28,14 +29,14 @@ import { remoteConfigInstance } from 'app/services/remote-config/remote-config-i
 // export const useRemoteVar = createUseRemoteVarHook(remoteConfigInstance)
 
 export const useFeatureFlage = (flag: FeatureFlags) => {
-  const configLoaded = useSelectorWeb(isRemoteConfigLoaded)
+  const configLoaded = useSelector(isRemoteConfigLoaded)
   const userIdFlag = flagCohortType[flag] === FeatureFlagCohortType.USER_ID
   const hasAccount = useSelectorWeb(getAccountUser)
   const shouldRecompute = userIdFlag ? hasAccount : true
   const isEnabled = useMemo(
     () => remoteConfigInstance.getFeatureEnabled(flag),
     // We want configLoaded and shouldRecompute to trigger refreshes of the memo
-    // eslint-disable-next-line
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [flag, configLoaded, shouldRecompute]
   )
   return { isLoaded: configLoaded, isEnabled }
@@ -48,9 +49,9 @@ export function useRemoteVar(key: BooleanKeys): boolean
 export function useRemoteVar(
   key: AllRemoteConfigKeys
 ): boolean | string | number | null {
-  const configLoaded = useSelectorWeb(isRemoteConfigLoaded)
+  const configLoaded = useSelector(isRemoteConfigLoaded)
   // eslint complains about configLoaded as part of the deps array
-  // eslint-disable-next-line
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const remoteVar = useMemo(() => remoteConfigInstance.getRemoteVar(key), [
     key,
     configLoaded,
