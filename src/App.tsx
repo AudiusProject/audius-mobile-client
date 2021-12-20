@@ -1,6 +1,8 @@
 import React, { useRef, useEffect } from 'react'
 
+import * as Sentry from '@sentry/react-native'
 import { Platform } from 'react-native'
+import Config from 'react-native-config'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import WebView from 'react-native-webview'
 import { Provider } from 'react-redux'
@@ -31,6 +33,10 @@ import { incrementSessionCount } from 'app/hooks/useSessionCount'
 import PushNotifications from 'app/notifications'
 import createStore from 'app/store'
 import { setup as setupAnalytics } from 'app/utils/analytics'
+
+Sentry.init({
+  dsn: Config.SENTRY_DSN
+})
 
 const store = createStore()
 export const dispatch = store.dispatch
@@ -119,4 +125,4 @@ const App = () => {
   )
 }
 
-export default App
+export default Sentry.wrap(App)
