@@ -1,10 +1,10 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react'
 
+import Clipboard from '@react-native-clipboard/clipboard'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import * as signOnActionsWeb from 'audius-client/src/containers/sign-on/store/actions.js'
 import {
   Animated,
-  Clipboard,
   Dimensions,
   Easing,
   Image,
@@ -409,20 +409,13 @@ const SignOn = ({ navigation }: SignOnProps) => {
 
   useEffect(() => {
     Clipboard.getString().then(contents => {
-      console.info(
-        '======================================== CLIPBOARD STUFF ========================================='
-      )
-      console.info('')
-      console.info(contents)
-      console.info('')
-      if (contents) {
-        const url = new URL(contents)
-        const queryParams = url.searchParams
-        console.info(queryParams)
-        dispatchWeb(signOnActionsWeb.fetchReferrer())
+      if (contents && contents.indexOf('ref=') > -1) {
+        const handle = contents.match(/ref=([A-z]*)/)[1]
+        console.log('dispatching for clipboard referrer', handle)
+        dispatchWeb(signOnActionsWeb.fetchReferrer(handle))
       }
     })
-  }, [])
+  }, [dispatchWeb])
 
   const errorView = () => {
     if (isSignin && isSigninError && showDefaultError) {
