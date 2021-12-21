@@ -408,17 +408,22 @@ const SignOn = ({ navigation }: SignOnProps) => {
     showEmptyPasswordError
   ])
 
-  const processReferrerFromClipboard = useCallback(() => {
-    Clipboard.getString().then(contents => {
+  const processReferrerFromClipboard = useCallback(async () => {
+    const hasURL = await Clipboard.hasURL()
+    console.log(`hasURL: ${hasURL}`)
+    if (hasURL !== false) {
+      const contents = await Clipboard.getString()
       if (contents && contents.indexOf('ref=') > -1) {
         const handle = contents.match(/ref=([A-z]*)/)[1]
         console.log('Setting referrer', handle)
         dispatchWeb(signOnActionsWeb.fetchReferrer(handle))
       }
-    })
+    }
   }, [dispatchWeb])
 
-  useEffect(processReferrerFromClipboard, [processReferrerFromClipboard])
+  useEffect(() => {
+    processReferrerFromClipboard()
+  }, [processReferrerFromClipboard])
   useAppState(processReferrerFromClipboard, () => {})
 
   const errorView = () => {
