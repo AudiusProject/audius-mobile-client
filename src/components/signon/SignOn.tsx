@@ -29,6 +29,7 @@ import signupCTA from 'app/assets/images/signUpCTA.png'
 import Button from 'app/components/button'
 import LoadingSpinner from 'app/components/loading-spinner'
 import { remindUserToTurnOnNotifications } from 'app/components/notification-reminder/NotificationReminder'
+import useAppState from 'app/hooks/useAppState'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { MessageType } from 'app/message/types'
 import { getIsKeyboardOpen } from 'app/store/keyboard/selectors'
@@ -407,15 +408,18 @@ const SignOn = ({ navigation }: SignOnProps) => {
     showEmptyPasswordError
   ])
 
-  useEffect(() => {
+  const processReferrerFromClipboard = useCallback(() => {
     Clipboard.getString().then(contents => {
       if (contents && contents.indexOf('ref=') > -1) {
         const handle = contents.match(/ref=([A-z]*)/)[1]
-        console.log('dispatching for clipboard referrer', handle)
+        console.log('Setting referrer', handle)
         dispatchWeb(signOnActionsWeb.fetchReferrer(handle))
       }
     })
   }, [dispatchWeb])
+
+  useEffect(processReferrerFromClipboard, [processReferrerFromClipboard])
+  useAppState(processReferrerFromClipboard, () => {})
 
   const errorView = () => {
     if (isSignin && isSigninError && showDefaultError) {
