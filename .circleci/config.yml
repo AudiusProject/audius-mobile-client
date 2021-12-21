@@ -71,7 +71,7 @@ commands:
           name: Install Sentry CLI
           command: |
             curl -sL https://sentry.io/get-cli/ | bash
-            export SENTRY_BINARY=/usr/local/bin/sentry-cli
+            echo export SENTRY_BINARY=/usr/local/bin/sentry-cli >> "$BASH_ENV"
       - run:
           name: install pods
           command: cd ios && pod install
