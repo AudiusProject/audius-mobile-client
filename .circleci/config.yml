@@ -22,10 +22,6 @@ commands:
           # client is copied outside of project to avoid npm install conflicts
           command: cp -R ./node_modules/audius-client ../audius-client
 
-      - run:
-          name: update-npm
-          command: 'sudo npm install -g npm@latest'
-
       - restore_cache:
           keys:
             - dependency-cache-{{ checksum "../audius-client/package.json" }}
@@ -198,9 +194,6 @@ jobs:
             cp .env.prod.tmpl .env.prod
             echo "FCM_SENDER_ID=$FCM_SENDER_ID" >> .env.prod
             echo "AMPLITUDE_WRITE_KEY=$AMPLITUDE_WRITE_KEY_PROD" >> .env.prod
-      - run:
-          name: update-npm
-          command: 'sudo npm install -g npm@latest'
 
       # Download and cache dependencies
       - restore_cache:
