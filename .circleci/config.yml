@@ -22,6 +22,10 @@ commands:
           # client is copied outside of project to avoid npm install conflicts
           command: cp -R ./node_modules/audius-client ../audius-client
 
+      - run:
+          name: update-npm
+          command: 'sudo npm install -g npm@latest'
+
       - restore_cache:
           keys:
             - dependency-cache-{{ checksum "../audius-client/package.json" }}
