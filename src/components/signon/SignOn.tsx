@@ -3,6 +3,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react'
 import Clipboard from '@react-native-clipboard/clipboard'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import * as signOnActionsWeb from 'audius-client/src/containers/sign-on/store/actions.js'
+import querystring from 'query-string'
 import {
   Animated,
   Dimensions,
@@ -410,13 +411,15 @@ const SignOn = ({ navigation }: SignOnProps) => {
 
   const processReferrerFromClipboard = useCallback(async () => {
     const hasURL = await Clipboard.hasURL()
-    console.log(`hasURL: ${hasURL}`)
     if (hasURL !== false) {
       const contents = await Clipboard.getString()
-      if (contents && contents.indexOf('ref=') > -1) {
-        const handle = contents.match(/ref=([A-z]*)/)[1]
-        console.log('Setting referrer', handle)
-        dispatchWeb(signOnActionsWeb.fetchReferrer(handle))
+      if (contents) {
+        const parsed = querystring.parseUrl(contents)
+        const handle = parsed.query?.ref
+        if (handle) {
+          console.log('Setting referrer', handle)
+          dispatchWeb(signOnActionsWeb.fetchReferrer(handle))
+        }
       }
     }
   }, [dispatchWeb])
