@@ -4,12 +4,12 @@ import {
   UseTikTokAuthArguments,
   createUseTikTokAuthHook
 } from 'audius-client/src/common/hooks/useTikTokAuth'
-import { Name } from 'audius-client/src/common/models/Analytics'
 import Config from 'react-native-config'
 import { useDispatch } from 'react-redux'
 
 import * as oauthActions from 'app/store/oauth/actions'
 import { Provider } from 'app/store/oauth/reducer'
+import { EventNames } from 'app/types/analytics'
 import { track, make } from 'app/utils/analytics'
 
 export const useTikTokAuth = (args: UseTikTokAuthArguments) => {
@@ -33,7 +33,7 @@ export const useTikTokAuth = (args: UseTikTokAuthArguments) => {
     handleError: (e: Error) => {
       track(
         make({
-          eventName: Name.TIKTOK_OAUTH_ERROR,
+          eventName: EventNames.TIKTOK_OAUTH_ERROR,
           error: e.message
         })
       )

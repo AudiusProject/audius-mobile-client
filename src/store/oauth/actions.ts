@@ -21,7 +21,7 @@ type OpenPopupAction = {
 }
 export type RequestNativeOpenPopupAction = {
   type: typeof REQUEST_NATIVE_OPEN_POPUP
-  resolve: (c: Credentials) => void
+  resolve: (c: Credentials | PromiseLike<Credentials>) => void
   reject: (e: Error) => void
   url: string
   provider: Provider
@@ -89,7 +89,7 @@ export const openPopup = (
   provider
 })
 export const requestNativeOpenPopup = (
-  resolve: (c: Credentials) => void,
+  resolve: (c: Credentials | PromiseLike<Credentials>) => void,
   reject: (e: Error) => void,
   url: string,
   provider: Provider

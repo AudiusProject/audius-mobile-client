@@ -15,6 +15,7 @@ import {
   getAuthProvider,
   getMessageType
 } from 'app/store/oauth/selectors'
+import { Credentials } from 'app/store/oauth/types'
 import { MessagePostingWebView } from 'app/types/MessagePostingWebView'
 import { postMessage } from 'app/utils/postMessage'
 
@@ -226,7 +227,7 @@ const OAuth = ({ webRef }: Props) => {
         const payload = payloadByProvider[provider as Provider](data)
 
         if (isNativeOAuth) {
-          dispatch(setCredentials(payload))
+          dispatch(setCredentials(payload as Credentials))
         } else {
           postMessage(webRef.current, {
             type: messageType,

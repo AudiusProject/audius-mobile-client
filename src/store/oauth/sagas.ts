@@ -30,7 +30,7 @@ function* watchSetCredentials() {
     }
   } else {
     if (reject) {
-      reject(action.credentials.error)
+      reject(new Error(action.credentials.error))
     }
   }
 
