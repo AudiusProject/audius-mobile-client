@@ -11,14 +11,14 @@ import ToastView, { ToastType } from './ToastView'
 const DEFAULT_TIMEOUT = 2000
 
 type Toast = {
-  content: string | JSX.Element
+  content: ReactNode
   type: ToastType
   key: string
 }
 
 type ToastContextProps = {
   toast: (options: {
-    content: string | JSX.Element
+    content: ReactNode
     timeout?: number
     type?: ToastType
   }) => void

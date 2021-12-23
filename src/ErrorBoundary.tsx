@@ -5,7 +5,7 @@ import * as Sentry from '@sentry/react-native'
 import { ToastContext } from './components/toast/ToastContext'
 
 const ErrorToast = ({ error }: { error: string }) => {
-  // Do nothing other than trigger a tost when error changes
+  // Do nothing other than trigger a toast when error changes
   const { toast } = useContext(ToastContext)
   useEffect(() => {
     if (error) {
