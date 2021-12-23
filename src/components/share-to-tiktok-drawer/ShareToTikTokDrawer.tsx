@@ -125,7 +125,9 @@ const ShareToTikTokDrawer = () => {
       dispatchWeb(share())
 
       // Trigger the authentication process
-      withTikTokAuth(() => dispatchWeb(authenticated()))
+      withTikTokAuth((accessToken, openId) =>
+        dispatchWeb(authenticated({ accessToken, openId }))
+      )
     }
   }
 
@@ -164,23 +166,22 @@ const ShareToTikTokDrawer = () => {
   const renderButton = () => {
     if (status === Status.SHARE_SUCCESS) {
       return (
-        <Button
-          style={styles.button}
-          onPress={handleClose}
-          title={messages.completeButton}
-        />
+        <View style={styles.button}>
+          <Button onPress={handleClose} title={messages.completeButton} />
+        </View>
       )
     } else {
-      // TODO: test file requirements
       const isButtonDisabled = fileRequirementError !== null
       return (
-        <Button
-          style={styles.button}
-          disabled={isButtonDisabled}
-          onPress={handleShareButtonClick}
-          icon={<IconTikTokInverted />}
-          title={messages.shareButton}
-        />
+        <View style={styles.button}>
+          <Button
+            style={styles.button}
+            disabled={isButtonDisabled}
+            onPress={handleShareButtonClick}
+            icon={<IconTikTokInverted />}
+            title={messages.shareButton}
+          />
+        </View>
       )
     }
   }
