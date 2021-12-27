@@ -7,11 +7,9 @@ import IconAllTime from 'app/assets/images/iconAllTime.svg'
 import IconDay from 'app/assets/images/iconDay.svg'
 import IconMonth from 'app/assets/images/iconMonth.svg'
 import TopTabNavigator from 'app/components/app-navigator/TopTabNavigator'
-import { BaseStackParamList } from 'app/components/app-navigator/types'
+import { TrendingStackParamList } from 'app/components/app-navigator/types'
 
-// We might need to allow BaseStackParamList to be generic here
-// to get all the relevant params
-type Props = NativeStackScreenProps<BaseStackParamList, 'track'>
+type Props = NativeStackScreenProps<TrendingStackParamList, 'trending-stack'>
 
 const screenHeight = Dimensions.get('window').height
 

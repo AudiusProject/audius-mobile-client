@@ -19,49 +19,61 @@ const linking: LinkingOptions<AppStackParamList> = {
       main: {
         initialRouteName: 'feed',
         screens: {
-          // This is the stack for the feed
           feed: {
             screens: {
-              // This is actual feed screen
-              feed: {
-                screens: {
-                  feed: 'feed',
-                  banana: 'banana'
-                }
-              },
-              track: '*/*'
-              // profile: '*'
+              'feed-stack': 'feed',
+              track: '*/*',
+              profile: '*'
             }
           },
           trending: {
             screens: {
-              trending: {
+              'trending-stack': {
                 screens: {
-                  thisWeek: 'thisWeek',
-                  thisMonth: 'thisMonth',
-                  thisYear: 'thisYear'
+                  thisWeek: 'trending/thisWeek',
+                  thisMonth: 'trending/thisMonth',
+                  thisYear: 'trending/thisYear'
                 }
               }
-              // track: '*/*',
-              // profile: '*'
             }
           },
           explore: {
             screens: {
-              explore: {
+              'explore-stack': {
                 screens: {
-                  forYou: 'forYou',
-                  moods: 'moods',
-                  playlists: 'playlists',
-                  artists: '404'
+                  forYou: 'explore/forYou',
+                  moods: 'explore/moods',
+                  playlists: 'explore/playlists',
+                  artists: 'explore/artists'
                 }
               }
-              // track: '*/*',
-              // profile: '*'
             }
           },
-          favorites: 'favorites',
-          profile: '*'
+          favorites: {
+            screens: {
+              'favorites-stack': {
+                screens: {
+                  tracks: 'favorites/tracks',
+                  albums: 'favorites/albums',
+                  playlists: 'favorites/playlists'
+                }
+              }
+            }
+          },
+          profile: {
+            screens: {
+              'profile-stack': {
+                screens: {
+                  // tracks: '*',
+                  tracks: '*/tracks',
+                  albums: '*/albums',
+                  playlists: '*/playlists',
+                  reposts: '*/reposts',
+                  collectibles: '*/collectibles/*'
+                }
+              }
+            }
+          }
         }
       }
     }

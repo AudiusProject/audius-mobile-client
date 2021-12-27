@@ -1,18 +1,16 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import { Dimensions, Text, View } from 'react-native'
+import { Button, Dimensions, Text, View } from 'react-native'
 
 import IconForYou from 'app/assets/images/iconExploreForYou.svg'
 import IconMoods from 'app/assets/images/iconExploreMoods.svg'
 import IconNote from 'app/assets/images/iconNote.svg'
 import IconUser from 'app/assets/images/iconUser.svg'
 import TopTabNavigator from 'app/components/app-navigator/TopTabNavigator'
-import { BaseStackParamList } from 'app/components/app-navigator/types'
+import { ExploreStackParamList } from 'app/components/app-navigator/types'
 
-// We might need to allow BaseStackParamList to be generic here
-// to get all the relevant params
-type Props = NativeStackScreenProps<BaseStackParamList, 'track'>
+type Props = NativeStackScreenProps<ExploreStackParamList, 'explore-stack'>
 
 const screenHeight = Dimensions.get('window').height
 
@@ -25,8 +23,17 @@ const MoodsTab = () => {
 const PlaylistsTab = () => {
   return <Text>Playlists Tab</Text>
 }
-const ArtistsTab = () => {
-  return <Text>Artists Tab</Text>
+const ArtistsTab = ({ navigation }) => {
+  const handlePress = useCallback(() => {
+    navigation.navigate('profile', { id: 1 })
+  }, [navigation])
+
+  return (
+    <View>
+      <Text>Artists Tab</Text>
+      <Button title='Go to single artist view' onPress={handlePress} />
+    </View>
+  )
 }
 
 const ExploreScreen = ({ navigation }: Props) => {
