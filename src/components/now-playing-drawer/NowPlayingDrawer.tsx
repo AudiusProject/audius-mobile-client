@@ -15,9 +15,10 @@ import { useDrawer } from 'app/hooks/useDrawer'
 
 import { DrawerAnimationStyle } from '../drawer/Drawer'
 
+import ActionsBar from './ActionsBar'
 import PlayBar from './PlayBar'
 
-const PLAY_BAR_HEIGHT = 100
+const PLAY_BAR_HEIGHT = 400
 const STATUS_BAR_FADE_CUTOFF = 0.6
 
 const styles = StyleSheet.create({
@@ -140,6 +141,7 @@ const NowPlayingDrawer = ({
     >
       <View style={styles.container}>
         <PlayBar onPress={onDrawerOpen} />
+        <ActionsBar />
       </View>
     </Drawer>
   )
