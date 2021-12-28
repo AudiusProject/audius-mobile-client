@@ -1,25 +1,10 @@
 import React, { useRef } from 'react'
 
-import { Animated, StyleProp, StyleSheet, ViewStyle } from 'react-native'
+import { Animated, StyleProp, View, ViewStyle } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { SvgProps } from 'react-native-svg'
 
-import { useThemedStyles } from 'app/hooks/useThemedStyles'
-import { ThemeColors, useThemeColors } from 'app/utils/theme'
-
-const createStyles = (themeColors: ThemeColors) =>
-  StyleSheet.create({
-    buttonContainer: {
-      flexGrow: 1,
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center'
-    },
-    button: {
-      height: 24,
-      width: 24
-    }
-  })
+import { useThemeColors } from 'app/utils/theme'
 
 export type IconButtonProps = {
   onPress?: () => void
@@ -30,7 +15,8 @@ export type IconButtonProps = {
   >
   containerStyle?: StyleProp<ViewStyle>
   style?: StyleProp<ViewStyle>
-  disabled?: boolean
+  isActive?: boolean
+  isDisabled?: boolean
 }
 
 /**
@@ -43,11 +29,11 @@ const IconButton = ({
   icon: Icon,
   containerStyle,
   style,
-  disabled
+  isActive,
+  isDisabled
 }: IconButtonProps) => {
-  const styles = useThemedStyles(createStyles)
   const scale = useRef(new Animated.Value(1)).current
-  const { neutral } = useThemeColors()
+  const { neutral, neutralLight4, primary } = useThemeColors()
 
   const handlePressIn = () => {
     Animated.timing(scale, {
@@ -67,23 +53,26 @@ const IconButton = ({
     }).start()
   }
 
+  let fill = neutral
+  if (isActive) {
+    fill = primary
+  } else if (isDisabled) {
+    fill = neutralLight4
+  }
+
   return (
-    <Animated.View
-      style={[
-        styles.buttonContainer,
-        { transform: [{ scale }] },
-        containerStyle
-      ]}
-    >
+    <Animated.View style={[{ transform: [{ scale }] }, containerStyle]}>
       <TouchableOpacity
         onPress={onPress}
         onPressIn={handlePressIn}
         onPressOut={handlePressOut}
-        disabled={disabled}
+        disabled={isDisabled}
         activeOpacity={0.95}
-        style={[styles.button, style]}
+        hitSlop={{ top: 12, right: 12, bottom: 12, left: 12 }}
       >
-        <Icon fill={neutral} height='100%' width='100%' />
+        <View style={style}>
+          <Icon fill={fill} height='100%' width='100%' />
+        </View>
       </TouchableOpacity>
     </Animated.View>
   )
