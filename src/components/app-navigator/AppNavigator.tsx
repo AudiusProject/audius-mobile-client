@@ -17,7 +17,7 @@ import { getNavigationStateAtRoute } from 'app/utils/navigation'
 import BottomTabNavigator from './BottomTabNavigator'
 
 // This enables the RN bottom bar and navigation
-const IS_MAIN_NAVIGATION_ENABLED = true
+const IS_MAIN_NAVIGATION_ENABLED = false
 
 // As screens get migrated to RN, add them to this set.
 // This set should only include the screens accessible from the bottom bar
