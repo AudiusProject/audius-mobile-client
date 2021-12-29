@@ -1,4 +1,4 @@
-import { take, put } from 'redux-saga/effects'
+import { put, takeLatest } from 'redux-saga/effects'
 
 import {
   REQUEST_NATIVE_OPEN_POPUP,
@@ -7,39 +7,30 @@ import {
   SetCredentialsAction,
   RequestNativeOpenPopupAction
 } from './actions'
-import { Credentials } from './types'
-
-let resolve: (c: Credentials) => void
-let reject: (e: Error) => void
 
 function* watchRequestNativeOpenPopup() {
-  const action: RequestNativeOpenPopupAction = yield take(
-    REQUEST_NATIVE_OPEN_POPUP
-  )
-  resolve = action.resolve
-  reject = action.reject
-  yield put(nativeOpenPopup(action.url, action.provider))
-}
+  yield takeLatest(REQUEST_NATIVE_OPEN_POPUP, function* ({
+    resolve,
+    reject,
+    url,
+    provider
+  }: RequestNativeOpenPopupAction) {
+    yield put(nativeOpenPopup(url, provider))
 
-function* watchSetCredentials() {
-  const action: SetCredentialsAction = yield take(SET_CREDENTIALS)
-
-  if (!action.credentials.error) {
-    if (resolve) {
-      resolve(action.credentials)
-    }
-  } else {
-    if (reject) {
-      reject(new Error(action.credentials.error))
-    }
-  }
-
-  resolve = null
-  reject = null
+    yield takeLatest(SET_CREDENTIALS, function* ({
+      credentials
+    }: SetCredentialsAction) {
+      if (!credentials.error) {
+        resolve(credentials)
+      } else {
+        reject(new Error(credentials.error))
+      }
+    })
+  })
 }
 
 const sagas = () => {
-  return [watchRequestNativeOpenPopup, watchSetCredentials]
+  return [watchRequestNativeOpenPopup]
 }
 
 export default sagas
