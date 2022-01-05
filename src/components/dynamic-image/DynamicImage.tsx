@@ -15,9 +15,9 @@ import LinearGradient from 'react-native-linear-gradient'
 import { useThemeColors } from 'app/utils/theme'
 
 export type DynamicImageProps = {
-  // Image URL
+  // Image source
   image?: ImageSourcePropType
-  // Classes to apply to the image itself
+  // Style to apply to the image itself
   style?: ImageStyle
   // Whether or not to immediately animate
   immediate?: boolean
