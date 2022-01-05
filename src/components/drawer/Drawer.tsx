@@ -210,7 +210,7 @@ export type DrawerProps = {
   drawerStyle?: ViewStyle
 }
 
-const springToValue = (
+export const springToValue = (
   animation: Animated.Value,
   value: number,
   animationStyle: DrawerAnimationStyle,
