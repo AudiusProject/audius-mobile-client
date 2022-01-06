@@ -239,7 +239,7 @@ const ContinueButton = ({
   )
 }
 
-let handleTimeout: number
+let handleTimeout: any
 const HANDLE_VALIDATION_IN_PROGRESS_DELAY_MS = 1000
 
 export type ProfileManualProps = NativeStackScreenProps<
@@ -524,7 +524,7 @@ const ProfileManual = ({ navigation, route }: ProfileManualProps) => {
                   underlineColorAndroid='transparent'
                   placeholder='Display Name'
                   keyboardType='default'
-                  autoCompleteType='off'
+                  autoComplete='off'
                   autoCorrect={false}
                   autoCapitalize='words'
                   enablesReturnKeyAutomatically={true}
@@ -555,7 +555,7 @@ const ProfileManual = ({ navigation, route }: ProfileManualProps) => {
                     underlineColorAndroid='transparent'
                     placeholder='Handle'
                     keyboardType='email-address'
-                    autoCompleteType='off'
+                    autoComplete='off'
                     autoCorrect={false}
                     autoCapitalize='none'
                     enablesReturnKeyAutomatically={true}
