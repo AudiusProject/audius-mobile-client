@@ -76,6 +76,7 @@ export const defaultTheme = {
   accentPurple: '#8E51CF',
   shadow: '#E3E3E3',
   staticWhite: '#FFFFFF',
+  staticAccentGreenLight1: '#23AD1A',
   pageHeaderGradientColor1: '#5B23E1',
   pageHeaderGradientColor2: '#A22FEB',
   actionSheetText: '#7E1BCC'
@@ -120,6 +121,7 @@ export const darkTheme = {
   accentPurple: '#8E51CF',
   shadow: '#35364F',
   staticWhite: '#FFFFFF',
+  staticAccentGreenLight1: '#23AD1A',
   pageHeaderGradientColor1: '#7652CC',
   pageHeaderGradientColor2: '#B05CE6',
   actionSheetText: '#9147CC'
@@ -154,6 +156,7 @@ const matrixTheme = {
   neutralLight10: '#1D211B',
   white: '#1F211F',
   staticWhite: '#FFFFFF',
+  staticAccentGreenLight1: '#23AD1A',
   pageHeaderGradientColor1: '#1D211B',
   pageHeaderGradientColor2: '#1D211B',
   actionSheetText: '#21B404',
