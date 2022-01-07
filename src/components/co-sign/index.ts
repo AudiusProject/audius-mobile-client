@@ -1,1 +1,2 @@
-export { default, Size } from './CoSign'
+export { default } from './CoSign'
+export { Size } from './types'

@@ -10,7 +10,7 @@ import AnimatedButtonProvider from 'app/components/animated-button/AnimatedButto
 import { Theme, useThemeVariant } from 'app/utils/theme'
 
 const styles = StyleSheet.create({
-  heart: {
+  icon: {
     height: 22,
     width: 22
   }
@@ -57,8 +57,8 @@ const FavoriteButton = ({
       iconLightJSON={[IconFavoriteOnLight, IconFavoriteOffLight]}
       iconDarkJSON={[IconFavoriteOnDark, IconFavoriteOffDark]}
       onPress={onPress}
-      style={[styles.heart, style]}
-      wrapperStyle={wrapperStyle}
+      style={style}
+      wrapperStyle={[styles.icon, wrapperStyle]}
     />
   )
 }

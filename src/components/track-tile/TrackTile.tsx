@@ -1,32 +1,36 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useState, useEffect, useRef } from 'react'
 
 import { ID } from 'audius-client/src/common/models/Identifiers'
 import { formatCount } from 'audius-client/src/common/utils/formatUtil'
 import { formatSeconds } from 'audius-client/src/common/utils/timeUtil'
 import {
+  Animated,
+  Easing,
   GestureResponderEvent,
+  ImageStyle,
   Pressable,
   StyleProp,
+  StyleSheet,
   View,
   ViewStyle
 } from 'react-native'
 
 import IconCrown from 'app/assets/images/iconCrown.svg'
-import IconStar from 'app/assets/images/iconStar.svg'
-import IconVolume from 'app/assets/images/iconVolume.svg'
 import IconHidden from 'app/assets/images/iconHidden.svg'
+import IconStar from 'app/assets/images/iconStar.svg'
 import IconTrending from 'app/assets/images/iconTrending.svg'
-import Skeleton from 'app/components/skeleton'
+import IconVolume from 'app/assets/images/iconVolume.svg'
 import FavoriteButton from 'app/components/favorite-button'
 import RepostButton from 'app/components/repost-button'
+import Skeleton from 'app/components/skeleton'
+import Text, { AnimatedText } from 'app/components/text'
 import { TrackTileProps } from 'app/components/track-tile/types'
 import UserBadges from 'app/components/user-badges/UserBadges'
-import Text from 'app/components/text'
+import { useThemedStyles } from 'app/hooks/useThemedStyles'
+import { ThemeColors } from 'app/utils/theme'
 
 import TrackBannerIcon, { TrackBannerIconType } from './TrackBannerIcon'
-
 // import BottomButtons from './BottomButtons'
-import styles from './TrackTile.module.css'
 import TrackTileArt from './TrackTileArt'
 
 const messages = {
@@ -70,6 +74,17 @@ const formatCoSign = ({
   return messages.reposted
 }
 
+const createRankIconStyles = (themeColors: ThemeColors) =>
+  StyleSheet.create({
+    rankContainer: {
+      color: themeColors.secondary,
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginLeft: 6
+    }
+  })
+
 export const RankIcon = ({
   showCrown,
   index,
@@ -81,6 +96,7 @@ export const RankIcon = ({
   isVisible?: boolean
   style?: StyleProp<ViewStyle>
 }) => {
+  const styles = useThemedStyles(createRankIconStyles)
   return isVisible ? (
     <View style={[styles.rankContainer, style]}>
       {showCrown ? <IconCrown /> : <IconTrending />}
@@ -88,6 +104,209 @@ export const RankIcon = ({
     </View>
   ) : null
 }
+
+const createStyles = (themeColors: ThemeColors) =>
+  StyleSheet.create({
+    container: {
+      display: 'flex',
+      flexDirection: 'row',
+      minHeight: 152,
+      borderColor: themeColors.neutralLight8,
+      backgroundColor: themeColors.white,
+      borderWidth: 1,
+      borderRadius: 8,
+      maxWidth: 400,
+      marginHorizontal: 'auto',
+      marginBottom: 12
+      // TODO: box shadow
+      //   box-shadow: 0 0 1px 0 var(--tile-shadow-1), 0 1px 0 0 var(--tile-shadow-2), 0 2px 5px -2px var(--tile-shadow-3);
+    },
+    mainContent: {
+      display: 'flex',
+      flex: 1
+    },
+    rightContent: {
+      display: 'flex',
+      flexDirection: 'row'
+    },
+    metadata: {
+      display: 'flex',
+      flexDirection: 'row'
+    },
+    albumArtContainer: {
+      marginTop: 10,
+      marginRight: 12,
+      marginLeft: 10
+    },
+
+    titles: {
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'flex-start',
+      textAlign: 'left',
+
+      /* Text truncation */
+      flexGrow: 0,
+      flexShrink: 1,
+      flexBasis: '65%',
+      overflow: 'hidden',
+      marginRight: 12,
+      marginTop: 10
+    },
+    titlesActive: {
+      color: themeColors.primary
+    },
+    titlesSkeleton: {
+      width: '100%'
+    },
+    title: {
+      marginTop: 'auto',
+      paddingRight: 5,
+      marginBottom: 2,
+      display: 'flex',
+      flexDirection: 'row',
+      minHeight: 20,
+      alignItems: 'center',
+      width: '100%'
+    },
+    titleText: {
+      fontSize: 16
+    },
+    artist: {
+      marginBottom: 'auto',
+      paddingRight: 5,
+      maxWidth: '100%',
+      minHeight: 20,
+      flexWrap: 'nowrap',
+      alignItems: 'center',
+      display: 'flex',
+      flexDirection: 'row'
+    },
+    topRight: {
+      position: 'absolute',
+      right: 10,
+      left: 0,
+      top: 10,
+      textAlign: 'right',
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'flex-end',
+      alignItems: 'center'
+    },
+    disabledStatItem: {
+      opacity: 0.5
+    },
+    listenCount: {
+      marginLeft: 'auto',
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      alignItems: 'center'
+    },
+    bottomButtons: {
+      marginHorizontal: 10,
+      borderTopWidth: 1,
+      borderTopColor: themeColors.neutralLight8,
+      height: 38,
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    skeleton: {
+      position: 'absolute',
+      top: 0
+    },
+    coSignLabel: {
+      position: 'absolute',
+      bottom: -3,
+      left: 96,
+      color: themeColors.primary,
+      fontSize: 12,
+      // TODO: font weight
+      //   fontWeight: var(--font-heavy);
+      letterSpacing: 1,
+      lineHeight: 15,
+      textTransform: 'uppercase'
+    },
+    coSignText: {
+      color: themeColors.neutralLight4,
+      fontSize: 12,
+      // TODO: font weight
+      //   font-weight: var(--font-medium);
+      letterSpacing: 0.2,
+      lineHeight: 14,
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-start',
+      marginLeft: 10,
+      marginTop: 8
+    },
+    coSignName: {
+      marginRight: 4,
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center'
+    },
+    coSignIcon: {
+      marginLeft: 4
+    },
+    stats: {
+      display: 'flex',
+      flexDirection: 'row',
+      flex: 0,
+      flexBasis: 26,
+      alignItems: 'stretch',
+      paddingVertical: 2,
+      marginRight: 10,
+      height: 30
+    },
+    statItem: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      paddingHorizontal: 10
+      // TODO: transitions
+    },
+    statText: {
+      // TODO: font weight
+      //   font-weight: 500;
+      fontSize: 12,
+      letterSpacing: 0.2,
+      color: themeColors.neutralLight4
+    },
+    iconVerified: {
+      marginLeft: 4
+    },
+    topRightIcon: {
+      marginRight: 8,
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'flex-end',
+
+      color: themeColors.neutralLight4,
+      fontSize: 12,
+      // TODO: font weight
+      //   font-weight: var(--font-medium);
+      letterSpacing: 0.2
+    },
+    rankIconContainer: {
+      marginRight: 4
+    },
+
+    favoriteButton: {
+      height: 14,
+      width: 14,
+      marginLeft: 4
+    },
+
+    repostButton: {
+      height: 16,
+      width: 16,
+      marginLeft: 4
+    }
+  })
 
 const TrackTile = ({
   artistName,
@@ -118,9 +337,13 @@ const TrackTile = ({
   togglePlay,
   toggleRepost,
   toggleSave,
-  user,
+  userId,
   uid
 }: TrackTileProps & ExtraProps) => {
+  const opacity = useRef(new Animated.Value(0)).current
+  const fadeIn = { opacity }
+
+  const styles = useThemedStyles(createStyles)
   const hideShare: boolean = fieldVisibility
     ? fieldVisibility.share === false
     : false
@@ -142,14 +365,13 @@ const TrackTile = ({
   const [artworkLoaded, setArtworkLoaded] = useState(false)
   useEffect(() => {
     if (artworkLoaded && !showSkeleton) {
-      hasLoaded(index)
+      Animated.timing(opacity, {
+        toValue: 1,
+        easing: Easing.ease,
+        useNativeDriver: true
+      }).start()
     }
-  }, [artworkLoaded, hasLoaded, index, showSkeleton])
-
-  const fadeIn = {
-    [styles.show]: artworkLoaded && !showSkeleton,
-    [styles.hide]: !artworkLoaded || showSkeleton
-  }
+  }, [artworkLoaded, hasLoaded, index, showSkeleton, opacity])
 
   return (
     <View style={styles.container}>
@@ -177,9 +399,9 @@ const TrackTile = ({
               <Text>{messages.hiddenTrack}</Text>
             </View>
           )}
-          <Text style={[styles.duration, fadeIn]}>
+          <AnimatedText style={fadeIn}>
             {duration && formatSeconds(duration)}
-          </Text>
+          </AnimatedText>
         </View>
         <View style={styles.metadata}>
           <TrackTileArt
@@ -194,23 +416,28 @@ const TrackTile = ({
           <View
             style={[
               styles.titles,
-              {
-                [styles.titlesActive]: isPlaying,
-                [styles.titlesSkeleton]: showSkeleton
-              }
+              isPlaying ? styles.titlesActive : {},
+              showSkeleton ? styles.titlesSkeleton : {}
             ]}
           >
             <Pressable style={styles.title} onPress={goToTrackPage}>
-              <Text style={fadeIn}>{title}</Text>
+              <AnimatedText style={[fadeIn, styles.titleText]} weight='bold'>
+                {title}
+              </AnimatedText>
               {isPlaying && <IconVolume />}
-              {(!artworkLoaded || showSkeleton) && (
-                <Skeleton style={styles.skeleton} width='80%' height='80%' />
-              )}
             </Pressable>
+            {(!artworkLoaded || showSkeleton) && (
+              <Skeleton style={styles.skeleton} width='80%' height='80%' />
+            )}
             <Pressable style={styles.artist} onPress={goToArtistPage}>
-              <Text style={[fadeIn, styles.userName]}>{artistName}</Text>
+              <AnimatedText
+                style={[fadeIn, styles.titleText]}
+                weight='demibold'
+              >
+                {artistName}
+              </AnimatedText>
               <UserBadges
-                user={user}
+                user={userId as any}
                 badgeSize={12}
                 style={styles.iconVerified}
               />
@@ -223,7 +450,7 @@ const TrackTile = ({
         </View>
         {coSign && (
           <View style={styles.coSignText}>
-            <View style={styles.name}>
+            <View style={styles.coSignName}>
               <Text>{coSign.user.name}</Text>
               <UserBadges
                 user={coSign.user}
@@ -244,51 +471,41 @@ const TrackTile = ({
             isVisible={isTrending && artworkLoaded && !showSkeleton}
             style={styles.rankIconContainer}
           />
-          {!!(repostCount || saveCount) && (
-            <>
+          {!!(repostCount || saveCount) && !isUnlisted && (
+            <Animated.View
+              style={[fadeIn, { display: 'flex', flexDirection: 'row' }]}
+            >
               <Pressable
                 style={[
                   styles.statItem,
-                  fadeIn,
-                  {
-                    [styles.disabledStatItem]: !repostCount,
-                    [styles.isHidden]: isUnlisted
-                  }
+                  !repostCount ? styles.disabledStatItem : {}
                 ]}
                 onPress={repostCount ? makeGoToRepostsPage(id) : undefined}
               >
                 <Text>{formatCount(repostCount)}</Text>
-                <RepostButton style={styles.repostButton} />
+                <RepostButton
+                  wrapperStyle={styles.repostButton as ImageStyle}
+                />
               </Pressable>
-              {!isUnlisted && (
-                <Pressable
-                  style={[
-                    styles.statItem,
-                    fadeIn,
-                    {
-                      [styles.disabledStatItem]: !saveCount,
-                      [styles.isHidden]: isUnlisted
-                    }
-                  ]}
-                  onPress={e => saveCount && makeGoToFavoritesPage(id)(e)}
-                >
-                  <Text>{formatCount(saveCount)}</Text>
-                  <FavoriteButton style={styles.favoriteButton} />
-                </Pressable>
-              )}
-            </>
+              <Pressable
+                style={[
+                  styles.statItem,
+                  !saveCount ? styles.disabledStatItem : {}
+                ]}
+                onPress={e => saveCount && makeGoToFavoritesPage(id)(e)}
+              >
+                <Text>{formatCount(saveCount)}</Text>
+                <FavoriteButton
+                  wrapperStyle={styles.favoriteButton as ImageStyle}
+                />
+              </Pressable>
+            </Animated.View>
           )}
-          <Text
-            style={[
-              styles.listenCount,
-              fadeIn,
-              {
-                [styles.isHidden]: hidePlays
-              }
-            ]}
-          >
-            {formatListenCount(listenCount)}
-          </Text>
+          {!hidePlays && (
+            <AnimatedText style={[styles.listenCount, fadeIn]}>
+              {formatListenCount(listenCount)}
+            </AnimatedText>
+          )}
         </View>
         {/* <BottomButtons
           hasSaved={hasCurrentUserSaved}

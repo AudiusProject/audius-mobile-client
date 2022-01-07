@@ -1,8 +1,9 @@
 import React from 'react'
 
-import IconHidden from 'app/src/assets/images/iconHidden.svg'
-import IconStar from 'app/src/assets/images/iconStar.svg'
 import { StyleSheet, View } from 'react-native'
+
+import IconHidden from 'app/assets/images/iconHidden.svg'
+import IconStar from 'app/assets/images/iconStar.svg'
 
 const styles = StyleSheet.create({
   bannerIcon: {

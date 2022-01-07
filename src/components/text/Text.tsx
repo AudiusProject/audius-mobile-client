@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Text as RNText } from 'react-native'
+import { Animated, Text as RNText } from 'react-native'
 
 import { useThemeColors } from 'app/utils/theme'
 
@@ -32,6 +32,31 @@ const Text = ({ children, weight = 'regular', style, ...props }: Props) => {
     >
       {children}
     </RNText>
+  )
+}
+
+type AnimatedProps = {
+  children: React.ReactNode
+  weight?: keyof typeof fontByWeight
+} & Parameters<typeof Animated.Text>[0]
+
+/**
+ * A custom Animated.Text component that applies the default font family and color
+ */
+export const AnimatedText = ({
+  children,
+  weight = 'regular',
+  style,
+  ...props
+}: AnimatedProps) => {
+  const { neutral } = useThemeColors()
+  return (
+    <Animated.Text
+      style={[{ color: neutral, fontFamily: fontByWeight[weight] }, style]}
+      {...props}
+    >
+      {children}
+    </Animated.Text>
   )
 }
 

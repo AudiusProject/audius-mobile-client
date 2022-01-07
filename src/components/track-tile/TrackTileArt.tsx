@@ -28,17 +28,10 @@ type TrackTileArtProps = {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flexDirection: 'row',
-    flexGrow: 0,
-    flexShrink: 0,
-    flexBasis: 74,
-    height: 74
-  },
-
-  imageWrapper: {
+  image: {
     borderRadius: 4,
-    overflow: 'hidden'
+    height: 74,
+    width: 74
   }
 })
 
@@ -56,27 +49,26 @@ const TrackTileArt = ({
 
   useLoadImageWithTimeout(image, callback)
 
+  const imageElement = (
+    <DynamicImage
+      image={showSkeleton ? null : { uri: image }}
+      style={styles.image}
+    />
+  )
+
   return coSign ? (
     <CoSign
       size={Size.SMALL}
-      style={[styles.container, style]}
+      style={style}
       hasFavorited={coSign.has_remix_author_saved}
       hasReposted={coSign.has_remix_author_reposted}
       coSignName={coSign.user.name}
       userId={coSign.user.user_id}
     >
-      <DynamicImage
-        image={showSkeleton ? null : image}
-        style={styles.imageWrapper}
-      />
+      {imageElement}
     </CoSign>
   ) : (
-    <View style={style}>
-      <DynamicImage
-        image={showSkeleton ? '' : image}
-        style={[styles.container, styles.imageWrapper]}
-      />
-    </View>
+    <View style={[style, styles.image]}>{imageElement}</View>
   )
 }
 

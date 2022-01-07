@@ -10,12 +10,13 @@ import AnimatedButtonProvider from 'app/components/animated-button/AnimatedButto
 import { Theme, useThemeVariant } from 'app/utils/theme'
 
 const styles = StyleSheet.create({
-  heart: {
+  icon: {
     height: 22,
     width: 22
   }
 })
 
+// TODO: sk - convert to styles prop
 type RepostButtonProps = {
   /**
    * Style to apply to the icon
@@ -57,8 +58,8 @@ const RepostButton = ({
       iconLightJSON={[IconRepostOnLight, IconRepostOffLight]}
       iconDarkJSON={[IconRepostOnDark, IconRepostOffDark]}
       onPress={onPress}
-      style={[styles.heart, style]}
-      wrapperStyle={wrapperStyle}
+      style={[style]}
+      wrapperStyle={[styles.icon, wrapperStyle]}
     />
   )
 }
