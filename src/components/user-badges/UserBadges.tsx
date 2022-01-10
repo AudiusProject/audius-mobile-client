@@ -1,5 +1,6 @@
 import React, { ReactElement } from 'react'
 
+import { User } from 'audius-client/src/common/models/User'
 import { StyleSheet, View, Image, Text } from 'react-native'
 
 import IconBronzeBadgeSVG from 'app/assets/images/IconBronzeBadge.svg'
@@ -7,16 +8,19 @@ import IconGoldBadgeSVG from 'app/assets/images/IconGoldBadge.svg'
 import IconPlatinumBadgeSVG from 'app/assets/images/IconPlatinumBadge.svg'
 import IconSilverBadgeSVG from 'app/assets/images/IconSilverBadge.svg'
 import IconVerified from 'app/assets/images/iconVerified.svg'
-import { UserName, UserBalance, UserVerified } from 'app/models/User'
 import getBadgeTier, { BadgeTier } from 'app/utils/badgeTier'
 import { Nullable } from 'app/utils/typeUtils'
 
 type UserBadgesProps = {
-  user: UserName & UserBalance & UserVerified
+  user: Pick<
+    User,
+    'name' | 'associated_wallets_balance' | 'balance' | 'is_verified'
+  >
   badgeSize?: number
   useSVGTiers?: boolean
   style?: Record<string, any>
   nameStyle?: Record<string, any>
+  hideName?: boolean
 }
 
 const styles = StyleSheet.create({
@@ -78,16 +82,19 @@ const UserBadges: React.FC<UserBadgesProps> = ({
   useSVGTiers = false,
   badgeSize = 14,
   style = {},
-  nameStyle = {}
+  nameStyle = {},
+  hideName
 }) => {
   const tier = getBadgeTier(user)
   const tierMap = useSVGTiers ? audioTierMapSVG : audioTierMapPng
   const tierElement = tierMap[tier]
   return (
     <View style={[styles.container, style]}>
-      <Text style={nameStyle} numberOfLines={1}>
-        {user.name}
-      </Text>
+      {!hideName && (
+        <Text style={nameStyle} numberOfLines={1}>
+          {user.name}
+        </Text>
+      )}
       {user.is_verified && (
         <IconVerified
           height={badgeSize}

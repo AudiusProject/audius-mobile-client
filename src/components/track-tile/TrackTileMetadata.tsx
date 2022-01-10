@@ -3,6 +3,7 @@ import React from 'react'
 import { ID } from 'audius-client/src/common/models/Identifiers'
 import { CoverArtSizes } from 'audius-client/src/common/models/ImageSizes'
 import { Remix } from 'audius-client/src/common/models/Track'
+import { User } from 'audius-client/src/common/models/User'
 import {
   Animated,
   GestureResponderEvent,
@@ -106,7 +107,7 @@ type Props = {
   setArtworkLoaded: (loaded: boolean) => void
   showSkeleton: boolean
   title: string
-  userId: ID
+  user: User
 }
 
 const TrackTileMetadata = ({
@@ -122,7 +123,7 @@ const TrackTileMetadata = ({
   setArtworkLoaded,
   showSkeleton,
   title,
-  userId
+  user
 }: Props) => {
   const styles = useThemedStyles(createStyles)
   return (
@@ -153,13 +154,14 @@ const TrackTileMetadata = ({
           <Skeleton style={styles.skeleton} width='80%' height='80%' />
         )}
         <Pressable style={styles.artist} onPress={goToArtistPage}>
-          <AnimatedText style={[fadeIn, styles.titleText]} weight='demiBold'>
+          <AnimatedText style={[fadeIn, styles.titleText]} weight='medium'>
             {artistName}
           </AnimatedText>
           <UserBadges
-            user={userId as any}
+            user={user}
             badgeSize={12}
             style={styles.iconVerified}
+            hideName
           />
           {!isLoaded && (
             <Skeleton style={styles.skeleton} width='60%' height='80%' />

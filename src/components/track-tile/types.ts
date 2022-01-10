@@ -8,6 +8,7 @@ import {
   LineupTrack,
   Remix
 } from 'audius-client/src/common/models/Track'
+import { User } from 'audius-client/src/common/models/User'
 import { StyleProp, ViewStyle } from 'react-native'
 
 export enum TrackTileSize {
@@ -42,7 +43,7 @@ export type TileProps = {
   togglePlay: (uid: UID, trackId: ID, source?: PlaybackSource) => void
   trackTileStyles?: StyleProp<ViewStyle>
   uid: UID
-  userId: ID
+  user: User
 }
 
 export type TrackTileProps = TileProps & {

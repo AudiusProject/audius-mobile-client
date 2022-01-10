@@ -92,7 +92,7 @@ const TrackTile = ({
   togglePlay,
   toggleRepost,
   toggleSave,
-  userId,
+  user,
   uid
 }: TrackTileProps & ExtraProps) => {
   const opacity = useRef(new Animated.Value(0)).current
@@ -165,7 +165,7 @@ const TrackTile = ({
           setArtworkLoaded={setArtworkLoaded}
           showSkeleton={showSkeleton}
           title={title}
-          userId={userId}
+          user={user}
         />
         {coSign && <TrackTileCoSign coSign={coSign} />}
         <TrackTileStats

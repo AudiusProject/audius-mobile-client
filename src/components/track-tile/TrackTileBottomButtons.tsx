@@ -117,8 +117,8 @@ const TrackTileBottomButtons = ({
     return (
       <Pressable onPress={onPressOverflow}>
         <IconKebabHorizontal
-          height={24}
-          width={24}
+          height={22}
+          width={22}
           fill={neutralLight4}
           style={[styles.button, styles.lastButton]}
         />
