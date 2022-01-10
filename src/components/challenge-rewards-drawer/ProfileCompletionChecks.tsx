@@ -58,7 +58,7 @@ const createStyles = (themeColors: ThemeColors) =>
     }
   })
 
-export const ProfileCompletionDrawerContents = ({
+export const ProfileCompletionChecks = ({
   isComplete,
   onClose
 }: {

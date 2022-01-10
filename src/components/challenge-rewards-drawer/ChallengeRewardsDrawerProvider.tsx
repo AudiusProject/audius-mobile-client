@@ -33,8 +33,8 @@ import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 import Button, { ButtonType } from '../button'
 
 import ChallengeRewardsDrawer from './ChallengeRewardsDrawer'
-import { ProfileCompletionDrawerContents } from './ProfileCompletionDrawerContents'
-import { ReferralDrawerContents } from './ReferralDrawerContents'
+import { ProfileCompletionChecks } from './ProfileCompletionChecks'
+import { ReferralLinkCopyButton } from './ReferralLinkCopyButton'
 
 const messages = {
   // Connect Verified
@@ -186,7 +186,7 @@ const ChallengeRewardsDrawerProvider = () => {
   let contents = null
   switch (modalType) {
     case 'referrals':
-      contents = <ReferralDrawerContents />
+      contents = <ReferralLinkCopyButton />
       break
     case 'track-upload':
       contents = (
@@ -201,7 +201,7 @@ const ChallengeRewardsDrawerProvider = () => {
       break
     case 'profile-completion':
       contents = (
-        <ProfileCompletionDrawerContents
+        <ProfileCompletionChecks
           isComplete={challenge?.is_complete}
           onClose={onClose}
         />
