@@ -1,5 +1,6 @@
 import React, { useCallback, useContext } from 'react'
 
+import Clipboard from '@react-native-clipboard/clipboard'
 import { CommonState } from 'audius-client/src/common/store'
 import { getAccountUser } from 'audius-client/src/common/store/account/selectors'
 import { getUser } from 'audius-client/src/common/store/cache/users/selectors'
@@ -12,7 +13,7 @@ import {
   getTrack
 } from 'audius-client/src/common/store/ui/share-modal/selectors'
 import { requestOpen as requestOpenTikTokModal } from 'audius-client/src/common/store/ui/share-sound-to-tiktok-modal/slice'
-import { Linking, StyleSheet, View, Clipboard } from 'react-native'
+import { Linking, StyleSheet, View } from 'react-native'
 
 import IconLink from 'app/assets/images/iconLink.svg'
 import IconShare from 'app/assets/images/iconShare.svg'
