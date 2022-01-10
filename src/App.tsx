@@ -37,6 +37,7 @@ import createStore from 'app/store'
 import { setup as setupAnalytics } from 'app/utils/analytics'
 
 import ErrorBoundary from './ErrorBoundary'
+import { ShareDrawer } from './components/share-drawer'
 import { ThemeContextProvider } from './components/theme/ThemeContext'
 
 Sentry.init({
@@ -68,6 +69,7 @@ const Drawers = () => {
       <TrendingRewardsDrawer />
       <ApiRewardsDrawer />
       <ShareToTiktokDrawer />
+      <ShareDrawer />
       {/* Disable the audio breakdown drawer until we get
       the feature flags to work for native mobile */}
       {/* <AudioBreakdownDrawer /> */}
