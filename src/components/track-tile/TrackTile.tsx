@@ -12,23 +12,14 @@ import {
 
 import { TrackTileProps } from 'app/components/track-tile/types'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
-import { ThemeColors, useThemeColors } from 'app/utils/theme'
+import { ThemeColors } from 'app/utils/theme'
 
 import TrackBannerIcon, { TrackBannerIconType } from './TrackBannerIcon'
-// import BottomButtons from './BottomButtons'
+import TrackTileBottomButtons from './TrackTileBottomButtons'
 import TrackTileCoSign from './TrackTileCoSign'
 import TrackTileMetadata from './TrackTileMetadata'
-import TrackTileStates from './TrackTileStats'
+import TrackTileStats from './TrackTileStats'
 import TrackTileTopRight from './TrackTileTopRight'
-
-const messages = {
-  artistPick: "Artist's Pick",
-  coSign: 'Co-Sign',
-  reposted: 'Reposted',
-  favorited: 'Favorited',
-  hiddenTrack: 'Hidden Track',
-  repostedAndFavorited: 'Reposted & Favorited'
-}
 
 type ExtraProps = {
   goToTrackPage: (e: GestureResponderEvent) => void
@@ -77,10 +68,13 @@ const TrackTile = ({
   fieldVisibility,
   goToTrackPage,
   goToArtistPage,
+  hasCurrentUserReposted,
+  hasCurrentUserSaved,
   hasLoaded,
   id,
   index,
   isArtistPick,
+  isOwner,
   isPlaying,
   isTrending,
   isUnlisted,
@@ -105,7 +99,6 @@ const TrackTile = ({
   const fadeIn = { opacity }
 
   const styles = useThemedStyles(createStyles)
-  const { neutralLight4 } = useThemeColors()
   const hideShare: boolean = fieldVisibility
     ? fieldVisibility.share === false
     : false
@@ -171,21 +164,36 @@ const TrackTile = ({
           isPlaying={isPlaying}
           setArtworkLoaded={setArtworkLoaded}
           showSkeleton={showSkeleton}
+          title={title}
           userId={userId}
         />
         {coSign && <TrackTileCoSign coSign={coSign} />}
-
-        {/* <BottomButtons
+        <TrackTileStats
+          fadeIn={fadeIn}
+          hidePlays={hidePlays}
+          id={id}
+          index={index}
+          isLoaded={isLoaded}
+          isTrending={isTrending}
+          isUnlisted={isUnlisted}
+          listenCount={listenCount}
+          makeGoToFavoritesPage={makeGoToFavoritesPage}
+          makeGoToRepostsPage={makeGoToRepostsPage}
+          repostCount={repostCount}
+          saveCount={saveCount}
+          showRankIcon={showRankIcon}
+        />
+        <TrackTileBottomButtons
           hasSaved={hasCurrentUserSaved}
           hasReposted={hasCurrentUserReposted}
           toggleRepost={onToggleRepost}
           toggleSave={onToggleSave}
           onShare={onClickShare}
-          onClickOverflow={onClickOverflowMenu}
+          onPressOverflow={onClickOverflowMenu}
           isOwner={isOwner}
           isUnlisted={isUnlisted}
           isShareHidden={hideShare}
-        /> */}
+        />
       </Pressable>
     </View>
   )

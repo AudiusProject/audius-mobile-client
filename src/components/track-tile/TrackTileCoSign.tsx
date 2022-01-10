@@ -6,6 +6,7 @@ import { StyleSheet, View } from 'react-native'
 import Text from 'app/components/text'
 import UserBadges from 'app/components/user-badges/UserBadges'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
+import { flexRowCentered } from 'app/styles'
 import { ThemeColors } from 'app/utils/theme'
 
 const messages = {
@@ -33,14 +34,12 @@ const formatCoSign = ({
 const createStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
     coSignText: {
+      ...flexRowCentered(),
+      justifyContent: 'flex-start',
       color: themeColors.neutralLight4,
       fontSize: 12,
       letterSpacing: 0.2,
       lineHeight: 14,
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'flex-start',
       marginLeft: 10,
       marginTop: 8
     },

@@ -6,6 +6,7 @@ import IconCrown from 'app/assets/images/iconCrown.svg'
 import IconTrending from 'app/assets/images/iconTrending.svg'
 import Text from 'app/components/text'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
+import { flexRowCentered } from 'app/styles'
 import { ThemeColors } from 'app/utils/theme'
 
 type Props = {
@@ -20,9 +21,7 @@ type Props = {
 const createStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
     container: {
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
+      ...flexRowCentered(),
       marginRight: 4,
       marginLeft: 6
     },

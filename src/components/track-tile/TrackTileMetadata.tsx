@@ -1,7 +1,5 @@
 import React from 'react'
 
-import { title } from 'process'
-
 import { ID } from 'audius-client/src/common/models/Identifiers'
 import { CoverArtSizes } from 'audius-client/src/common/models/ImageSizes'
 import { Remix } from 'audius-client/src/common/models/Track'
@@ -18,6 +16,7 @@ import Skeleton from 'app/components/skeleton'
 import Text, { AnimatedText } from 'app/components/text'
 import UserBadges from 'app/components/user-badges/UserBadges'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
+import { flexCol, flexRow, flexRowCentered } from 'app/styles'
 import { ThemeColors } from 'app/utils/theme'
 
 import TrackTileArt from './TrackTileArt'
@@ -25,8 +24,7 @@ import TrackTileArt from './TrackTileArt'
 const createStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
     metadata: {
-      display: 'flex',
-      flexDirection: 'row'
+      ...flexRow()
     },
     albumArtContainer: {
       marginTop: 10,
@@ -34,7 +32,7 @@ const createStyles = (themeColors: ThemeColors) =>
       marginLeft: 10
     },
     titles: {
-      display: 'flex',
+      ...flexCol(),
       justifyContent: 'center',
       alignItems: 'flex-start',
       textAlign: 'left',
@@ -54,27 +52,23 @@ const createStyles = (themeColors: ThemeColors) =>
       width: '100%'
     },
     title: {
+      ...flexRowCentered(),
       marginTop: 'auto',
       paddingRight: 5,
       marginBottom: 2,
-      display: 'flex',
-      flexDirection: 'row',
       minHeight: 20,
-      alignItems: 'center',
       width: '100%'
     },
     titleText: {
       fontSize: 16
     },
     artist: {
+      ...flexRowCentered(),
+      flexWrap: 'nowrap',
       marginBottom: 'auto',
       paddingRight: 5,
       maxWidth: '100%',
-      minHeight: 20,
-      flexWrap: 'nowrap',
-      alignItems: 'center',
-      display: 'flex',
-      flexDirection: 'row'
+      minHeight: 20
     },
     skeleton: {
       position: 'absolute',
@@ -89,8 +83,6 @@ const createStyles = (themeColors: ThemeColors) =>
       left: 96,
       color: themeColors.primary,
       fontSize: 12,
-      // TODO: font weight
-      //   fontWeight: var(--font-heavy);
       letterSpacing: 1,
       lineHeight: 15,
       textTransform: 'uppercase'
@@ -113,6 +105,7 @@ type Props = {
   isPlaying: boolean
   setArtworkLoaded: (loaded: boolean) => void
   showSkeleton: boolean
+  title: string
   userId: ID
 }
 
@@ -128,6 +121,7 @@ const TrackTileMetadata = ({
   isPlaying,
   setArtworkLoaded,
   showSkeleton,
+  title,
   userId
 }: Props) => {
   const styles = useThemedStyles(createStyles)
@@ -172,7 +166,11 @@ const TrackTileMetadata = ({
           )}
         </Pressable>
       </View>
-      {coSign && <Text style={styles.coSignLabel}>{messages.coSign}</Text>}
+      {coSign && (
+        <Text style={styles.coSignLabel} weight='heavy'>
+          {messages.coSign}
+        </Text>
+      )}
     </View>
   )
 }
