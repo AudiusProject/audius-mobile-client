@@ -18,10 +18,6 @@ const styles = StyleSheet.create({
 
 type FavoriteButtonProps = {
   /**
-   * Style to apply to the icon
-   */
-  style?: StyleProp<ImageStyle>
-  /**
    *  Whether or not the icon is active (filled)
    */
   isActive?: boolean
@@ -33,6 +29,10 @@ type FavoriteButtonProps = {
    * Callback when the icon is pressed
    */
   onPress?: () => void
+  /**
+   * Style to apply to the icon
+   */
+  style?: StyleProp<ImageStyle>
   /**
    * Style to apply to the icon container
    */
