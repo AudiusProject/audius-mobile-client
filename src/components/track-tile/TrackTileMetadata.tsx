@@ -149,20 +149,22 @@ const TrackTileMetadata = ({
             {title}
           </AnimatedText>
           {isPlaying && <IconVolume />}
+          {!isLoaded && (
+            <Skeleton style={styles.skeleton} width='80%' height='80%' />
+          )}
         </Pressable>
-        {!isLoaded && (
-          <Skeleton style={styles.skeleton} width='80%' height='80%' />
-        )}
         <Pressable style={styles.artist} onPress={goToArtistPage}>
           <AnimatedText style={[fadeIn, styles.titleText]} weight='medium'>
             {artistName}
           </AnimatedText>
-          <UserBadges
-            user={user}
-            badgeSize={12}
-            style={styles.iconVerified}
-            hideName
-          />
+          <Animated.View style={fadeIn}>
+            <UserBadges
+              user={user}
+              badgeSize={12}
+              style={styles.iconVerified}
+              hideName
+            />
+          </Animated.View>
           {!isLoaded && (
             <Skeleton style={styles.skeleton} width='60%' height='80%' />
           )}

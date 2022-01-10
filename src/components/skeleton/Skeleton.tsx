@@ -20,7 +20,7 @@ const createStyles = (themeColors: ThemeColors) =>
       width: '100%',
       height: '100%',
       backgroundColor: themeColors.skeleton,
-      borderradius: 4
+      borderRadius: 4
     }
   })
 

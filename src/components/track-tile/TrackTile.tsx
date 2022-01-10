@@ -70,7 +70,6 @@ const TrackTile = ({
   goToArtistPage,
   hasCurrentUserReposted,
   hasCurrentUserSaved,
-  hasLoaded,
   id,
   index,
   isArtistPick,
@@ -82,6 +81,7 @@ const TrackTile = ({
   makeGoToFavoritesPage,
   makeGoToRepostsPage,
   onClickOverflow,
+  onLoad,
   onShare,
   repostCount,
   saveCount,
@@ -123,14 +123,14 @@ const TrackTile = ({
 
   useEffect(() => {
     if (isLoaded) {
-      hasLoaded(index)
+      onLoad(index)
       Animated.timing(opacity, {
         toValue: 1,
         easing: Easing.ease,
         useNativeDriver: true
       }).start()
     }
-  }, [hasLoaded, isLoaded, index, opacity])
+  }, [onLoad, isLoaded, index, opacity])
 
   return (
     <View style={styles.container}>

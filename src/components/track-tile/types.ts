@@ -28,7 +28,6 @@ export type TileProps = {
   goToRoute: (route: string) => void
   hasCurrentUserReposted: boolean
   hasCurrentUserSaved: boolean
-  hasLoaded: (index: number) => void
   id: ID
   index: number
   isActive: boolean
@@ -36,6 +35,7 @@ export type TileProps = {
   isPlaying: boolean
   isTrending: boolean
   isUnlisted?: boolean
+  onLoad: (index: number) => void
   repostCount: number
   showRankIcon: boolean
   /** Size of the track Tile Large or Small */

@@ -51,7 +51,7 @@ const TrackTileArt = ({
 
   const imageElement = (
     <DynamicImage
-      image={showSkeleton ? null : { uri: image }}
+      image={showSkeleton ? undefined : { uri: image }}
       style={styles.image}
     />
   )
