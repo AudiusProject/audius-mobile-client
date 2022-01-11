@@ -18,7 +18,7 @@ import Text, { AnimatedText } from 'app/components/text'
 import UserBadges from 'app/components/user-badges/UserBadges'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
 import { flexCol, flexRow, flexRowCentered } from 'app/styles'
-import { ThemeColors } from 'app/utils/theme'
+import { ThemeColors, useThemeColors } from 'app/utils/theme'
 
 import TrackTileArt from './TrackTileArt'
 
@@ -55,7 +55,6 @@ const createStyles = (themeColors: ThemeColors) =>
     title: {
       ...flexRowCentered(),
       marginTop: 'auto',
-      paddingRight: 5,
       marginBottom: 2,
       minHeight: 20,
       width: '100%'
@@ -65,9 +64,7 @@ const createStyles = (themeColors: ThemeColors) =>
     },
     artist: {
       ...flexRowCentered(),
-      flexWrap: 'nowrap',
       marginBottom: 'auto',
-      paddingRight: 5,
       maxWidth: '100%',
       minHeight: 20
     },
@@ -75,7 +72,10 @@ const createStyles = (themeColors: ThemeColors) =>
       position: 'absolute',
       top: 0
     },
-    iconVerified: {
+    playingIndicator: {
+      marginLeft: 8
+    },
+    badge: {
       marginLeft: 4
     },
     coSignLabel: {
@@ -126,6 +126,7 @@ const TrackTileMetadata = ({
   user
 }: Props) => {
   const styles = useThemedStyles(createStyles)
+  const { primary } = useThemeColors()
   return (
     <View style={styles.metadata}>
       <TrackTileArt
@@ -137,31 +138,41 @@ const TrackTileMetadata = ({
         coSign={coSign}
         style={styles.albumArtContainer}
       />
-      <View
-        style={[
-          styles.titles,
-          isPlaying ? styles.titlesActive : {},
-          showSkeleton ? styles.titlesSkeleton : {}
-        ]}
-      >
+      <View style={[styles.titles, showSkeleton ? styles.titlesSkeleton : {}]}>
         <Pressable style={styles.title} onPress={goToTrackPage}>
-          <AnimatedText style={[fadeIn, styles.titleText]} weight='bold'>
+          <AnimatedText
+            style={[
+              fadeIn,
+              styles.titleText,
+              isPlaying ? styles.titlesActive : {}
+            ]}
+            weight='bold'
+          >
             {title}
           </AnimatedText>
-          {isPlaying && <IconVolume />}
+          {isPlaying && (
+            <IconVolume fill={primary} style={styles.playingIndicator} />
+          )}
           {!isLoaded && (
             <Skeleton style={styles.skeleton} width='80%' height='80%' />
           )}
         </Pressable>
         <Pressable style={styles.artist} onPress={goToArtistPage}>
-          <AnimatedText style={[fadeIn, styles.titleText]} weight='medium'>
+          <AnimatedText
+            style={[
+              fadeIn,
+              styles.titleText,
+              isPlaying ? styles.titlesActive : {}
+            ]}
+            weight='medium'
+          >
             {artistName}
           </AnimatedText>
           <Animated.View style={fadeIn}>
             <UserBadges
               user={user}
               badgeSize={12}
-              style={styles.iconVerified}
+              style={styles.badge}
               hideName
             />
           </Animated.View>
