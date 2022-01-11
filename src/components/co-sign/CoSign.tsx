@@ -1,6 +1,5 @@
 import React, { ReactNode } from 'react'
 
-import { ID } from 'audius-client/src/common/models/Identifiers'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 
 import IconCoSign from 'app/assets/images/iconCoSign.svg'
@@ -8,21 +7,11 @@ import { useThemeColors } from 'app/utils/theme'
 
 import { Size } from './types'
 
-type CoSignProps =
-  | {
-      coSignName: string
-      userId: ID
-      hasFavorited: boolean
-      hasReposted: boolean
-      size: Size
-      children: ReactNode
-      style?: StyleProp<ViewStyle>
-    }
-  | {
-      size: Size
-      children: ReactNode
-      style?: StyleProp<ViewStyle>
-    }
+type CoSignProps = {
+  size: Size
+  children: ReactNode
+  style?: StyleProp<ViewStyle>
+}
 
 const CoSign = ({ size, children, style }: CoSignProps) => {
   const { primary, staticWhite } = useThemeColors()

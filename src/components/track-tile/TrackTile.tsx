@@ -12,6 +12,7 @@ import {
 
 import { TrackTileProps } from 'app/components/track-tile/types'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
+import { flexCol, flexRow } from 'app/styles'
 import { ThemeColors } from 'app/utils/theme'
 
 import TrackBannerIcon, { TrackBannerIconType } from './TrackBannerIcon'
@@ -21,22 +22,10 @@ import TrackTileMetadata from './TrackTileMetadata'
 import TrackTileStats from './TrackTileStats'
 import TrackTileTopRight from './TrackTileTopRight'
 
-type ExtraProps = {
-  goToTrackPage: (e: GestureResponderEvent) => void
-  goToArtistPage: (e: GestureResponderEvent) => void
-  toggleSave: (trackId: ID) => void
-  toggleRepost: (trackId: ID) => void
-  onShare: (trackId: ID) => void
-  makeGoToRepostsPage: (trackId: ID) => (e: GestureResponderEvent) => void
-  makeGoToFavoritesPage: (trackId: ID) => (e: GestureResponderEvent) => void
-  isOwner: boolean
-}
-
 const createStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
     container: {
-      display: 'flex',
-      flexDirection: 'row',
+      ...flexRow(),
       minHeight: 152,
       borderColor: themeColors.neutralLight8,
       backgroundColor: themeColors.white,
@@ -51,7 +40,7 @@ const createStyles = (themeColors: ThemeColors) =>
       shadowRadius: 3
     },
     mainContent: {
-      display: 'flex',
+      ...flexCol(),
       flex: 1
     }
   })
@@ -90,7 +79,7 @@ const TrackTile = ({
   toggleSave,
   user,
   uid
-}: TrackTileProps & ExtraProps) => {
+}: TrackTileProps) => {
   const opacity = useRef(new Animated.Value(0)).current
   const fadeIn = { opacity }
 

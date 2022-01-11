@@ -5,6 +5,7 @@ import { CoverArtSizes } from 'audius-client/src/common/models/ImageSizes'
 import { Repost } from 'audius-client/src/common/models/Repost'
 import { FieldVisibility, Remix } from 'audius-client/src/common/models/Track'
 import { User } from 'audius-client/src/common/models/User'
+import { GestureResponderEvent } from 'react-native'
 
 export enum TrackTileSize {
   LARGE = 'LARGE',
@@ -45,11 +46,23 @@ export type TileProps = {
   /** Are we in a trending lineup? Allows tiles to specialize their rendering */
   isTrending: boolean
 
+  /** If the current user is the owner */
+  isOwner: boolean
+
   /** If the track is unlisted/hidden */
   isUnlisted?: boolean
 
+  /** Function that returns a function that will navigate to reposts page */
+  makeGoToRepostsPage: (trackId: ID) => (e: GestureResponderEvent) => void
+
+  /** Function that returns a function that will navigate to favorites page */
+  makeGoToFavoritesPage: (trackId: ID) => (e: GestureResponderEvent) => void
+
   /** Function to call when track & art has loaded */
   onLoad: (index: number) => void
+
+  /** Function to call when share is initiated */
+  onShare: (trackId: ID) => void
 
   /** Number of reposts */
   repostCount: number
@@ -62,6 +75,12 @@ export type TileProps = {
 
   /** Function to call when play is toggled */
   togglePlay: (uid: UID, trackId: ID, source?: PlaybackSource) => void
+
+  /** Function to call when repost is toggled */
+  toggleRepost: (trackId: ID) => void
+
+  /** Function to call when save is toggled */
+  toggleSave: (trackId: ID) => void
 
   /** id of the current user */
   uid: UID
@@ -79,6 +98,12 @@ export type TrackTileProps = TileProps & {
 
   /** Optional object containing which fields are visible */
   fieldVisibility?: FieldVisibility
+
+  /** Function called to go to the track page */
+  goToTrackPage: (e: GestureResponderEvent) => void
+
+  /** Function called to go to the artist page */
+  goToArtistPage: (e: GestureResponderEvent) => void
 
   /** If the track is the artist pick */
   isArtistPick?: boolean
