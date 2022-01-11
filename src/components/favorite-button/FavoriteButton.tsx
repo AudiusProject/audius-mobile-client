@@ -30,21 +30,19 @@ type FavoriteButtonProps = {
    */
   onPress?: () => void
   /**
-   * Style to apply to the icon
+   * Styles to apply
    */
-  style?: StyleProp<ImageStyle>
-  /**
-   * Style to apply to the icon container
-   */
-  wrapperStyle?: StyleProp<ViewStyle>
+  styles?: {
+    image?: StyleProp<ImageStyle>
+    wrapper?: StyleProp<ViewStyle>
+  }
 }
 
 const FavoriteButton = ({
-  style,
   isActive = false,
   isDisabled = false,
   onPress = () => {},
-  wrapperStyle
+  styles: stylesProp = {}
 }: FavoriteButtonProps) => {
   const themeVariant = useThemeVariant()
   const isDarkMode = themeVariant === Theme.DARK
@@ -57,8 +55,8 @@ const FavoriteButton = ({
       iconLightJSON={[IconFavoriteOnLight, IconFavoriteOffLight]}
       iconDarkJSON={[IconFavoriteOnDark, IconFavoriteOffDark]}
       onPress={onPress}
-      style={style}
-      wrapperStyle={[styles.icon, wrapperStyle]}
+      style={stylesProp.image}
+      wrapperStyle={[styles.icon, stylesProp.wrapper]}
     />
   )
 }

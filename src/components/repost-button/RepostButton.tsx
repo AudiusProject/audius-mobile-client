@@ -16,12 +16,7 @@ const styles = StyleSheet.create({
   }
 })
 
-// TODO: sk - convert to styles prop
 type RepostButtonProps = {
-  /**
-   * Style to apply to the icon
-   */
-  style?: StyleProp<ImageStyle>
   /**
    *  Whether or not the icon is active (filled)
    */
@@ -35,17 +30,19 @@ type RepostButtonProps = {
    */
   onPress?: () => void
   /**
-   * Style to apply to the icon container
+   * Style to apply
    */
-  wrapperStyle?: StyleProp<ViewStyle>
+  styles?: {
+    image?: StyleProp<ImageStyle>
+    wrapper?: StyleProp<ViewStyle>
+  }
 }
 
 const RepostButton = ({
-  style,
   isActive = false,
   isDisabled = false,
   onPress = () => {},
-  wrapperStyle
+  styles: stylesProp = {}
 }: RepostButtonProps) => {
   const themeVariant = useThemeVariant()
   const isDarkMode = themeVariant === Theme.DARK
@@ -58,8 +55,8 @@ const RepostButton = ({
       iconLightJSON={[IconRepostOnLight, IconRepostOffLight]}
       iconDarkJSON={[IconRepostOnDark, IconRepostOffDark]}
       onPress={onPress}
-      style={[style]}
-      wrapperStyle={[styles.icon, wrapperStyle]}
+      style={[stylesProp.image]}
+      wrapperStyle={[styles.icon, stylesProp.wrapper]}
     />
   )
 }
