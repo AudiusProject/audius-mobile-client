@@ -6,8 +6,9 @@ import IconCrown from 'app/assets/images/iconCrown.svg'
 import IconTrending from 'app/assets/images/iconTrending.svg'
 import Text from 'app/components/text'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
-import { flexRowCentered } from 'app/styles'
-import { ThemeColors } from 'app/utils/theme'
+import { ThemeColors, useThemeColors } from 'app/utils/theme'
+
+import { createStyles as createTrackTileStyles } from './styles'
 
 type Props = {
   /** Whether or not to show the crown icon */
@@ -20,22 +21,23 @@ type Props = {
 
 const createStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
-    container: {
-      ...flexRowCentered(),
-      marginRight: 4,
-      marginLeft: 6
-    },
     text: {
       color: themeColors.secondary
+    },
+    icon: {
+      marginRight: 4
     }
   })
 
 const TrackTileRankIcon = ({ showCrown, index, isVisible = true }: Props) => {
   const styles = useThemedStyles(createStyles)
+  const trackTileStyles = useThemedStyles(createTrackTileStyles)
+  const { secondary } = useThemeColors()
+  const Icon = showCrown ? IconCrown : IconTrending
   return isVisible ? (
-    <View style={styles.container}>
-      {showCrown ? <IconCrown /> : <IconTrending />}
-      <Text style={styles.text}>{index + 1}</Text>
+    <View style={trackTileStyles.statItem}>
+      <Icon fill={secondary} style={styles.icon} height={14} width={14} />
+      <Text style={[trackTileStyles.statText, styles.text]}>{index + 1}</Text>
     </View>
   ) : null
 }

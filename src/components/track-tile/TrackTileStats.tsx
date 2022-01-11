@@ -28,18 +28,6 @@ const formatListenCount = (listenCount?: number) => {
 
 const createStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
-    listenCount: {
-      ...flexRowCentered(),
-      justifyContent: 'center',
-      marginLeft: 'auto'
-    },
-    bottomButtons: {
-      ...flexRowCentered(),
-      marginHorizontal: 10,
-      borderTopWidth: 1,
-      borderTopColor: themeColors.neutralLight8,
-      height: 38
-    },
     stats: {
       ...flexRow(),
       flex: 0,
@@ -49,9 +37,13 @@ const createStyles = (themeColors: ThemeColors) =>
       marginRight: 10,
       height: 30
     },
-    statItem: {
+    listenCount: {
       ...flexRowCentered(),
-      paddingHorizontal: 10
+      justifyContent: 'center',
+      marginLeft: 'auto'
+    },
+    leftStats: {
+      ...flexRowCentered()
     },
     disabledStatItem: {
       opacity: 0.5
@@ -110,12 +102,10 @@ const TrackTileStats = ({
         <TrackTileRankIcon showCrown={showRankIcon} index={index} />
       )}
       {!!(repostCount || saveCount) && !isUnlisted && (
-        <Animated.View
-          style={[fadeIn, { display: 'flex', flexDirection: 'row' }]}
-        >
+        <Animated.View style={[fadeIn, styles.leftStats]}>
           <Pressable
             style={[
-              styles.statItem,
+              trackTileStyles.statItem,
               !repostCount ? styles.disabledStatItem : {}
             ]}
             onPress={repostCount ? makeGoToRepostsPage(id) : undefined}
@@ -131,7 +121,10 @@ const TrackTileStats = ({
             />
           </Pressable>
           <Pressable
-            style={[styles.statItem, !saveCount ? styles.disabledStatItem : {}]}
+            style={[
+              trackTileStyles.statItem,
+              !saveCount ? styles.disabledStatItem : {}
+            ]}
             onPress={e => saveCount && makeGoToFavoritesPage(id)(e)}
           >
             <Text style={trackTileStyles.statText}>
