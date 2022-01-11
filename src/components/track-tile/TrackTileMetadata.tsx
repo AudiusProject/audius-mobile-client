@@ -38,11 +38,9 @@ const createStyles = (themeColors: ThemeColors) =>
       alignItems: 'flex-start',
       textAlign: 'left',
 
-      /* Text truncation */
       flexGrow: 0,
       flexShrink: 1,
       flexBasis: '65%',
-      overflow: 'hidden',
       marginRight: 12,
       marginTop: 10
     },
@@ -54,10 +52,11 @@ const createStyles = (themeColors: ThemeColors) =>
     },
     title: {
       ...flexRowCentered(),
+      width: '100%',
+      minHeight: 20,
       marginTop: 'auto',
       marginBottom: 2,
-      minHeight: 20,
-      width: '100%'
+      paddingRight: 20
     },
     titleText: {
       fontSize: 16
@@ -65,8 +64,7 @@ const createStyles = (themeColors: ThemeColors) =>
     artist: {
       ...flexRowCentered(),
       marginBottom: 'auto',
-      maxWidth: '100%',
-      minHeight: 20
+      paddingRight: 40
     },
     skeleton: {
       position: 'absolute',
@@ -147,6 +145,7 @@ const TrackTileMetadata = ({
               isPlaying ? styles.titlesActive : {}
             ]}
             weight='bold'
+            numberOfLines={1}
           >
             {title}
           </AnimatedText>
@@ -165,6 +164,7 @@ const TrackTileMetadata = ({
               isPlaying ? styles.titlesActive : {}
             ]}
             weight='medium'
+            numberOfLines={1}
           >
             {artistName}
           </AnimatedText>
