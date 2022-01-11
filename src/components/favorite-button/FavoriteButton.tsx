@@ -2,10 +2,10 @@ import React from 'react'
 
 import { StyleProp, StyleSheet, ViewStyle, ImageStyle } from 'react-native'
 
-import IconFavoriteOffDark from 'app/assets/animations/iconFavoriteOffDark.json'
-import IconFavoriteOffLight from 'app/assets/animations/iconFavoriteOffLight.json'
-import IconFavoriteOnDark from 'app/assets/animations/iconFavoriteOnDark.json'
-import IconFavoriteOnLight from 'app/assets/animations/iconFavoriteOnLight.json'
+import IconFavoriteOffDark from 'app/assets/animations/iconFavoriteTrackTileOffDark.json'
+import IconFavoriteOffLight from 'app/assets/animations/iconFavoriteTrackTileOffLight.json'
+import IconFavoriteOnDark from 'app/assets/animations/iconFavoriteTrackTileOnDark.json'
+import IconFavoriteOnLight from 'app/assets/animations/iconFavoriteTrackTileOnLight.json'
 import AnimatedButtonProvider from 'app/components/animated-button/AnimatedButtonProvider'
 import { Theme, useThemeVariant } from 'app/utils/theme'
 
