@@ -66,7 +66,6 @@ type Props = {
   hidePlays: boolean
   id: ID
   index: number
-  isLoaded: boolean
   isTrending: boolean
   isUnlisted: boolean
   listenCount: number
@@ -82,7 +81,6 @@ const TrackTileStats = ({
   hidePlays,
   id,
   index,
-  isLoaded,
   isTrending,
   isUnlisted,
   listenCount,
@@ -98,7 +96,7 @@ const TrackTileStats = ({
 
   return (
     <Animated.View style={[fadeIn, styles.stats]}>
-      {isTrending && isLoaded && (
+      {isTrending && (
         <TrackTileRankIcon showCrown={showRankIcon} index={index} />
       )}
       {!!(repostCount || saveCount) && !isUnlisted && (
