@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native'
 
-import { flexRowCentered } from 'app/styles'
+import { flexRowCentered, fontWeight } from 'app/styles'
 import { ThemeColors } from 'app/utils/theme'
 
 export const createStyles = (themeColors: ThemeColors) =>
@@ -10,9 +10,9 @@ export const createStyles = (themeColors: ThemeColors) =>
       marginHorizontal: 10
     },
     statText: {
+      ...fontWeight('medium'),
       fontSize: 12,
       letterSpacing: 0.2,
-      color: themeColors.neutralLight4,
-      fontFamily: 'AvenirNextLTPro-Medium'
+      color: themeColors.neutralLight4
     }
   })

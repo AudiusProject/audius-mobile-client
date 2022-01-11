@@ -130,7 +130,7 @@ const TrackTileMetadata = ({
       <TrackTileArt
         id={id}
         isTrack={true}
-        callback={() => setArtworkLoaded(true)}
+        onLoad={() => setArtworkLoaded(true)}
         showSkeleton={showSkeleton}
         coverArtSizes={coverArtSizes}
         coSign={coSign}

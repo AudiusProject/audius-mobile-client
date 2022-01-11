@@ -23,8 +23,7 @@ type TrackTileArtProps = {
   style?: StyleProp<ViewStyle>
   showSkeleton?: boolean
   coSign?: Remix | null
-  // Called when the image is done loading
-  callback: () => void
+  onLoad: () => void
 }
 
 const styles = StyleSheet.create({
@@ -42,12 +41,12 @@ const TrackTileArt = ({
   coverArtSizes,
   showSkeleton,
   coSign,
-  callback
+  onLoad
 }: TrackTileArtProps) => {
   const useImage = isTrack ? useTrackCoverArt : useCollectionCoverArt
   const image = useImage(id, coverArtSizes, SquareSizes.SIZE_150_BY_150)
 
-  useLoadImageWithTimeout(image, callback)
+  useLoadImageWithTimeout(image, onLoad)
 
   const imageElement = (
     <DynamicImage

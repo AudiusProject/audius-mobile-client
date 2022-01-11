@@ -3,105 +3,101 @@ import { Favorite } from 'audius-client/src/common/models/Favorite'
 import { ID, UID } from 'audius-client/src/common/models/Identifiers'
 import { CoverArtSizes } from 'audius-client/src/common/models/ImageSizes'
 import { Repost } from 'audius-client/src/common/models/Repost'
-import {
-  FieldVisibility,
-  LineupTrack,
-  Remix
-} from 'audius-client/src/common/models/Track'
+import { FieldVisibility, Remix } from 'audius-client/src/common/models/Track'
 import { User } from 'audius-client/src/common/models/User'
-import { StyleProp, ViewStyle } from 'react-native'
 
 export enum TrackTileSize {
   LARGE = 'LARGE',
   SMALL = 'SMALL'
 }
 
-// TODO: sk - add comments
-
 export type TileProps = {
-  activityTimestamp?: string
-  containerStyle?: StyleProp<ViewStyle>
+  /** Object containing image sizes */
   coverArtSizes: CoverArtSizes
+
+  /** Track's duration in seconds displayed in the top right */
   duration: number
+
+  /** Array of reposts from followees */
   followeeReposts: Repost[]
+
+  /** Array of saves from followees */
   followeeSaves: Favorite[]
-  goToRoute: (route: string) => void
+
+  /** If the current user has reposted */
   hasCurrentUserReposted: boolean
+
+  /** If the current user has saved */
   hasCurrentUserSaved: boolean
+
+  /** ID of the track */
   id: ID
+
+  /** Index of track in lineup */
   index: number
-  isActive: boolean
+
+  /** If track metadata is loading in */
   isLoading: boolean
+
+  /** If track is playing */
   isPlaying: boolean
+
+  /** Are we in a trending lineup? Allows tiles to specialize their rendering */
   isTrending: boolean
+
+  /** If the track is unlisted/hidden */
   isUnlisted?: boolean
+
+  /** Function to call when track & art has loaded */
   onLoad: (index: number) => void
+
+  /** Number of reposts */
   repostCount: number
+
+  /** Whether to show an icon indicating rank in lineup */
   showRankIcon: boolean
-  /** Size of the track Tile Large or Small */
+
+  /** Size of the tile */
   size?: TrackTileSize
+
+  /** Function to call when play is toggled */
   togglePlay: (uid: UID, trackId: ID, source?: PlaybackSource) => void
-  trackTileStyles?: StyleProp<ViewStyle>
+
+  /** id of the current user */
   uid: UID
+
+  /** Artist who uploaded the track  */
   user: User
 }
 
 export type TrackTileProps = TileProps & {
-  artistHandle: string
-  artistIsVerified: boolean
+  /** Name of the artist who uploaded the track */
   artistName: string
+
+  /** Optional object containing coSign info */
   coSign?: Remix | null
-  disableActions?: boolean
+
+  /** Optional object containing which fields are visible */
   fieldVisibility?: FieldVisibility
+
+  /** If the track is the artist pick */
   isArtistPick?: boolean
+
+  /** Number of listens */
   listenCount?: number
+
+  /** Function to call when overflow icon is clicked */
   onClickOverflow?: (trackId: ID) => void
-  ordered?: boolean
+
+  /** Number of saves */
   saveCount: number
+
+  /** Whether or not to show the artist pick indicators */
   showArtistPick?: boolean
-  showArtworkIcon?: boolean
-  showListens?: boolean
+
+  /** Whether or not to show the loading skeleton */
   showSkeleton?: boolean
+
+  /** Title of the track */
   title: string
-  uploadError?: boolean
-  uploading?: boolean
-  uploadPercent?: number
-  uploadText?: string
-  userSignedIn?: boolean
-}
-
-export type PlaylistTileProps = TileProps & {
-  activeTrackUid: UID | null
-  artistHandle: string
-  artistIsVerified: boolean
-  artistName: string
-  contentTitle: string
-  disableActions?: boolean
-  isAlbum: boolean
-  isPublic: boolean
-  numLoadingSkeletonRows?: number
-  /** Number of rows to show when in loading state, if any */
-  ordered?: boolean
-  ownerId: ID
-  pauseTrack: () => void
-  playingTrackId?: ID | null
-  playingUid?: UID | null
-  playlistTitle: string
-  playTrack: (uid: UID) => void
-  // TODO: remove when making all playlist tiles functional components
-  record?: (event: any) => void
-  saveCount: number
-  showArtworkIcon?: boolean
-  showSkeleton?: boolean
-  trackCount: number
-  tracks: LineupTrack[]
-  uploading?: boolean
-  uploadPercent?: number
-}
-
-export type SkeletonTileProps = {
-  index?: number
-  key: number
-  tileSize: TrackTileSize
-  ordered?: boolean
 }

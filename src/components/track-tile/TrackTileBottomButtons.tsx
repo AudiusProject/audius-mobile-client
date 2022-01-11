@@ -1,4 +1,4 @@
-import React, { memo, useContext } from 'react'
+import React, { useContext } from 'react'
 
 import { ImageStyle, Pressable, StyleSheet, View } from 'react-native'
 
@@ -142,4 +142,4 @@ const TrackTileBottomButtons = ({
   )
 }
 
-export default memo(TrackTileBottomButtons)
+export default TrackTileBottomButtons
