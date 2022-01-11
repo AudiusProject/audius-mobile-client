@@ -24,6 +24,7 @@ import Notifications from 'app/components/notifications/Notifications'
 import OAuth from 'app/components/oauth/OAuth'
 import OverflowMenuDrawer from 'app/components/overflow-menu-drawer'
 import Search from 'app/components/search/Search'
+import { ShareDrawer } from 'app/components/share-drawer'
 import ShareToTiktokDrawer from 'app/components/share-to-tiktok-drawer'
 import { ToastContextProvider } from 'app/components/toast/ToastContext'
 import TransferAudioMobileDrawer from 'app/components/transfer-audio-mobile-drawer'
@@ -37,7 +38,6 @@ import createStore from 'app/store'
 import { setup as setupAnalytics } from 'app/utils/analytics'
 
 import ErrorBoundary from './ErrorBoundary'
-import { ShareDrawer } from './components/share-drawer'
 import { ThemeContextProvider } from './components/theme/ThemeContext'
 
 Sentry.init({

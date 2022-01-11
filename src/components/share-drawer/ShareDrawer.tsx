@@ -32,11 +32,10 @@ import {
   useThemeColors,
   useThemeVariant
 } from 'app/utils/theme'
+import { getTwitterLink } from 'app/utils/twitter'
 
 import ActionDrawer from '../action-drawer'
 import { ToastContext } from '../toast/ToastContext'
-
-import { getTwitterLink } from './utils'
 
 const messages = {
   modalTitle: 'Share Track',
@@ -49,7 +48,7 @@ const messages = {
 const createStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
     shareToTwitterAction: {
-      color: '#1BA1F1'
+      color: themeColors.staticTwitterBlue
     },
     shareToTikTokAction: {
       color: 'black'
@@ -85,7 +84,7 @@ const createStyles = (themeColors: ThemeColors) =>
 
 export const ShareDrawer = () => {
   const styles = useThemedStyles(createStyles)
-  const { secondary, neutral } = useThemeColors()
+  const { secondary, neutral, staticTwitterBlue } = useThemeColors()
   const themeVariant = useThemeVariant()
   const isDarkMode = themeVariant === Theme.DARK
   const dispatchWeb = useDispatchWeb()
@@ -139,7 +138,7 @@ export const ShareDrawer = () => {
 
   const getRows = useCallback(() => {
     const shareToTwitterAction = {
-      icon: <IconTwitterBird fill='#1BA1F1' height={20} width={26} />,
+      icon: <IconTwitterBird fill={staticTwitterBlue} height={20} width={26} />,
       text: messages.twitter,
       style: styles.shareToTwitterAction,
       callback: handleShareToTwitter
