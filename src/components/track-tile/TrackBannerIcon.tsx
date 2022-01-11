@@ -16,7 +16,6 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderRadius: 8,
 
-    // TODO: sk - android box shadow
     shadowOpacity: 0.3,
     shadowOffset: { width: 0, height: 1 },
     shadowRadius: 3

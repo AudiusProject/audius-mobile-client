@@ -45,7 +45,7 @@ const createStyles = (themeColors: ThemeColors) =>
       maxWidth: 400,
       marginHorizontal: 'auto',
       marginBottom: 12,
-      // TODO: android box shadow
+      elevation: 3,
       shadowOpacity: 0.15,
       shadowOffset: { width: 0, height: 1 },
       shadowRadius: 3
