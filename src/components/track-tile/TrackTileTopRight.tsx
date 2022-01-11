@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 
 import { formatSeconds } from 'audius-client/src/common/utils/timeUtil'
 import { Animated, StyleSheet, View, ViewStyle } from 'react-native'
@@ -6,7 +6,7 @@ import { SvgProps } from 'react-native-svg'
 
 import IconHidden from 'app/assets/images/iconHidden.svg'
 import IconStar from 'app/assets/images/iconStar.svg'
-import Text, { AnimatedText } from 'app/components/text'
+import Text from 'app/components/text'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
 import { flexRowCentered } from 'app/styles'
 import { useThemeColors } from 'app/utils/theme'
