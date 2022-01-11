@@ -18,12 +18,16 @@ import { getNavigationStateAtRoute } from 'app/utils/navigation'
 import BottomTabNavigator from './BottomTabNavigator'
 
 // This enables the RN bottom bar and navigation
-const IS_MAIN_NAVIGATION_ENABLED = true
+const IS_MAIN_NAVIGATION_ENABLED = Config.NATIVE_NAVIGATION_ENABLED
 
 // As screens get migrated to RN, add them to this set.
 // This set should only include the screens accessible from the bottom bar
 // (sign on screens are implicitly included)
-const nativeScreens = new Set(IS_MAIN_NAVIGATION_ENABLED ? ['feed'] : [])
+const nativeScreens = new Set(
+  IS_MAIN_NAVIGATION_ENABLED
+    ? ['trending', 'explore', 'feed', 'profile', 'favorites']
+    : []
+)
 
 const styles = StyleSheet.create({
   appNavigator: {
