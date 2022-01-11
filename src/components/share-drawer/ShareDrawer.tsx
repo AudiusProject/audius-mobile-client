@@ -136,6 +136,9 @@ export const ShareDrawer = () => {
     handleClose()
   }, [dispatchWeb, track, source, handleClose])
 
+  const shouldIncludeTikTokAction =
+    isOwner && !track.is_invalid && !track.is_delete
+
   const getRows = useCallback(() => {
     const shareToTwitterAction = {
       icon: <IconTwitterBird fill={staticTwitterBlue} height={20} width={26} />,
@@ -169,7 +172,7 @@ export const ShareDrawer = () => {
       callback: handleOpenShareSheet
     }
 
-    return isOwner
+    return shouldIncludeTikTokAction
       ? [
           shareToTwitterAction,
           shareToTikTokAction,
@@ -178,14 +181,15 @@ export const ShareDrawer = () => {
         ]
       : [shareToTwitterAction, copyLinkAction, shareSheetAction]
   }, [
-    isOwner,
-    isDarkMode,
-    secondary,
+    staticTwitterBlue,
     styles,
     handleShareToTwitter,
+    isDarkMode,
     handleShareToTikTok,
+    secondary,
     handleCopyLink,
-    handleOpenShareSheet
+    handleOpenShareSheet,
+    shouldIncludeTikTokAction
   ])
 
   return (
