@@ -4,6 +4,7 @@ import Clipboard from '@react-native-clipboard/clipboard'
 import { CommonState } from 'audius-client/src/common/store'
 import { getAccountUser } from 'audius-client/src/common/store/account/selectors'
 import { getUser } from 'audius-client/src/common/store/cache/users/selectors'
+import { shareTrack } from 'audius-client/src/common/store/social/tracks/actions'
 import {
   getModalVisibility,
   setVisibility
@@ -41,7 +42,8 @@ const messages = {
   modalTitle: 'Share Track',
   twitter: 'Share to Twitter',
   tikTok: 'Share Sound to TikTok',
-  copyLink: 'Copy Track to Link'
+  copyLink: 'Copy Track to Link',
+  shareSheet: 'Share Track via...'
 }
 
 const createStyles = (themeColors: ThemeColors) =>
@@ -124,17 +126,16 @@ export const ShareDrawer = () => {
   }, [dispatchWeb, track, handleClose])
 
   const handleCopyLink = useCallback(() => {
-    if (track && source) {
-      const trackUrl = getTrackRoute(track, true)
-      Clipboard.setString(trackUrl)
-      toast({ content: 'Copied Link to Track', type: 'info' })
-    } else {
-      console.error(
-        'Tried to copy link to track, but track and/or source was missing'
-      )
-    }
+    const trackUrl = getTrackRoute(track, true)
+    Clipboard.setString(trackUrl)
+    toast({ content: 'Copied Link to Track', type: 'info' })
     handleClose()
-  }, [toast, track, source, handleClose])
+  }, [toast, track, handleClose])
+
+  const handleOpenShareSheet = useCallback(() => {
+    dispatchWeb(shareTrack(track.track_id, source))
+    handleClose()
+  }, [dispatchWeb, track, source, handleClose])
 
   const getRows = useCallback(() => {
     const shareToTwitterAction = {
@@ -162,9 +163,21 @@ export const ShareDrawer = () => {
       callback: handleCopyLink
     }
 
+    const shareSheetAction = {
+      text: messages.shareSheet,
+      icon: <IconShare height={26} width={26} fill={secondary} />,
+      style: styles.copyLinkAction,
+      callback: handleOpenShareSheet
+    }
+
     return isOwner
-      ? [shareToTwitterAction, shareToTikTokAction, copyLinkAction]
-      : [shareToTwitterAction, copyLinkAction]
+      ? [
+          shareToTwitterAction,
+          shareToTikTokAction,
+          copyLinkAction,
+          shareSheetAction
+        ]
+      : [shareToTwitterAction, copyLinkAction, shareSheetAction]
   }, [
     isOwner,
     isDarkMode,
@@ -172,7 +185,8 @@ export const ShareDrawer = () => {
     styles,
     handleShareToTwitter,
     handleShareToTikTok,
-    handleCopyLink
+    handleCopyLink,
+    handleOpenShareSheet
   ])
 
   return (
