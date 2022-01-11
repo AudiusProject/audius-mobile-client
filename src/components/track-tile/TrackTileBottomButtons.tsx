@@ -76,7 +76,7 @@ const TrackTileBottomButtons = ({
         onPress={() => toggleRepost()}
         isActive={hasReposted}
         isDisabled={isOwner}
-        styles={{ image: [styles.button, styles.firstButton] as ImageStyle }}
+        style={[styles.button, styles.firstButton] as ImageStyle}
       />
     )
   }
@@ -87,7 +87,7 @@ const TrackTileBottomButtons = ({
         onPress={() => toggleSave()}
         isActive={hasSaved}
         isDisabled={isOwner}
-        styles={{ image: styles.button as ImageStyle }}
+        style={styles.button as ImageStyle}
       />
     )
   }

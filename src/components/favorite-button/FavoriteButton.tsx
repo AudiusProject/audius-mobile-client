@@ -1,12 +1,14 @@
 import React from 'react'
 
-import { StyleProp, StyleSheet, ViewStyle, ImageStyle } from 'react-native'
+import { StyleSheet } from 'react-native'
 
 import IconFavoriteOffDark from 'app/assets/animations/iconFavoriteTrackTileOffDark.json'
 import IconFavoriteOffLight from 'app/assets/animations/iconFavoriteTrackTileOffLight.json'
 import IconFavoriteOnDark from 'app/assets/animations/iconFavoriteTrackTileOnDark.json'
 import IconFavoriteOnLight from 'app/assets/animations/iconFavoriteTrackTileOnLight.json'
-import AnimatedButtonProvider from 'app/components/animated-button/AnimatedButtonProvider'
+import AnimatedButtonProvider, {
+  AnimatedButtonProviderProps
+} from 'app/components/animated-button/AnimatedButtonProvider'
 import { Theme, useThemeVariant } from 'app/utils/theme'
 
 const styles = StyleSheet.create({
@@ -16,47 +18,22 @@ const styles = StyleSheet.create({
   }
 })
 
-type FavoriteButtonProps = {
-  /**
-   *  Whether or not the icon is active (filled)
-   */
-  isActive?: boolean
-  /**
-   * Whether or not the icon is disabled
-   */
-  isDisabled?: boolean
-  /**
-   * Callback when the icon is pressed
-   */
-  onPress?: () => void
-  /**
-   * Styles to apply
-   */
-  styles?: {
-    image?: StyleProp<ImageStyle>
-    wrapper?: StyleProp<ViewStyle>
-  }
-}
+type FavoriteButtonProps = Omit<
+  AnimatedButtonProviderProps,
+  'iconLightJSON' | 'iconDarkJSON' | 'isDarkMode'
+>
 
-const FavoriteButton = ({
-  isActive = false,
-  isDisabled = false,
-  onPress = () => {},
-  styles: stylesProp = {}
-}: FavoriteButtonProps) => {
+const FavoriteButton = (props: FavoriteButtonProps) => {
   const themeVariant = useThemeVariant()
   const isDarkMode = themeVariant === Theme.DARK
 
   return (
     <AnimatedButtonProvider
-      isActive={isActive}
-      isDisabled={isDisabled}
+      {...props}
       isDarkMode={isDarkMode}
       iconLightJSON={[IconFavoriteOnLight, IconFavoriteOffLight]}
       iconDarkJSON={[IconFavoriteOnDark, IconFavoriteOffDark]}
-      onPress={onPress}
-      style={stylesProp.image}
-      wrapperStyle={[styles.icon, stylesProp.wrapper]}
+      wrapperStyle={[styles.icon, props.wrapperStyle]}
     />
   )
 }

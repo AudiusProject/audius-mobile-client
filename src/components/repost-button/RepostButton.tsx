@@ -1,12 +1,14 @@
 import React from 'react'
 
-import { StyleProp, StyleSheet, ViewStyle, ImageStyle } from 'react-native'
+import { StyleSheet } from 'react-native'
 
 import IconRepostOffDark from 'app/assets/animations/iconRepostTrackTileOffDark.json'
 import IconRepostOffLight from 'app/assets/animations/iconRepostTrackTileOffLight.json'
 import IconRepostOnDark from 'app/assets/animations/iconRepostTrackTileOnDark.json'
 import IconRepostOnLight from 'app/assets/animations/iconRepostTrackTileOnLight.json'
-import AnimatedButtonProvider from 'app/components/animated-button/AnimatedButtonProvider'
+import AnimatedButtonProvider, {
+  AnimatedButtonProviderProps
+} from 'app/components/animated-button/AnimatedButtonProvider'
 import { Theme, useThemeVariant } from 'app/utils/theme'
 
 const styles = StyleSheet.create({
@@ -16,47 +18,22 @@ const styles = StyleSheet.create({
   }
 })
 
-type RepostButtonProps = {
-  /**
-   *  Whether or not the icon is active (filled)
-   */
-  isActive?: boolean
-  /**
-   * Whether or not the icon is disabled
-   */
-  isDisabled?: boolean
-  /**
-   * Callback when the icon is pressed
-   */
-  onPress?: () => void
-  /**
-   * Style to apply
-   */
-  styles?: {
-    image?: StyleProp<ImageStyle>
-    wrapper?: StyleProp<ViewStyle>
-  }
-}
+type RepostButtonProps = Omit<
+  AnimatedButtonProviderProps,
+  'iconLightJSON' | 'iconDarkJSON' | 'isDarkMode'
+>
 
-const RepostButton = ({
-  isActive = false,
-  isDisabled = false,
-  onPress = () => {},
-  styles: stylesProp = {}
-}: RepostButtonProps) => {
+const RepostButton = (props: RepostButtonProps) => {
   const themeVariant = useThemeVariant()
   const isDarkMode = themeVariant === Theme.DARK
 
   return (
     <AnimatedButtonProvider
-      isActive={isActive}
-      isDisabled={isDisabled}
+      {...props}
       isDarkMode={isDarkMode}
       iconLightJSON={[IconRepostOnLight, IconRepostOffLight]}
       iconDarkJSON={[IconRepostOnDark, IconRepostOffDark]}
-      onPress={onPress}
-      style={[stylesProp.image]}
-      wrapperStyle={[styles.icon, stylesProp.wrapper]}
+      wrapperStyle={[styles.icon, props.wrapperStyle]}
     />
   )
 }
