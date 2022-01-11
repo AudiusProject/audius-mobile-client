@@ -4,6 +4,7 @@ import { ID } from 'audius-client/src/common/models/Identifiers'
 import { StyleProp, StyleSheet, View, ViewStyle } from 'react-native'
 
 import IconCoSign from 'app/assets/images/iconCoSign.svg'
+import { useThemeColors } from 'app/utils/theme'
 
 import { Size } from './types'
 
@@ -24,11 +25,8 @@ type CoSignProps =
     }
 
 const CoSign = ({ size, children, style }: CoSignProps) => {
+  const { primary, staticWhite } = useThemeColors()
   const styles = StyleSheet.create({
-    children: {
-      width: '100%',
-      height: '100%'
-    },
     check: {
       position: 'absolute',
       ...{
@@ -53,39 +51,37 @@ const CoSign = ({ size, children, style }: CoSignProps) => {
           right: -7
         }
       }[size]
-    },
-    box: {
-      ...{
-        [Size.TINY]: {
-          height: 10,
-          width: 10
-        },
-        [Size.SMALL]: {
-          height: 16,
-          width: 16
-        },
-        [Size.MEDIUM]: {
-          height: 24,
-          width: 24
-        },
-        [Size.LARGE]: {
-          height: 32,
-          width: 32
-        },
-        [Size.XLARGE]: {
-          height: 44,
-          width: 44
-        }
-      }[size]
     }
   })
+
+  const iconSize = {
+    [Size.TINY]: {
+      height: 10,
+      width: 10
+    },
+    [Size.SMALL]: {
+      height: 16,
+      width: 16
+    },
+    [Size.MEDIUM]: {
+      height: 24,
+      width: 24
+    },
+    [Size.LARGE]: {
+      height: 32,
+      width: 32
+    },
+    [Size.XLARGE]: {
+      height: 44,
+      width: 44
+    }
+  }[size]
+
   return (
     <View style={style}>
-      <View style={styles.children}>{children}</View>
+      <View>{children}</View>
       <View style={styles.check}>
-        <View style={styles.box}>
-          <IconCoSign />
-        </View>
+        <IconCoSign fill={primary} fillSecondary={staticWhite} {...iconSize} />
       </View>
     </View>
   )

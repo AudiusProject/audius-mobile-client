@@ -97,12 +97,12 @@ const TrackTileStats = ({
   const { neutralLight4 } = useThemeColors()
 
   return (
-    <View style={styles.stats}>
+    <Animated.View style={[fadeIn, styles.stats]}>
       {isTrending && isLoaded && (
         <TrackTileRankIcon showCrown={showRankIcon} index={index} />
       )}
       {!!(repostCount || saveCount) && !isUnlisted && (
-        <Animated.View style={[fadeIn, styles.leftStats]}>
+        <View style={styles.leftStats}>
           <Pressable
             style={[
               trackTileStyles.statItem,
@@ -137,7 +137,7 @@ const TrackTileStats = ({
               fill={neutralLight4}
             />
           </Pressable>
-        </Animated.View>
+        </View>
       )}
       {!hidePlays && (
         <AnimatedText
@@ -146,7 +146,7 @@ const TrackTileStats = ({
           {formatListenCount(listenCount)}
         </AnimatedText>
       )}
-    </View>
+    </Animated.View>
   )
 }
 

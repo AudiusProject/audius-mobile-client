@@ -9,6 +9,8 @@ import { useThemedStyles } from 'app/hooks/useThemedStyles'
 import { flexRowCentered } from 'app/styles'
 import { ThemeColors } from 'app/utils/theme'
 
+import { createStyles as createTrackTileStyles } from './styles'
+
 const messages = {
   coSign: 'Co-Sign',
   reposted: 'Reposted',
@@ -36,18 +38,14 @@ const createStyles = (themeColors: ThemeColors) =>
     coSignText: {
       ...flexRowCentered(),
       justifyContent: 'flex-start',
-      color: themeColors.neutralLight4,
       fontSize: 12,
       letterSpacing: 0.2,
-      lineHeight: 14,
       marginLeft: 10,
       marginTop: 8
     },
     coSignName: {
-      marginRight: 4,
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center'
+      ...flexRowCentered(),
+      marginRight: 4
     },
     coSignIcon: {
       marginLeft: 4
@@ -60,20 +58,24 @@ type Props = {
 
 const TrackTileCoSign = ({ coSign }: Props) => {
   const styles = useThemedStyles(createStyles)
+  const trackTileStyles = useThemedStyles(createTrackTileStyles)
   return (
     <View style={styles.coSignText}>
       <View style={styles.coSignName}>
-        <Text>{coSign.user.name}</Text>
+        <Text style={trackTileStyles.statText}>{coSign.user.name}</Text>
         <UserBadges
           user={coSign.user}
           style={styles.coSignIcon}
           badgeSize={8}
+          hideName
         />
       </View>
-      {formatCoSign({
-        hasReposted: coSign.has_remix_author_reposted,
-        hasFavorited: coSign.has_remix_author_saved
-      })}
+      <Text style={trackTileStyles.statText}>
+        {formatCoSign({
+          hasReposted: coSign.has_remix_author_reposted,
+          hasFavorited: coSign.has_remix_author_saved
+        })}
+      </Text>
     </View>
   )
 }

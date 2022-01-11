@@ -59,7 +59,7 @@ const TrackTileArt = ({
   return coSign ? (
     <CoSign
       size={Size.SMALL}
-      style={style}
+      style={[style, styles.image]}
       hasFavorited={coSign.has_remix_author_saved}
       hasReposted={coSign.has_remix_author_reposted}
       coSignName={coSign.user.name}

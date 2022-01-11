@@ -1,15 +1,15 @@
-import React, { ReactElement } from 'react'
+import React from 'react'
 
 import { User } from 'audius-client/src/common/models/User'
-import { StyleSheet, View, Image, Text } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
+import { SvgProps } from 'react-native-svg'
 
-import IconBronzeBadgeSVG from 'app/assets/images/IconBronzeBadge.svg'
-import IconGoldBadgeSVG from 'app/assets/images/IconGoldBadge.svg'
-import IconPlatinumBadgeSVG from 'app/assets/images/IconPlatinumBadge.svg'
-import IconSilverBadgeSVG from 'app/assets/images/IconSilverBadge.svg'
+import IconBronzeBadge from 'app/assets/images/IconBronzeBadge.svg'
+import IconGoldBadge from 'app/assets/images/IconGoldBadge.svg'
+import IconPlatinumBadge from 'app/assets/images/IconPlatinumBadge.svg'
+import IconSilverBadge from 'app/assets/images/IconSilverBadge.svg'
 import IconVerified from 'app/assets/images/iconVerified.svg'
 import getBadgeTier, { BadgeTier } from 'app/utils/badgeTier'
-import { Nullable } from 'app/utils/typeUtils'
 
 type UserBadgesProps = {
   user: Pick<
@@ -17,7 +17,6 @@ type UserBadgesProps = {
     'name' | 'associated_wallets_balance' | 'balance' | 'is_verified'
   >
   badgeSize?: number
-  useSVGTiers?: boolean
   style?: Record<string, any>
   nameStyle?: Record<string, any>
   hideName?: boolean
@@ -32,62 +31,26 @@ const styles = StyleSheet.create({
   },
   badge: {
     marginLeft: 4
-  },
-  image: {
-    height: 15,
-    width: 15
   }
 })
 
-const audioTierMapSVG: { [tier in BadgeTier]: Nullable<ReactElement> } = {
+export const badgeByTier: Record<BadgeTier, React.FC<SvgProps>> = {
   none: null,
-  bronze: <IconBronzeBadgeSVG style={styles.badge} height={14} width={14} />,
-  silver: <IconSilverBadgeSVG style={styles.badge} height={14} width={14} />,
-  gold: <IconGoldBadgeSVG style={styles.badge} height={14} width={14} />,
-  platinum: <IconPlatinumBadgeSVG style={styles.badge} height={14} width={14} />
-}
-
-export const audioTierMapPng: {
-  [tier in BadgeTier]: Nullable<ReactElement>
-} = {
-  none: null,
-  bronze: (
-    <Image
-      style={[styles.badge, styles.image]}
-      source={require('app/assets/images/tokenBadgeBronze40.png')}
-    />
-  ),
-  silver: (
-    <Image
-      style={[styles.badge, styles.image]}
-      source={require('app/assets/images/tokenBadgeSilver40.png')}
-    />
-  ),
-  gold: (
-    <Image
-      style={[styles.badge, styles.image]}
-      source={require('app/assets/images/tokenBadgeGold40.png')}
-    />
-  ),
-  platinum: (
-    <Image
-      style={[styles.badge, styles.image]}
-      source={require('app/assets/images/tokenBadgePlatinum40.png')}
-    />
-  )
+  bronze: IconBronzeBadge,
+  silver: IconSilverBadge,
+  gold: IconGoldBadge,
+  platinum: IconPlatinumBadge
 }
 
 const UserBadges: React.FC<UserBadgesProps> = ({
   user,
-  useSVGTiers = false,
   badgeSize = 14,
   style = {},
   nameStyle = {},
   hideName
 }) => {
   const tier = getBadgeTier(user)
-  const tierMap = useSVGTiers ? audioTierMapSVG : audioTierMapPng
-  const tierElement = tierMap[tier]
+  const Badge = badgeByTier[tier]
   return (
     <View style={[styles.container, style]}>
       {!hideName && (
@@ -102,7 +65,13 @@ const UserBadges: React.FC<UserBadgesProps> = ({
           style={styles.badge}
         />
       )}
-      {tierElement}
+      {Badge && (
+        <Badge
+          style={styles.badge}
+          height={badgeSize + 2}
+          width={badgeSize + 2}
+        />
+      )}
     </View>
   )
 }

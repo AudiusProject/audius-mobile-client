@@ -12,6 +12,7 @@ import {
 
 import { TrackTileProps } from 'app/components/track-tile/types'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
+import { flexRow } from 'app/styles'
 import { ThemeColors } from 'app/utils/theme'
 
 import TrackBannerIcon, { TrackBannerIconType } from './TrackBannerIcon'
@@ -20,6 +21,8 @@ import TrackTileCoSign from './TrackTileCoSign'
 import TrackTileMetadata from './TrackTileMetadata'
 import TrackTileStats from './TrackTileStats'
 import TrackTileTopRight from './TrackTileTopRight'
+
+// It might be better to fade all content in and then show skeletons separately
 
 type ExtraProps = {
   goToTrackPage: (e: GestureResponderEvent) => void
@@ -53,10 +56,6 @@ const createStyles = (themeColors: ThemeColors) =>
     mainContent: {
       display: 'flex',
       flex: 1
-    },
-    rightContent: {
-      display: 'flex',
-      flexDirection: 'row'
     }
   })
 
