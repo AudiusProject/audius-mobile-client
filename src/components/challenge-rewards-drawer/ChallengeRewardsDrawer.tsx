@@ -1,5 +1,6 @@
 import React from 'react'
 
+import { ClaimStatus } from 'audius-client/src/common/store/pages/audio-rewards/slice'
 import {
   StyleSheet,
   Image,
@@ -9,8 +10,11 @@ import {
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 
+import IconArrow from 'app/assets/images/iconArrow.svg'
+import Button, { ButtonType } from 'app/components/button'
 import Drawer from 'app/components/drawer'
 import GradientText from 'app/components/gradient-text'
+import LoadingSpinner from 'app/components/loading-spinner'
 import Text from 'app/components/text'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
 import { ThemeColors, useThemeColors } from 'app/utils/theme'
@@ -22,7 +26,8 @@ const messages = {
   audio: '$AUDIO',
   incomplete: 'Incomplete',
   complete: 'Complete',
-  claim: 'Claim Your Reward'
+  claim: 'Claim Your Reward',
+  claimErrorMessage: 'Something went wrong. Try again.'
 }
 
 const createProgressBarStyles = (themeColors: ThemeColors) =>
@@ -192,8 +197,18 @@ const createStyles = (themeColors: ThemeColors) =>
       fontSize: 12,
       color: themeColors.neutralLight4
     },
-    claimButton: {
-      marginTop: 32
+    claimRewardsContainer: {
+      marginTop: 32,
+      width: '100%'
+    },
+    claimRewardsError: {
+      textAlign: 'center',
+      color: themeColors.accentRed,
+      fontSize: 16,
+      marginBottom: 10
+    },
+    claimButtonContainer: {
+      width: '100%'
     }
   })
 
@@ -220,6 +235,9 @@ type ChallengeRewardsDrawerProps = {
   isDisbursed: boolean
   /** Whether the challenge is completed */
   isComplete: boolean
+  claimStatus: ClaimStatus
+  /** Callback that runs on the claim rewards button being clicked */
+  onClaim?: () => void
   children?: React.ReactChild
 }
 const ChallengeRewardsDrawer = ({
@@ -234,16 +252,23 @@ const ChallengeRewardsDrawer = ({
   progressLabel,
   isDisbursed,
   isComplete,
+  claimStatus,
+  onClaim,
   children
 }: ChallengeRewardsDrawerProps) => {
   const styles = useThemedStyles(createStyles)
   const isInProgress = currentStep > 0 && !isComplete
+  const claimInProgress =
+    claimStatus === ClaimStatus.CLAIMING ||
+    claimStatus === ClaimStatus.RETRY_PENDING
+  const claimError = claimStatus === ClaimStatus.ERROR
 
   const statusText = isComplete
     ? messages.complete
     : isInProgress
     ? `${currentStep}/${stepCount} ${progressLabel}`
     : messages.incomplete
+
   return (
     <Drawer
       isOpen={isOpen}
@@ -305,6 +330,29 @@ const ChallengeRewardsDrawer = ({
           </View>
         </View>
         {children}
+        {!isDisbursed && isComplete && onClaim && (
+          <View style={styles.claimRewardsContainer}>
+            {claimError && (
+              <Text style={styles.claimRewardsError} weight='bold'>
+                {messages.claimErrorMessage}
+              </Text>
+            )}
+            <Button
+              containerStyle={styles.claimButtonContainer}
+              type={claimInProgress ? ButtonType.COMMON : ButtonType.PRIMARY}
+              disabled={claimInProgress}
+              title={messages.claim}
+              onPress={onClaim}
+              icon={
+                claimInProgress ? (
+                  <LoadingSpinner />
+                ) : (
+                  <IconArrow fill='white' />
+                )
+              }
+            />
+          </View>
+        )}
       </View>
     </Drawer>
   )

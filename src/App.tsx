@@ -38,6 +38,7 @@ import createStore from 'app/store'
 import { setup as setupAnalytics } from 'app/utils/analytics'
 
 import ErrorBoundary from './ErrorBoundary'
+import CognitoWebView from './components/cognito/CognitoWebView'
 import { ThemeContextProvider } from './components/theme/ThemeContext'
 
 Sentry.init({
@@ -70,6 +71,7 @@ const Drawers = () => {
       <ApiRewardsDrawer />
       <ShareToTiktokDrawer />
       <ChallengeRewardsDrawerProvider />
+      <CognitoWebView />
       {/* Disable the audio breakdown drawer until we get
       the feature flags to work for native mobile */}
       {/* <AudioBreakdownDrawer /> */}

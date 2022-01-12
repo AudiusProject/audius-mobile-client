@@ -1,10 +1,18 @@
 import React, { useCallback } from 'react'
 
 import {
+  IntKeys,
+  StringKeys
+} from 'audius-client/src/common/services/remote-config'
+import {
   getChallengeRewardsModalType,
+  getClaimStatus,
   getUserChallenges
 } from 'audius-client/src/common/store/pages/audio-rewards/selectors'
-import { ChallengeRewardsModalType } from 'audius-client/src/common/store/pages/audio-rewards/slice'
+import {
+  ChallengeRewardsModalType,
+  fetchClaimAttestation
+} from 'audius-client/src/common/store/pages/audio-rewards/slice'
 import { show as showMobileUploadDrawer } from 'audius-client/src/common/store/ui/mobile-upload-drawer/slice'
 import {
   getModalVisibility,
@@ -28,6 +36,7 @@ import IconCheck from 'app/assets/images/iconCheck.svg'
 import IconUpload from 'app/assets/images/iconUpload.svg'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { usePushRouteWeb } from 'app/hooks/usePushRouteWeb'
+import { useRemoteVar } from 'app/hooks/useRemoteConfig'
 import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 
 import Button, { ButtonType } from '../button'
@@ -134,13 +143,6 @@ const challengesConfig: Record<ChallengeRewardsModalType, ChallengeConfig> = {
     progressLabel: messages.referralsProgressLabel,
     amount: 1
   },
-  referred: {
-    icon: IncomingEnvelope,
-    title: messages.referreralsTitle,
-    description: messages.referralsDescription,
-    progressLabel: messages.referralsProgressLabel,
-    amount: 1
-  },
   'track-upload': {
     icon: MultipleMusicalNotes,
     title: messages.trackUploadTitle,
@@ -168,6 +170,8 @@ const ChallengeRewardsDrawerProvider = () => {
     () => dispatchWeb(setVisibility({ modal: MODAL_NAME, visible: false })),
     [dispatchWeb]
   )
+  const claimStatus = useSelectorWeb(getClaimStatus)
+
   const challenge = userChallenges ? userChallenges[modalType] : null
   const config = challengesConfig[modalType]
   const goToRoute = useCallback(() => {
@@ -183,6 +187,25 @@ const ChallengeRewardsDrawerProvider = () => {
     dispatchWeb(showMobileUploadDrawer())
   }, [dispatchWeb, onClose])
 
+  // Claim rewards button config
+  const quorumSize = useRemoteVar(IntKeys.ATTESTATION_QUORUM_SIZE)
+  const oracleEthAddress = useRemoteVar(StringKeys.ORACLE_ETH_ADDRESS)
+  const AAOEndpoint = useRemoteVar(StringKeys.ORACLE_ENDPOINT)
+  const hasConfig = (oracleEthAddress && AAOEndpoint && quorumSize > 0) || true
+  const onClaim = useCallback(() => {
+    dispatchWeb(
+      fetchClaimAttestation({
+        claim: {
+          challengeId: modalType,
+          specifier: challenge?.specifier ?? '',
+          amount: config?.amount ?? 0
+        },
+        retryOnFailure: true
+      })
+    )
+  }, [dispatchWeb, modalType, challenge, config])
+
+  // Challenge drawer contents
   let contents = null
   switch (modalType) {
     case 'referrals':
@@ -218,9 +241,12 @@ const ChallengeRewardsDrawerProvider = () => {
         />
       )
   }
+
+  // Bail if not on challenges page/challenges aren't loaded
   if (!config || !challenge) {
     return null
   }
+
   return (
     <ChallengeRewardsDrawer
       isOpen={isVisible}
@@ -234,6 +260,8 @@ const ChallengeRewardsDrawerProvider = () => {
       currentStep={challenge.current_step_count}
       stepCount={challenge.max_steps}
       isDisbursed={challenge.is_disbursed}
+      claimStatus={claimStatus}
+      onClaim={hasConfig ? onClaim : null}
     >
       {contents}
     </ChallengeRewardsDrawer>
