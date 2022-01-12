@@ -2,7 +2,7 @@ import React from 'react'
 
 import { Animated, Text as RNText } from 'react-native'
 
-import { fontByWeight, fontWeight } from 'app/styles'
+import { fontByWeight, font } from 'app/styles'
 import { useThemeColors } from 'app/utils/theme'
 
 type Props = {
@@ -16,10 +16,7 @@ type Props = {
 const Text = ({ children, weight = 'regular', style, ...props }: Props) => {
   const { neutral } = useThemeColors()
   return (
-    <RNText
-      style={[{ color: neutral, ...fontWeight(weight) }, style]}
-      {...props}
-    >
+    <RNText style={[{ color: neutral, ...font(weight) }, style]} {...props}>
       {children}
     </RNText>
   )
@@ -42,7 +39,7 @@ export const AnimatedText = ({
   const { neutral } = useThemeColors()
   return (
     <Animated.Text
-      style={[{ color: neutral, ...fontWeight(weight) }, style]}
+      style={[{ color: neutral, ...font(weight) }, style]}
       {...props}
     >
       {children}

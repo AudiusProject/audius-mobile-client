@@ -11,6 +11,6 @@ export const fontByWeight = {
   ultraLight: 'AvenirNextLTPro-UltLt'
 }
 
-export const fontWeight = (weight: keyof typeof fontByWeight): TextStyle => ({
+export const font = (weight: keyof typeof fontByWeight): TextStyle => ({
   fontFamily: fontByWeight[weight]
 })

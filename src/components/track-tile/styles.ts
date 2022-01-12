@@ -1,6 +1,6 @@
 import { StyleSheet } from 'react-native'
 
-import { flexRowCentered, fontWeight } from 'app/styles'
+import { flexRowCentered, font } from 'app/styles'
 import { ThemeColors } from 'app/utils/theme'
 
 export const createStyles = (themeColors: ThemeColors) =>
@@ -10,7 +10,7 @@ export const createStyles = (themeColors: ThemeColors) =>
       marginHorizontal: 10
     },
     statText: {
-      ...fontWeight('medium'),
+      ...font('medium'),
       fontSize: 12,
       letterSpacing: 0.2,
       color: themeColors.neutralLight4

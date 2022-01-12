@@ -26,7 +26,8 @@ const formatCoSign = ({
 }) => {
   if (hasReposted && hasFavorited) {
     return messages.repostedAndFavorited
-  } else if (hasFavorited) {
+  }
+  if (hasFavorited) {
     return messages.favorited
   }
   return messages.reposted
