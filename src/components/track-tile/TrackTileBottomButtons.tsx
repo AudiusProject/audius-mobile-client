@@ -70,74 +70,66 @@ const TrackTileBottomButtons = ({
   const { neutralLight4 } = useThemeColors()
   const styles = useThemedStyles(createStyles)
 
-  const repostButton = () => {
-    return (
-      <RepostButton
-        onPress={() => toggleRepost()}
-        isActive={hasReposted}
-        isDisabled={isOwner}
-        style={[styles.button, styles.firstButton] as ImageStyle}
+  const repostButton = (
+    <RepostButton
+      onPress={toggleRepost}
+      isActive={hasReposted}
+      isDisabled={isOwner}
+      style={[styles.button, styles.firstButton] as ImageStyle}
+    />
+  )
+
+  const favoriteButton = (
+    <FavoriteButton
+      onPress={toggleSave}
+      isActive={hasSaved}
+      isDisabled={isOwner}
+      style={styles.button as ImageStyle}
+    />
+  )
+
+  const shareButton = (
+    <Pressable
+      onPress={() => {
+        toast({
+          content: messages.copiedToast,
+          timeout: SHARE_TOAST_TIMEOUT
+        })
+        onShare()
+      }}
+    >
+      <IconShare
+        height={18}
+        width={18}
+        fill={neutralLight4}
+        style={styles.button}
       />
-    )
-  }
+    </Pressable>
+  )
 
-  const favoriteButton = () => {
-    return (
-      <FavoriteButton
-        onPress={() => toggleSave()}
-        isActive={hasSaved}
-        isDisabled={isOwner}
-        style={styles.button as ImageStyle}
+  const moreButton = (
+    <Pressable onPress={onPressOverflow}>
+      <IconKebabHorizontal
+        height={22}
+        width={22}
+        fill={neutralLight4}
+        style={[styles.button, styles.lastButton]}
       />
-    )
-  }
-
-  const shareButton = () => {
-    return (
-      <Pressable
-        onPress={() => {
-          toast({
-            content: messages.copiedToast,
-            timeout: SHARE_TOAST_TIMEOUT
-          })
-          onShare()
-        }}
-      >
-        <IconShare
-          height={18}
-          width={18}
-          fill={neutralLight4}
-          style={styles.button}
-        />
-      </Pressable>
-    )
-  }
-
-  const moreButton = () => {
-    return (
-      <Pressable onPress={onPressOverflow}>
-        <IconKebabHorizontal
-          height={22}
-          width={22}
-          fill={neutralLight4}
-          style={[styles.button, styles.lastButton]}
-        />
-      </Pressable>
-    )
-  }
+    </Pressable>
+  )
 
   return (
     <View style={styles.bottomButtons}>
       <View style={styles.leftButtons}>
         {!isUnlisted && (
           <>
-            {repostButton()}
-            {favoriteButton()}
-            {!isShareHidden && shareButton()}
+            {repostButton}
+            {favoriteButton}
+            {!isShareHidden && shareButton}
           </>
         )}
       </View>
-      {moreButton()}
+      {moreButton}
     </View>
   )
 }

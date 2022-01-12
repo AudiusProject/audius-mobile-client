@@ -1,14 +1,6 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react'
 
-import { ID } from 'audius-client/src/common/models/Identifiers'
-import {
-  Animated,
-  Easing,
-  GestureResponderEvent,
-  Pressable,
-  StyleSheet,
-  View
-} from 'react-native'
+import { Animated, Easing, Pressable, StyleSheet, View } from 'react-native'
 
 import { TrackTileProps } from 'app/components/track-tile/types'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
@@ -125,10 +117,8 @@ const TrackTile = ({
       {isUnlisted && <TrackBannerIcon type={TrackBannerIconType.HIDDEN} />}
       <Pressable
         style={styles.mainContent}
-        onPress={() => {
-          if (showSkeleton) return
-          togglePlay(uid, id)
-        }}
+        disabled={showSkeleton}
+        onPress={() => togglePlay(uid, id)}
       >
         <TrackTileTopRight
           duration={duration}

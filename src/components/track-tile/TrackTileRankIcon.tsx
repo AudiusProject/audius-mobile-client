@@ -15,8 +15,6 @@ type Props = {
   showCrown: boolean
   /** Index of this item in the lineup */
   index: number
-  /** Whether or not the rank icon is visible */
-  isVisible?: boolean
 }
 
 const createStyles = (themeColors: ThemeColors) =>
@@ -29,17 +27,17 @@ const createStyles = (themeColors: ThemeColors) =>
     }
   })
 
-const TrackTileRankIcon = ({ showCrown, index, isVisible = true }: Props) => {
+const TrackTileRankIcon = ({ showCrown, index }: Props) => {
   const styles = useThemedStyles(createStyles)
   const trackTileStyles = useThemedStyles(createTrackTileStyles)
   const { secondary } = useThemeColors()
   const Icon = showCrown ? IconCrown : IconTrending
-  return isVisible ? (
+  return (
     <View style={trackTileStyles.statItem}>
       <Icon fill={secondary} style={styles.icon} height={14} width={14} />
       <Text style={[trackTileStyles.statText, styles.text]}>{index + 1}</Text>
     </View>
-  ) : null
+  )
 }
 
 export default TrackTileRankIcon

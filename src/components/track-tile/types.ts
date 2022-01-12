@@ -5,7 +5,8 @@ import { CoverArtSizes } from 'audius-client/src/common/models/ImageSizes'
 import { Repost } from 'audius-client/src/common/models/Repost'
 import { FieldVisibility, Remix } from 'audius-client/src/common/models/Track'
 import { User } from 'audius-client/src/common/models/User'
-import { GestureResponderEvent } from 'react-native'
+
+import { GestureResponderHandler } from 'app/types/gesture'
 
 export enum TrackTileSize {
   LARGE = 'LARGE',
@@ -53,10 +54,10 @@ export type TileProps = {
   isUnlisted?: boolean
 
   /** Function that returns a function that will navigate to reposts page */
-  makeGoToRepostsPage: (trackId: ID) => (e: GestureResponderEvent) => void
+  makeGoToRepostsPage: (trackId: ID) => GestureResponderHandler
 
   /** Function that returns a function that will navigate to favorites page */
-  makeGoToFavoritesPage: (trackId: ID) => (e: GestureResponderEvent) => void
+  makeGoToFavoritesPage: (trackId: ID) => GestureResponderHandler
 
   /** Function to call when track & art has loaded */
   onLoad: (index: number) => void
@@ -100,10 +101,10 @@ export type TrackTileProps = TileProps & {
   fieldVisibility?: FieldVisibility
 
   /** Function called to go to the track page */
-  goToTrackPage: (e: GestureResponderEvent) => void
+  goToTrackPage: GestureResponderHandler
 
   /** Function called to go to the artist page */
-  goToArtistPage: (e: GestureResponderEvent) => void
+  goToArtistPage: GestureResponderHandler
 
   /** If the track is the artist pick */
   isArtistPick?: boolean

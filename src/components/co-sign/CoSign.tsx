@@ -13,63 +13,74 @@ type CoSignProps = {
   style?: StyleProp<ViewStyle>
 }
 
-const CoSign = ({ size, children, style }: CoSignProps) => {
-  const { primary, staticWhite } = useThemeColors()
-  const styles = StyleSheet.create({
-    check: {
-      position: 'absolute',
-      ...{
-        [Size.TINY]: {
-          bottom: 2,
-          right: -2
-        },
-        [Size.SMALL]: {
-          bottom: -4,
-          right: -5
-        },
-        [Size.MEDIUM]: {
-          bottom: -3,
-          right: -3
-        },
-        [Size.LARGE]: {
-          bottom: -8,
-          right: -8
-        },
-        [Size.XLARGE]: {
-          bottom: -7,
-          right: -7
-        }
-      }[size]
-    }
-  })
+const styles = StyleSheet.create({
+  check: {
+    position: 'absolute'
+  }
+})
 
-  const iconSize = {
-    [Size.TINY]: {
+const layoutBySize = {
+  [Size.TINY]: {
+    position: {
+      bottom: 2,
+      right: -2
+    },
+    size: {
       height: 10,
       width: 10
+    }
+  },
+  [Size.SMALL]: {
+    position: {
+      bottom: -4,
+      right: -5
     },
-    [Size.SMALL]: {
+    size: {
       height: 16,
       width: 16
+    }
+  },
+  [Size.MEDIUM]: {
+    position: {
+      bottom: -3,
+      right: -3
     },
-    [Size.MEDIUM]: {
+    size: {
       height: 24,
       width: 24
+    }
+  },
+  [Size.LARGE]: {
+    position: {
+      bottom: -8,
+      right: -8
     },
-    [Size.LARGE]: {
+    size: {
       height: 32,
       width: 32
+    }
+  },
+  [Size.XLARGE]: {
+    position: {
+      bottom: -7,
+      right: -7
     },
-    [Size.XLARGE]: {
+    size: {
       height: 44,
       width: 44
     }
-  }[size]
+  }
+}
+
+const CoSign = ({ size, children, style }: CoSignProps) => {
+  const { primary, staticWhite } = useThemeColors()
+
+  const { size: iconSize, position } = layoutBySize[size]
 
   return (
     <View style={style}>
       <View>{children}</View>
-      <View style={styles.check}>
+      <View style={[styles.check, position]}>
         <IconCoSign fill={primary} fillSecondary={staticWhite} {...iconSize} />
       </View>
     </View>

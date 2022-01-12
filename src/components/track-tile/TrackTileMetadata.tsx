@@ -4,13 +4,7 @@ import { ID } from 'audius-client/src/common/models/Identifiers'
 import { CoverArtSizes } from 'audius-client/src/common/models/ImageSizes'
 import { Remix } from 'audius-client/src/common/models/Track'
 import { User } from 'audius-client/src/common/models/User'
-import {
-  Animated,
-  GestureResponderEvent,
-  Pressable,
-  StyleSheet,
-  View
-} from 'react-native'
+import { Animated, Pressable, StyleSheet, View } from 'react-native'
 
 import IconVolume from 'app/assets/images/iconVolume.svg'
 import Skeleton from 'app/components/skeleton'
@@ -18,6 +12,7 @@ import Text, { AnimatedText } from 'app/components/text'
 import UserBadges from 'app/components/user-badges/UserBadges'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
 import { flexCol, flexRow, flexRowCentered } from 'app/styles'
+import { GestureResponderHandler } from 'app/types/gesture'
 import { ThemeColors, useThemeColors } from 'app/utils/theme'
 
 import TrackTileArt from './TrackTileArt'
@@ -97,8 +92,8 @@ type Props = {
   coSign?: Remix | null
   coverArtSizes: CoverArtSizes
   fadeIn: { opacity: Animated.Value }
-  goToArtistPage: (e: GestureResponderEvent) => void
-  goToTrackPage: (e: GestureResponderEvent) => void
+  goToArtistPage: GestureResponderHandler
+  goToTrackPage: GestureResponderHandler
   id: ID
   isLoaded: boolean
   isPlaying: boolean

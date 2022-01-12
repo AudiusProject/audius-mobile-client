@@ -2,19 +2,14 @@ import React from 'react'
 
 import { ID } from 'audius-client/src/common/models/Identifiers'
 import { formatCount } from 'audius-client/src/common/utils/formatUtil'
-import {
-  View,
-  Animated,
-  Pressable,
-  StyleSheet,
-  GestureResponderEvent
-} from 'react-native'
+import { View, Animated, Pressable, StyleSheet } from 'react-native'
 
 import IconHeart from 'app/assets/images/iconHeart.svg'
 import IconRepost from 'app/assets/images/iconRepost.svg'
 import Text, { AnimatedText } from 'app/components/text'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
 import { flexRow, flexRowCentered } from 'app/styles'
+import { GestureResponderHandler } from 'app/types/gesture'
 import { ThemeColors, useThemeColors } from 'app/utils/theme'
 
 import TrackTileRankIcon from './TrackTileRankIcon'
@@ -69,8 +64,8 @@ type Props = {
   isTrending: boolean
   isUnlisted: boolean
   listenCount: number
-  makeGoToFavoritesPage: (trackId: ID) => (e: GestureResponderEvent) => void
-  makeGoToRepostsPage: (trackId: ID) => (e: GestureResponderEvent) => void
+  makeGoToFavoritesPage: (trackId: ID) => GestureResponderHandler
+  makeGoToRepostsPage: (trackId: ID) => GestureResponderHandler
   repostCount: number
   saveCount: number
   showRankIcon: boolean
@@ -94,12 +89,14 @@ const TrackTileStats = ({
   const trackTileStyles = useThemedStyles(createTrackTileStyles)
   const { neutralLight4 } = useThemeColors()
 
+  const hasEngagement = Boolean(repostCount || saveCount)
+
   return (
     <Animated.View style={[fadeIn, styles.stats]}>
       {isTrending && (
         <TrackTileRankIcon showCrown={showRankIcon} index={index} />
       )}
-      {!!(repostCount || saveCount) && !isUnlisted && (
+      {hasEngagement && !isUnlisted && (
         <View style={styles.leftStats}>
           <Pressable
             style={[
