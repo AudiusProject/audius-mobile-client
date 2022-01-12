@@ -54,7 +54,7 @@ const createStyles = (themeColors: ThemeColors) =>
     }
   })
 
-export const ReferralDrawerContents = () => {
+export const ReferralLinkCopyButton = () => {
   const {
     pageHeaderGradientColor1,
     pageHeaderGradientColor2
