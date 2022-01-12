@@ -8,7 +8,8 @@ import {
   TextStyle,
   View,
   Animated,
-  StyleProp
+  StyleProp,
+  ColorValue
 } from 'react-native'
 
 import Text from 'app/components/text'
@@ -111,7 +112,7 @@ export type ButtonProps = {
    * const renderIconArrow = color => <IconArrow fill={color} />
    * export const myComponent = () => <Button renderIcon={renderIconArrow} />
    */
-  renderIcon?: (color: string) => React.ReactElement
+  renderIcon?: (color: ColorValue) => React.ReactElement
   iconPosition?: 'left' | 'right'
   containerStyle?: StyleProp<ViewStyle>
   style?: StyleProp<ViewStyle>
