@@ -38,7 +38,7 @@ export enum TrackBannerIconType {
   HIDDEN = 'hidden'
 }
 
-const TrackBannerIcon = ({ type }: { type: TrackBannerIconType }) => {
+export const TrackBannerIcon = ({ type }: { type: TrackBannerIconType }) => {
   const {
     neutral,
     neutralLight3,
@@ -70,5 +70,3 @@ const TrackBannerIcon = ({ type }: { type: TrackBannerIconType }) => {
     </View>
   )
 }
-
-export default TrackBannerIcon

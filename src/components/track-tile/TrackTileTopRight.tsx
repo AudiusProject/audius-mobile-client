@@ -85,7 +85,7 @@ type Props = {
   showArtistPick: boolean
 }
 
-const TrackTileTopRight = ({
+export const TrackTileTopRight = ({
   duration,
   fadeIn,
   isArtistPick,
@@ -108,5 +108,3 @@ const TrackTileTopRight = ({
     </Animated.View>
   )
 }
-
-export default TrackTileTopRight

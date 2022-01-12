@@ -1,1 +1,1 @@
-export { default } from './TrackTile'
+export { TrackTile } from './TrackTile'

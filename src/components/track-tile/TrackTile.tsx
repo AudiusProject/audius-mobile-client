@@ -7,12 +7,12 @@ import { useThemedStyles } from 'app/hooks/useThemedStyles'
 import { flexCol, flexRow } from 'app/styles'
 import { ThemeColors } from 'app/utils/theme'
 
-import TrackBannerIcon, { TrackBannerIconType } from './TrackBannerIcon'
-import TrackTileBottomButtons from './TrackTileBottomButtons'
-import TrackTileCoSign from './TrackTileCoSign'
-import TrackTileMetadata from './TrackTileMetadata'
-import TrackTileStats from './TrackTileStats'
-import TrackTileTopRight from './TrackTileTopRight'
+import { TrackBannerIcon, TrackBannerIconType } from './TrackBannerIcon'
+import { TrackTileBottomButtons } from './TrackTileBottomButtons'
+import { TrackTileCoSign } from './TrackTileCoSign'
+import { TrackTileMetadata } from './TrackTileMetadata'
+import { TrackTileStats } from './TrackTileStats'
+import { TrackTileTopRight } from './TrackTileTopRight'
 
 const createStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
@@ -37,7 +37,7 @@ const createStyles = (themeColors: ThemeColors) =>
     }
   })
 
-const TrackTile = ({
+export const TrackTile = ({
   artistName,
   coSign,
   coverArtSizes,
@@ -176,5 +176,3 @@ const TrackTile = ({
     </View>
   )
 }
-
-export default TrackTile

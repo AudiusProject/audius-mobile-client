@@ -27,7 +27,7 @@ const createStyles = (themeColors: ThemeColors) =>
     }
   })
 
-const TrackTileRankIcon = ({ showCrown, index }: Props) => {
+export const TrackTileRankIcon = ({ showCrown, index }: Props) => {
   const styles = useThemedStyles(createStyles)
   const trackTileStyles = useThemedStyles(createTrackTileStyles)
   const { secondary } = useThemeColors()
@@ -39,5 +39,3 @@ const TrackTileRankIcon = ({ showCrown, index }: Props) => {
     </View>
   )
 }
-
-export default TrackTileRankIcon

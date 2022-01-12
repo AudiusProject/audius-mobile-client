@@ -7,7 +7,6 @@ import Text from 'app/components/text'
 import UserBadges from 'app/components/user-badges/UserBadges'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
 import { flexRowCentered } from 'app/styles'
-import { ThemeColors } from 'app/utils/theme'
 
 import { createStyles as createTrackTileStyles } from './styles'
 
@@ -33,31 +32,29 @@ const formatCoSign = ({
   return messages.reposted
 }
 
-const createStyles = (themeColors: ThemeColors) =>
-  StyleSheet.create({
-    coSignText: {
-      ...flexRowCentered(),
-      justifyContent: 'flex-start',
-      fontSize: 12,
-      letterSpacing: 0.2,
-      marginLeft: 10,
-      marginTop: 8
-    },
-    coSignName: {
-      ...flexRowCentered(),
-      marginRight: 4
-    },
-    coSignIcon: {
-      marginLeft: 4
-    }
-  })
+const styles = StyleSheet.create({
+  coSignText: {
+    ...flexRowCentered(),
+    justifyContent: 'flex-start',
+    fontSize: 12,
+    letterSpacing: 0.2,
+    marginLeft: 10,
+    marginTop: 8
+  },
+  coSignName: {
+    ...flexRowCentered(),
+    marginRight: 4
+  },
+  coSignIcon: {
+    marginLeft: 4
+  }
+})
 
 type Props = {
   coSign: Remix
 }
 
-const TrackTileCoSign = ({ coSign }: Props) => {
-  const styles = useThemedStyles(createStyles)
+export const TrackTileCoSign = ({ coSign }: Props) => {
   const trackTileStyles = useThemedStyles(createTrackTileStyles)
   return (
     <View style={styles.coSignText}>
@@ -79,5 +76,3 @@ const TrackTileCoSign = ({ coSign }: Props) => {
     </View>
   )
 }
-
-export default TrackTileCoSign

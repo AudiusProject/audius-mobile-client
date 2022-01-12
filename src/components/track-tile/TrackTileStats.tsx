@@ -12,7 +12,7 @@ import { flexRow, flexRowCentered } from 'app/styles'
 import { GestureResponderHandler } from 'app/types/gesture'
 import { ThemeColors, useThemeColors } from 'app/utils/theme'
 
-import TrackTileRankIcon from './TrackTileRankIcon'
+import { TrackTileRankIcon } from './TrackTileRankIcon'
 import { createStyles as createTrackTileStyles } from './styles'
 
 const formatListenCount = (listenCount?: number) => {
@@ -71,7 +71,7 @@ type Props = {
   showRankIcon: boolean
 }
 
-const TrackTileStats = ({
+export const TrackTileStats = ({
   fadeIn,
   hidePlays,
   id,
@@ -144,5 +144,3 @@ const TrackTileStats = ({
     </Animated.View>
   )
 }
-
-export default TrackTileStats

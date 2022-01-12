@@ -55,7 +55,7 @@ const createStyles = (themeColors: ThemeColors) =>
     }
   })
 
-const TrackTileBottomButtons = ({
+export const TrackTileBottomButtons = ({
   hasSaved,
   hasReposted,
   toggleSave,
@@ -133,5 +133,3 @@ const TrackTileBottomButtons = ({
     </View>
   )
 }
-
-export default TrackTileBottomButtons

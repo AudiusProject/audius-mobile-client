@@ -1,4 +1,4 @@
-import React, { memo } from 'react'
+import React from 'react'
 
 import {
   useTrackCoverArt,
@@ -17,13 +17,13 @@ import CoSign, { Size } from 'app/components/co-sign'
 import DynamicImage from 'app/components/dynamic-image'
 
 type TrackTileArtProps = {
-  isTrack: boolean
-  id: ID
-  coverArtSizes: CoverArtSizes
-  style?: StyleProp<ViewStyle>
-  showSkeleton?: boolean
   coSign?: Remix | null
+  coverArtSizes: CoverArtSizes
+  id: ID
+  isTrack: boolean
   onLoad: () => void
+  showSkeleton?: boolean
+  style?: StyleProp<ViewStyle>
 }
 
 const styles = StyleSheet.create({
@@ -34,14 +34,14 @@ const styles = StyleSheet.create({
   }
 })
 
-const TrackTileArt = ({
+export const TrackTileArt = ({
+  coSign,
+  coverArtSizes,
   id,
   isTrack,
-  style,
-  coverArtSizes,
+  onLoad,
   showSkeleton,
-  coSign,
-  onLoad
+  style
 }: TrackTileArtProps) => {
   const useImage = isTrack ? useTrackCoverArt : useCollectionCoverArt
   const image = useImage(id, coverArtSizes, SquareSizes.SIZE_150_BY_150)
@@ -56,19 +56,10 @@ const TrackTileArt = ({
   )
 
   return coSign ? (
-    <CoSign
-      size={Size.SMALL}
-      style={[style, styles.image]}
-      hasFavorited={coSign.has_remix_author_saved}
-      hasReposted={coSign.has_remix_author_reposted}
-      coSignName={coSign.user.name}
-      userId={coSign.user.user_id}
-    >
+    <CoSign size={Size.SMALL} style={[style, styles.image]}>
       {imageElement}
     </CoSign>
   ) : (
     <View style={[style, styles.image]}>{imageElement}</View>
   )
 }
-
-export default memo(TrackTileArt)

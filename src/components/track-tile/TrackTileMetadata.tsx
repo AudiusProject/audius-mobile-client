@@ -15,7 +15,7 @@ import { flexCol, flexRow, flexRowCentered } from 'app/styles'
 import { GestureResponderHandler } from 'app/types/gesture'
 import { ThemeColors, useThemeColors } from 'app/utils/theme'
 
-import TrackTileArt from './TrackTileArt'
+import { TrackTileArt } from './TrackTileArt'
 
 const createStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
@@ -103,7 +103,7 @@ type Props = {
   user: User
 }
 
-const TrackTileMetadata = ({
+export const TrackTileMetadata = ({
   artistName,
   coSign,
   coverArtSizes,
@@ -184,5 +184,3 @@ const TrackTileMetadata = ({
     </View>
   )
 }
-
-export default TrackTileMetadata
