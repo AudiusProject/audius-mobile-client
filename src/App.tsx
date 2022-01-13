@@ -25,6 +25,7 @@ import Notifications from 'app/components/notifications/Notifications'
 import OAuth from 'app/components/oauth/OAuth'
 import OverflowMenuDrawer from 'app/components/overflow-menu-drawer'
 import Search from 'app/components/search/Search'
+import { ShareDrawer } from 'app/components/share-drawer'
 import ShareToTiktokDrawer from 'app/components/share-to-tiktok-drawer'
 import { ToastContextProvider } from 'app/components/toast/ToastContext'
 import TransferAudioMobileDrawer from 'app/components/transfer-audio-mobile-drawer'
@@ -38,6 +39,7 @@ import createStore from 'app/store'
 import { setup as setupAnalytics } from 'app/utils/analytics'
 
 import ErrorBoundary from './ErrorBoundary'
+import { WebAppManager } from './WebAppManager'
 import CognitoWebView from './components/cognito/CognitoWebView'
 import { ThemeContextProvider } from './components/theme/ThemeContext'
 
@@ -72,6 +74,7 @@ const Drawers = () => {
       <ShareToTiktokDrawer />
       <ChallengeRewardsDrawerProvider />
       <CognitoWebView />
+      <ShareDrawer />
       {/* Disable the audio breakdown drawer until we get
       the feature flags to work for native mobile */}
       {/* <AudioBreakdownDrawer /> */}
@@ -113,21 +116,17 @@ const App = () => {
             <NavigationContainer>
               <Provider store={store}>
                 <WebRefContextProvider>
-                  <GoogleCast webRef={webRef} />
-                  <WebApp webRef={webRef} />
-                  {/*
-                Note: it is very important that components are rendered after WebApp.
-                On Android, regardless of position: absolute, WebApp will steal all of
-                touch targets and onPress will not work.
-              */}
-                  <AppNavigator />
-                  <Search />
-                  <Notifications webRef={webRef} />
-                  <Drawers />
-                  <Modals />
-                  <Audio webRef={webRef} />
-                  <OAuth webRef={webRef} />
-                  <Airplay webRef={webRef} />
+                  <WebAppManager webApp={<WebApp webRef={webRef} />}>
+                    <GoogleCast webRef={webRef} />
+                    <AppNavigator />
+                    <Search />
+                    <Notifications webRef={webRef} />
+                    <Drawers />
+                    <Modals />
+                    <Audio webRef={webRef} />
+                    <OAuth webRef={webRef} />
+                    <Airplay webRef={webRef} />
+                  </WebAppManager>
                 </WebRefContextProvider>
               </Provider>
             </NavigationContainer>

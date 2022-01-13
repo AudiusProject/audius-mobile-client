@@ -75,11 +75,13 @@ export const defaultTheme = {
   accentOrangeLight1: '#FFA70F',
   accentPurple: '#8E51CF',
   shadow: '#E3E3E3',
+  staticTwitterBlue: '#1BA1F1',
   staticWhite: '#FFFFFF',
   staticAccentGreenLight1: '#23AD1A',
   pageHeaderGradientColor1: '#5B23E1',
   pageHeaderGradientColor2: '#A22FEB',
-  actionSheetText: '#7E1BCC'
+  actionSheetText: '#7E1BCC',
+  skeleton: '#F7F7F9'
 }
 
 export const darkTheme = {
@@ -120,11 +122,13 @@ export const darkTheme = {
   accentOrangeLight1: '#FFA70F',
   accentPurple: '#8E51CF',
   shadow: '#35364F',
+  staticTwitterBlue: '#1BA1F1',
   staticWhite: '#FFFFFF',
   staticAccentGreenLight1: '#23AD1A',
   pageHeaderGradientColor1: '#7652CC',
   pageHeaderGradientColor2: '#B05CE6',
-  actionSheetText: '#9147CC'
+  actionSheetText: '#9147CC',
+  skeleton: '#393A54'
 }
 
 const matrixTheme = {
@@ -155,12 +159,14 @@ const matrixTheme = {
   neutralLight9: '#202A1D',
   neutralLight10: '#1D211B',
   white: '#1F211F',
+  staticTwitterBlue: '#1BA1F1',
   staticWhite: '#FFFFFF',
   staticAccentGreenLight1: '#23AD1A',
   pageHeaderGradientColor1: '#1D211B',
   pageHeaderGradientColor2: '#1D211B',
   actionSheetText: '#21B404',
-  accentRed: '#D0021B'
+  accentRed: '#D0021B',
+  skeleton: '#1B3714'
 }
 
 export type ThemeColors =
