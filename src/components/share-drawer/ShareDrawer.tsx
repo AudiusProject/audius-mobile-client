@@ -32,15 +32,8 @@ import {
 import ActionDrawer from '../action-drawer'
 import { ToastContext } from '../toast/ToastContext'
 
+import { messages } from './messages'
 import { getContentUrl, getTwitterShareUrl } from './utils'
-
-const messages = {
-  modalTitle: 'Share Track',
-  twitter: 'Share to Twitter',
-  tikTok: 'Share Sound to TikTok',
-  copyLink: 'Copy Track to Link',
-  shareSheet: 'Share Track via...'
-}
 
 const createStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
@@ -96,6 +89,7 @@ export const ShareDrawer = () => {
       account &&
       account.user_id === content.artist.user_id
   )
+  const shareType = content?.type ?? 'track'
 
   const handleClose = useCallback(() => {
     dispatchWeb(setVisibility({ modal: 'Share', visible: false }))
@@ -176,14 +170,14 @@ export const ShareDrawer = () => {
     }
 
     const copyLinkAction = {
-      text: messages.copyLink,
+      text: messages.copyLink(shareType),
       icon: <IconLink height={26} width={26} fill={secondary} />,
       style: styles.copyLinkAction,
       callback: handleCopyLink
     }
 
     const shareSheetAction = {
-      text: messages.shareSheet,
+      text: messages.shareSheet(shareType),
       icon: <IconShare height={26} width={26} fill={secondary} />,
       style: styles.copyLinkAction,
       callback: handleOpenShareSheet
@@ -206,7 +200,8 @@ export const ShareDrawer = () => {
     secondary,
     handleCopyLink,
     handleOpenShareSheet,
-    shouldIncludeTikTokAction
+    shouldIncludeTikTokAction,
+    shareType
   ])
 
   return (
@@ -223,7 +218,7 @@ export const ShareDrawer = () => {
             width={20}
           />
           <Text weight='bold' style={styles.titleText}>
-            {messages.modalTitle}
+            {messages.modalTitle(shareType)}
           </Text>
         </View>
       )}

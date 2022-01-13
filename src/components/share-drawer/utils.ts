@@ -7,6 +7,8 @@ import {
 } from 'app/utils/routes'
 import { getTwitterLink } from 'app/utils/twitter'
 
+import { messages } from './messages'
+
 export const getContentUrl = content => {
   switch (content.type) {
     case 'track': {
@@ -35,27 +37,27 @@ export const getTwitterShareText = content => {
         track: { title },
         artist: { handle }
       } = content
-      return `Check out ${title} by ${handle} on @AudiusProject #Audius`
+      return messages.trackShareText(title, handle)
     }
     case 'profile': {
       const {
         profile: { handle }
       } = content
-      return `Check out ${handle} on @AudiusProject #Audius`
+      return messages.profileShareText(handle)
     }
     case 'album': {
       const {
         album: { playlist_name },
         artist: { handle }
       } = content
-      return `Check out ${playlist_name} by ${handle} @AudiusProject #Audius`
+      return messages.albumShareText(playlist_name, handle)
     }
     case 'playlist': {
       const {
         playlist: { playlist_name },
         creator: { handle }
       } = content
-      return `Check out ${playlist_name} by ${handle} @AudiusProject #Audius`
+      return messages.playlistShareText(playlist_name, handle)
     }
   }
 }
