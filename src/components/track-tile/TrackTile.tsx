@@ -83,6 +83,22 @@ export const TrackTile = ({
   const dispatchWeb = useDispatchWeb()
   const pushRouteWeb = usePushRouteWeb()
   // TODO: sk - track fallback
+  const track = useSelectorWeb(state => getTrack(state, { uid }))
+
+  const user = useSelectorWeb(state => getUserFromTrack(state, { uid }))
+  const playingUid = useSelector(getPlayingUid)
+  const isPlaying = useSelector(getPlaying)
+  const currentUserId = useSelectorWeb(getUserId)
+
+  const [artworkLoaded, setArtworkLoaded] = useState(false)
+
+  const styles = useThemedStyles(createStyles)
+  const opacity = useRef(new Animated.Value(0)).current
+
+  if (!track || !user) {
+    return null
+  }
+
   const {
     permalink,
     _co_sign,
@@ -98,23 +114,13 @@ export const TrackTile = ({
     save_count,
     title,
     track_id
-  } = useSelectorWeb(state => getTrack(state, { uid }))
-
-  const user = useSelectorWeb(state => getUserFromTrack(state, { uid }))
+  } = track
   const { _artist_pick, name, user_id } = user
-  const playingUid = useSelector(getPlayingUid)
-  const isPlaying = useSelector(getPlaying)
-  const currentUserId = useSelectorWeb(getUserId)
-
-  const [artworkLoaded, setArtworkLoaded] = useState(false)
 
   const isOwner = user_id === currentUserId
   const isLoaded = artworkLoaded && !showSkeleton
-
-  const opacity = useRef(new Animated.Value(0)).current
   const fadeIn = { opacity }
 
-  const styles = useThemedStyles(createStyles)
   const hideShare: boolean = field_visibility
     ? field_visibility.share === false
     : false
