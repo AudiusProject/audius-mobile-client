@@ -291,7 +291,12 @@ const DrawerHeader = ({
   )
 }
 
-const Drawer = ({
+// Only allow titleIcon with title
+type DrawerComponent = {
+  (props: DrawerProps & { title: string }): React.ReactElement
+  (props: Omit<DrawerProps, 'titleIcon'>): React.ReactElement
+}
+const Drawer: DrawerComponent = ({
   isOpen,
   children,
   onClose,
