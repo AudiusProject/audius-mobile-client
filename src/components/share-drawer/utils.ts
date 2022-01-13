@@ -1,5 +1,6 @@
 import { ShareModalContent } from 'audius-client/src/common/store/ui/share-modal/types'
 
+import { UserCollection } from 'app/models/Collection'
 import {
   getCollectionRoute,
   getTrackRoute,
@@ -9,7 +10,7 @@ import { getTwitterLink } from 'app/utils/twitter'
 
 import { messages } from './messages'
 
-export const getContentUrl = content => {
+export const getContentUrl = (content: ShareModalContent) => {
   switch (content.type) {
     case 'track': {
       const { track } = content
@@ -21,16 +22,22 @@ export const getContentUrl = content => {
     }
     case 'album': {
       const { album, artist } = content
-      return getCollectionRoute({ ...album, user: artist }, true)
+      return getCollectionRoute(
+        ({ ...album, user: artist } as unknown) as UserCollection,
+        true
+      )
     }
     case 'playlist': {
       const { playlist, creator } = content
-      return getCollectionRoute({ ...playlist, user: creator }, true)
+      return getCollectionRoute(
+        ({ ...playlist, user: creator } as unknown) as UserCollection,
+        true
+      )
     }
   }
 }
 
-export const getTwitterShareText = content => {
+export const getTwitterShareText = (content: ShareModalContent) => {
   switch (content.type) {
     case 'track': {
       const {

@@ -81,14 +81,11 @@ export const ShareDrawer = () => {
   const isOpen = useSelectorWeb(state => getModalVisibility(state, 'Share'))
   const { content, source } = useSelectorWeb(getShareState)
   const account = useSelectorWeb(getAccountUser)
-
   const { toast } = useContext(ToastContext)
-
-  const isOwner = Boolean(
+  const isOwner =
     content?.type === 'track' &&
-      account &&
-      account.user_id === content.artist.user_id
-  )
+    account &&
+    account.user_id === content.artist.user_id
   const shareType = content?.type ?? 'track'
 
   const handleClose = useCallback(() => {
