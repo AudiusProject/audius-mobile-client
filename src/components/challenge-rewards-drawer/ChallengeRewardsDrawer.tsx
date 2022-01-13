@@ -1,16 +1,10 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 
 import { ClaimStatus } from 'audius-client/src/common/store/pages/audio-rewards/slice'
-import {
-  StyleSheet,
-  Image,
-  View,
-  ImageSourcePropType,
-  ImageStyle
-} from 'react-native'
+import { StyleSheet, View, ImageSourcePropType } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 
-import IconArrow from 'app/assets/images/iconArrow.svg'
+import IconCheck from 'app/assets/images/iconCheck.svg'
 import Button, { ButtonType } from 'app/components/button'
 import Drawer from 'app/components/drawer'
 import GradientText from 'app/components/gradient-text'
@@ -18,6 +12,8 @@ import LoadingSpinner from 'app/components/loading-spinner'
 import Text from 'app/components/text'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
 import { ThemeColors, useThemeColors } from 'app/utils/theme'
+
+import { ToastContext } from '../toast/ToastContext'
 
 const messages = {
   task: 'Task',
@@ -27,7 +23,8 @@ const messages = {
   incomplete: 'Incomplete',
   complete: 'Complete',
   claim: 'Claim Your Reward',
-  claimErrorMessage: 'Something went wrong. Try again.'
+  claimSuccessMessage: 'Reward successfully claimed!',
+  claimErrorMessage: 'Oops, something’s gone wrong'
 }
 
 const createProgressBarStyles = (themeColors: ThemeColors) =>
@@ -112,25 +109,9 @@ const ProgressBar = ({ progress, max }) => {
 const createStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
     content: {
-      padding: 32,
+      padding: 16,
       display: 'flex',
       alignItems: 'center'
-    },
-    top: {
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-      marginBottom: 20
-    },
-    title: {
-      fontSize: 22,
-      color: themeColors.neutralDark1,
-      textAlign: 'center'
-    },
-    titleIcon: {
-      marginRight: 16,
-      height: 24,
-      width: 24
     },
     subheader: {
       textAlign: 'left',
@@ -141,7 +122,8 @@ const createStyles = (themeColors: ThemeColors) =>
     },
     task: {
       width: '100%',
-      padding: 16
+      padding: 24,
+      paddingTop: 0
     },
     taskText: {
       fontSize: 16
@@ -151,7 +133,7 @@ const createStyles = (themeColors: ThemeColors) =>
       borderColor: themeColors.neutralLight8,
       borderWidth: 1,
       width: '100%',
-      marginBottom: 32,
+      marginBottom: 24,
       display: 'flex',
       flexDirection: 'column'
     },
@@ -198,14 +180,14 @@ const createStyles = (themeColors: ThemeColors) =>
       color: themeColors.neutralLight4
     },
     claimRewardsContainer: {
-      marginTop: 32,
+      marginTop: 16,
       width: '100%'
     },
     claimRewardsError: {
       textAlign: 'center',
       color: themeColors.accentRed,
       fontSize: 16,
-      marginBottom: 10
+      marginTop: 24
     },
     claimButtonContainer: {
       width: '100%'
@@ -269,22 +251,23 @@ const ChallengeRewardsDrawer = ({
     ? `${currentStep}/${stepCount} ${progressLabel}`
     : messages.incomplete
 
+  const { toast } = useContext(ToastContext)
+  useEffect(() => {
+    if (claimStatus === ClaimStatus.SUCCESS) {
+      toast({ content: messages.claimSuccessMessage, type: 'info' })
+    }
+  }, [toast, claimStatus])
+
   return (
     <Drawer
       isOpen={isOpen}
       onClose={onClose}
       isFullscreen
       isGestureSupported={false}
+      title={title}
+      titleIcon={titleIcon}
     >
       <View style={styles.content}>
-        <View style={styles.top}>
-          {titleIcon && (
-            <Image style={styles.titleIcon as ImageStyle} source={titleIcon} />
-          )}
-          <Text weight='bold' style={styles.title}>
-            {title}
-          </Text>
-        </View>
         <View style={styles.task}>
           <Text style={styles.subheader} weight='heavy'>
             {messages.task}
@@ -332,25 +315,26 @@ const ChallengeRewardsDrawer = ({
         {children}
         {!isDisbursed && isComplete && onClaim && (
           <View style={styles.claimRewardsContainer}>
-            {claimError && (
-              <Text style={styles.claimRewardsError} weight='bold'>
-                {messages.claimErrorMessage}
-              </Text>
-            )}
             <Button
               containerStyle={styles.claimButtonContainer}
               type={claimInProgress ? ButtonType.COMMON : ButtonType.PRIMARY}
               disabled={claimInProgress}
               title={messages.claim}
               onPress={onClaim}
-              icon={
+              renderIcon={color =>
                 claimInProgress ? (
                   <LoadingSpinner />
                 ) : (
-                  <IconArrow fill='white' />
+                  <IconCheck fill={color as string} />
                 )
               }
+              iconPosition='left'
             />
+            {claimError && (
+              <Text style={styles.claimRewardsError} weight='bold'>
+                {messages.claimErrorMessage}
+              </Text>
+            )}
           </View>
         )}
       </View>

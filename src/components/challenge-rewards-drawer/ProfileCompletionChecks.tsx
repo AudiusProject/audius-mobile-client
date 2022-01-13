@@ -57,6 +57,7 @@ const createStyles = (themeColors: ThemeColors) =>
       borderColor: themeColors.neutralLight4
     }
   })
+const renderArrowIcon = color => <IconArrow fill={color} />
 
 export const ProfileCompletionChecks = ({
   isComplete,
@@ -108,7 +109,7 @@ export const ProfileCompletionChecks = ({
       </View>
       <Button
         title={messages.profileCompletionButton}
-        icon={<IconArrow fill={'white'} />}
+        renderIcon={renderArrowIcon}
         iconPosition='right'
         onPress={goToProfile}
         type={isComplete ? ButtonType.COMMON : ButtonType.PRIMARY}

@@ -93,7 +93,7 @@ type ChallengeConfig = {
   buttonInfo?: {
     link: string
     label: string
-    icon: React.ReactElement
+    renderIcon: (color: string) => React.ReactElement
     iconPosition: 'left' | 'right'
   }
 }
@@ -106,7 +106,7 @@ const challengesConfig: Record<ChallengeRewardsModalType, ChallengeConfig> = {
     buttonInfo: {
       label: messages.connectVerifiedButton,
       link: ACCOUNT_VERIFICATION_SETTINGS_PAGE,
-      icon: <IconCheck fill={'white'} />,
+      renderIcon: color => <IconCheck fill={color} />,
       iconPosition: 'right'
     }
   },
@@ -119,7 +119,7 @@ const challengesConfig: Record<ChallengeRewardsModalType, ChallengeConfig> = {
     buttonInfo: {
       label: messages.listenStreakButton,
       link: TRENDING_PAGE,
-      icon: <IconArrow fill={'white'} />,
+      renderIcon: color => <IconArrow fill={color} />,
       iconPosition: 'right'
     }
   },
@@ -152,11 +152,18 @@ const challengesConfig: Record<ChallengeRewardsModalType, ChallengeConfig> = {
     buttonInfo: {
       label: messages.trackUploadButton,
       link: UPLOAD_PAGE,
-      icon: <IconUpload fill={'white'} />,
+      renderIcon: color => <IconUpload fill={color} />,
       iconPosition: 'right'
     }
   }
 }
+const styles = {
+  button: {
+    width: '100%'
+  }
+}
+
+const renderUploadIcon = color => <IconUpload fill={color} />
 
 const ChallengeRewardsDrawerProvider = () => {
   const dispatchWeb = useDispatchWeb()
@@ -214,8 +221,9 @@ const ChallengeRewardsDrawerProvider = () => {
     case 'track-upload':
       contents = (
         <Button
+          containerStyle={styles.button}
           title={messages.trackUploadButton}
-          icon={<IconUpload fill={'white'} />}
+          renderIcon={renderUploadIcon}
           iconPosition='right'
           type={challenge?.is_complete ? ButtonType.COMMON : ButtonType.PRIMARY}
           onPress={openUploadModal}
@@ -233,8 +241,9 @@ const ChallengeRewardsDrawerProvider = () => {
     default:
       contents = config?.buttonInfo && (
         <Button
+          containerStyle={styles.button}
           title={config.buttonInfo.label}
-          icon={config.buttonInfo.icon}
+          renderIcon={config.buttonInfo.renderIcon}
           iconPosition={config.buttonInfo.iconPosition}
           type={challenge?.is_complete ? ButtonType.COMMON : ButtonType.PRIMARY}
           onPress={goToRoute}
