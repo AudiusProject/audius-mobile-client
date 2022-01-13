@@ -1,9 +1,41 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react'
 
-import { Animated, Easing, Pressable, StyleSheet, View } from 'react-native'
+import {
+  FavoriteSource,
+  RepostSource,
+  ShareSource
+} from 'audius-client/src/common/models/Analytics'
+import { getUserId } from 'audius-client/src/common/store/account/selectors'
+import { getTrack } from 'audius-client/src/common/store/cache/tracks/selectors'
+import { getUserFromTrack } from 'audius-client/src/common/store/cache/users/selectors'
+import {
+  repostTrack,
+  saveTrack,
+  undoRepostTrack,
+  unsaveTrack
+} from 'audius-client/src/common/store/social/tracks/actions'
+import {
+  OverflowAction,
+  OverflowSource
+} from 'audius-client/src/common/store/ui/mobile-overflow-menu/types'
+import { requestOpen as requestOpenShareModal } from 'audius-client/src/common/store/ui/share-modal/slice'
+import { open as openOverflowMenu } from 'common/store/ui/mobile-overflow-menu/slice'
+import {
+  Animated,
+  Easing,
+  GestureResponderEvent,
+  Pressable,
+  StyleSheet,
+  View
+} from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
 
 import { TrackTileProps } from 'app/components/track-tile/types'
+import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
+import { usePushRouteWeb } from 'app/hooks/usePushRouteWeb'
+import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
+import { getPlaying, getPlayingUid } from 'app/store/audio/selectors'
 import { flexCol, flexRow } from 'app/styles'
 import { ThemeColors } from 'app/utils/theme'
 
@@ -38,65 +70,134 @@ const createStyles = (themeColors: ThemeColors) =>
   })
 
 export const TrackTile = ({
-  artistName,
-  coSign,
-  coverArtSizes,
-  duration,
-  fieldVisibility,
-  goToTrackPage,
-  goToArtistPage,
-  hasCurrentUserReposted,
-  hasCurrentUserSaved,
-  id,
   index,
-  isArtistPick,
-  isOwner,
-  isPlaying,
   isTrending,
-  isUnlisted,
-  listenCount,
-  makeGoToFavoritesPage,
-  makeGoToRepostsPage,
-  onClickOverflow,
   onLoad,
-  onShare,
-  repostCount,
-  saveCount,
   showArtistPick,
   showRankIcon,
   showSkeleton,
-  title,
   togglePlay,
-  toggleRepost,
-  toggleSave,
-  user,
   uid
 }: TrackTileProps) => {
+  const dispatch = useDispatch()
+  const dispatchWeb = useDispatchWeb()
+  const pushRouteWeb = usePushRouteWeb()
+  // TODO: sk - track fallback
+  const {
+    permalink,
+    _co_sign,
+    _cover_art_sizes,
+    duration,
+    field_visibility,
+    has_current_user_reposted,
+    has_current_user_saved,
+    is_delete,
+    is_unlisted,
+    play_count,
+    repost_count,
+    save_count,
+    title,
+    track_id
+  } = useSelectorWeb(state => getTrack(state, { uid }))
+
+  const user = useSelectorWeb(state => getUserFromTrack(state, { uid }))
+  const { _artist_pick, name, user_id } = user
+  const playingUid = useSelector(getPlayingUid)
+  const isPlaying = useSelector(getPlaying)
+  const currentUserId = useSelectorWeb(getUserId)
+
+  const [artworkLoaded, setArtworkLoaded] = useState(false)
+
+  const isOwner = user_id === currentUserId
+  const isLoaded = artworkLoaded && !showSkeleton
+
   const opacity = useRef(new Animated.Value(0)).current
   const fadeIn = { opacity }
 
   const styles = useThemedStyles(createStyles)
-  const hideShare: boolean = fieldVisibility
-    ? fieldVisibility.share === false
+  const hideShare: boolean = field_visibility
+    ? field_visibility.share === false
     : false
-  const hidePlays = fieldVisibility
-    ? fieldVisibility.play_count === false
+  const hidePlays = field_visibility
+    ? field_visibility.play_count === false
     : false
 
-  const onToggleSave = useCallback(() => toggleSave(id), [toggleSave, id])
+  const goToTrackPage = (e: GestureResponderEvent) => {
+    // navigate to track page
+  }
 
-  const onToggleRepost = useCallback(() => toggleRepost(id), [toggleRepost, id])
+  const goToArtistPage = (e: GestureResponderEvent) => {
+    // navigate to artist page
+  }
 
-  const onClickShare = useCallback(() => onShare(id), [onShare, id])
+  const onPressReposts = (e: GestureResponderEvent) => {
+    // navigate to reposts page
+    // goToRoute(REPOSTING_USERS_ROUTE)
+  }
 
-  const onClickOverflowMenu = useCallback(
-    () => onClickOverflow && onClickOverflow(id),
-    [onClickOverflow, id]
-  )
+  const onPressFavorites = (e: GestureResponderEvent) => {
+    // navigate to favorites page
+    // goToRoute(REPOSTING_USERS_ROUTE)
+  }
 
-  const [artworkLoaded, setArtworkLoaded] = useState(false)
+  const onPressOverflowMenu = useCallback(() => {
+    const overflowActions = [
+      !isOwner
+        ? has_current_user_reposted
+          ? OverflowAction.UNREPOST
+          : OverflowAction.REPOST
+        : null,
+      !isOwner
+        ? has_current_user_saved
+          ? OverflowAction.UNFAVORITE
+          : OverflowAction.FAVORITE
+        : null,
+      OverflowAction.SHARE,
+      OverflowAction.ADD_TO_PLAYLIST,
+      OverflowAction.VIEW_TRACK_PAGE,
+      OverflowAction.VIEW_ARTIST_PAGE
+    ].filter(Boolean) as OverflowAction[]
 
-  const isLoaded = artworkLoaded && !showSkeleton
+    dispatchWeb(
+      openOverflowMenu({
+        source: OverflowSource.TRACKS,
+        id: track_id,
+        overflowActions
+      })
+    )
+  }, [
+    track_id,
+    dispatchWeb,
+    has_current_user_reposted,
+    has_current_user_saved,
+    isOwner
+  ])
+
+  const onPressShare = useCallback(() => {
+    dispatch(
+      requestOpenShareModal({
+        type: 'track',
+        trackId: track_id,
+        source: ShareSource.TILE
+      })
+    )
+  }, [dispatch, track_id])
+
+  const onToggleSave = useCallback(() => {
+    if (has_current_user_saved) {
+      dispatchWeb(unsaveTrack(track_id, FavoriteSource.TILE))
+    } else {
+      dispatchWeb(saveTrack(track_id, FavoriteSource.TILE))
+    }
+  }, [track_id, dispatchWeb, has_current_user_saved])
+
+  const onToggleRepost = useCallback(() => {
+    if (has_current_user_reposted) {
+      dispatchWeb(undoRepostTrack(track_id, RepostSource.TILE))
+    } else {
+      dispatchWeb(repostTrack(track_id, RepostSource.TILE))
+    }
+  }, [track_id, dispatchWeb, has_current_user_reposted])
 
   useEffect(() => {
     if (isLoaded) {
@@ -109,68 +210,71 @@ export const TrackTile = ({
     }
   }, [onLoad, isLoaded, index, opacity])
 
+  if (is_delete || user?.is_deactivated) {
+    return null
+  }
+
   return (
     <View style={styles.container}>
-      {showArtistPick && isArtistPick && (
+      {showArtistPick && _artist_pick === track_id && (
         <TrackBannerIcon type={TrackBannerIconType.STAR} />
       )}
-      {isUnlisted && <TrackBannerIcon type={TrackBannerIconType.HIDDEN} />}
+      {is_unlisted && <TrackBannerIcon type={TrackBannerIconType.HIDDEN} />}
       <Pressable
         style={styles.mainContent}
         disabled={showSkeleton}
-        onPress={() => togglePlay(uid, id)}
+        onPress={() => togglePlay(uid, track_id)}
       >
         <TrackTileTopRight
           duration={duration}
           fadeIn={fadeIn}
-          isArtistPick={isArtistPick}
-          isUnlisted={isUnlisted}
+          isArtistPick={_artist_pick === track_id}
+          isUnlisted={is_unlisted}
           showArtistPick={showArtistPick}
         />
         <TrackTileMetadata
-          artistName={artistName}
-          coSign={coSign}
-          coverArtSizes={coverArtSizes}
+          artistName={name}
+          coSign={_co_sign}
+          coverArtSizes={_cover_art_sizes}
           fadeIn={fadeIn}
           goToArtistPage={goToArtistPage}
           goToTrackPage={goToTrackPage}
-          id={id}
+          id={track_id}
           isLoaded={isLoaded}
-          isPlaying={isPlaying}
+          isPlaying={uid === playingUid && isPlaying}
           setArtworkLoaded={setArtworkLoaded}
           showSkeleton={showSkeleton}
           title={title}
           user={user}
         />
-        {coSign && (
+        {_co_sign && (
           <Animated.View style={fadeIn}>
-            <TrackTileCoSign coSign={coSign} />
+            <TrackTileCoSign coSign={_co_sign} />
           </Animated.View>
         )}
         <TrackTileStats
           fadeIn={fadeIn}
           hidePlays={hidePlays}
-          id={id}
           index={index}
           isTrending={isTrending}
-          isUnlisted={isUnlisted}
-          listenCount={listenCount}
-          makeGoToFavoritesPage={makeGoToFavoritesPage}
-          makeGoToRepostsPage={makeGoToRepostsPage}
-          repostCount={repostCount}
-          saveCount={saveCount}
+          isUnlisted={is_unlisted}
+          listenCount={play_count}
+          onPressFavorites={onPressFavorites}
+          onPressReposts={onPressReposts}
+          repostCount={repost_count}
+          saveCount={save_count}
           showRankIcon={showRankIcon}
         />
         <TrackTileBottomButtons
-          hasSaved={hasCurrentUserSaved}
-          hasReposted={hasCurrentUserReposted}
-          toggleRepost={onToggleRepost}
-          toggleSave={onToggleSave}
-          onShare={onClickShare}
-          onPressOverflow={onClickOverflowMenu}
+          hasReposted={has_current_user_reposted}
+          hasSaved={has_current_user_saved}
           isOwner={isOwner}
-          isUnlisted={isUnlisted}
           isShareHidden={hideShare}
+          isUnlisted={is_unlisted}
+          onPressOverflow={onPressOverflowMenu}
+          onPressShare={onPressShare}
+          onToggleRepost={onToggleRepost}
+          onToggleSave={onToggleSave}
         />
       </Pressable>
     </View>

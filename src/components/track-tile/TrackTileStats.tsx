@@ -59,13 +59,12 @@ const createStyles = (themeColors: ThemeColors) =>
 type Props = {
   fadeIn: { opacity: Animated.Value }
   hidePlays: boolean
-  id: ID
   index: number
   isTrending: boolean
   isUnlisted: boolean
   listenCount: number
-  makeGoToFavoritesPage: (trackId: ID) => GestureResponderHandler
-  makeGoToRepostsPage: (trackId: ID) => GestureResponderHandler
+  onPressFavorites: GestureResponderHandler
+  onPressReposts: GestureResponderHandler
   repostCount: number
   saveCount: number
   showRankIcon: boolean
@@ -74,13 +73,12 @@ type Props = {
 export const TrackTileStats = ({
   fadeIn,
   hidePlays,
-  id,
   index,
   isTrending,
   isUnlisted,
   listenCount,
-  makeGoToFavoritesPage,
-  makeGoToRepostsPage,
+  onPressFavorites,
+  onPressReposts,
   repostCount,
   saveCount,
   showRankIcon
@@ -103,7 +101,8 @@ export const TrackTileStats = ({
               trackTileStyles.statItem,
               !repostCount ? styles.disabledStatItem : {}
             ]}
-            onPress={repostCount ? makeGoToRepostsPage(id) : undefined}
+            disabled={!repostCount}
+            onPress={onPressReposts}
           >
             <Text style={trackTileStyles.statText}>
               {formatCount(repostCount)}
@@ -120,7 +119,8 @@ export const TrackTileStats = ({
               trackTileStyles.statItem,
               !saveCount ? styles.disabledStatItem : {}
             ]}
-            onPress={e => saveCount && makeGoToFavoritesPage(id)(e)}
+            disabled={!saveCount}
+            onPress={onPressFavorites}
           >
             <Text style={trackTileStyles.statText}>
               {formatCount(saveCount)}

@@ -15,15 +15,15 @@ import { flexRowCentered } from 'app/styles'
 import { ThemeColors, useThemeColors } from 'app/utils/theme'
 
 type Props = {
-  hasSaved: boolean
   hasReposted: boolean
-  toggleSave: () => void
-  toggleRepost: () => void
-  onPressOverflow: () => void
-  onShare: () => void
+  hasSaved: boolean
   isOwner: boolean
-  isUnlisted?: boolean
   isShareHidden?: boolean
+  isUnlisted?: boolean
+  onPressOverflow: () => void
+  onPressShare: () => void
+  onToggleRepost: () => void
+  onToggleSave: () => void
 }
 
 const messages = {
@@ -56,15 +56,15 @@ const createStyles = (themeColors: ThemeColors) =>
   })
 
 export const TrackTileBottomButtons = ({
-  hasSaved,
   hasReposted,
-  toggleSave,
-  toggleRepost,
-  onPressOverflow,
-  onShare,
+  hasSaved,
   isOwner,
+  isShareHidden,
   isUnlisted,
-  isShareHidden
+  onPressOverflow,
+  onPressShare,
+  onToggleRepost,
+  onToggleSave
 }: Props) => {
   const { toast } = useContext(ToastContext)
   const { neutralLight4 } = useThemeColors()
@@ -72,7 +72,7 @@ export const TrackTileBottomButtons = ({
 
   const repostButton = (
     <RepostButton
-      onPress={toggleRepost}
+      onPress={onToggleRepost}
       isActive={hasReposted}
       isDisabled={isOwner}
       style={[styles.button, styles.firstButton] as ImageStyle}
@@ -81,7 +81,7 @@ export const TrackTileBottomButtons = ({
 
   const favoriteButton = (
     <FavoriteButton
-      onPress={toggleSave}
+      onPress={onToggleSave}
       isActive={hasSaved}
       isDisabled={isOwner}
       style={styles.button as ImageStyle}
@@ -95,7 +95,7 @@ export const TrackTileBottomButtons = ({
           content: messages.copiedToast,
           timeout: SHARE_TOAST_TIMEOUT
         })
-        onShare()
+        onPressShare()
       }}
     >
       <IconShare
