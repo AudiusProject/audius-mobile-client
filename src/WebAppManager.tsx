@@ -1,12 +1,9 @@
 import React, { ReactNode } from 'react'
 
-import { CommonState } from 'audius-client/src/common/store'
 import { isEmpty } from 'lodash'
 import { useSelector } from 'react-redux'
 
-type NativeRootState = {
-  clientStore?: CommonState
-}
+import { AppState } from './store'
 
 type WebAppManagerProps = {
   webApp: JSX.Element
@@ -14,7 +11,7 @@ type WebAppManagerProps = {
 }
 
 export const WebAppManager = ({ webApp, children }: WebAppManagerProps) => {
-  const clientStore = useSelector((state: NativeRootState) => state.clientStore)
+  const clientStore = useSelector((state: AppState) => state.clientStore)
   const isClientStoreEmpty = isEmpty(clientStore)
   return (
     <>
