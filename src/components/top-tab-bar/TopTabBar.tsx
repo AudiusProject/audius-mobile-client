@@ -22,8 +22,8 @@ const INDICATOR_STRETCH_FACTOR = 0.35
 const INDICATOR_ANIM_GRANULARITY = 10
 
 const getSinAnimationRanges = (len: number) => {
-  const inputRange = []
-  const outputRange = []
+  const inputRange: number[] = []
+  const outputRange: number[] = []
 
   let i = 0
   while (i < len) {
@@ -41,15 +41,16 @@ const getSinAnimationRanges = (len: number) => {
 const createTabBarStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
     tabBarContainer: {
+      elevation: 3,
       flexDirection: 'row',
       marginBottom: -4,
       paddingBottom: 4,
       position: 'relative',
       zIndex: 100,
       shadowColor: themeColors.neutralDark1,
-      shadowOpacity: 0.15,
+      shadowOpacity: 0.12,
       shadowOffset: { height: 2, width: 0 },
-      shadowRadius: 5
+      shadowRadius: 2
     },
 
     tabContainer: {

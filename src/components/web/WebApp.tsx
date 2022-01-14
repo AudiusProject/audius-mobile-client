@@ -8,6 +8,7 @@ import React, {
 } from 'react'
 
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import Theme from 'audius-client/src/common/models/Theme'
 import {
   Platform,
   NativeSyntheticEvent,
@@ -30,7 +31,6 @@ import { Dispatch } from 'redux'
 import useAppState from 'app/hooks/useAppState'
 import useKeyboardListeners from 'app/hooks/useKeyboardListeners'
 import { Message, MessageType, handleMessage } from 'app/message'
-import Theme from 'app/models/Theme'
 import { AppState } from 'app/store'
 import { getTrack, getIndex } from 'app/store/audio/selectors'
 import { getIsOnFirstPage, getIsSignedIn } from 'app/store/lifecycle/selectors'
@@ -83,7 +83,7 @@ const getAllFiles = async (
   folderPath: string,
   path: string
 ): Promise<Array<string>> => {
-  const filePaths = []
+  const filePaths: string[] = []
   const assetDirItems = await RNFS.readDirAssets(path)
   for (const dirItem of assetDirItems) {
     if (dirItem.isFile()) {
@@ -539,7 +539,7 @@ const WebApp = ({
             // On iOS, when the webview is in the background for a long time
             // it becomes blank. Reload when this happens
             // See: https://github.com/react-native-webview/react-native-webview/issues/2199
-            webRef.current.reload()
+            webRef.current?.reload()
           }}
         />
       </PullToRefresh>

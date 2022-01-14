@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect, useCallback } from 'react'
 
 import Clipboard from '@react-native-clipboard/clipboard'
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
-import * as signOnActionsWeb from 'audius-client/src/containers/sign-on/store/actions.js'
+import * as signOnActionsWeb from 'audius-client/src/pages/sign-on/store/actions.js'
 import querystring from 'query-string'
 import {
   Animated,
@@ -427,7 +427,12 @@ const SignOn = ({ navigation }: SignOnProps) => {
   useEffect(() => {
     processReferrerFromClipboard()
   }, [processReferrerFromClipboard])
-  useAppState(processReferrerFromClipboard, () => {})
+  useAppState(
+    () => {
+      processReferrerFromClipboard()
+    },
+    () => {}
+  )
 
   const { staticWhite } = useThemeColors()
 
