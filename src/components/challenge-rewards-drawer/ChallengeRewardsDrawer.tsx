@@ -217,6 +217,7 @@ type ChallengeRewardsDrawerProps = {
   isDisbursed: boolean
   /** Whether the challenge is completed */
   isComplete: boolean
+  /** The status of the rewards being claimed */
   claimStatus: ClaimStatus
   /** Callback that runs on the claim rewards button being clicked */
   onClaim?: () => void
