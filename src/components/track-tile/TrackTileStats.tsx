@@ -60,8 +60,8 @@ type Props = {
   fadeIn: { opacity: Animated.Value }
   hidePlays: boolean
   index: number
-  isTrending: boolean
-  isUnlisted: boolean
+  isTrending?: boolean
+  isUnlisted?: boolean
   listenCount: number
   onPressFavorites: GestureResponderHandler
   onPressReposts: GestureResponderHandler
