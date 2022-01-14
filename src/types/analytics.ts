@@ -5,8 +5,6 @@ import {
 
 import { Message } from 'app/message'
 
-export * from 'audius-client/src/common/models/Analytics'
-
 enum MobileEventNames {
   NOTIFICATIONS_OPEN_PUSH_NOTIFICATION = 'Notifications: Open Push Notification'
 }
@@ -41,3 +39,12 @@ export type Screen = {
 }
 
 export type AnalyticsMessage = Message & (Identify | Track | Screen)
+
+export {
+  PlaybackSource,
+  ShareSource,
+  RepostSource,
+  FavoriteSource,
+  FollowSource,
+  CreatePlaylistSource
+} from 'audius-client/src/common/models/Analytics'
