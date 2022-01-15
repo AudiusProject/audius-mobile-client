@@ -11,13 +11,14 @@ import {
 } from 'audius-client/src/common/store/pages/audio-rewards/selectors'
 import {
   ChallengeRewardsModalType,
-  fetchClaimAttestation
+  claimChallengeReward
 } from 'audius-client/src/common/store/pages/audio-rewards/slice'
 import { show as showMobileUploadDrawer } from 'audius-client/src/common/store/ui/mobile-upload-drawer/slice'
 import {
   getModalVisibility,
   setVisibility
 } from 'audius-client/src/common/store/ui/modals/slice'
+import { Maybe } from 'audius-client/src/common/utils/typeUtils'
 import {
   ACCOUNT_VERIFICATION_SETTINGS_PAGE,
   AUDIO_PAGE,
@@ -201,7 +202,7 @@ const ChallengeRewardsDrawerProvider = () => {
   const hasConfig = (oracleEthAddress && AAOEndpoint && quorumSize > 0) || true
   const onClaim = useCallback(() => {
     dispatchWeb(
-      fetchClaimAttestation({
+      claimChallengeReward({
         claim: {
           challengeId: modalType,
           specifier: challenge?.specifier ?? '',
@@ -213,7 +214,7 @@ const ChallengeRewardsDrawerProvider = () => {
   }, [dispatchWeb, modalType, challenge, config])
 
   // Challenge drawer contents
-  let contents = null
+  let contents: Maybe<React.ReactElement>
   switch (modalType) {
     case 'referrals':
       contents = <ReferralLinkCopyButton />
@@ -233,7 +234,7 @@ const ChallengeRewardsDrawerProvider = () => {
     case 'profile-completion':
       contents = (
         <ProfileCompletionChecks
-          isComplete={challenge?.is_complete}
+          isComplete={!!challenge?.is_complete}
           onClose={onClose}
         />
       )
@@ -263,14 +264,14 @@ const ChallengeRewardsDrawerProvider = () => {
       title={config.title}
       titleIcon={config.icon}
       description={config.description}
-      progressLabel={config.progressLabel}
+      progressLabel={config.progressLabel ?? 'Completed'}
       amount={config.amount}
       isComplete={challenge.is_complete}
       currentStep={challenge.current_step_count}
       stepCount={challenge.max_steps}
       isDisbursed={challenge.is_disbursed}
       claimStatus={claimStatus}
-      onClaim={hasConfig ? onClaim : null}
+      onClaim={hasConfig ? onClaim : undefined}
     >
       {contents}
     </ChallengeRewardsDrawer>

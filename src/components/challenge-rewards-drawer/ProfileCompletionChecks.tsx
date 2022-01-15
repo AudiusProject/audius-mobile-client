@@ -4,7 +4,7 @@ import {
   getUserHandle,
   getAccountUser
 } from 'audius-client/src/common/store/account/selectors'
-import { getHasFavoritedItem } from 'audius-client/src/containers/profile-progress/store/selectors'
+import { getHasFavoritedItem } from 'audius-client/src/components/profile-progress/store/selectors'
 import { profilePage, AUDIO_PAGE } from 'audius-client/src/utils/route'
 import { StyleSheet, View } from 'react-native'
 
@@ -66,7 +66,7 @@ export const ProfileCompletionChecks = ({
   isComplete: boolean
   onClose: () => void
 }) => {
-  const handle = useSelectorWeb(getUserHandle)
+  const handle = useSelectorWeb(getUserHandle)!
   const currentUser = useSelectorWeb(getAccountUser)
   const hasFavoritedItem = !!useSelectorWeb(getHasFavoritedItem)
   const pushRouteWeb = usePushRouteWeb()

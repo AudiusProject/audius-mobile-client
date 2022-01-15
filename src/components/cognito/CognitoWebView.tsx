@@ -92,7 +92,7 @@ const CognitoWebView = () => {
       isOpen={isOpen}
       onClose={handleClose}
     >
-      {uriStatus === Status.SUCCESS ? (
+      {uriStatus === Status.SUCCESS && uri ? (
         <WebView key={key} source={{ uri }} javaScriptEnabled />
       ) : uriStatus === Status.LOADING ? (
         <View style={styles.spinnerContainer}>

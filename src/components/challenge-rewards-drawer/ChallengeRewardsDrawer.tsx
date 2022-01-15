@@ -243,7 +243,7 @@ const ChallengeRewardsDrawer = ({
   const isInProgress = currentStep > 0 && !isComplete
   const claimInProgress =
     claimStatus === ClaimStatus.CLAIMING ||
-    claimStatus === ClaimStatus.RETRY_PENDING
+    claimStatus === ClaimStatus.WAITING_FOR_RETRY
   const claimError = claimStatus === ClaimStatus.ERROR
 
   const statusText = isComplete
