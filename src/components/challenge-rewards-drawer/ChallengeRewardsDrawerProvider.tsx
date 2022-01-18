@@ -103,7 +103,7 @@ const challengesConfig: Record<ChallengeRewardsModalType, ChallengeConfig> = {
     icon: WhiteHeavyCheckMark,
     title: messages.connectVerifiedTitle,
     description: messages.connectVerifiedDescription,
-    amount: 10,
+    amount: 5,
     buttonInfo: {
       label: messages.connectVerifiedButton,
       link: ACCOUNT_VERIFICATION_SETTINGS_PAGE,
@@ -116,7 +116,7 @@ const challengesConfig: Record<ChallengeRewardsModalType, ChallengeConfig> = {
     title: messages.listenStreakTitle,
     description: messages.listenStreakDescription,
     progressLabel: messages.listenStreakProgressLabel,
-    amount: 5,
+    amount: 1,
     buttonInfo: {
       label: messages.listenStreakButton,
       link: TRENDING_PAGE,
@@ -128,14 +128,14 @@ const challengesConfig: Record<ChallengeRewardsModalType, ChallengeConfig> = {
     icon: MobilePhoneWithArrow,
     title: messages.mobileInstallTitle,
     description: messages.mobileInstallDescription,
-    amount: 10
+    amount: 1
   },
   'profile-completion': {
     icon: WhiteHeavyCheckMark,
     title: messages.profileCompletionTitle,
     description: messages.profileCompletionDescription,
     progressLabel: messages.profileCompletionProgressLabel,
-    amount: 5
+    amount: 1
   },
   referrals: {
     icon: IncomingEnvelope,
@@ -149,7 +149,7 @@ const challengesConfig: Record<ChallengeRewardsModalType, ChallengeConfig> = {
     title: messages.trackUploadTitle,
     description: messages.trackUploadDescription,
     progressLabel: messages.trackUploadProgressLabel,
-    amount: 5,
+    amount: 1,
     buttonInfo: {
       label: messages.trackUploadButton,
       link: UPLOAD_PAGE,
