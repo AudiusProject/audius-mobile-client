@@ -1,3 +1,5 @@
+import { Maybe } from 'audius-client/src/common/utils/typeUtils'
+
 import { MessageType, Message } from '../message'
 
 export type MessageSender = {
@@ -7,7 +9,7 @@ export type MessageSender = {
 const SPAMMY_MESSAGES = new Set<string>([MessageType.GET_POSITION])
 
 // Stringifies the message, logs it, and sends it
-export const postMessage = (sender: MessageSender, message: Message) => {
+export const postMessage = (sender: Maybe<MessageSender>, message: Message) => {
   const stringified = JSON.stringify(message)
 
   // Log it if it isn't spammy
@@ -15,5 +17,7 @@ export const postMessage = (sender: MessageSender, message: Message) => {
     console.debug(`Sending message to web client: ${stringified}`)
   }
 
-  sender.postMessage(stringified)
+  // On some versions of android the MessageSender isn't available for a short period on
+  // startup. Null check to prevent error
+  sender?.postMessage(stringified)
 }
