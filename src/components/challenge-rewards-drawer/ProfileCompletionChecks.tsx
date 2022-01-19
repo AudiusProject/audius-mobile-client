@@ -1,9 +1,6 @@
 import React, { useCallback } from 'react'
 
-import {
-  getUserHandle,
-  getAccountUser
-} from 'audius-client/src/common/store/account/selectors'
+import { getAccountUser } from 'audius-client/src/common/store/account/selectors'
 import { getHasFavoritedItem } from 'audius-client/src/components/profile-progress/store/selectors'
 import { profilePage, AUDIO_PAGE } from 'audius-client/src/utils/route'
 import { StyleSheet, View } from 'react-native'
@@ -66,25 +63,28 @@ export const ProfileCompletionChecks = ({
   isComplete: boolean
   onClose: () => void
 }) => {
-  const handle = useSelectorWeb(getUserHandle)!
   const currentUser = useSelectorWeb(getAccountUser)
   const hasFavoritedItem = !!useSelectorWeb(getHasFavoritedItem)
   const pushRouteWeb = usePushRouteWeb()
   const styles = useThemedStyles(createStyles)
   const goToProfile = useCallback(() => {
     onClose()
-    pushRouteWeb(profilePage(handle), AUDIO_PAGE, false)
-  }, [pushRouteWeb, handle, onClose])
+    if (currentUser?.handle) {
+      pushRouteWeb(profilePage(currentUser.handle), AUDIO_PAGE, false)
+    }
+  }, [pushRouteWeb, currentUser, onClose])
+
+  if (!currentUser || !currentUser?.handle) {
+    return null
+  }
   const config: Record<string, boolean> = {
-    [messages.profileCheckNameAndHandle]: !!currentUser?.name,
-    [messages.profileCheckProfilePicture]: !!currentUser?.profile_picture_sizes,
-    [messages.profileCheckCoverPhoto]: !!currentUser?.cover_photo_sizes,
-    [messages.profileCheckProfileDescription]: !!currentUser?.bio,
+    [messages.profileCheckNameAndHandle]: !!currentUser.name,
+    [messages.profileCheckProfilePicture]: !!currentUser.profile_picture_sizes,
+    [messages.profileCheckCoverPhoto]: !!currentUser.cover_photo_sizes,
+    [messages.profileCheckProfileDescription]: !!currentUser.bio,
     [messages.profileCheckFavorite]: hasFavoritedItem,
-    [messages.profileCheckRepost]:
-      !!currentUser && currentUser.repost_count >= 1,
-    [messages.profileCheckFollow]:
-      !!currentUser && currentUser.followee_count >= 5
+    [messages.profileCheckRepost]: currentUser.repost_count >= 1,
+    [messages.profileCheckFollow]: currentUser.followee_count >= 5
   }
   return (
     <View>
