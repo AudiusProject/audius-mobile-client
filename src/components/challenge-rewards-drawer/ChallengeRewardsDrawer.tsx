@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React from 'react'
 
 import { ClaimStatus } from 'audius-client/src/common/store/pages/audio-rewards/slice'
 import { StyleSheet, View, ImageSourcePropType } from 'react-native'
@@ -13,8 +13,6 @@ import Text from 'app/components/text'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
 import { ThemeColors, useThemeColors } from 'app/utils/theme'
 
-import { ToastContext } from '../toast/ToastContext'
-
 const messages = {
   task: 'Task',
   reward: 'Reward',
@@ -23,7 +21,6 @@ const messages = {
   incomplete: 'Incomplete',
   complete: 'Complete',
   claim: 'Claim Your Reward',
-  claimSuccessMessage: 'Reward successfully claimed!',
   claimErrorMessage: 'Oops, something’s gone wrong'
 }
 
@@ -251,13 +248,6 @@ const ChallengeRewardsDrawer = ({
     : isInProgress
     ? `${currentStep}/${stepCount} ${progressLabel}`
     : messages.incomplete
-
-  const { toast } = useContext(ToastContext)
-  useEffect(() => {
-    if (claimStatus === ClaimStatus.SUCCESS) {
-      toast({ content: messages.claimSuccessMessage, type: 'info' })
-    }
-  }, [toast, claimStatus])
 
   return (
     <Drawer

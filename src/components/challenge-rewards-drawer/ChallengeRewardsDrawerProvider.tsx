@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useContext, useEffect } from 'react'
 
 import {
   IntKeys,
@@ -11,7 +11,9 @@ import {
 } from 'audius-client/src/common/store/pages/audio-rewards/selectors'
 import {
   ChallengeRewardsModalType,
-  claimChallengeReward
+  claimChallengeReward,
+  ClaimStatus,
+  resetAndCancelClaimReward
 } from 'audius-client/src/common/store/pages/audio-rewards/slice'
 import { show as showMobileUploadDrawer } from 'audius-client/src/common/store/ui/mobile-upload-drawer/slice'
 import {
@@ -41,6 +43,7 @@ import { useRemoteVar } from 'app/hooks/useRemoteConfig'
 import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 
 import Button, { ButtonType } from '../button'
+import { ToastContext } from '../toast/ToastContext'
 
 import ChallengeRewardsDrawer from './ChallengeRewardsDrawer'
 import { ProfileCompletionChecks } from './ProfileCompletionChecks'
@@ -81,7 +84,10 @@ const messages = {
   trackUploadTitle: 'Upload 5 Tracks',
   trackUploadDescription: 'Upload 5 tracks to your profile',
   trackUploadProgressLabel: 'Uploaded',
-  trackUploadButton: 'Upload Tracks'
+  trackUploadButton: 'Upload Tracks',
+
+  // Claim success toast
+  claimSuccessMessage: 'Reward successfully claimed!'
 }
 
 const MODAL_NAME = 'ChallengeRewardsExplainer'
@@ -174,11 +180,13 @@ const ChallengeRewardsDrawerProvider = () => {
   )
   const modalType = useSelectorWeb(getChallengeRewardsModalType)
   const userChallenges = useSelectorWeb(getUserChallenges)
-  const onClose = useCallback(
-    () => dispatchWeb(setVisibility({ modal: MODAL_NAME, visible: false })),
-    [dispatchWeb]
-  )
+  const onClose = useCallback(() => {
+    dispatchWeb(resetAndCancelClaimReward())
+    dispatchWeb(setVisibility({ modal: MODAL_NAME, visible: false }))
+  }, [dispatchWeb])
   const claimStatus = useSelectorWeb(getClaimStatus)
+
+  const { toast } = useContext(ToastContext)
 
   const challenge = userChallenges ? userChallenges[modalType] : null
   const config = challengesConfig[modalType]
@@ -212,6 +220,12 @@ const ChallengeRewardsDrawerProvider = () => {
       })
     )
   }, [dispatchWeb, modalType, challenge, config])
+
+  useEffect(() => {
+    if (claimStatus === ClaimStatus.SUCCESS) {
+      toast({ content: messages.claimSuccessMessage, type: 'info' })
+    }
+  }, [toast, claimStatus])
 
   // Challenge drawer contents
   let contents: Maybe<React.ReactElement>
