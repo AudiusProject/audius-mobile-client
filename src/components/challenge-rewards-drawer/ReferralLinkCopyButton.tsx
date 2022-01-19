@@ -33,7 +33,7 @@ const createStyles = (themeColors: ThemeColors) =>
       fontSize: 16,
       textTransform: 'uppercase',
       textAlign: 'center',
-      color: '#c675ff',
+      color: themeColors.statTileText,
       letterSpacing: 1
     },
     copyText: {
