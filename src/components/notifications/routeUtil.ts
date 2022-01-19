@@ -1,4 +1,6 @@
+import { UserCollection } from 'audius-client/src/common/models/Collection'
 import { Track } from 'audius-client/src/common/models/Track'
+import { Nullable } from 'audius-client/src/common/utils/typeUtils'
 import Config from 'react-native-config'
 
 import {
@@ -11,7 +13,9 @@ import {
   getTrackRoute,
   getUserRoute,
   getCollectionRoute,
-  getAudioPageRoute
+  getAudioPageRoute,
+  TrackRoute,
+  UserHandle
 } from 'app/utils/routes'
 
 const AUDIUS_URL = Config.AUDIUS_URL
@@ -25,18 +29,18 @@ export const getUserListRoute = (
 }
 
 export const getEntityRoute = (
-  entity: any,
+  entity: Nullable<TrackRoute | UserHandle | UserCollection>,
   entityType: Entity,
   fullUrl = false
 ) => {
   switch (entityType) {
     case Entity.Track:
-      return getTrackRoute(entity, fullUrl)
+      return getTrackRoute(entity as Nullable<TrackRoute>, fullUrl)
     case Entity.User:
-      return getUserRoute(entity, fullUrl)
+      return getUserRoute(entity as Nullable<UserHandle>, fullUrl)
     case Entity.Album:
     case Entity.Playlist:
-      return getCollectionRoute(entity, fullUrl)
+      return getCollectionRoute(entity as Nullable<UserCollection>, fullUrl)
   }
 }
 
