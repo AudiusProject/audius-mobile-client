@@ -317,7 +317,7 @@ const Wallet = ({ chain, address, balance }: WalletProps) => {
   const solWalletAudioEnabled = false
   const styles = useThemedStyles(createStyles)
 
-  const { scale, startPress, stopPress } = usePressScaleAnimation(0.98)
+  const { scale, handlePressIn, handlePressOut } = usePressScaleAnimation(0.98)
 
   const displayAddress =
     chain === Chain.Eth ? shortenEthAddress : shortenSPLAddress
@@ -331,8 +331,8 @@ const Wallet = ({ chain, address, balance }: WalletProps) => {
       <Animated.View style={[{ transform: [{ scale }] }]}>
         <TouchableWithoutFeedback
           onPress={handleCopy}
-          onPressIn={startPress}
-          onPressOut={stopPress}
+          onPressIn={handlePressIn}
+          onPressOut={handlePressOut}
         >
           <View style={styles.linkedWallet}>
             <View style={styles.chainIconContainer}>

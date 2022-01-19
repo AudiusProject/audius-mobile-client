@@ -139,7 +139,7 @@ const Button = ({
 }: ButtonProps) => {
   const styles: ButtonStyle = useThemedStyles(createStyles(type))
   const { primaryDark1 } = useThemeColors()
-  const { scale, startPress, stopPress } = usePressScaleAnimation()
+  const { scale, handlePressIn, handlePressOut } = usePressScaleAnimation()
 
   const underlay =
     type === ButtonType.PRIMARY ? underlayColor || primaryDark1 : undefined
@@ -155,8 +155,8 @@ const Button = ({
     >
       <TouchableHighlight
         onPress={onPress}
-        onPressIn={startPress}
-        onPressOut={stopPress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
         disabled={disabled}
         underlayColor={underlay}
         style={[styles.button, style]}

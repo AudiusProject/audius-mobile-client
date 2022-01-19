@@ -457,7 +457,7 @@ const FirstFollows = ({ navigation, route }: FirstFollowsProps) => {
   const Pill = ({ category }: { category: FollowArtistsCategory }) => {
     const dispatch = useDispatch()
     const isActive = selectedCategory === category
-    const { scale, startPress, stopPress } = usePressScaleAnimation(0.9)
+    const { scale, handlePressIn, handlePressOut } = usePressScaleAnimation(0.9)
 
     const updateSelectedCategory = useCallback(async () => {
       if (!isActive) {
@@ -476,8 +476,8 @@ const FirstFollows = ({ navigation, route }: FirstFollowsProps) => {
         <TouchableOpacity
           style={[styles.pill, isActive ? styles.pillActive : {}]}
           activeOpacity={1}
-          onPressIn={startPress}
-          onPressOut={stopPress}
+          onPressIn={handlePressIn}
+          onPressOut={handlePressOut}
           onPress={updateSelectedCategory}
         >
           <Text

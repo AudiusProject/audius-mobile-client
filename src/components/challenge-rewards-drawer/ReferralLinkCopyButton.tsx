@@ -72,7 +72,7 @@ export const ReferralLinkCopyButton = () => {
   }, [referralUrl, toast])
 
   // Button animation
-  const { scale, startPress, stopPress } = usePressScaleAnimation()
+  const { scale, handlePressIn, handlePressOut } = usePressScaleAnimation()
   return (
     <Animated.View
       style={[styles.copyPromptContainer, { transform: [{ scale }] }]}
@@ -80,8 +80,8 @@ export const ReferralLinkCopyButton = () => {
       <TouchableHighlight
         style={styles.borderRadius}
         onPress={onCopyClicked}
-        onPressIn={startPress}
-        onPressOut={stopPress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
       >
         <LinearGradient
           style={[styles.borderRadius, styles.copyPromptContent]}

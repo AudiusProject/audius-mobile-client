@@ -8,20 +8,20 @@ export const usePressScaleAnimation = (scaleTo = 0.97) => {
   const startPress = useCallback(() => {
     Animated.timing(scale, {
       toValue: scaleTo,
-      duration: 100,
+      duration: 70,
       delay: 0,
       useNativeDriver: true
     }).start()
   }, [scale, scaleTo])
 
-  const stopPress = useCallback(() => {
+  const releasePress = useCallback(() => {
     Animated.timing(scale, {
       toValue: 1,
-      duration: 100,
+      duration: 70,
       delay: 0,
       useNativeDriver: true
     }).start()
   }, [scale])
 
-  return { scale, startPress, stopPress }
+  return { scale, handlePressIn: startPress, handlePressOut: releasePress }
 }

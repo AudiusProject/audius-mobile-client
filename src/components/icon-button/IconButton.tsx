@@ -33,7 +33,7 @@ const IconButton = ({
   isActive,
   isDisabled
 }: IconButtonProps) => {
-  const { scale, startPress, stopPress } = usePressScaleAnimation(0.9)
+  const { scale, handlePressIn, handlePressOut } = usePressScaleAnimation(0.9)
   const { neutral, neutralLight4, primary } = useThemeColors()
 
   let fill = neutral
@@ -47,8 +47,8 @@ const IconButton = ({
     <Animated.View style={[{ transform: [{ scale }] }, containerStyle]}>
       <TouchableOpacity
         onPress={onPress}
-        onPressIn={startPress}
-        onPressOut={stopPress}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
         disabled={isDisabled}
         activeOpacity={0.95}
         hitSlop={{ top: 12, right: 12, bottom: 12, left: 12 }}
