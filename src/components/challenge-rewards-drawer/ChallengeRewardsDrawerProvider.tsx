@@ -96,7 +96,6 @@ type ChallengeConfig = {
   title: string
   description: string
   progressLabel?: string
-  amount: number
   buttonInfo?: {
     link: string
     label: string
@@ -104,12 +103,14 @@ type ChallengeConfig = {
     iconPosition: 'left' | 'right'
   }
 }
-const challengesConfig: Record<ChallengeRewardsModalType, ChallengeConfig> = {
+const challengesConfig: Omit<
+  Record<ChallengeRewardsModalType, ChallengeConfig>,
+  'referred'
+> = {
   'connect-verified': {
     icon: WhiteHeavyCheckMark,
     title: messages.connectVerifiedTitle,
     description: messages.connectVerifiedDescription,
-    amount: 5,
     buttonInfo: {
       label: messages.connectVerifiedButton,
       link: ACCOUNT_VERIFICATION_SETTINGS_PAGE,
@@ -122,7 +123,6 @@ const challengesConfig: Record<ChallengeRewardsModalType, ChallengeConfig> = {
     title: messages.listenStreakTitle,
     description: messages.listenStreakDescription,
     progressLabel: messages.listenStreakProgressLabel,
-    amount: 1,
     buttonInfo: {
       label: messages.listenStreakButton,
       link: TRENDING_PAGE,
@@ -133,29 +133,25 @@ const challengesConfig: Record<ChallengeRewardsModalType, ChallengeConfig> = {
   'mobile-install': {
     icon: MobilePhoneWithArrow,
     title: messages.mobileInstallTitle,
-    description: messages.mobileInstallDescription,
-    amount: 1
+    description: messages.mobileInstallDescription
   },
   'profile-completion': {
     icon: WhiteHeavyCheckMark,
     title: messages.profileCompletionTitle,
     description: messages.profileCompletionDescription,
-    progressLabel: messages.profileCompletionProgressLabel,
-    amount: 1
+    progressLabel: messages.profileCompletionProgressLabel
   },
   referrals: {
     icon: IncomingEnvelope,
     title: messages.referreralsTitle,
     description: messages.referralsDescription,
-    progressLabel: messages.referralsProgressLabel,
-    amount: 1
+    progressLabel: messages.referralsProgressLabel
   },
   'track-upload': {
     icon: MultipleMusicalNotes,
     title: messages.trackUploadTitle,
     description: messages.trackUploadDescription,
     progressLabel: messages.trackUploadProgressLabel,
-    amount: 1,
     buttonInfo: {
       label: messages.trackUploadButton,
       link: UPLOAD_PAGE,
@@ -214,12 +210,12 @@ export const ChallengeRewardsDrawerProvider = () => {
         claim: {
           challengeId: modalType,
           specifier: challenge?.specifier ?? '',
-          amount: config?.amount ?? 0
+          amount: challenge?.amount ?? '0'
         },
         retryOnFailure: true
       })
     )
-  }, [dispatchWeb, modalType, challenge, config])
+  }, [dispatchWeb, modalType, challenge])
 
   useEffect(() => {
     if (claimStatus === ClaimStatus.SUCCESS) {
@@ -279,7 +275,7 @@ export const ChallengeRewardsDrawerProvider = () => {
       titleIcon={config.icon}
       description={config.description}
       progressLabel={config.progressLabel ?? 'Completed'}
-      amount={config.amount}
+      amount={challenge.amount}
       isComplete={challenge.is_complete}
       currentStep={challenge.current_step_count}
       stepCount={challenge.max_steps}
