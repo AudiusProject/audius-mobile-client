@@ -30,8 +30,7 @@ const createProgressBarStyles = (themeColors: ThemeColors) =>
       backgroundColor: themeColors.neutralLight9,
       borderRadius: 22,
       height: 24,
-      marginTop: 14,
-      marginBottom: 14,
+      marginVertical: 14,
       overflow: 'hidden'
     },
     progressBar: {
