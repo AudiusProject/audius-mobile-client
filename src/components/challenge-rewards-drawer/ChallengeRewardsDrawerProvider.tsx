@@ -45,7 +45,7 @@ import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 import Button, { ButtonType } from '../button'
 import { ToastContext } from '../toast/ToastContext'
 
-import ChallengeRewardsDrawer from './ChallengeRewardsDrawer'
+import { ChallengeRewardsDrawer } from './ChallengeRewardsDrawer'
 import { ProfileCompletionChecks } from './ProfileCompletionChecks'
 import { ReferralLinkCopyButton } from './ReferralLinkCopyButton'
 
@@ -172,7 +172,7 @@ const styles = {
 
 const renderUploadIcon = color => <IconUpload fill={color} />
 
-const ChallengeRewardsDrawerProvider = () => {
+export const ChallengeRewardsDrawerProvider = () => {
   const dispatchWeb = useDispatchWeb()
   const pushRouteWeb = usePushRouteWeb()
   const isVisible = useSelectorWeb(state =>
@@ -291,5 +291,3 @@ const ChallengeRewardsDrawerProvider = () => {
     </ChallengeRewardsDrawer>
   )
 }
-
-export default ChallengeRewardsDrawerProvider

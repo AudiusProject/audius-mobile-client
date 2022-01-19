@@ -220,7 +220,7 @@ type ChallengeRewardsDrawerProps = {
   onClaim?: () => void
   children?: React.ReactChild
 }
-const ChallengeRewardsDrawer = ({
+export const ChallengeRewardsDrawer = ({
   isOpen,
   onClose,
   title,
@@ -332,5 +332,3 @@ const ChallengeRewardsDrawer = ({
     </Drawer>
   )
 }
-
-export default ChallengeRewardsDrawer
