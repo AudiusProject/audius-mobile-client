@@ -18,6 +18,12 @@ export const postMessage = (sender: Maybe<MessageSender>, message: Message) => {
   }
 
   // On some versions of android the MessageSender isn't available for a short period on
-  // startup. Null check to prevent error
-  sender?.postMessage(stringified)
+  // startup. Logging more info to determine culprit message
+  if (!sender) {
+    throw new Error(
+      `MessageSender undefined. Trying to post message: ${stringified}`
+    )
+  }
+
+  sender.postMessage(stringified)
 }
