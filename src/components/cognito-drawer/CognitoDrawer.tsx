@@ -59,7 +59,7 @@ const createStyles = (themeColors: ThemeColors) =>
     }
   })
 
-const CognitoWebView = () => {
+export const CognitoDrawer = () => {
   const styles = useThemedStyles(createStyles)
   const dispatchWeb = useDispatchWeb()
   const isOpen = useSelectorWeb(state => getModalVisibility(state, MODAL_NAME))
@@ -108,5 +108,3 @@ const CognitoWebView = () => {
     </Drawer>
   )
 }
-
-export default CognitoWebView

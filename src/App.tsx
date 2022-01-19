@@ -40,7 +40,7 @@ import { setup as setupAnalytics } from 'app/utils/analytics'
 
 import ErrorBoundary from './ErrorBoundary'
 import { WebAppManager } from './WebAppManager'
-import CognitoWebView from './components/cognito/CognitoWebView'
+import { CognitoDrawer } from './components/cognito-drawer/CognitoDrawer'
 import { ThemeContextProvider } from './components/theme/ThemeContext'
 
 Sentry.init({
@@ -73,7 +73,7 @@ const Drawers = () => {
       <ApiRewardsDrawer />
       <ShareToTiktokDrawer />
       <ChallengeRewardsDrawerProvider />
-      <CognitoWebView />
+      <CognitoDrawer />
       <ShareDrawer />
       {/* Disable the audio breakdown drawer until we get
       the feature flags to work for native mobile */}
