@@ -24,7 +24,10 @@ type EntityProps = {
 
 const Entity = ({ entity, entityType, onGoToRoute }: EntityProps) => {
   const onPress = useCallback(() => {
-    onGoToRoute(getEntityRoute(entity, entityType))
+    const route = getEntityRoute(entity, entityType)
+    if (route) {
+      onGoToRoute(route)
+    }
   }, [entity, entityType, onGoToRoute])
 
   const textStyle = useTheme(styles.text, {

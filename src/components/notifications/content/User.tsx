@@ -19,7 +19,10 @@ type UserProps = {
 
 const User = ({ user, onGoToRoute }: UserProps) => {
   const onPress = useCallback(() => {
-    onGoToRoute(getUserRoute(user))
+    const route = getUserRoute(user)
+    if (route) {
+      onGoToRoute(route)
+    }
   }, [user, onGoToRoute])
 
   const textStyle = useTheme(styles.text, {

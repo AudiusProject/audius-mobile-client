@@ -1,7 +1,6 @@
 import { UserCollection } from 'audius-client/src/common/models/Collection'
 import { Track } from 'audius-client/src/common/models/Track'
 import { User } from 'audius-client/src/common/models/User'
-import { Nullable } from 'audius-client/src/common/utils/typeUtils'
 import Config from 'react-native-config'
 
 export type UserHandle = Pick<User, 'handle'>
@@ -41,29 +40,20 @@ export const encodeUrlName = (name: string) => {
 
 const AUDIUS_URL = Config.AUDIUS_URL
 
-export const getTrackRoute = (track: Nullable<TrackRoute>, fullUrl = false) => {
-  if (!track) {
-    return null
-  }
+export const getTrackRoute = (track: TrackRoute, fullUrl = false) => {
   const route = track.permalink
   return fullUrl ? `${AUDIUS_URL}${route}` : route
 }
 
-export const getUserRoute = (user: Nullable<UserHandle>, fullUrl = false) => {
-  if (!user) {
-    return null
-  }
+export const getUserRoute = (user: UserHandle, fullUrl = false) => {
   const route = `/${user.handle}`
   return fullUrl ? `${AUDIUS_URL}${route}` : route
 }
 
 export const getCollectionRoute = (
-  collection: Nullable<UserCollection>,
+  collection: UserCollection,
   fullUrl = false
 ) => {
-  if (!collection) {
-    return null
-  }
   const handle = collection.user.handle
   const title = collection.playlist_name
   const id = collection.playlist_id

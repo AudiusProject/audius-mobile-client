@@ -28,8 +28,7 @@ export const formatAchievementText = (
   type: string,
   name: string,
   value: number,
-  achievement: string,
-  link: string
+  achievement: string
 ) => {
   const achievementText =
     achievement === Achievement.Listens ? 'Plays' : achievement
@@ -56,8 +55,7 @@ const getAchievementText = (notification: any) => {
         notification.entityType,
         notification.entity.title || notification.entity.playlist_name,
         notification.value,
-        notification.achievement,
-        link
+        notification.achievement
       )
       return { text, link }
     }

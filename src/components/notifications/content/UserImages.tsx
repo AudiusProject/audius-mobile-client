@@ -81,6 +81,13 @@ const UserImages = ({ notification, users, onGoToRoute }: UserImagesProps) => {
   const renderUsers = () => (
     <View style={styles.container}>
       {users.map(user => {
+        const onPress = () => {
+          const route = getUserRoute(user)
+          if (route) {
+            onGoToRoute(route)
+          }
+        }
+
         const uri = getImageURI(user)
         let source: ImageSourcePropType
         if (uri) {
@@ -94,7 +101,7 @@ const UserImages = ({ notification, users, onGoToRoute }: UserImagesProps) => {
         ) : (
           <TouchableOpacity
             activeOpacity={0.7}
-            onPress={() => onGoToRoute(getUserRoute(user))}
+            onPress={onPress}
             key={user.user_id}
           >
             {image}

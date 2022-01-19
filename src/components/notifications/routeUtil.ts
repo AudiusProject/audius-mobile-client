@@ -33,14 +33,17 @@ export const getEntityRoute = (
   entityType: Entity,
   fullUrl = false
 ) => {
+  if (!entity) {
+    return null
+  }
   switch (entityType) {
     case Entity.Track:
-      return getTrackRoute(entity as Nullable<TrackRoute>, fullUrl)
+      return getTrackRoute(entity as TrackRoute, fullUrl)
     case Entity.User:
-      return getUserRoute(entity as Nullable<UserHandle>, fullUrl)
+      return getUserRoute(entity as UserHandle, fullUrl)
     case Entity.Album:
     case Entity.Playlist:
-      return getCollectionRoute(entity as Nullable<UserCollection>, fullUrl)
+      return getCollectionRoute(entity as UserCollection, fullUrl)
   }
 }
 
