@@ -48,6 +48,7 @@ const download = async ({
     )
 
     // Do this while download is occuring
+    // TODO: The RNFetchBlob library is currently broken for download progress events on Android.
     fetchTask.progress({ interval: 250 }, (received, total) => {
       dispatch(setDownloadedPercentage((received / total) * 100))
     })
