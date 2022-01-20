@@ -71,11 +71,11 @@ const download = async ({
 export const messageHandlers: Partial<MessageHandlers> = {
   [MessageType.DOWNLOAD_TRACK]: async ({ message }) => {
     const fileUrl = message.urls.find(url => url !== null && url !== undefined)
-    const fileExtension = fileUrl.split('.').pop()
-    const fileName = message.title + '.' + fileExtension
+    const fileName = message.filename
+    const trackName = fileName.split('.').slice(0, -1).join('')
 
     dispatch(setVisibility({ drawer: 'DownloadTrackProgress', visible: true }))
-    dispatch(setFileInfo({ trackName: message.title, fileName: fileName }))
+    dispatch(setFileInfo({ trackName, fileName }))
     dispatch(setFetchCancel(cancelDownloadTask))
 
     if (Platform.OS === 'ios') {
@@ -104,12 +104,12 @@ export const messageHandlers: Partial<MessageHandlers> = {
         getFetchConfig: filePath => ({
           // On android save to FS and trigger notification that it is saved
           addAndroidDownloads: {
-            description: message.title,
+            description: trackName,
             mediaScannable: true,
             mime: 'audio/mpeg',
             notification: true,
             path: filePath,
-            title: message.title + ' download successful!',
+            title: trackName + ' download successful!',
             useDownloadManager: true
           }
         })
