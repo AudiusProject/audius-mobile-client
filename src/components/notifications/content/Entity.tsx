@@ -1,5 +1,6 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 
+import * as Sentry from '@sentry/react-native'
 import { StyleSheet, Text } from 'react-native'
 
 import { Entity as EntityType } from 'app/store/notifications/types'
@@ -30,6 +31,16 @@ const Entity = ({ entity, entityType, onGoToRoute }: EntityProps) => {
   const textStyle = useTheme(styles.text, {
     color: 'secondary'
   })
+
+  useEffect(() => {
+    if (!entity) {
+      Sentry.captureException(
+        new Error(
+          `Notification entity does not exist. Type: ${entityType} ID: ${entityId}`
+        )
+      )
+    }
+  }, [entity, entityId, entityType])
 
   return (
     <Text style={textStyle} onPress={onPress}>
