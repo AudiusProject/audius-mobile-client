@@ -109,7 +109,7 @@ export const messageHandlers: Partial<MessageHandlers> = {
             mime: 'audio/mpeg',
             notification: true,
             path: filePath,
-            title: trackName + ' download successful!',
+            title: trackName,
             useDownloadManager: true
           }
         })
