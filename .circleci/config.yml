@@ -27,7 +27,7 @@ commands:
             - dependency-cache-{{ checksum "../audius-client/package.json" }}
             # fallback to using the latest cache if no exact match is found
             - dependency-cache-
-      - run: cd ../audius-client && npm install
+      - run: cd ../audius-client && npm ci
 
       - save_cache:
           key: dependency-cache-{{ checksum "../audius-client/package.json" }}
@@ -203,7 +203,7 @@ jobs:
             - dependency-cache-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
             - dependency-cache-
-      - run: npm install
+      - run: npm ci
 
       - save_cache:
           key: dependency-cache-{{ checksum "package.json" }}
