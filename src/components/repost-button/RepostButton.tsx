@@ -33,7 +33,11 @@ const RepostButton = (props: RepostButtonProps) => {
       isDarkMode={isDarkMode}
       iconLightJSON={[IconRepostOnLight, IconRepostOffLight]}
       iconDarkJSON={[IconRepostOnDark, IconRepostOffDark]}
-      wrapperStyle={[styles.icon, props.wrapperStyle]}
+      wrapperStyle={[
+        styles.icon,
+        props.isDisabled ? { opacity: 0.5 } : {},
+        props.wrapperStyle
+      ]}
     />
   )
 }
