@@ -18,6 +18,7 @@ import { DeactivateAccountConfirmationDrawer } from 'app/components/deactivate-a
 import DownloadTrackProgressDrawer from 'app/components/download-track-progress-drawer'
 import { EditCollectiblesDrawer } from 'app/components/edit-collectibles-drawer'
 import EnablePushNotificationsDrawer from 'app/components/enable-push-notifications-drawer'
+import ForgotPasswordDrawer from 'app/components/forgot-password-drawer'
 import HCaptcha from 'app/components/hcaptcha'
 import MobileUploadDrawer from 'app/components/mobile-upload-drawer'
 import NavigationContainer from 'app/components/navigation-container'
@@ -73,6 +74,7 @@ const Drawers = () => {
       <ApiRewardsDrawer />
       <ShareToTiktokDrawer />
       <ShareDrawer />
+      <ForgotPasswordDrawer />
       {/* Disable the audio breakdown drawer until we get
       the feature flags to work for native mobile */}
       {/* <AudioBreakdownDrawer /> */}
