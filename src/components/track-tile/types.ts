@@ -6,13 +6,13 @@ export type TileProps = {
   index: number
 
   /** Are we in a trending lineup? Allows tiles to specialize their rendering */
-  isTrending: boolean
+  isTrending?: boolean
 
   /** Function to call when track & art has loaded */
-  onLoad: (index: number) => void
+  onLoad?: (index: number) => void
 
   /** Whether to show an icon indicating rank in lineup */
-  showRankIcon: boolean
+  showRankIcon?: boolean
 
   /** Whether or not to show the loading skeleton */
   showSkeleton?: boolean

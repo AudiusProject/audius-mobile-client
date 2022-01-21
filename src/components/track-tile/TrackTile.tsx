@@ -5,6 +5,8 @@ import {
   RepostSource,
   ShareSource
 } from 'audius-client/src/common/models/Analytics'
+import { Track } from 'audius-client/src/common/models/Track'
+import { User } from 'audius-client/src/common/models/User'
 import { getUserId } from 'audius-client/src/common/store/account/selectors'
 import { getTrack } from 'audius-client/src/common/store/cache/tracks/selectors'
 import { getUserFromTrack } from 'audius-client/src/common/store/cache/users/selectors'
@@ -69,7 +71,19 @@ const createStyles = (themeColors: ThemeColors) =>
     }
   })
 
-export const TrackTile = ({
+export const TrackTile = (props: TrackTileProps) => {
+  const { uid } = props
+  const track = useSelectorWeb(state => getTrack(state, { uid }))
+  const user = useSelectorWeb(state => getUserFromTrack(state, { uid }))
+  if (!track || !user) {
+    console.warn('Track or user missing for TrackTile, preventing render')
+    return null
+  }
+
+  return <TrackTileComponent {...props} track={track} user={user} />
+}
+
+const TrackTileComponent = ({
   index,
   isTrending,
   onLoad,
@@ -77,28 +91,10 @@ export const TrackTile = ({
   showRankIcon,
   showSkeleton,
   togglePlay,
-  uid
-}: TrackTileProps) => {
-  const dispatch = useDispatch()
-  const dispatchWeb = useDispatchWeb()
-  const pushRouteWeb = usePushRouteWeb()
-  // TODO: sk - track fallback
-  const track = useSelectorWeb(state => getTrack(state, { uid }))
-
-  const user = useSelectorWeb(state => getUserFromTrack(state, { uid }))
-  const playingUid = useSelector(getPlayingUid)
-  const isPlaying = useSelector(getPlaying)
-  const currentUserId = useSelectorWeb(getUserId)
-
-  const [artworkLoaded, setArtworkLoaded] = useState(false)
-
-  const styles = useThemedStyles(createStyles)
-  const opacity = useRef(new Animated.Value(0)).current
-
-  if (!track || !user) {
-    return null
-  }
-
+  track,
+  uid,
+  user
+}: TrackTileProps & { track: Track; user: User }) => {
   const {
     permalink,
     _co_sign,
@@ -116,6 +112,19 @@ export const TrackTile = ({
     track_id
   } = track
   const { _artist_pick, name, user_id } = user
+
+  const dispatch = useDispatch()
+  const dispatchWeb = useDispatchWeb()
+  const pushRouteWeb = usePushRouteWeb()
+
+  const playingUid = useSelector(getPlayingUid)
+  const isPlaying = useSelector(getPlaying)
+  const currentUserId = useSelectorWeb(getUserId)
+
+  const [artworkLoaded, setArtworkLoaded] = useState(false)
+
+  const styles = useThemedStyles(createStyles)
+  const opacity = useRef(new Animated.Value(0)).current
 
   const isOwner = user_id === currentUserId
   const isLoaded = artworkLoaded && !showSkeleton
@@ -207,7 +216,7 @@ export const TrackTile = ({
 
   useEffect(() => {
     if (isLoaded) {
-      onLoad(index)
+      onLoad?.(index)
       Animated.timing(opacity, {
         toValue: 1,
         easing: Easing.ease,

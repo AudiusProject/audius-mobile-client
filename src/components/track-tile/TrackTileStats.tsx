@@ -67,7 +67,7 @@ type Props = {
   onPressReposts: GestureResponderHandler
   repostCount: number
   saveCount: number
-  showRankIcon: boolean
+  showRankIcon?: boolean
 }
 
 export const TrackTileStats = ({

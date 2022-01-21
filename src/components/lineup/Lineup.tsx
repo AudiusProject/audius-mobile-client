@@ -5,9 +5,11 @@ import { ID, UID } from 'audius-client/src/common/models/Identifiers'
 import Kind from 'audius-client/src/common/models/Kind'
 import { Lineup as LineupData } from 'audius-client/src/common/models/Lineup'
 import { SectionList, StyleSheet, View } from 'react-native'
+import { useSelector } from 'react-redux'
 
 import Text from 'app/components/text'
 import { TrackTile } from 'app/components/track-tile'
+import { getPlaying, getPlayingUid } from 'app/store/audio/selectors'
 import { make, track } from 'app/utils/analytics'
 
 import { LineupVariant } from './types'
@@ -35,9 +37,14 @@ type Props = {
    */
   lineup: LineupData<LineupItem>
 
+  /**
+   * Function called to pause playback
+   */
   pauseTrack: () => void
-  playing: boolean
-  playingUid: UID | null
+
+  /**
+   * Function called to play a track
+   */
   playTrack: (uid: UID) => void
 
   /** How many icons to show for top ranked entries in the lineup. Defaults to 0, showing none */
@@ -66,13 +73,14 @@ export const Lineup = ({
   lineup,
   playTrack,
   pauseTrack,
-  playing,
-  playingUid,
   rankIconCount = 0,
   showLeadingElementArtistPick = true,
   variant
 }: Props) => {
-  const [loadedTiles, setLoadedTiles] = useState([])
+  const [loadedTiles, setLoadedTiles] = useState<boolean[]>([])
+
+  const playing = useSelector(getPlaying)
+  const playingUid = useSelector(getPlayingUid)
 
   const onLoad = (index: number) => {
     if (!loadedTiles[index]) {
@@ -123,9 +131,11 @@ export const Lineup = ({
         />
       )
     } else {
+      return <></>
       // TODO: Playlist tile
     }
   }
+  console.log(lineup.entries.length)
   return (
     <View style={styles.lineup}>
       <SectionList
