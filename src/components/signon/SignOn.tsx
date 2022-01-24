@@ -511,7 +511,7 @@ const SignOn = ({ navigation }: SignOnProps) => {
     )
   }
 
-  const FormSwitchButton = () => {
+  const renderFormSwitchButton = () => {
     return (
       <Text style={styles.switchFormBtnTitle}>
         {isSignin ? `${messages.newToAudius}` : `${messages.hasAccountAlready}`}
@@ -523,7 +523,7 @@ const SignOn = ({ navigation }: SignOnProps) => {
     )
   }
 
-  const ForgotPasswordButton = () => {
+  const renderForgotPasswordButton = () => {
     return (
       <Text
         style={styles.forgotPasswordButtonTitle}
@@ -788,13 +788,13 @@ const SignOn = ({ navigation }: SignOnProps) => {
               switchForm()
             }}
           >
-            <FormSwitchButton />
+            {renderFormSwitchButton()}
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.forgotPasswordButton}
             activeOpacity={0.6}
           >
-            <ForgotPasswordButton />
+            {renderForgotPasswordButton()}
           </TouchableOpacity>
         </Animated.View>
       </View>

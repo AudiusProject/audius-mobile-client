@@ -15,8 +15,7 @@ const createStyles = (themeColors: ThemeColors) =>
       display: 'flex',
       flexDirection: 'column',
       paddingTop: 24,
-      paddingHorizontal: 24,
-      fontFamily: 'AvenirNextLTPro-Regular'
+      paddingHorizontal: 24
     },
 
     headerView: {
@@ -34,8 +33,7 @@ const createStyles = (themeColors: ThemeColors) =>
     title: {
       fontSize: 18,
       fontWeight: '800',
-      lineHeight: 22,
-      color: themeColors.neutral
+      lineHeight: 22
     },
 
     bodyView: {
@@ -47,7 +45,6 @@ const createStyles = (themeColors: ThemeColors) =>
       fontWeight: '700',
       fontSize: 16,
       lineHeight: 24,
-      color: themeColors.neutral,
       textAlign: 'center',
       marginBottom: 24
     },
@@ -90,7 +87,6 @@ const createStyles = (themeColors: ThemeColors) =>
     },
 
     fromContent: {
-      color: themeColors.neutral,
       fontWeight: '600',
       fontSize: 16,
       lineHeight: 20,
@@ -98,7 +94,6 @@ const createStyles = (themeColors: ThemeColors) =>
     },
 
     subjectContent: {
-      color: themeColors.neutral,
       fontWeight: '600',
       fontSize: 16,
       lineHeight: 20
@@ -117,7 +112,6 @@ const messages = {
 
 const ForgotPasswordDrawer = () => {
   const [isOpen, setIsOpen] = useDrawer('ForgotPassword')
-  console.log('rendering drawer', isOpen)
 
   const styles = useThemedStyles(createStyles)
   const { neutral } = useThemeColors()
