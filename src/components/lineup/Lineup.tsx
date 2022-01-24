@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useCallback, useState } from 'react'
 
 import { Name, PlaybackSource } from 'audius-client/src/common/models/Analytics'
 import { ID, UID } from 'audius-client/src/common/models/Identifiers'
@@ -82,34 +82,40 @@ export const Lineup = ({
   const playing = useSelector(getPlaying)
   const playingUid = useSelector(getPlayingUid)
 
-  const onLoad = (index: number) => {
-    if (!loadedTiles[index]) {
-      loadedTiles[index] = true
-      setLoadedTiles(loadedTiles)
-    }
-  }
+  const onLoad = useCallback(
+    (index: number) => {
+      if (!loadedTiles[index]) {
+        loadedTiles[index] = true
+        setLoadedTiles(loadedTiles)
+      }
+    },
+    [loadedTiles, setLoadedTiles]
+  )
 
-  const togglePlay = (uid: UID, trackId: ID, source?: PlaybackSource) => {
-    if (uid !== playingUid || (uid === playingUid && !playing)) {
-      playTrack(uid)
-      // TODO: sk - analytics
-      //   track(
-      //     make(Name.PLAYBACK_PLAY, {
-      //       id: `${trackId}`,
-      //       source: source || PlaybackSource.TRACK_TILE
-      //     })
-      //   )
-    } else if (uid === playingUid && playing) {
-      pauseTrack()
-      // TODO: sk - analytics
-      //   track(
-      //     make(Name.PLAYBACK_PAUSE, {
-      //       id: `${trackId}`,
-      //       source: source || PlaybackSource.TRACK_TILE
-      //     })
-      //   )
-    }
-  }
+  const togglePlay = useCallback(
+    (uid: UID, trackId: ID, source?: PlaybackSource) => {
+      if (uid !== playingUid || (uid === playingUid && !playing)) {
+        playTrack(uid)
+        // TODO: sk - analytics
+        //   track(
+        //     make(Name.PLAYBACK_PLAY, {
+        //       id: `${trackId}`,
+        //       source: source || PlaybackSource.TRACK_TILE
+        //     })
+        //   )
+      } else if (uid === playingUid && playing) {
+        pauseTrack()
+        // TODO: sk - analytics
+        //   track(
+        //     make(Name.PLAYBACK_PAUSE, {
+        //       id: `${trackId}`,
+        //       source: source || PlaybackSource.TRACK_TILE
+        //     })
+        //   )
+      }
+    },
+    [playTrack, pauseTrack, playing, playingUid]
+  )
 
   const renderItem = ({ index, item }: { index: number; item: LineupItem }) => {
     if (item.kind === Kind.TRACKS || item.track_id) {
@@ -135,7 +141,7 @@ export const Lineup = ({
       // TODO: Playlist tile
     }
   }
-  console.log(lineup.entries.length)
+
   return (
     <View style={styles.lineup}>
       <SectionList

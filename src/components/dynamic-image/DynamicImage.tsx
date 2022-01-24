@@ -2,11 +2,14 @@ import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 
 import transparentPlaceholderImg from 'audius-client/src/common/assets/image/1x1-transparent.png'
 import useInstanceVar from 'audius-client/src/common/hooks/useInstanceVar'
+import { Maybe } from 'audius-client/src/common/utils/typeUtils'
+import { isArray, isObject } from 'lodash'
 import {
   Animated,
   Image,
   ImageSourcePropType,
   ImageStyle,
+  ImageURISource,
   StyleProp,
   StyleSheet,
   View
@@ -35,6 +38,33 @@ const styles = StyleSheet.create({
     left: 0
   }
 })
+
+const isImageEqual = (
+  imageA: Maybe<ImageSourcePropType>,
+  imageB: Maybe<ImageSourcePropType>
+) => {
+  if (imageA === imageB) {
+    return true
+  }
+
+  if (
+    isArray(imageA) &&
+    isArray(imageB) &&
+    !imageA.some((v, i) => v.uri !== imageB[i].uri)
+  ) {
+    return true
+  }
+
+  if (
+    isObject(imageA) &&
+    isObject(imageB) &&
+    (imageA as ImageURISource).uri === (imageB as ImageURISource).uri
+  ) {
+    return true
+  }
+
+  return false
+}
 
 const ImageWithPlaceholder = ({ usePlaceholder, image, style }) => {
   const { neutralLight8, neutralLight9 } = useThemeColors()
@@ -91,7 +121,7 @@ const DynamicImage = ({
 
   useEffect(() => {
     // Skip animation for subsequent loads where the image hasn't changed
-    if (getPrevImage() !== null && getPrevImage() === image) {
+    if (getPrevImage() !== null && isImageEqual(getPrevImage()!, image)) {
       return
     }
 
