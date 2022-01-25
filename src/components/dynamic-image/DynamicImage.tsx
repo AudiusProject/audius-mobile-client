@@ -96,6 +96,8 @@ const DynamicImage = ({
   immediate,
   usePlaceholder = true
 }: DynamicImageProps) => {
+  const [firstSize, setFirstSize] = useState(0)
+  const [secondSize, setSecondSize] = useState(0)
   const [firstImage, setFirstImage] = useState<ImageSourcePropType>()
   const [secondImage, setSecondImage] = useState<ImageSourcePropType>()
 
@@ -151,10 +153,13 @@ const DynamicImage = ({
 
   return (
     <View>
-      <Animated.View style={[styles.image, { opacity: firstOpacity }]}>
+      <Animated.View
+        style={[styles.image, { opacity: firstOpacity }]}
+        onLayout={e => setFirstSize(e.nativeEvent.layout.width)}
+      >
         <ImageWithPlaceholder
           image={firstImage}
-          style={style}
+          style={[{ width: firstSize, height: firstSize }, style]}
           usePlaceholder={usePlaceholder}
         />
       </Animated.View>
@@ -163,10 +168,11 @@ const DynamicImage = ({
           styles.image,
           { opacity: secondOpacity, zIndex: isFirstImageActive ? -1 : 0 }
         ]}
+        onLayout={e => setSecondSize(e.nativeEvent.layout.width)}
       >
         <ImageWithPlaceholder
           image={secondImage}
-          style={style}
+          style={[{ width: secondSize, height: secondSize }, style]}
           usePlaceholder={usePlaceholder}
         />
       </Animated.View>
