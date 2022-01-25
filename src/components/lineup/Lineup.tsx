@@ -4,7 +4,7 @@ import { Name, PlaybackSource } from 'audius-client/src/common/models/Analytics'
 import { ID, UID } from 'audius-client/src/common/models/Identifiers'
 import Kind from 'audius-client/src/common/models/Kind'
 import { Lineup as LineupData } from 'audius-client/src/common/models/Lineup'
-import { SectionList, StyleSheet, View } from 'react-native'
+import { SectionList, SectionListProps, StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
 
 import Text from 'app/components/text'
@@ -12,17 +12,15 @@ import { TrackTile } from 'app/components/track-tile'
 import { getPlaying, getPlayingUid } from 'app/store/audio/selectors'
 import { make, track } from 'app/utils/analytics'
 
-import { LineupVariant } from './types'
-
-type LineupItem = {
-  id: ID
-  kind: Kind
-  track_id?: ID
-  uid: UID
-  _marked_deleted?: boolean
-}
+import { delineateByTime } from './delineate'
+import { LineupItem, LineupVariant } from './types'
 
 type Props = {
+  /**
+   * Whether or not to delineate the lineup by time of the `activityTimestamp`
+   */
+  delineate?: boolean
+
   /** Are we in a trending lineup? Allows tiles to specialize their rendering */
   isTrending?: boolean
 
@@ -36,6 +34,12 @@ type Props = {
    * The Lineup object containing entries
    */
   lineup: LineupData<LineupItem>
+
+  /**
+   * A header to display at the top of the lineup,
+   * will scroll with the rest of the content
+   */
+  header?: SectionListProps<any>['ListHeaderComponent']
 
   /**
    * Function called to pause playback
@@ -68,9 +72,11 @@ const styles = StyleSheet.create({
   }
 })
 export const Lineup = ({
+  delineate,
   isTrending,
   leadingElementId,
   lineup,
+  header,
   playTrack,
   pauseTrack,
   rankIconCount = 0,
@@ -142,18 +148,25 @@ export const Lineup = ({
     }
   }
 
+  const sections = delineate
+    ? delineateByTime(lineup.entries)
+    : [
+        {
+          title: '',
+          data: lineup.entries
+        }
+      ]
+
   return (
     <View style={styles.lineup}>
       <SectionList
-        sections={[
-          {
-            title: 'Test',
-            data: lineup.entries
-          }
-        ]}
+        sections={sections}
         keyExtractor={(item, index) => String(item.id + index)}
         renderItem={renderItem}
-        renderSectionHeader={({ section: { title } }) => <Text>{title}</Text>}
+        renderSectionHeader={({ section: { title } }) =>
+          delineate ? <Text>{title}</Text> : null
+        }
+        ListHeaderComponent={header}
       />
     </View>
   )
