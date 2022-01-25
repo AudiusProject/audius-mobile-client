@@ -102,22 +102,22 @@ export const Lineup = ({
     (uid: UID, trackId: ID, source?: PlaybackSource) => {
       if (uid !== playingUid || (uid === playingUid && !playing)) {
         playTrack(uid)
-        // TODO: sk - analytics
-        //   track(
-        //     make(Name.PLAYBACK_PLAY, {
-        //       id: `${trackId}`,
-        //       source: source || PlaybackSource.TRACK_TILE
-        //     })
-        //   )
+        track(
+          make({
+            eventName: Name.PLAYBACK_PLAY,
+            id: `${trackId}`,
+            source: source || PlaybackSource.TRACK_TILE
+          })
+        )
       } else if (uid === playingUid && playing) {
         pauseTrack()
-        // TODO: sk - analytics
-        //   track(
-        //     make(Name.PLAYBACK_PAUSE, {
-        //       id: `${trackId}`,
-        //       source: source || PlaybackSource.TRACK_TILE
-        //     })
-        //   )
+        track(
+          make({
+            eventName: Name.PLAYBACK_PAUSE,
+            id: `${trackId}`,
+            source: source || PlaybackSource.TRACK_TILE
+          })
+        )
       }
     },
     [playTrack, pauseTrack, playing, playingUid]
