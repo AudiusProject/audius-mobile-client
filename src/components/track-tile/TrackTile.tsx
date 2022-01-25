@@ -22,6 +22,7 @@ import {
 } from 'audius-client/src/common/store/ui/mobile-overflow-menu/types'
 import { requestOpen as requestOpenShareModal } from 'audius-client/src/common/store/ui/share-modal/slice'
 import { open as openOverflowMenu } from 'common/store/ui/mobile-overflow-menu/slice'
+import { isEqual } from 'lodash'
 import {
   Animated,
   Easing,
@@ -60,10 +61,6 @@ const createStyles = (themeColors: ThemeColors) =>
       borderRadius: 8,
       maxWidth: 400,
       marginHorizontal: 'auto'
-      // elevation: 3,
-      // shadowOpacity: 0.15,
-      // shadowOffset: { width: 0, height: 1 },
-      // shadowRadius: 3
     },
     mainContent: {
       ...flexCol(),
@@ -73,7 +70,10 @@ const createStyles = (themeColors: ThemeColors) =>
 
 export const TrackTile = (props: TrackTileProps) => {
   const { uid } = props
-  const track = useSelectorWeb(state => getTrack(state, { uid }))
+  // Using isEqual as the equality function to prevent rerenders due to object references
+  // not being preserved when syncing redux state from client.
+  // This can be removed when no longer dependent on web client
+  const track = useSelectorWeb(state => getTrack(state, { uid }), isEqual)
   const user = useSelectorWeb(state => getUserFromTrack(state, { uid }))
   if (!track || !user) {
     console.warn('Track or user missing for TrackTile, preventing render')
