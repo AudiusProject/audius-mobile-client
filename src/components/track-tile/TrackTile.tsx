@@ -1,5 +1,7 @@
 import React, { useCallback, useState, useEffect, useRef } from 'react'
 
+import { useNavigation } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import {
   FavoriteSource,
   RepostSource,
@@ -34,6 +36,7 @@ import {
 import { Shadow } from 'react-native-shadow-2'
 import { useDispatch, useSelector } from 'react-redux'
 
+import { BaseStackParamList } from 'app/components/app-navigator/types'
 import { TrackTileProps } from 'app/components/track-tile/types'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { usePushRouteWeb } from 'app/hooks/usePushRouteWeb'
@@ -112,6 +115,9 @@ const TrackTileComponent = ({
     track_id
   } = track
   const { _artist_pick, name, user_id } = user
+  const navigation = useNavigation<
+    NativeStackNavigationProp<BaseStackParamList>
+  >()
 
   const dispatch = useDispatch()
   const dispatchWeb = useDispatchWeb()
@@ -138,7 +144,7 @@ const TrackTileComponent = ({
     : false
 
   const goToTrackPage = (e: GestureResponderEvent) => {
-    // navigate to track page
+    navigation.navigate('track', { id: track_id })
   }
 
   const goToArtistPage = (e: GestureResponderEvent) => {
