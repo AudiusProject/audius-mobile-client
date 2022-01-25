@@ -67,10 +67,13 @@ type Props = {
 }
 
 const styles = StyleSheet.create({
-  lineup: {
-    padding: 8
+  lineup: {},
+  item: {
+    padding: 12,
+    paddingBottom: 0
   }
 })
+
 export const Lineup = ({
   delineate,
   isTrending,
@@ -131,16 +134,18 @@ export const Lineup = ({
         return null
       }
       return (
-        <TrackTile
-          {...item}
-          index={index}
-          isTrending={isTrending}
-          onLoad={onLoad}
-          showArtistPick={showLeadingElementArtistPick && !!leadingElementId}
-          showRankIcon={index < rankIconCount}
-          togglePlay={togglePlay}
-          uid={item.uid}
-        />
+        <View style={styles.item}>
+          <TrackTile
+            {...item}
+            index={index}
+            isTrending={isTrending}
+            onLoad={onLoad}
+            showArtistPick={showLeadingElementArtistPick && !!leadingElementId}
+            showRankIcon={index < rankIconCount}
+            togglePlay={togglePlay}
+            uid={item.uid}
+          />
+        </View>
       )
     } else {
       return <></>

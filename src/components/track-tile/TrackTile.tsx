@@ -30,6 +30,7 @@ import {
   StyleSheet,
   View
 } from 'react-native'
+import { Shadow } from 'react-native-shadow-2'
 import { useDispatch, useSelector } from 'react-redux'
 
 import { TrackTileProps } from 'app/components/track-tile/types'
@@ -58,12 +59,11 @@ const createStyles = (themeColors: ThemeColors) =>
       borderWidth: 1,
       borderRadius: 8,
       maxWidth: 400,
-      marginHorizontal: 'auto',
-      marginBottom: 12,
-      elevation: 3,
-      shadowOpacity: 0.15,
-      shadowOffset: { width: 0, height: 1 },
-      shadowRadius: 3
+      marginHorizontal: 'auto'
+      // elevation: 3,
+      // shadowOpacity: 0.15,
+      // shadowOffset: { width: 0, height: 1 },
+      // shadowRadius: 3
     },
     mainContent: {
       ...flexCol(),
@@ -230,68 +230,75 @@ const TrackTileComponent = ({
   }
 
   return (
-    <View style={styles.container}>
-      {showArtistPick && _artist_pick === track_id && (
-        <TrackBannerIcon type={TrackBannerIconType.STAR} />
-      )}
-      {is_unlisted && <TrackBannerIcon type={TrackBannerIconType.HIDDEN} />}
-      <Pressable
-        style={styles.mainContent}
-        disabled={showSkeleton}
-        onPress={() => togglePlay(uid, track_id)}
-      >
-        <TrackTileTopRight
-          duration={duration}
-          fadeIn={fadeIn}
-          isArtistPick={_artist_pick === track_id}
-          isUnlisted={is_unlisted}
-          showArtistPick={showArtistPick}
-        />
-        <TrackTileMetadata
-          artistName={name}
-          coSign={_co_sign}
-          coverArtSizes={_cover_art_sizes}
-          fadeIn={fadeIn}
-          goToArtistPage={goToArtistPage}
-          goToTrackPage={goToTrackPage}
-          id={track_id}
-          isLoaded={isLoaded}
-          isPlaying={uid === playingUid && isPlaying}
-          setArtworkLoaded={setArtworkLoaded}
-          showSkeleton={showSkeleton}
-          title={title}
-          user={user}
-        />
-        {_co_sign && (
-          <Animated.View style={fadeIn}>
-            <TrackTileCoSign coSign={_co_sign} />
-          </Animated.View>
+    <Shadow
+      offset={[0, 2]}
+      viewStyle={{ alignSelf: 'stretch' }}
+      distance={4}
+      startColor='rgba(133,129,153,0.05)'
+    >
+      <View style={styles.container}>
+        {showArtistPick && _artist_pick === track_id && (
+          <TrackBannerIcon type={TrackBannerIconType.STAR} />
         )}
-        <TrackTileStats
-          fadeIn={fadeIn}
-          hidePlays={hidePlays}
-          index={index}
-          isTrending={isTrending}
-          isUnlisted={is_unlisted}
-          listenCount={play_count}
-          onPressFavorites={onPressFavorites}
-          onPressReposts={onPressReposts}
-          repostCount={repost_count}
-          saveCount={save_count}
-          showRankIcon={showRankIcon}
-        />
-        <TrackTileBottomButtons
-          hasReposted={has_current_user_reposted}
-          hasSaved={has_current_user_saved}
-          isOwner={isOwner}
-          isShareHidden={hideShare}
-          isUnlisted={is_unlisted}
-          onPressOverflow={onPressOverflowMenu}
-          onPressShare={onPressShare}
-          onToggleRepost={onToggleRepost}
-          onToggleSave={onToggleSave}
-        />
-      </Pressable>
-    </View>
+        {is_unlisted && <TrackBannerIcon type={TrackBannerIconType.HIDDEN} />}
+        <Pressable
+          style={styles.mainContent}
+          disabled={showSkeleton}
+          onPress={() => togglePlay(uid, track_id)}
+        >
+          <TrackTileTopRight
+            duration={duration}
+            fadeIn={fadeIn}
+            isArtistPick={_artist_pick === track_id}
+            isUnlisted={is_unlisted}
+            showArtistPick={showArtistPick}
+          />
+          <TrackTileMetadata
+            artistName={name}
+            coSign={_co_sign}
+            coverArtSizes={_cover_art_sizes}
+            fadeIn={fadeIn}
+            goToArtistPage={goToArtistPage}
+            goToTrackPage={goToTrackPage}
+            id={track_id}
+            isLoaded={isLoaded}
+            isPlaying={uid === playingUid && isPlaying}
+            setArtworkLoaded={setArtworkLoaded}
+            showSkeleton={showSkeleton}
+            title={title}
+            user={user}
+          />
+          {_co_sign && (
+            <Animated.View style={fadeIn}>
+              <TrackTileCoSign coSign={_co_sign} />
+            </Animated.View>
+          )}
+          <TrackTileStats
+            fadeIn={fadeIn}
+            hidePlays={hidePlays}
+            index={index}
+            isTrending={isTrending}
+            isUnlisted={is_unlisted}
+            listenCount={play_count}
+            onPressFavorites={onPressFavorites}
+            onPressReposts={onPressReposts}
+            repostCount={repost_count}
+            saveCount={save_count}
+            showRankIcon={showRankIcon}
+          />
+          <TrackTileBottomButtons
+            hasReposted={has_current_user_reposted}
+            hasSaved={has_current_user_saved}
+            isOwner={isOwner}
+            isShareHidden={hideShare}
+            isUnlisted={is_unlisted}
+            onPressOverflow={onPressOverflowMenu}
+            onPressShare={onPressShare}
+            onToggleRepost={onToggleRepost}
+            onToggleSave={onToggleSave}
+          />
+        </Pressable>
+      </View>
+    </Shadow>
   )
 }
