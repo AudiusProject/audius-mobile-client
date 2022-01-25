@@ -6,7 +6,8 @@ import {
   Animated,
   GestureResponderEvent,
   PanResponderGestureState,
-  StatusBar
+  StatusBar,
+  Dimensions
 } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
@@ -15,18 +16,21 @@ import { useDrawer } from 'app/hooks/useDrawer'
 
 import { DrawerAnimationStyle, springToValue } from '../drawer/Drawer'
 
-import ActionsBar from './ActionsBar'
-import AudioControls from './AudioControls'
-import PlayBar from './PlayBar'
+import { ActionsBar } from './ActionsBar'
+import { AudioControls } from './AudioControls'
+import { Logo } from './Logo'
+import { PlayBar } from './PlayBar'
 
-const PLAY_BAR_HEIGHT = 100
+const PLAY_BAR_HEIGHT = 82
 const STATUS_BAR_FADE_CUTOFF = 0.6
 
 const styles = StyleSheet.create({
   container: {
-    padding: 24,
     paddingTop: 0,
-    height: '100%'
+    height: Dimensions.get('window').height - PLAY_BAR_HEIGHT
+  },
+  controls: {
+    padding: 24
   }
 })
 
@@ -144,14 +148,18 @@ const NowPlayingDrawer = ({
       isOpenToInitialOffset={isPlayBarShowing}
       animationStyle={DrawerAnimationStyle.SPRINGY}
       shouldBackgroundDim={false}
+      shouldAnimateShadow={false}
       drawerStyle={{ top: -1 * insets.top, overflow: 'visible' }}
       onPercentOpen={onDrawerPercentOpen}
       onPanResponderMove={onPanResponderMove}
     >
       <View style={styles.container}>
         <PlayBar onPress={onDrawerOpen} opacityAnim={playBarOpacityAnim} />
-        <AudioControls />
-        <ActionsBar />
+        <Logo opacityAnim={playBarOpacityAnim} />
+        <View style={styles.controls}>
+          <AudioControls />
+          <ActionsBar />
+        </View>
       </View>
     </Drawer>
   )
