@@ -15,15 +15,16 @@ import { flexRowCentered } from 'app/styles'
 import { ThemeColors, useThemeColors } from 'app/utils/theme'
 
 type Props = {
-  hasReposted: boolean
-  hasSaved: boolean
-  isOwner: boolean
+  disabled?: boolean
+  hasReposted?: boolean
+  hasSaved?: boolean
+  isOwner?: boolean
   isShareHidden?: boolean
   isUnlisted?: boolean
-  onPressOverflow: () => void
-  onPressShare: () => void
-  onToggleRepost: () => void
-  onToggleSave: () => void
+  onPressOverflow?: () => void
+  onPressShare?: () => void
+  onToggleRepost?: () => void
+  onToggleSave?: () => void
 }
 
 const messages = {
@@ -56,6 +57,7 @@ const createStyles = (themeColors: ThemeColors) =>
   })
 
 export const TrackTileBottomButtons = ({
+  disabled,
   hasReposted,
   hasSaved,
   isOwner,
@@ -72,48 +74,55 @@ export const TrackTileBottomButtons = ({
 
   const repostButton = (
     <RepostButton
-      onPress={onToggleRepost}
+      onPress={onToggleRepost ?? (() => {})}
       isActive={hasReposted}
-      isDisabled={isOwner}
+      isDisabled={disabled || isOwner}
       style={[styles.button, styles.firstButton] as ImageStyle}
     />
   )
 
   const favoriteButton = (
     <FavoriteButton
-      onPress={onToggleSave}
+      onPress={onToggleSave ?? (() => {})}
       isActive={hasSaved}
-      isDisabled={isOwner}
+      isDisabled={disabled || isOwner}
       style={styles.button as ImageStyle}
     />
   )
 
   const shareButton = (
     <Pressable
+      disabled={disabled}
       onPress={() => {
-        toast({
-          content: messages.copiedToast,
-          timeout: SHARE_TOAST_TIMEOUT
-        })
-        onPressShare()
+        if (onPressShare) {
+          toast({
+            content: messages.copiedToast,
+            timeout: SHARE_TOAST_TIMEOUT
+          })
+          onPressShare()
+        }
       }}
     >
       <IconShare
         height={18}
         width={18}
         fill={neutralLight4}
-        style={styles.button}
+        style={[styles.button, disabled ? { opacity: 0.5 } : {}]}
       />
     </Pressable>
   )
 
   const moreButton = (
-    <Pressable onPress={onPressOverflow}>
+    <Pressable onPress={onPressOverflow} disabled={disabled}>
       <IconKebabHorizontal
         height={22}
         width={22}
         fill={neutralLight4}
-        style={[styles.button, styles.lastButton]}
+        style={[
+          styles.button,
+          styles.lastButton,
+          disabled ? { opacity: 0.5 } : {}
+        ]}
       />
     </Pressable>
   )

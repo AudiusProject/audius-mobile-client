@@ -9,11 +9,16 @@ export enum LineupVariant {
   PLAYLIST = 'playlist'
 }
 
-export type LineupItem = {
-  id: ID
-  kind: Kind
-  track_id?: ID
-  uid: UID
-  _marked_deleted?: boolean
-  activityTimestamp?: Maybe<number | string>
-}
+export type LineupItem =
+  | {
+      _loading: false
+      id: ID
+      kind: Kind
+      track_id?: ID
+      uid: UID
+      _marked_deleted?: boolean
+      activityTimestamp?: Maybe<number | string>
+    }
+  | {
+      _loading: true
+    }

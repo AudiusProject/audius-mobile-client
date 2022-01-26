@@ -1,12 +1,11 @@
 import React from 'react'
 
-import { ID } from 'audius-client/src/common/models/Identifiers'
 import { formatCount } from 'audius-client/src/common/utils/formatUtil'
-import { View, Animated, Pressable, StyleSheet } from 'react-native'
+import { View, Pressable, StyleSheet } from 'react-native'
 
 import IconHeart from 'app/assets/images/iconHeart.svg'
 import IconRepost from 'app/assets/images/iconRepost.svg'
-import Text, { AnimatedText } from 'app/components/text'
+import Text from 'app/components/text'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
 import { flexRow, flexRowCentered } from 'app/styles'
 import { GestureResponderHandler } from 'app/types/gesture'
@@ -57,7 +56,6 @@ const createStyles = (themeColors: ThemeColors) =>
   })
 
 type Props = {
-  fadeIn: { opacity: Animated.Value }
   hidePlays: boolean
   index: number
   isTrending?: boolean
@@ -71,7 +69,6 @@ type Props = {
 }
 
 export const TrackTileStats = ({
-  fadeIn,
   hidePlays,
   index,
   isTrending,
@@ -90,7 +87,7 @@ export const TrackTileStats = ({
   const hasEngagement = Boolean(repostCount || saveCount)
 
   return (
-    <Animated.View style={[fadeIn, styles.stats]}>
+    <View style={styles.stats}>
       {isTrending && (
         <TrackTileRankIcon showCrown={showRankIcon} index={index} />
       )}
@@ -135,12 +132,10 @@ export const TrackTileStats = ({
         </View>
       )}
       {!hidePlays && (
-        <AnimatedText
-          style={[fadeIn, trackTileStyles.statText, styles.listenCount]}
-        >
+        <Text style={[trackTileStyles.statText, styles.listenCount]}>
           {formatListenCount(listenCount)}
-        </AnimatedText>
+        </Text>
       )}
-    </Animated.View>
+    </View>
   )
 }

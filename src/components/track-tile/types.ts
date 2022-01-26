@@ -14,9 +14,6 @@ export type TileProps = {
   /** Whether to show an icon indicating rank in lineup */
   showRankIcon?: boolean
 
-  /** Whether or not to show the loading skeleton */
-  showSkeleton?: boolean
-
   /** Function to call when play is toggled */
   togglePlay: (uid: UID, trackId: ID, source?: PlaybackSource) => void
 

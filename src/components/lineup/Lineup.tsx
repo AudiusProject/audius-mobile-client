@@ -5,6 +5,7 @@ import { ID, UID } from 'audius-client/src/common/models/Identifiers'
 import Kind from 'audius-client/src/common/models/Kind'
 import { Lineup as LineupData } from 'audius-client/src/common/models/Lineup'
 import { LineupActions } from 'audius-client/src/common/store/lineup/actions'
+import { range } from 'lodash'
 import {
   Dimensions,
   SectionList,
@@ -15,7 +16,7 @@ import {
 import { useSelector } from 'react-redux'
 
 import Text from 'app/components/text'
-import { TrackTile } from 'app/components/track-tile'
+import { TrackTile, TrackTileSkeleton } from 'app/components/track-tile'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { getPlaying, getPlayingUid } from 'app/store/audio/selectors'
 import { make, track } from 'app/utils/analytics'
@@ -25,6 +26,9 @@ import { LineupItem, LineupVariant } from './types'
 
 // The max number of tiles to load
 const MAX_TILES_COUNT = 1000
+
+// The max number of loading tiles to display if count prop passes
+const MAX_COUNT_LOADING_TILES = 18
 
 // The inital multiplier for number of tracks to fetch on lineup load
 // multiplied by the number of tracks that fit the browser height
@@ -171,7 +175,7 @@ const styles = StyleSheet.create({
 
 export const Lineup = ({
   actions,
-  count = MAX_TILES_COUNT,
+  count,
   delineate,
   isTrending,
   leadingElementId,
@@ -198,6 +202,11 @@ export const Lineup = ({
     return itemCounts.initial + (lineup.page - 1) * itemCounts.loadMore
   }, [itemCounts, lineup])
 
+  const countOrDefault = useMemo(
+    () => (count !== undefined ? count : MAX_TILES_COUNT),
+    [count]
+  )
+
   const onLoad = useCallback(
     (index: number) => {
       if (!loadedTiles[index]) {
@@ -209,17 +218,19 @@ export const Lineup = ({
   )
 
   const onEndReached = useCallback(() => {
-    if (!lineup.hasMore) {
+    const { hasMore, page } = lineup
+
+    if (!hasMore) {
       return
     }
-    const { page } = lineup
 
     const lineupLength = lineup.entries.length
     const offset = lineupLength + lineup.deleted
+
     if (
       (!limit || lineupLength !== limit) &&
       loadMore &&
-      lineupLength < count &&
+      lineupLength < countOrDefault &&
       (page === 0 || pageItemCount <= offset)
     ) {
       const trackLoadCount = itemCounts.initial + page * itemCounts.loadMore
@@ -227,13 +238,14 @@ export const Lineup = ({
       dispatchWeb(actions.setPage(page + 1))
 
       const limit =
-        Math.min(trackLoadCount, Math.max(count, itemCounts.minimum)) - offset
+        Math.min(trackLoadCount, Math.max(countOrDefault, itemCounts.minimum)) -
+        offset
 
       loadMore(offset, limit, page === 0)
     }
   }, [
     actions,
-    count,
+    countOrDefault,
     dispatchWeb,
     itemCounts,
     limit,
@@ -268,6 +280,14 @@ export const Lineup = ({
   )
 
   const renderItem = ({ index, item }: { index: number; item: LineupItem }) => {
+    if (item._loading) {
+      return (
+        <View style={styles.item}>
+          <TrackTileSkeleton />
+        </View>
+      )
+    }
+
     if (item.kind === Kind.TRACKS || item.track_id) {
       // Render a track tile if the kind tracks or there's a track id present
 
@@ -295,14 +315,55 @@ export const Lineup = ({
     }
   }
 
-  const sections = delineate
-    ? delineateByTime(lineup.entries)
-    : [
-        {
-          title: '',
-          data: lineup.entries
-        }
-      ]
+  const sections = useMemo(() => {
+    const { entries, hasMore, isMetadataLoading, page } = lineup
+    const itemDisplayCount = page <= 1 ? itemCounts.initial : pageItemCount
+
+    const getSkeletonCount = () => {
+      if (
+        isMetadataLoading &&
+        hasMore &&
+        entries.length < countOrDefault &&
+        (!limit || entries.length !== limit)
+      ) {
+        // Calculate the number of skeletons to display: total # requested - # rendered - # deleted
+        // If the `count` prop is provided, render the count - # loaded tiles
+        const loadingSkeletonDifferential = Math.max(
+          itemDisplayCount - entries.length - lineup.deleted,
+          0
+        )
+        return count
+          ? Math.min(count - entries.length, MAX_COUNT_LOADING_TILES)
+          : loadingSkeletonDifferential
+      }
+      return 0
+    }
+
+    // Append loading items to the array of already loaded items
+    const items = [
+      ...entries,
+      ...range(getSkeletonCount()).map(() => ({ _loading: true } as LineupItem))
+    ]
+
+    // If delineate=true, create sections of items based on time.
+    // Otherwise return one section
+    return delineate
+      ? delineateByTime(items)
+      : [
+          {
+            title: '',
+            data: items
+          }
+        ]
+  }, [
+    count,
+    countOrDefault,
+    delineate,
+    itemCounts,
+    limit,
+    lineup,
+    pageItemCount
+  ])
 
   return (
     <View style={styles.lineup}>
