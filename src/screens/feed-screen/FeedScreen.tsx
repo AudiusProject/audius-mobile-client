@@ -5,11 +5,10 @@ import { Name } from 'audius-client/src/common/models/Analytics'
 import { makeGetLineupMetadatas } from 'audius-client/src/common/store/lineup/selectors'
 import { feedActions } from 'audius-client/src/common/store/pages/feed/lineup/actions'
 import { getDiscoverFeedLineup } from 'audius-client/src/common/store/pages/feed/selectors'
-import { Text, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { isEqual } from 'lodash'
+import { View } from 'react-native'
 
 import { FeedStackParamList } from 'app/components/app-navigator/types'
-import Button from 'app/components/button'
 import { Lineup } from 'app/components/lineup'
 import { LineupVariant } from 'app/components/lineup/types'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
@@ -22,7 +21,7 @@ const getFeedLineup = makeGetLineupMetadatas(getDiscoverFeedLineup)
 
 const FeedScreen = ({ navigation }: Props) => {
   const dispatchWeb = useDispatchWeb()
-  const feedLineup = useSelectorWeb(getFeedLineup)
+  const feedLineup = useSelectorWeb(getFeedLineup, isEqual)
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const loadMore = (offset: number, limit: number, overwrite: boolean) => {

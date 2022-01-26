@@ -4,6 +4,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { makeGetLineupMetadatas } from 'audius-client/src/common/store/lineup/selectors'
 import { tracksActions } from 'audius-client/src/common/store/pages/track/lineup/actions'
 import { getLineup } from 'audius-client/src/common/store/pages/track/selectors'
+import { isEqual } from 'lodash'
 import { Text, View } from 'react-native'
 
 import { BaseStackParamList } from 'app/components/app-navigator/types'
@@ -25,7 +26,7 @@ const TrackScreen = ({ route, navigation }: Props) => {
   }, [navigation])
 
   const dispatchWeb = useDispatchWeb()
-  const moreByArtistLineup = useSelectorWeb(getMoreByArtistLineup)
+  const moreByArtistLineup = useSelectorWeb(getMoreByArtistLineup, isEqual)
 
   const playTrack = (uid?: string) => {
     dispatchWeb(tracksActions.play(uid))
