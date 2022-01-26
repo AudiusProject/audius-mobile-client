@@ -41,6 +41,7 @@ const TrackScreen = ({ route, navigation }: Props) => {
       <Text>Example track screen</Text>
       <Button title='Go to profile screen' onPress={handlePress} />
       <Lineup
+        actions={tracksActions}
         lineup={moreByArtistLineup}
         pauseTrack={pauseTrack}
         playTrack={playTrack}

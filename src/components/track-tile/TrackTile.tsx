@@ -37,7 +37,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { BaseStackParamList } from 'app/components/app-navigator/types'
 import { TrackTileProps } from 'app/components/track-tile/types'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
-import { usePushRouteWeb } from 'app/hooks/usePushRouteWeb'
+// import { usePushRouteWeb } from 'app/hooks/usePushRouteWeb'
 import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
 import { getPlaying, getPlayingUid } from 'app/store/audio/selectors'
@@ -88,7 +88,7 @@ const TrackTileComponent = ({
   user
 }: TrackTileProps & { track: Track; user: User }) => {
   const {
-    permalink,
+    // permalink,
     _co_sign,
     _cover_art_sizes,
     duration,
@@ -110,7 +110,7 @@ const TrackTileComponent = ({
 
   const dispatch = useDispatch()
   const dispatchWeb = useDispatchWeb()
-  const pushRouteWeb = usePushRouteWeb()
+  // const pushRouteWeb = usePushRouteWeb()
 
   const playingUid = useSelector(getPlayingUid)
   const isPlaying = useSelector(getPlaying)

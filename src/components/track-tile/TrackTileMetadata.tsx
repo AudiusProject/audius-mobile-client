@@ -7,11 +7,10 @@ import { User } from 'audius-client/src/common/models/User'
 import { Pressable, StyleSheet, View } from 'react-native'
 
 import IconVolume from 'app/assets/images/iconVolume.svg'
-import Skeleton from 'app/components/skeleton'
 import Text from 'app/components/text'
 import UserBadges from 'app/components/user-badges/UserBadges'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
-import { flexCol, flexRow, flexRowCentered } from 'app/styles'
+import { flexRow } from 'app/styles'
 import { GestureResponderHandler } from 'app/types/gesture'
 import { ThemeColors, useThemeColors } from 'app/utils/theme'
 
@@ -58,10 +57,8 @@ type Props = {
   goToArtistPage: GestureResponderHandler
   goToTrackPage: GestureResponderHandler
   id: ID
-  isLoaded: boolean
   isPlaying: boolean
   setArtworkLoaded: (loaded: boolean) => void
-  showSkeleton?: boolean
   title: string
   user: User
 }
@@ -73,10 +70,8 @@ export const TrackTileMetadata = ({
   goToArtistPage,
   goToTrackPage,
   id,
-  isLoaded,
   isPlaying,
   setArtworkLoaded,
-  showSkeleton,
   title,
   user
 }: Props) => {
@@ -89,7 +84,6 @@ export const TrackTileMetadata = ({
         id={id}
         isTrack={true}
         onLoad={() => setArtworkLoaded(true)}
-        showSkeleton={showSkeleton}
         coverArtSizes={coverArtSizes}
         coSign={coSign}
         style={trackTileStyles.imageContainer}

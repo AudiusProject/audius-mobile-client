@@ -7,7 +7,6 @@ import React, {
   useMemo
 } from 'react'
 
-import { Maybe } from 'audius-client/src/common/utils/typeUtils'
 import LottieView from 'lottie-react-native'
 import { StyleProp, TouchableHighlight, View, ViewStyle } from 'react-native'
 
