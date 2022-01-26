@@ -3,19 +3,10 @@ import React, { useCallback, useMemo, useState } from 'react'
 import { Name, PlaybackSource } from 'audius-client/src/common/models/Analytics'
 import { ID, UID } from 'audius-client/src/common/models/Identifiers'
 import Kind from 'audius-client/src/common/models/Kind'
-import { Lineup as LineupData } from 'audius-client/src/common/models/Lineup'
-import { LineupActions } from 'audius-client/src/common/store/lineup/actions'
 import { range } from 'lodash'
-import {
-  Dimensions,
-  SectionList,
-  SectionListProps,
-  StyleSheet,
-  View
-} from 'react-native'
+import { Dimensions, SectionList, StyleSheet, View } from 'react-native'
 import { useSelector } from 'react-redux'
 
-import Text from 'app/components/text'
 import { TrackTile, TrackTileSkeleton } from 'app/components/track-tile'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { getPlaying, getPlayingUid } from 'app/store/audio/selectors'
@@ -23,7 +14,7 @@ import { make, track } from 'app/utils/analytics'
 
 import { Delineator } from './Delineator'
 import { delineateByTime } from './delineate'
-import { LineupItem, LineupVariant } from './types'
+import { LineupItem, LineupProps, LineupVariant } from './types'
 
 // The max number of tiles to load
 const MAX_TILES_COUNT = 1000
@@ -56,8 +47,8 @@ const totalTileHeight = {
   playlist: 350
 }
 
-// Load TRACKS_AHEAD x the number of tiles to be displayed on the screen
-export const getLoadMoreTrackCount = (
+// Helpr to calculate an item count based on the Lineup variant and a multiplier
+export const getItemCount = (
   variant: LineupVariant,
   multiplier: number | (() => number)
 ) =>
@@ -66,114 +57,36 @@ export const getLoadMoreTrackCount = (
       (typeof multiplier === 'function' ? multiplier() : multiplier)
   )
 
+// Calculate minimum, initial, and loadMore itemCounts
 const useItemCounts = (variant: LineupVariant) =>
   useMemo(
     () => ({
-      minimum: getLoadMoreTrackCount(
+      minimum: getItemCount(
         variant === LineupVariant.PLAYLIST
           ? LineupVariant.PLAYLIST
           : LineupVariant.MAIN,
         MINIMUM_INITIAL_LOAD_TRACKS_MULTIPLIER
       ),
-      initial: getLoadMoreTrackCount(variant, () =>
+      initial: getItemCount(variant, () =>
         variant === LineupVariant.PLAYLIST
           ? INITIAL_PLAYLISTS_MULTIPLER
           : INITIAL_LOAD_TRACKS_MULTIPLIER
       ),
-      loadMore: getLoadMoreTrackCount(variant, TRACKS_AHEAD_MULTIPLIER)
+      loadMore: getItemCount(variant, TRACKS_AHEAD_MULTIPLIER)
     }),
     [variant]
   )
 
-type Props = {
-  /** Object containing lineup actions such as setPage */
-  actions: LineupActions
-
-  /** The maximum number of total tracks to fetch */
-  count?: number
-
-  /**
-   * Whether or not to delineate the lineup by time of the `activityTimestamp`
-   */
-  delineate?: boolean
-
-  /** Are we in a trending lineup? Allows tiles to specialize their rendering */
-  isTrending?: boolean
-
-  /**
-   * Indicator if a track should be displayed differently (ie. artist pick)
-   * The leadingElementId is displayed at the top of the lineup
-   */
-  leadingElementId?: ID
-
-  /** The number of tracks to fetch in each request */
-  limit?: number
-
-  /**
-   * The Lineup object containing entries
-   */
-  lineup: LineupData<LineupItem>
-
-  /**
-   * Function called to load more entries
-   */
-  loadMore?: (offset: number, limit: number, overwrite: boolean) => void
-
-  /**
-   * A header to display at the top of the lineup,
-   * will scroll with the rest of the content
-   */
-  header?: SectionListProps<any>['ListHeaderComponent']
-
-  /**
-   * Function called on refresh
-   */
-  refresh?: () => void
-
-  /**
-   * Boolean indicating if currently fetching data for a refresh
-   * Must be provided if `refresh` is provided
-   */
-  refreshing?: boolean
-
-  /**
-   * Function called to pause playback
-   */
-  pauseTrack: () => void
-
-  /**
-   * Function called to play a track
-   */
-  playTrack: (uid: UID) => void
-
-  /** How many icons to show for top ranked entries in the lineup. Defaults to 0, showing none */
-  rankIconCount?: number
-
-  /**
-   * Is the lineup responsible for initially fetching it's own data
-   */
-  selfLoad?: boolean
-
-  /**
-   * Whether to show the artist pick on the leading element.
-   * Defaults to true.
-   */
-  showLeadingElementArtistPick?: boolean
-
-  /**
-   * The variant of the Lineup
-   */
-  variant: LineupVariant
-}
-
 const styles = StyleSheet.create({
-  lineup: {},
   item: {
     padding: 12,
     paddingBottom: 0
   }
 })
 
+/** `Lineup` encapsulates the logic for displaying a list of items such as Tracks (e.g. prefetching items
+ * displaying loading states, etc).
+ */
 export const Lineup = ({
   actions,
   count,
@@ -191,33 +104,26 @@ export const Lineup = ({
   refreshing,
   showLeadingElementArtistPick = true,
   variant
-}: Props) => {
+}: LineupProps) => {
   const dispatchWeb = useDispatchWeb()
-  const [loadedTiles, setLoadedTiles] = useState<boolean[]>([])
 
   const playing = useSelector(getPlaying)
   const playingUid = useSelector(getPlayingUid)
   const itemCounts = useItemCounts(variant)
 
+  // Item count based on the current page
   const pageItemCount = useMemo(() => {
     return itemCounts.initial + (lineup.page - 1) * itemCounts.loadMore
   }, [itemCounts, lineup])
 
+  // Either the provided count or a default
   const countOrDefault = useMemo(
     () => (count !== undefined ? count : MAX_TILES_COUNT),
     [count]
   )
 
-  const onLoad = useCallback(
-    (index: number) => {
-      if (!loadedTiles[index]) {
-        loadedTiles[index] = true
-        setLoadedTiles(loadedTiles)
-      }
-    },
-    [loadedTiles, setLoadedTiles]
-  )
-
+  // When the onEndReachedThreshould is hit, potentially load
+  // more items
   const onEndReached = useCallback(() => {
     const { hasMore, page } = lineup
 
@@ -234,12 +140,12 @@ export const Lineup = ({
       lineupLength < countOrDefault &&
       (page === 0 || pageItemCount <= offset)
     ) {
-      const trackLoadCount = itemCounts.initial + page * itemCounts.loadMore
+      const itemLoadCount = itemCounts.initial + page * itemCounts.loadMore
 
       dispatchWeb(actions.setPage(page + 1))
 
       const limit =
-        Math.min(trackLoadCount, Math.max(countOrDefault, itemCounts.minimum)) -
+        Math.min(itemLoadCount, Math.max(countOrDefault, itemCounts.minimum)) -
         offset
 
       loadMore(offset, limit, page === 0)
@@ -256,13 +162,13 @@ export const Lineup = ({
   ])
 
   const togglePlay = useCallback(
-    (uid: UID, trackId: ID, source?: PlaybackSource) => {
+    (uid: UID, id: ID, source?: PlaybackSource) => {
       if (uid !== playingUid || (uid === playingUid && !playing)) {
         playTrack(uid)
         track(
           make({
             eventName: Name.PLAYBACK_PLAY,
-            id: `${trackId}`,
+            id: `${id}`,
             source: source || PlaybackSource.TRACK_TILE
           })
         )
@@ -271,7 +177,7 @@ export const Lineup = ({
         track(
           make({
             eventName: Name.PLAYBACK_PAUSE,
-            id: `${trackId}`,
+            id: `${id}`,
             source: source || PlaybackSource.TRACK_TILE
           })
         )
@@ -302,7 +208,6 @@ export const Lineup = ({
             {...item}
             index={index}
             isTrending={isTrending}
-            onLoad={onLoad}
             showArtistPick={showLeadingElementArtistPick && !!leadingElementId}
             showRankIcon={index < rankIconCount}
             togglePlay={togglePlay}
@@ -316,6 +221,7 @@ export const Lineup = ({
     }
   }
 
+  // Calculate the sections of data to provide to SectionList
   const sections = useMemo(() => {
     const { entries, hasMore, isMetadataLoading, page } = lineup
     const itemDisplayCount = page <= 1 ? itemCounts.initial : pageItemCount
@@ -367,25 +273,23 @@ export const Lineup = ({
   ])
 
   return (
-    <View style={styles.lineup}>
-      <SectionList
-        ListHeaderComponent={header}
-        ListFooterComponent={<View style={{ height: 160 }} />}
-        onEndReached={onEndReached}
-        onEndReachedThreshold={LOAD_MORE_THRESHOLD}
-        // TODO: Either style the refreshing indicator or
-        // roll our own
-        onRefresh={refresh}
-        refreshing={refreshing}
-        sections={sections}
-        stickySectionHeadersEnabled={false}
-        // TODO: figure out why this is causing duplicate ids
-        // keyExtractor={(item, index) => String(item.id + index)}
-        renderItem={renderItem}
-        renderSectionHeader={({ section: { title } }) =>
-          delineate && title ? <Delineator text={title} /> : null
-        }
-      />
-    </View>
+    <SectionList
+      ListHeaderComponent={header}
+      ListFooterComponent={<View style={{ height: 160 }} />}
+      onEndReached={onEndReached}
+      onEndReachedThreshold={LOAD_MORE_THRESHOLD}
+      // TODO: Either style the refreshing indicator or
+      // roll our own
+      onRefresh={refresh}
+      refreshing={refreshing}
+      sections={sections}
+      stickySectionHeadersEnabled={false}
+      // TODO: figure out why this is causing duplicate ids
+      // keyExtractor={(item, index) => String(item.id + index)}
+      renderItem={renderItem}
+      renderSectionHeader={({ section: { title } }) =>
+        delineate && title ? <Delineator text={title} /> : null
+      }
+    />
   )
 }
