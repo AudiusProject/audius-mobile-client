@@ -2,7 +2,6 @@ import React from 'react'
 
 import {
   StyleSheet,
-  Text,
   TouchableOpacity,
   Animated,
   View,
@@ -12,6 +11,7 @@ import {
 import IconPause from 'app/assets/animations/iconPause.json'
 import IconPlay from 'app/assets/animations/iconPlay.json'
 import FavoriteButton from 'app/components/favorite-button'
+import Text from 'app/components/text'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
 import { Theme, ThemeColors, useThemeVariant } from 'app/utils/theme'
 
@@ -64,20 +64,17 @@ const createStyles = (themeColors: ThemeColors) =>
       flexDirection: 'row'
     },
     title: {
-      fontFamily: 'AvenirNextLTPro-Bold',
       color: themeColors.neutral,
       maxWidth: Dimensions.get('window').width / 3,
       fontSize: 12
     },
     separator: {
-      fontFamily: 'AvenirNextLTPro-Bold',
       color: themeColors.neutral,
       marginLeft: 4,
       marginRight: 4,
       fontSize: 16
     },
     artist: {
-      fontFamily: 'AvenirNextLTPro-Medium',
       color: themeColors.neutral,
       maxWidth: Dimensions.get('window').width / 4,
       fontSize: 12
@@ -145,11 +142,13 @@ export const PlayBar = ({ onPress, opacityAnim }: PlayBarProps) => {
         >
           <View style={styles.artwork} />
           <View style={styles.trackText}>
-            <Text numberOfLines={1} style={styles.title}>
+            <Text numberOfLines={1} weight='bold' style={styles.title}>
               Crazy
             </Text>
-            <Text style={styles.separator}>•</Text>
-            <Text numberOfLines={1} style={styles.artist}>
+            <Text weight='bold' style={styles.separator}>
+              •
+            </Text>
+            <Text numberOfLines={1} weight='medium' style={styles.artist}>
               Gnarles Barkley
             </Text>
           </View>
