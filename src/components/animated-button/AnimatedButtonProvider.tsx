@@ -48,7 +48,10 @@ const AnimatedButton = ({
     if (!isPlaying) {
       setIconIndex(i)
     }
-  }, [i, setIconIndex, isPlaying])
+    // Intentionally omitting `isPlaying` from the dependencies,
+    // this effect should only trigger when `i` is updated
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [i, setIconIndex])
 
   const hasMultipleStates = Array.isArray(iconJSON)
   let source: IconJSON
