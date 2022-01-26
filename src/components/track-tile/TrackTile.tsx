@@ -41,7 +41,6 @@ import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
 import { getPlaying, getPlayingUid } from 'app/store/audio/selectors'
-import { flexCol } from 'app/styles'
 import { ThemeColors } from 'app/utils/theme'
 
 import { TrackBannerIcon, TrackBannerIconType } from './TrackBannerIcon'
@@ -55,7 +54,6 @@ import { TrackTileTopRight } from './TrackTileTopRight'
 const createStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
     mainContent: {
-      ...flexCol(),
       flex: 1
     }
   })

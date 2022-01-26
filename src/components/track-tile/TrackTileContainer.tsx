@@ -4,13 +4,12 @@ import { StyleSheet, View } from 'react-native'
 import { Shadow } from 'react-native-shadow-2'
 
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
-import { flexCol, flexRow } from 'app/styles'
 import { ThemeColors } from 'app/utils/theme'
 
 const createStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
     container: {
-      ...flexRow(),
+      flexDirection: 'row',
       minHeight: 152,
       borderColor: themeColors.neutralLight8,
       backgroundColor: themeColors.white,
@@ -20,7 +19,6 @@ const createStyles = (themeColors: ThemeColors) =>
       marginHorizontal: 'auto'
     },
     mainContent: {
-      ...flexCol(),
       flex: 1
     }
   })

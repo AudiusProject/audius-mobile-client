@@ -10,7 +10,6 @@ import IconVolume from 'app/assets/images/iconVolume.svg'
 import Text from 'app/components/text'
 import UserBadges from 'app/components/user-badges/UserBadges'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
-import { flexRow } from 'app/styles'
 import { GestureResponderHandler } from 'app/types/gesture'
 import { ThemeColors, useThemeColors } from 'app/utils/theme'
 
@@ -20,7 +19,7 @@ import { createStyles as createTrackTileStyles } from './styles'
 const createStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
     metadata: {
-      ...flexRow()
+      flexDirection: 'row'
     },
     titlesActive: {
       color: themeColors.primary

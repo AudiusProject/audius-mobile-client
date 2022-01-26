@@ -7,7 +7,7 @@ import IconHeart from 'app/assets/images/iconHeart.svg'
 import IconRepost from 'app/assets/images/iconRepost.svg'
 import Text from 'app/components/text'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
-import { flexRow, flexRowCentered } from 'app/styles'
+import { flexRowCentered } from 'app/styles'
 import { GestureResponderHandler } from 'app/types/gesture'
 import { ThemeColors, useThemeColors } from 'app/utils/theme'
 
@@ -23,7 +23,7 @@ const formatListenCount = (listenCount?: number) => {
 const createStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
     stats: {
-      ...flexRow(),
+      flexDirection: 'row',
       flex: 0,
       flexBasis: 26,
       alignItems: 'stretch',
