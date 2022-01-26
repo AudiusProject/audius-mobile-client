@@ -53,6 +53,7 @@ const FeedScreen = ({ navigation }: Props) => {
     <View style={{ display: 'flex', flexDirection: 'column' }}>
       <Lineup
         actions={feedActions}
+        delineate
         lineup={feedLineup}
         loadMore={loadMore}
         refresh={refresh}

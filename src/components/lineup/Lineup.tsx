@@ -21,6 +21,7 @@ import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { getPlaying, getPlayingUid } from 'app/store/audio/selectors'
 import { make, track } from 'app/utils/analytics'
 
+import { Delineator } from './Delineator'
 import { delineateByTime } from './delineate'
 import { LineupItem, LineupVariant } from './types'
 
@@ -377,11 +378,12 @@ export const Lineup = ({
         onRefresh={refresh}
         refreshing={refreshing}
         sections={sections}
+        stickySectionHeadersEnabled={false}
         // TODO: figure out why this is causing duplicate ids
         // keyExtractor={(item, index) => String(item.id + index)}
         renderItem={renderItem}
         renderSectionHeader={({ section: { title } }) =>
-          delineate ? <Text>{title}</Text> : null
+          delineate && title ? <Delineator text={title} /> : null
         }
       />
     </View>
