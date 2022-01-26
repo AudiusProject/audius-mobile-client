@@ -523,7 +523,10 @@ const Drawer: DrawerComponent = ({
         } else {
           slideIn(openPosition)
           // If an initial offset is defined, clear the border radius
-          if (initialOffsetPosition && initialOffsetOpenPosition) {
+          if (
+            shouldHaveRoundedBordersAtInitialOffset &&
+            initialOffsetOpenPosition
+          ) {
             borderRadiusAnim.setValue(0)
           }
           if (onOpen) onOpen()
