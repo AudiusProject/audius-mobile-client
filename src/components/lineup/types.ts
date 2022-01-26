@@ -1,5 +1,6 @@
 import { ID, UID } from 'audius-client/src/common/models/Identifiers'
 import Kind from 'audius-client/src/common/models/Kind'
+import { Maybe } from 'audius-client/src/common/utils/typeUtils'
 
 export enum LineupVariant {
   MAIN = 'main',
@@ -14,5 +15,5 @@ export type LineupItem = {
   track_id?: ID
   uid: UID
   _marked_deleted?: boolean
-  activityTimestamp?: string
+  activityTimestamp?: Maybe<number | string>
 }

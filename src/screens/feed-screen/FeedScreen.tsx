@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import { NativeStackScreenProps } from '@react-navigation/native-stack'
 import { Name } from 'audius-client/src/common/models/Analytics'
@@ -6,6 +6,7 @@ import { makeGetLineupMetadatas } from 'audius-client/src/common/store/lineup/se
 import { feedActions } from 'audius-client/src/common/store/pages/feed/lineup/actions'
 import { getDiscoverFeedLineup } from 'audius-client/src/common/store/pages/feed/selectors'
 import { Text, View } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 
 import { FeedStackParamList } from 'app/components/app-navigator/types'
 import Button from 'app/components/button'
@@ -22,14 +23,23 @@ const getFeedLineup = makeGetLineupMetadatas(getDiscoverFeedLineup)
 const FeedScreen = ({ navigation }: Props) => {
   const dispatchWeb = useDispatchWeb()
   const feedLineup = useSelectorWeb(getFeedLineup)
+  const [isRefreshing, setIsRefreshing] = useState(false)
 
   const loadMore = (offset: number, limit: number, overwrite: boolean) => {
     dispatchWeb(feedActions.fetchLineupMetadatas(offset, limit, overwrite))
     track(make({ eventName: Name.FEED_PAGINATE, offset, limit }))
   }
 
-  const refresh = (overwrite: boolean, limit: number) =>
-    dispatchWeb(feedActions.refreshInView(overwrite, null, limit))
+  useEffect(() => {
+    if (!feedLineup.isMetadataLoading) {
+      setIsRefreshing(false)
+    }
+  }, [feedLineup])
+
+  const refresh = () => {
+    setIsRefreshing(true)
+    dispatchWeb(feedActions.refreshInView(true))
+  }
 
   const playTrack = (uid?: string) => {
     dispatchWeb(feedActions.play(uid))
@@ -42,7 +52,11 @@ const FeedScreen = ({ navigation }: Props) => {
   return (
     <View style={{ display: 'flex', flexDirection: 'column' }}>
       <Lineup
+        actions={feedActions}
         lineup={feedLineup}
+        loadMore={loadMore}
+        refresh={refresh}
+        refreshing={isRefreshing && feedLineup.isMetadataLoading}
         pauseTrack={pauseTrack}
         playTrack={playTrack}
         selfLoad
