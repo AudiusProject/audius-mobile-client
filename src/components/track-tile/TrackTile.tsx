@@ -188,6 +188,7 @@ const TrackTileComponent = ({
           isOwner={isOwner}
           isShareHidden={hideShare}
           isUnlisted={is_unlisted}
+          trackId={track_id}
         />
       </Pressable>
     </TrackTileContainer>

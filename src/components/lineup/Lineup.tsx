@@ -275,8 +275,6 @@ export const Lineup = ({
         ]
   }, [count, countOrDefault, delineate, itemCounts, lineup, pageItemCount])
 
-  console.log(sections)
-
   return (
     <SectionList
       ListHeaderComponent={header}
