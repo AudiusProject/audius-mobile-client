@@ -7,8 +7,6 @@ import { SectionListProps } from 'react-native'
 
 export enum LineupVariant {
   MAIN = 'main',
-  SECTION = 'section',
-  CONDENSED = 'condensed',
   PLAYLIST = 'playlist'
 }
 
@@ -104,5 +102,5 @@ export type LineupProps = {
   /**
    * The variant of the Lineup
    */
-  variant: LineupVariant
+  variant?: LineupVariant
 }

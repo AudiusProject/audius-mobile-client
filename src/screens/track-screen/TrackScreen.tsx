@@ -45,7 +45,6 @@ const TrackScreen = ({ route, navigation }: Props) => {
         lineup={moreByArtistLineup}
         pauseTrack={pauseTrack}
         playTrack={playTrack}
-        variant={LineupVariant.CONDENSED}
       />
     </View>
   )

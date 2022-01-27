@@ -23,7 +23,7 @@ const MAX_TILES_COUNT = 1000
 const MAX_COUNT_LOADING_TILES = 18
 
 // The inital multiplier for number of tracks to fetch on lineup load
-// multiplied by the number of tracks that fit the browser height
+// multiplied by the number of tracks that fit the screen height
 export const INITIAL_LOAD_TRACKS_MULTIPLIER = 1.75
 export const INITIAL_PLAYLISTS_MULTIPLER = 1
 
@@ -42,12 +42,10 @@ const MINIMUM_INITIAL_LOAD_TRACKS_MULTIPLIER = 1
 // tile height + margin
 const totalTileHeight = {
   main: 152 + 16,
-  section: 124 + 16,
-  condensed: 124 + 8,
   playlist: 350
 }
 
-// Helpr to calculate an item count based on the Lineup variant and a multiplier
+// Helper to calculate an item count based on the Lineup variant and a multiplier
 export const getItemCount = (
   variant: LineupVariant,
   multiplier: number | (() => number)
@@ -103,7 +101,7 @@ export const Lineup = ({
   refresh,
   refreshing,
   showLeadingElementArtistPick = true,
-  variant
+  variant = LineupVariant.MAIN
 }: LineupProps) => {
   const dispatchWeb = useDispatchWeb()
 

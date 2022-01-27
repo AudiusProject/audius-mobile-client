@@ -60,7 +60,6 @@ const FeedScreen = ({ navigation }: Props) => {
         pauseTrack={pauseTrack}
         playTrack={playTrack}
         selfLoad
-        variant={LineupVariant.CONDENSED}
       />
     </View>
   )
