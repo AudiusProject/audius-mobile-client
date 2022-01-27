@@ -10,19 +10,19 @@ export enum LineupVariant {
   PLAYLIST = 'playlist'
 }
 
-export type LineupItem =
-  | {
-      _loading: false
-      id: ID
-      kind: Kind
-      track_id?: ID
-      uid: UID
-      _marked_deleted?: boolean
-      activityTimestamp?: Maybe<number | string>
-    }
-  | {
-      _loading: true
-    }
+export type LineupItem = {
+  _loading: false
+  id: ID
+  kind: Kind
+  track_id?: ID
+  uid: UID
+  _marked_deleted?: boolean
+  activityTimestamp?: Maybe<number | string>
+}
+
+export type LoadingLineupItem = {
+  _loading: true
+}
 
 export type LineupProps = {
   /** Object containing lineup actions such as setPage */

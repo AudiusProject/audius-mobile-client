@@ -1,29 +1,12 @@
-import React, { useCallback, useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import {
-  FavoriteSource,
-  RepostSource,
-  ShareSource
-} from 'audius-client/src/common/models/Analytics'
 import { Track } from 'audius-client/src/common/models/Track'
 import { User } from 'audius-client/src/common/models/User'
 import { getUserId } from 'audius-client/src/common/store/account/selectors'
 import { getTrack } from 'audius-client/src/common/store/cache/tracks/selectors'
 import { getUserFromTrack } from 'audius-client/src/common/store/cache/users/selectors'
-import {
-  repostTrack,
-  saveTrack,
-  undoRepostTrack,
-  unsaveTrack
-} from 'audius-client/src/common/store/social/tracks/actions'
-import {
-  OverflowAction,
-  OverflowSource
-} from 'audius-client/src/common/store/ui/mobile-overflow-menu/types'
-import { requestOpen as requestOpenShareModal } from 'audius-client/src/common/store/ui/share-modal/slice'
-import { open as openOverflowMenu } from 'common/store/ui/mobile-overflow-menu/slice'
 import { isEqual } from 'lodash'
 import {
   Animated,
@@ -32,11 +15,10 @@ import {
   Pressable,
   StyleSheet
 } from 'react-native'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 
 import { BaseStackParamList } from 'app/components/app-navigator/types'
 import { TrackTileProps } from 'app/components/track-tile/types'
-import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 // import { usePushRouteWeb } from 'app/hooks/usePushRouteWeb'
 import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
@@ -66,8 +48,13 @@ export const TrackTile = (props: TrackTileProps) => {
   // This can be removed when no longer dependent on web client
   const track = useSelectorWeb(state => getTrack(state, { uid }), isEqual)
   const user = useSelectorWeb(state => getUserFromTrack(state, { uid }))
+
   if (!track || !user) {
     console.warn('Track or user missing for TrackTile, preventing render')
+    return null
+  }
+
+  if (track.is_delete || user?.is_deactivated) {
     return null
   }
 
@@ -93,7 +80,6 @@ const TrackTileComponent = ({
     field_visibility,
     has_current_user_reposted,
     has_current_user_saved,
-    is_delete,
     is_unlisted,
     play_count,
     repost_count,
@@ -106,8 +92,6 @@ const TrackTileComponent = ({
     NativeStackNavigationProp<BaseStackParamList>
   >()
 
-  const dispatch = useDispatch()
-  const dispatchWeb = useDispatchWeb()
   // const pushRouteWeb = usePushRouteWeb()
 
   const playingUid = useSelector(getPlayingUid)
@@ -123,12 +107,8 @@ const TrackTileComponent = ({
   const isLoaded = artworkLoaded
   const fadeIn = { opacity }
 
-  const hideShare: boolean = field_visibility
-    ? field_visibility.share === false
-    : false
-  const hidePlays = field_visibility
-    ? field_visibility.play_count === false
-    : false
+  const hideShare: boolean = field_visibility?.share === false
+  const hidePlays = field_visibility?.play_count === false
 
   const goToTrackPage = (e: GestureResponderEvent) => {
     navigation.navigate('track', { id: track_id })
@@ -148,65 +128,6 @@ const TrackTileComponent = ({
     // goToRoute(REPOSTING_USERS_ROUTE)
   }
 
-  const onPressOverflowMenu = useCallback(() => {
-    const overflowActions = [
-      !isOwner
-        ? has_current_user_reposted
-          ? OverflowAction.UNREPOST
-          : OverflowAction.REPOST
-        : null,
-      !isOwner
-        ? has_current_user_saved
-          ? OverflowAction.UNFAVORITE
-          : OverflowAction.FAVORITE
-        : null,
-      OverflowAction.SHARE,
-      OverflowAction.ADD_TO_PLAYLIST,
-      OverflowAction.VIEW_TRACK_PAGE,
-      OverflowAction.VIEW_ARTIST_PAGE
-    ].filter(Boolean) as OverflowAction[]
-
-    dispatchWeb(
-      openOverflowMenu({
-        source: OverflowSource.TRACKS,
-        id: track_id,
-        overflowActions
-      })
-    )
-  }, [
-    track_id,
-    dispatchWeb,
-    has_current_user_reposted,
-    has_current_user_saved,
-    isOwner
-  ])
-
-  const onPressShare = useCallback(() => {
-    dispatch(
-      requestOpenShareModal({
-        type: 'track',
-        trackId: track_id,
-        source: ShareSource.TILE
-      })
-    )
-  }, [dispatch, track_id])
-
-  const onToggleSave = useCallback(() => {
-    if (has_current_user_saved) {
-      dispatchWeb(unsaveTrack(track_id, FavoriteSource.TILE))
-    } else {
-      dispatchWeb(saveTrack(track_id, FavoriteSource.TILE))
-    }
-  }, [track_id, dispatchWeb, has_current_user_saved])
-
-  const onToggleRepost = useCallback(() => {
-    if (has_current_user_reposted) {
-      dispatchWeb(undoRepostTrack(track_id, RepostSource.TILE))
-    } else {
-      dispatchWeb(repostTrack(track_id, RepostSource.TILE))
-    }
-  }, [track_id, dispatchWeb, has_current_user_reposted])
-
   useEffect(() => {
     if (isLoaded) {
       onLoad?.(index)
@@ -217,10 +138,6 @@ const TrackTileComponent = ({
       }).start()
     }
   }, [onLoad, isLoaded, index, opacity])
-
-  if (is_delete || user?.is_deactivated) {
-    return null
-  }
 
   return (
     <TrackTileContainer>
@@ -271,10 +188,6 @@ const TrackTileComponent = ({
           isOwner={isOwner}
           isShareHidden={hideShare}
           isUnlisted={is_unlisted}
-          onPressOverflow={onPressOverflowMenu}
-          onPressShare={onPressShare}
-          onToggleRepost={onToggleRepost}
-          onToggleSave={onToggleSave}
         />
       </Pressable>
     </TrackTileContainer>

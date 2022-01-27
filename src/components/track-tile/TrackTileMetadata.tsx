@@ -90,7 +90,7 @@ export const TrackTileMetadata = ({
       <View style={trackTileStyles.titles}>
         <Pressable style={trackTileStyles.title} onPress={goToTrackPage}>
           <Text
-            style={[styles.titleText, isPlaying ? styles.titlesActive : {}]}
+            style={[styles.titleText, isPlaying && styles.titlesActive]}
             weight='bold'
             numberOfLines={1}
           >
@@ -102,7 +102,7 @@ export const TrackTileMetadata = ({
         </Pressable>
         <Pressable style={trackTileStyles.artist} onPress={goToArtistPage}>
           <Text
-            style={[styles.titleText, isPlaying ? styles.titlesActive : {}]}
+            style={[styles.titleText, isPlaying && styles.titlesActive]}
             weight='medium'
             numberOfLines={1}
           >

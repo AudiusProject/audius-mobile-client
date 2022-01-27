@@ -1,6 +1,25 @@
-import React, { useContext } from 'react'
+import React, { useCallback, useContext } from 'react'
 
+import {
+  FavoriteSource,
+  RepostSource,
+  ShareSource
+} from 'audius-client/src/common/models/Analytics'
+import { ID } from 'audius-client/src/common/models/Identifiers'
+import {
+  repostTrack,
+  saveTrack,
+  undoRepostTrack,
+  unsaveTrack
+} from 'audius-client/src/common/store/social/tracks/actions'
+import {
+  OverflowAction,
+  OverflowSource
+} from 'audius-client/src/common/store/ui/mobile-overflow-menu/types'
+import { requestOpen as requestOpenShareModal } from 'audius-client/src/common/store/ui/share-modal/slice'
+import { open as openOverflowMenu } from 'common/store/ui/mobile-overflow-menu/slice'
 import { ImageStyle, Pressable, StyleSheet, View } from 'react-native'
+import { useDispatch } from 'react-redux'
 
 import IconKebabHorizontal from 'app/assets/images/iconKebabHorizontal.svg'
 import IconShare from 'app/assets/images/iconShare.svg'
@@ -10,6 +29,7 @@ import {
   ToastContext,
   SHARE_TOAST_TIMEOUT
 } from 'app/components/toast/ToastContext'
+import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
 import { flexRowCentered } from 'app/styles'
 import { ThemeColors, useThemeColors } from 'app/utils/theme'
@@ -21,10 +41,7 @@ type Props = {
   isOwner?: boolean
   isShareHidden?: boolean
   isUnlisted?: boolean
-  onPressOverflow?: () => void
-  onPressShare?: () => void
-  onToggleRepost?: () => void
-  onToggleSave?: () => void
+  trackId?: ID
 }
 
 const messages = {
@@ -63,14 +80,79 @@ export const TrackTileBottomButtons = ({
   isOwner,
   isShareHidden,
   isUnlisted,
-  onPressOverflow,
-  onPressShare,
-  onToggleRepost,
-  onToggleSave
+  trackId
 }: Props) => {
   const { toast } = useContext(ToastContext)
   const { neutralLight4 } = useThemeColors()
   const styles = useThemedStyles(createStyles)
+
+  const dispatch = useDispatch()
+  const dispatchWeb = useDispatchWeb()
+
+  const onPressOverflow = useCallback(() => {
+    if (trackId === undefined) {
+      return
+    }
+    const overflowActions = [
+      !isOwner
+        ? hasReposted
+          ? OverflowAction.UNREPOST
+          : OverflowAction.REPOST
+        : null,
+      !isOwner
+        ? hasSaved
+          ? OverflowAction.UNFAVORITE
+          : OverflowAction.FAVORITE
+        : null,
+      OverflowAction.SHARE,
+      OverflowAction.ADD_TO_PLAYLIST,
+      OverflowAction.VIEW_TRACK_PAGE,
+      OverflowAction.VIEW_ARTIST_PAGE
+    ].filter(Boolean) as OverflowAction[]
+
+    dispatchWeb(
+      openOverflowMenu({
+        source: OverflowSource.TRACKS,
+        id: trackId,
+        overflowActions
+      })
+    )
+  }, [trackId, dispatchWeb, hasReposted, hasSaved, isOwner])
+
+  const onPressShare = useCallback(() => {
+    if (trackId === undefined) {
+      return
+    }
+    dispatch(
+      requestOpenShareModal({
+        type: 'track',
+        trackId,
+        source: ShareSource.TILE
+      })
+    )
+  }, [dispatch, trackId])
+
+  const onToggleSave = useCallback(() => {
+    if (trackId === undefined) {
+      return
+    }
+    if (hasSaved) {
+      dispatchWeb(unsaveTrack(trackId, FavoriteSource.TILE))
+    } else {
+      dispatchWeb(saveTrack(trackId, FavoriteSource.TILE))
+    }
+  }, [trackId, dispatchWeb, hasSaved])
+
+  const onToggleRepost = useCallback(() => {
+    if (trackId === undefined) {
+      return
+    }
+    if (hasReposted) {
+      dispatchWeb(undoRepostTrack(trackId, RepostSource.TILE))
+    } else {
+      dispatchWeb(repostTrack(trackId, RepostSource.TILE))
+    }
+  }, [trackId, dispatchWeb, hasReposted])
 
   const repostButton = (
     <RepostButton

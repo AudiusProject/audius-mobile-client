@@ -10,7 +10,6 @@ import { View } from 'react-native'
 
 import { FeedStackParamList } from 'app/components/app-navigator/types'
 import { Lineup } from 'app/components/lineup'
-import { LineupVariant } from 'app/components/lineup/types'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 import { make, track } from 'app/utils/analytics'

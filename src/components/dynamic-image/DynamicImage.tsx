@@ -1,5 +1,6 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 
+import { ImageSkeleton } from 'app/components/image-skeleton'
 import transparentPlaceholderImg from 'audius-client/src/common/assets/image/1x1-transparent.png'
 import useInstanceVar from 'audius-client/src/common/hooks/useInstanceVar'
 import { Maybe } from 'audius-client/src/common/utils/typeUtils'
@@ -14,9 +15,6 @@ import {
   StyleSheet,
   View
 } from 'react-native'
-import LinearGradient from 'react-native-linear-gradient'
-
-import { useThemeColors } from 'app/utils/theme'
 
 export type DynamicImageProps = {
   // Image source
@@ -67,21 +65,12 @@ const isImageEqual = (
 }
 
 const ImageWithPlaceholder = ({ usePlaceholder, image, style }) => {
-  const { neutralLight8, neutralLight9 } = useThemeColors()
-
   if (image) {
     return <Image source={image} style={style} />
   }
 
   if (usePlaceholder) {
-    return (
-      <LinearGradient
-        colors={[neutralLight8, neutralLight9]}
-        start={{ x: 1, y: 1 }}
-        end={{ x: 0, y: 0 }}
-        style={style}
-      />
-    )
+    return <ImageSkeleton styles={{ root: style }} />
   }
 
   return <Image source={transparentPlaceholderImg} />

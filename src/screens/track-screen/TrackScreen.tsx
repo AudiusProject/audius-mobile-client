@@ -10,7 +10,6 @@ import { Text, View } from 'react-native'
 import { BaseStackParamList } from 'app/components/app-navigator/types'
 import Button from 'app/components/button'
 import { Lineup } from 'app/components/lineup'
-import { LineupVariant } from 'app/components/lineup/types'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 

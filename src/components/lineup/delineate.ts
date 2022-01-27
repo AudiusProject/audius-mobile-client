@@ -18,8 +18,8 @@ const Delineations = Object.freeze({
   EARLIER_THIS_MONTH: 'earlier this month'
 })
 
-const getGroup = timestamp => {
-  const time = moment(timestamp)
+const getLineupItemGroup = ({ activityTimestamp }: LineupItem) => {
+  const time = moment(activityTimestamp)
   if (time > START_OF_DAY) {
     return Delineations.TODAY
   }
@@ -44,7 +44,7 @@ const getGroup = timestamp => {
 }
 
 export const delineateByTime = (entries: LineupItem[]) => {
-  return Object.entries(groupBy<LineupItem>(entries, getGroup)).map(
+  return Object.entries(groupBy<LineupItem>(entries, getLineupItemGroup)).map(
     ([title, data], index) => ({
       // For the first group,
       // set the title as empty string to prevent

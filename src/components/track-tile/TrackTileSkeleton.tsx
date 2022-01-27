@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { ImageStyle, StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
-import DynamicImage from 'app/components/dynamic-image'
+import { ImageSkeleton } from 'app/components/image-skeleton'
 import Skeleton from 'app/components/skeleton'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
 
@@ -35,10 +35,7 @@ export const TrackTileSkeleton = () => {
       <View style={styles.mainContent}>
         <View style={styles.metadata}>
           <View style={[trackTileStyles.imageContainer, trackTileStyles.image]}>
-            <DynamicImage
-              image={undefined}
-              style={trackTileStyles.image as ImageStyle}
-            />
+            <ImageSkeleton styles={{ root: trackTileStyles.image }} />
           </View>
 
           <View style={[trackTileStyles.titles]}>

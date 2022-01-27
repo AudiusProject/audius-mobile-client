@@ -13,7 +13,7 @@ const createStyles = (themeColors: ThemeColors) =>
       width: '100%',
       ...flexRowCentered(),
       justifyContent: 'center',
-      marginTop: 4,
+      marginTop: 12,
       paddingHorizontal: 12
     },
 

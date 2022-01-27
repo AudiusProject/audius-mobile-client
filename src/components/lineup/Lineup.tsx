@@ -14,7 +14,12 @@ import { make, track } from 'app/utils/analytics'
 
 import { Delineator } from './Delineator'
 import { delineateByTime } from './delineate'
-import { LineupItem, LineupProps, LineupVariant } from './types'
+import {
+  LineupItem,
+  LineupProps,
+  LineupVariant,
+  LoadingLineupItem
+} from './types'
 
 // The max number of tiles to load
 const MAX_TILES_COUNT = 1000
@@ -91,7 +96,6 @@ export const Lineup = ({
   delineate,
   isTrending,
   leadingElementId,
-  limit,
   lineup,
   loadMore,
   header,
@@ -110,34 +114,31 @@ export const Lineup = ({
   const itemCounts = useItemCounts(variant)
 
   // Item count based on the current page
-  const pageItemCount = useMemo(() => {
-    return itemCounts.initial + (lineup.page - 1) * itemCounts.loadMore
-  }, [itemCounts, lineup])
+  const pageItemCount =
+    itemCounts.initial + (lineup.page - 1) * itemCounts.loadMore
 
   // Either the provided count or a default
-  const countOrDefault = useMemo(
-    () => (count !== undefined ? count : MAX_TILES_COUNT),
-    [count]
-  )
+  const countOrDefault = count !== undefined ? count : MAX_TILES_COUNT
 
   // When the onEndReachedThreshould is hit, potentially load
   // more items
   const onEndReached = useCallback(() => {
-    const { hasMore, page } = lineup
+    const { deleted, entries, hasMore, page } = lineup
 
-    if (!hasMore) {
-      return
-    }
+    const lineupLength = entries.length
+    const offset = lineupLength + deleted
 
-    const lineupLength = lineup.entries.length
-    const offset = lineupLength + lineup.deleted
-
-    if (
-      (!limit || lineupLength !== limit) &&
+    const shouldLoadMore =
+      // Lineup has more items to load
+      hasMore &&
+      // `loadMore` function exists
       loadMore &&
+      // Number of loaded items does not exceed max count
       lineupLength < countOrDefault &&
+      // Page item count doesn't exceed current offset
       (page === 0 || pageItemCount <= offset)
-    ) {
+
+    if (shouldLoadMore) {
       const itemLoadCount = itemCounts.initial + page * itemCounts.loadMore
 
       dispatchWeb(actions.setPage(page + 1))
@@ -153,7 +154,6 @@ export const Lineup = ({
     countOrDefault,
     dispatchWeb,
     itemCounts,
-    limit,
     lineup,
     loadMore,
     pageItemCount
@@ -184,7 +184,13 @@ export const Lineup = ({
     [playTrack, pauseTrack, playing, playingUid]
   )
 
-  const renderItem = ({ index, item }: { index: number; item: LineupItem }) => {
+  const renderItem = ({
+    index,
+    item
+  }: {
+    index: number
+    item: LineupItem | LoadingLineupItem
+  }) => {
     if (item._loading) {
       return (
         <View style={styles.item}>
@@ -221,20 +227,23 @@ export const Lineup = ({
 
   // Calculate the sections of data to provide to SectionList
   const sections = useMemo(() => {
-    const { entries, hasMore, isMetadataLoading, page } = lineup
+    const { deleted, entries, hasMore, isMetadataLoading, page } = lineup
     const itemDisplayCount = page <= 1 ? itemCounts.initial : pageItemCount
 
     const getSkeletonCount = () => {
-      if (
-        isMetadataLoading &&
+      const shouldCalculateSkeletons =
+        // Lineup has more items to load
         hasMore &&
-        entries.length < countOrDefault &&
-        (!limit || entries.length !== limit)
-      ) {
+        // Data is loading
+        isMetadataLoading &&
+        // There are fewer items than the max count
+        entries.length < countOrDefault
+
+      if (shouldCalculateSkeletons) {
         // Calculate the number of skeletons to display: total # requested - # rendered - # deleted
         // If the `count` prop is provided, render the count - # loaded tiles
         const loadingSkeletonDifferential = Math.max(
-          itemDisplayCount - entries.length - lineup.deleted,
+          itemDisplayCount - entries.length - deleted,
           0
         )
         return count
@@ -244,31 +253,29 @@ export const Lineup = ({
       return 0
     }
 
-    // Append loading items to the array of already loaded items
-    const items = [
-      ...entries,
-      ...range(getSkeletonCount()).map(() => ({ _loading: true } as LineupItem))
-    ]
+    const skeletonItems = range(getSkeletonCount()).map(
+      () => ({ _loading: true } as LoadingLineupItem)
+    )
 
     // If delineate=true, create sections of items based on time.
     // Otherwise return one section
     return delineate
-      ? delineateByTime(items)
+      ? [
+          ...delineateByTime(entries),
+          {
+            title: '',
+            data: skeletonItems
+          }
+        ]
       : [
           {
             title: '',
-            data: items
+            data: [...entries, ...skeletonItems]
           }
         ]
-  }, [
-    count,
-    countOrDefault,
-    delineate,
-    itemCounts,
-    limit,
-    lineup,
-    pageItemCount
-  ])
+  }, [count, countOrDefault, delineate, itemCounts, lineup, pageItemCount])
+
+  console.log(sections)
 
   return (
     <SectionList
