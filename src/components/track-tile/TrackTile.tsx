@@ -26,7 +26,7 @@ import { getPlaying, getPlayingUid } from 'app/store/audio/selectors'
 import { ThemeColors } from 'app/utils/theme'
 
 import { TrackBannerIcon, TrackBannerIconType } from './TrackBannerIcon'
-import { TrackTileBottomButtons } from './TrackTileBottomButtons'
+import { TrackTileActionButtons } from './TrackTileActionButtons'
 import { TrackTileCoSign } from './TrackTileCoSign'
 import { TrackTileContainer } from './TrackTileContainer'
 import { TrackTileMetadata } from './TrackTileMetadata'
@@ -47,7 +47,11 @@ export const TrackTile = (props: TrackTileProps) => {
   // not being preserved when syncing redux state from client.
   // This can be removed when no longer dependent on web client
   const track = useSelectorWeb(state => getTrack(state, { uid }), isEqual)
-  const user = useSelectorWeb(state => getUserFromTrack(state, { uid }))
+  console.log(track)
+  const user = useSelectorWeb(
+    state => getUserFromTrack(state, { uid }),
+    isEqual
+  )
 
   if (!track || !user) {
     console.warn('Track or user missing for TrackTile, preventing render')
@@ -182,7 +186,7 @@ const TrackTileComponent = ({
             showRankIcon={showRankIcon}
           />
         </Animated.View>
-        <TrackTileBottomButtons
+        <TrackTileActionButtons
           hasReposted={has_current_user_reposted}
           hasSaved={has_current_user_saved}
           isOwner={isOwner}

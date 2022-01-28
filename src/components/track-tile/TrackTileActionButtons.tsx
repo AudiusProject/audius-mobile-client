@@ -73,7 +73,7 @@ const createStyles = (themeColors: ThemeColors) =>
     }
   })
 
-export const TrackTileBottomButtons = ({
+export const TrackTileActionButtons = ({
   disabled,
   hasReposted,
   hasSaved,

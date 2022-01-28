@@ -8,7 +8,7 @@ import { Pressable, StyleSheet, View } from 'react-native'
 
 import IconVolume from 'app/assets/images/iconVolume.svg'
 import Text from 'app/components/text'
-import UserBadges from 'app/components/user-badges/UserBadges'
+import UserBadges from 'app/components/user-badges'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
 import { GestureResponderHandler } from 'app/types/gesture'
 import { ThemeColors, useThemeColors } from 'app/utils/theme'
@@ -79,14 +79,14 @@ export const TrackTileMetadata = ({
   const { primary } = useThemeColors()
   return (
     <View style={styles.metadata}>
-      <TrackTileArt
+      {/* <TrackTileArt
         id={id}
         isTrack={true}
         onLoad={() => setArtworkLoaded(true)}
         coverArtSizes={coverArtSizes}
         coSign={coSign}
         style={trackTileStyles.imageContainer}
-      />
+      /> */}
       <View style={trackTileStyles.titles}>
         <Pressable style={trackTileStyles.title} onPress={goToTrackPage}>
           <Text
