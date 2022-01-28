@@ -85,7 +85,9 @@ export type LineupProps = {
    */
   playTrack: (uid: UID) => void
 
-  /** How many icons to show for top ranked entries in the lineup. Defaults to 0, showing none */
+  /**
+   * How many icons to show for top ranked entries in the lineup. Defaults to 0, showing none
+   */
   rankIconCount?: number
 
   /**

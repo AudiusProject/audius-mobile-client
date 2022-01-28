@@ -9,7 +9,7 @@ import { ThemeColors } from 'app/utils/theme'
 
 const createStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
-    delineator: {
+    root: {
       width: '100%',
       ...flexRowCentered(),
       justifyContent: 'center',
@@ -44,7 +44,7 @@ export const Delineator = ({ text }) => {
   const styles = useThemedStyles(createStyles)
 
   return (
-    <View style={styles.delineator}>
+    <View style={styles.root}>
       <View style={styles.line} />
       {text && (
         <View style={styles.box}>

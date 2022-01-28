@@ -1,6 +1,5 @@
 import React, { memo, useCallback, useEffect, useRef, useState } from 'react'
 
-import { ImageSkeleton } from 'app/components/image-skeleton'
 import transparentPlaceholderImg from 'audius-client/src/common/assets/image/1x1-transparent.png'
 import useInstanceVar from 'audius-client/src/common/hooks/useInstanceVar'
 import { Maybe } from 'audius-client/src/common/utils/typeUtils'
@@ -15,6 +14,8 @@ import {
   StyleSheet,
   View
 } from 'react-native'
+
+import { ImageSkeleton } from 'app/components/image-skeleton'
 
 export type DynamicImageProps = {
   // Image source
@@ -112,7 +113,8 @@ const DynamicImage = ({
 
   useEffect(() => {
     // Skip animation for subsequent loads where the image hasn't changed
-    if (getPrevImage() !== null && isImageEqual(getPrevImage()!, image)) {
+    const previousImage = getPrevImage()
+    if (previousImage !== null && isImageEqual(previousImage, image)) {
       return
     }
 
