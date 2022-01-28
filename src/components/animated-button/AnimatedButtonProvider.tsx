@@ -9,6 +9,7 @@ import React, {
 
 import LottieView from 'lottie-react-native'
 import { StyleProp, TouchableHighlight, View, ViewStyle } from 'react-native'
+import { usePrevious } from 'react-use'
 
 import { useColor } from 'app/utils/theme'
 
@@ -29,7 +30,7 @@ type AnimatedButtonProps = {
 } & BaseAnimatedButtonProps
 
 const AnimatedButton = ({
-  iconIndex: i = 0,
+  iconIndex: externalIconIndex,
   iconJSON,
   onPress,
   isActive,
@@ -38,19 +39,23 @@ const AnimatedButton = ({
   style,
   wrapperStyle
 }: AnimatedButtonProps) => {
-  const [iconIndex, setIconIndex] = useState<number>(i)
+  const [iconIndex, setIconIndex] = useState<number>(externalIconIndex ?? 0)
   const [isPlaying, setIsPlaying] = useState(false)
   const underlayColor = useColor('neutralLight8')
   const animationRef = useRef<LottieView | null>()
+  const previousExternalIconIndex = usePrevious(externalIconIndex)
 
-  useEffect(() => {
-    if (!isPlaying) {
-      setIconIndex(i)
-    }
-    // Intentionally omitting `isPlaying` from the dependencies,
-    // this effect should only trigger when `i` is updated
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [i, setIconIndex])
+  // When externalIconIndex is updated, update iconIndex
+  // if animation isn't currently playing
+  if (
+    externalIconIndex !== undefined &&
+    previousExternalIconIndex !== undefined &&
+    previousExternalIconIndex !== externalIconIndex &&
+    iconIndex !== externalIconIndex &&
+    !isPlaying
+  ) {
+    setIconIndex(externalIconIndex)
+  }
 
   const hasMultipleStates = Array.isArray(iconJSON)
   let source: IconJSON
@@ -62,10 +67,24 @@ const AnimatedButton = ({
 
   const handleAnimationFinish = useCallback(() => {
     if (hasMultipleStates) {
-      setIconIndex(iconIndex => (iconIndex + 1) % iconJSON.length)
+      setIconIndex(iconIndex => {
+        // If externalIconIndex is provided,
+        // set iconIndex to it
+        if (externalIconIndex !== undefined) {
+          return externalIconIndex
+        }
+        // Otherwise increment iconIndex
+        return (iconIndex + 1) % iconJSON.length
+      })
     }
     setIsPlaying(false)
-  }, [hasMultipleStates, setIconIndex, setIsPlaying, iconJSON])
+  }, [
+    hasMultipleStates,
+    setIconIndex,
+    setIsPlaying,
+    iconJSON,
+    externalIconIndex
+  ])
 
   const handleClick = useCallback(() => {
     if (isDisabled) {
