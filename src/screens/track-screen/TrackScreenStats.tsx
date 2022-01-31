@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 
-import IconFavorite from 'app/assets/img/iconHeart.svg'
-import IconRepost from 'app/assets/img/iconRepost.svg'
+import { ID } from 'audius-client/src/common/models/Identifiers'
 import { formatCount } from 'audius-client/src/common/utils/formatUtil'
 import { Pressable, StyleSheet, View } from 'react-native'
 
+import IconFavorite from 'app/assets/images/iconHeart.svg'
+import IconRepost from 'app/assets/images/iconRepost.svg'
 import Text from 'app/components/text'
 import { usePressScaleAnimation } from 'app/hooks/usePressScaleAnimation'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
@@ -19,11 +20,10 @@ type StatsButtonRowProps = {
   showListenCount: boolean
   showFavoriteCount: boolean
   showRepostCount: boolean
-  listenCount?: number
+  playCount?: number
   favoriteCount: number
   repostCount: number
-  onPressFavorites: () => void
-  onPressReposts: () => void
+  trackId: ID
 }
 
 const createStyles = (themeColors: ThemeColors) =>
@@ -69,14 +69,23 @@ export const TrackScreenStats = ({
   showRepostCount,
   favoriteCount,
   repostCount,
-  onPressFavorites,
-  onPressReposts,
-  listenCount = 0
+  trackId,
+  playCount = 0
 }: StatsButtonRowProps) => {
   const styles = useThemedStyles(createStyles)
   const { neutralLight4 } = useThemeColors()
   const favoriteScale = usePressScaleAnimation()
   const repostScale = usePressScaleAnimation()
+
+  const onPressFavorites = useCallback(() => {
+    // TODO: navigate to favorites
+    // goToFavoritesPage(trackId)
+  }, [trackId])
+
+  const onPressReposts = useCallback(() => {
+    // TODO: navigate to reposts
+    // goToRepostsPage(trackId)
+  }, [trackId])
 
   const listenCountDisplay = (
     <View style={styles.countContainer}>

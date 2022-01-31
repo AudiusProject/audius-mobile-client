@@ -1,25 +1,31 @@
-import React, { useCallback } from 'react'
+import React, { ReactNode } from 'react'
 
 import IconPause from 'app/assets/images/iconPause.svg'
 import IconPlay from 'app/assets/images/iconPlay.svg'
 // import DownloadButtons from 'app/components/download-buttons'
 import { useTrackCoverArt } from 'audius-client/src/common/hooks/useImageSize'
-import { Name } from 'audius-client/src/common/models/Analytics'
-import { CID, ID } from 'audius-client/src/common/models/Identifiers'
-import {
-  SquareSizes,
-  CoverArtSizes
-} from 'audius-client/src/common/models/ImageSizes'
-import { FieldVisibility, Remix } from 'audius-client/src/common/models/Track'
-import { OverflowAction } from 'audius-client/src/common/store/ui/mobile-overflow-menu/types'
+import { Name, PlaybackSource } from 'audius-client/src/common/models/Analytics'
+import { ID, UID } from 'audius-client/src/common/models/Identifiers'
+import { SquareSizes } from 'audius-client/src/common/models/ImageSizes'
+import { Track } from 'audius-client/src/common/models/Track'
+import { User } from 'audius-client/src/common/models/User'
 import { squashNewLines } from 'audius-client/src/common/utils/formatUtil'
 import { getCannonicalName } from 'audius-client/src/common/utils/genres'
 import {
   formatSeconds,
   formatDate
 } from 'audius-client/src/common/utils/timeUtil'
-import { StyleSheet, TouchableHighlight, View } from 'react-native'
+import { Nullable } from 'audius-client/src/common/utils/typeUtils'
+import { tracksActions } from 'common/store/pages/track/lineup/actions'
+import {
+  ImageStyle,
+  Pressable,
+  StyleSheet,
+  TouchableHighlight,
+  View
+} from 'react-native'
 import HyperLink from 'react-native-hyperlink'
+import { useSelector } from 'react-redux'
 
 import Button from 'app/components/button'
 import CoSign from 'app/components/co-sign/CoSign'
@@ -27,7 +33,10 @@ import { Size } from 'app/components/co-sign/types'
 import DynamicImage from 'app/components/dynamic-image'
 import Text from 'app/components/text'
 import UserBadges from 'app/components/user-badges'
+import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
+import { getPlaying, getPlayingUid, getTrack } from 'app/store/audio/selectors'
+import { flexRowCentered } from 'app/styles'
 import { make, track } from 'app/utils/analytics'
 import { moodMap } from 'app/utils/moods'
 
@@ -35,7 +44,7 @@ import { moodMap } from 'app/utils/moods'
 
 import { ThemeColors } from 'app/utils/theme'
 
-import { TrackScreenActions } from './TrackScreenActions'
+import { TrackScreenActionButtons } from './TrackScreenActionButtons'
 import { TrackScreenStats } from './TrackScreenStats'
 
 const messages = {
@@ -46,160 +55,266 @@ const messages = {
 }
 
 type TrackHeaderProps = {
-  isLoading: boolean
-  isPlaying: boolean
-  isOwner: boolean
-  isSaved: boolean
-  isReposted: boolean
-  isFollowing: boolean
-  title: string
-  trackId: ID
-  userId: ID
-  coverArtSizes: CoverArtSizes | null
-  artistName: string
-  artistVerified: boolean
-  description: string
-  released: string
-  genre: string
-  mood: string
-  credits: string
-  tags: string
-  listenCount: number
-  duration: number
-  saveCount: number
-  repostCount: number
-  isUnlisted: boolean
-  isRemix: boolean
-  fieldVisibility: FieldVisibility
-  coSign: Remix | null
-  onPressTag: (tag: string) => void
-  onPressArtistName: () => void
-  onPressMobileOverflow: (
-    trackId: ID,
-    overflowActions: OverflowAction[]
-  ) => void
-  onPlay: () => void
-  onShare: () => void
-  onSave: () => void
-  onRepost: () => void
-  onDownload: (
-    trackId: ID,
-    cid: CID,
-    category?: string,
-    parentTrackId?: ID
-  ) => void
-  goToFavoritesPage: (trackId: ID) => void
-  goToRepostsPage: (trackId: ID) => void
+  currentUserId: Nullable<ID>
+  track: Track
+  uid: UID
+  user: User
 }
 
-const createStyles = (themeColors: ThemeColors) => StyleSheet.create({})
+const createStyles = (themeColors: ThemeColors) =>
+  StyleSheet.create({
+    root: {
+      paddingTop: 16,
+      paddingHorizontal: 24,
+      width: '100%',
+      alignItems: 'center',
+      background: themeColors.white,
+      borderWidth: 1,
+      borderColor: themeColors.neutralLight8,
+      borderRadius: 6,
+      overflow: 'hidden'
+      // TODO: shadow
+    },
 
-export const TrackHeader = ({
-  title,
-  trackId,
-  userId,
-  coverArtSizes,
-  artistName,
-  artistVerified,
-  description,
-  isOwner,
-  isFollowing,
-  released,
-  duration,
-  isLoading,
-  isPlaying,
-  isSaved,
-  isReposted,
-  isUnlisted,
-  isRemix,
-  fieldVisibility,
-  coSign,
-  saveCount,
-  repostCount,
-  listenCount,
-  mood,
-  credits,
-  genre,
-  tags,
-  onPressArtistName,
-  onPressTag,
-  onPlay,
-  onShare,
-  onSave,
-  onRepost,
-  onDownload,
-  onPressMobileOverflow,
-  goToFavoritesPage,
-  goToRepostsPage
+    hiddenTrackHeaderWrapper: {
+      marginBottom: 12
+    },
+
+    typeLabel: {
+      marginBottom: 15,
+      height: 18,
+      color: themeColors.neutralLight4,
+      fontSize: 12,
+      textAlign: 'center',
+      textTransform: 'uppercase'
+    },
+    coverArt: {
+      height: 195,
+      width: 195,
+      marginBottom: 23
+    },
+
+    title: {
+      fontSize: 16,
+      textAlign: 'center',
+      marginBottom: 8
+    },
+
+    artist: {
+      color: themeColors.secondary,
+      fontSize: 16,
+      textAlign: 'center',
+      marginBottom: 16,
+      ...flexRowCentered()
+    },
+
+    verified: {
+      marginLeft: 8
+    },
+
+    description: {
+      fontSize: 14,
+      textAlign: 'left',
+      whiteSpace: 'pre-line',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
+      width: '100%',
+      marginBottom: 24
+    },
+
+    buttonSection: {
+      width: '100%',
+      marginBottom: 12
+    },
+
+    playAllButton: {
+      width: '100%',
+      ...flexRowCentered(),
+      height: 40
+    },
+    tags: {
+      borderTopWidth: 1,
+      borderTopColor: themeColors.neutralLight7,
+      width: '100%',
+      flexDirection: 'row',
+      justifyContent: 'center',
+      flexWrap: 'wrap',
+      paddingVertical: 16
+    },
+
+    tag: {
+      margin: 4,
+      borderRadius: 2,
+      backgroundColor: themeColors.neutralLight4,
+      paddingVertical: 4,
+      paddingHorizontal: 8,
+      color: themeColors.white,
+      fontSize: 10,
+      textTransform: 'uppercase'
+    },
+
+    infoSection: {
+      borderTopWidth: 1,
+      borderTopColor: themeColors.neutralLight7,
+      flexWrap: 'wrap',
+      width: '100%',
+      paddingTop: 24,
+      paddingBottom: 8
+    },
+
+    noStats: {
+      borderWidth: 0
+    },
+
+    infoFact: {
+      flex: 1,
+      textAlign: 'left',
+      marginBottom: 16,
+      width: '50%'
+    },
+
+    infoLabel: {
+      color: themeColors.neutralLight5,
+      fontSize: 12,
+      textTransform: 'uppercase',
+      marginRight: 8,
+      ...flexRowCentered()
+    },
+
+    infoValue: {
+      color: themeColors.neutral,
+      fontSize: 12,
+      ...flexRowCentered()
+    },
+
+    imageWrapper: {
+      borderWidth: 1,
+      borderColor: themeColors.neutralLight8,
+      borderRadius: 4,
+      overflow: 'hidden'
+    }
+  })
+
+export const TrackScreenHeader = ({
+  currentUserId,
+  track: {
+    _co_sign,
+    _cover_art_sizes,
+    created_at,
+    credits_splits,
+    description,
+    duration,
+    field_visibility,
+    genre,
+    has_current_user_reposted,
+    has_current_user_saved,
+    is_unlisted,
+    mood,
+    owner_id,
+    play_count,
+    release_date,
+    remix_of,
+    repost_count,
+    save_count,
+    tags,
+    title,
+    track_id
+  },
+  uid,
+  user
 }: TrackHeaderProps) => {
+  const dispatchWeb = useDispatchWeb()
   const styles = useThemedStyles(createStyles)
   const image = useTrackCoverArt(
-    trackId,
-    coverArtSizes,
+    track_id,
+    _cover_art_sizes,
     SquareSizes.SIZE_480_BY_480
   )
-  const onSaveHeroTrack = () => {
-    if (!isOwner) onSave()
+
+  const isPlaying = useSelector(getPlaying)
+  const playingUid = useSelector(getPlayingUid)
+  const queueTrack = useSelector(getTrack)
+
+  const remixParentTrackId = remix_of?.tracks?.[0]?.parent_track_id
+  const isRemix = !!remixParentTrackId
+
+  const isOwner = owner_id === currentUserId
+
+  const onPlay = () => {
+    const trackPlay = () =>
+      track(
+        make({
+          eventName: Name.PLAYBACK_PLAY,
+          id: String(track_id),
+          source: PlaybackSource.TRACK_PAGE
+        })
+      )
+
+    if (isPlaying) {
+      dispatchWeb(tracksActions.pause())
+      track(
+        make({
+          eventName: Name.PLAYBACK_PAUSE,
+          id: String(track_id),
+          source: PlaybackSource.TRACK_PAGE
+        })
+      )
+    } else if (
+      playingUid !== uid &&
+      queueTrack &&
+      queueTrack?.trackId === track_id
+    ) {
+      dispatchWeb(tracksActions.play())
+      trackPlay()
+    } else {
+      dispatchWeb(tracksActions.play(uid))
+      trackPlay()
+    }
   }
+
+  const onPressArtistName = () => {
+    // TODO: navigate to profile screen
+    // goToProfilePage(user ? user.handle : '')
+  }
+
+  const onPressTag = (tag: string) => {
+    // TODO: navigate to search screen
+    // goToSearchResultsPage(`#${tag}`)
+  }
+
+  const onExternalLinkClick = event => {
+    track(
+      make({
+        eventName: Name.LINK_CLICKING,
+        url: event.target.href,
+        source: 'track page' as const
+      })
+    )
+  }
+
   const filteredTags = (tags || '').split(',').filter(Boolean)
 
-  const trackLabels: { value: any; label: string }[] = [
+  const trackLabels: { value: ReactNode; label: string }[] = [
     { value: formatSeconds(duration), label: 'Duration' },
     { value: getCannonicalName(genre), label: 'Genre' },
-    { value: formatDate(released), label: 'Released' },
+    { value: formatDate(release_date || created_at), label: 'Released' },
     {
-      // @ts-ignore
       value: mood && mood in moodMap ? moodMap[mood] : mood,
       label: 'Mood'
     },
-    { value: credits, label: 'Credit' }
+    { value: credits_splits, label: 'Credit' }
   ].filter(info => !!info.value)
 
-  const record = useRecord()
-  const onExternalLinkClick = useCallback(
-    event => {
-      record(
-        make(Name.LINK_CLICKING, {
-          url: event.target.href,
-          source: 'track page' as const
-        })
-      )
-    },
-    [record]
-  )
-
-  const onPressOverflow = () => {
-    const overflowActions = [
-      isOwner || isUnlisted
-        ? null
-        : isReposted
-        ? OverflowAction.UNREPOST
-        : OverflowAction.REPOST,
-      isOwner || isUnlisted
-        ? null
-        : isSaved
-        ? OverflowAction.UNFAVORITE
-        : OverflowAction.FAVORITE,
-      OverflowAction.ADD_TO_PLAYLIST,
-      isFollowing
-        ? OverflowAction.UNFOLLOW_ARTIST
-        : OverflowAction.FOLLOW_ARTIST,
-      OverflowAction.VIEW_ARTIST_PAGE
-    ].filter(Boolean) as OverflowAction[]
-
-    onPressMobileOverflow(trackId, overflowActions)
-  }
-
   const renderTags = () => {
-    if (isUnlisted && !fieldVisibility.tags) return null
+    if (is_unlisted && !field_visibility?.tags) return null
     return (
       <>
         {filteredTags.length > 0 ? (
           <View style={styles.tags}>
             {filteredTags.map(tag => (
-              <h2 key={tag} onPress={() => onPressTag(tag)} style={styles.tag}>
-                {tag}
-              </h2>
+              <Pressable key={tag} onPress={() => onPressTag(tag)}>
+                <Text style={styles.tag}>{tag}</Text>
+              </Pressable>
             ))}
           </View>
         ) : null}
@@ -223,49 +338,41 @@ export const TrackHeader = ({
 
   const renderTrackLabels = () => {
     return trackLabels.map(infoFact => {
-      if (infoFact.label === 'Genre' && isUnlisted && !fieldVisibility.genre)
+      if (infoFact.label === 'Genre' && is_unlisted && !field_visibility?.genre)
         return null
-      if (infoFact.label === 'Released' && isUnlisted) return null
-      if (infoFact.label === 'Mood' && isUnlisted && !fieldVisibility.mood)
+      if (infoFact.label === 'Released' && is_unlisted) return null
+      if (infoFact.label === 'Mood' && is_unlisted && !field_visibility?.mood)
         return null
       return (
         <View key={infoFact.label} style={styles.infoFact}>
-          <h2 style={styles.infoLabel}>{infoFact.label}</h2>
-          <h2 style={styles.infoValue}>{infoFact.value}</h2>
+          <Text style={styles.infoLabel}>{infoFact.label}</Text>
+          <Text style={styles.infoValue}>{infoFact.value}</Text>
         </View>
       )
     })
   }
 
-  const onPressFavorites = useCallback(() => {
-    goToFavoritesPage(trackId)
-  }, [goToFavoritesPage, trackId])
-
-  const onPressReposts = useCallback(() => {
-    goToRepostsPage(trackId)
-  }, [goToRepostsPage, trackId])
-
-  const imageElement = coSign ? (
+  const imageElement = _co_sign ? (
     <CoSign
       size={Size.LARGE}
-      hasFavorited={coSign.has_remix_author_saved}
-      hasReposted={coSign.has_remix_author_reposted}
-      coSignName={coSign.user.name}
+      // hasFavorited={coSign.has_remix_author_saved}
+      // hasReposted={coSign.has_remix_author_reposted}
+      // coSignName={coSign.user.name}
       style={styles.coverArt}
-      userId={coSign.user.user_id}
+      // userId={coSign.user.user_id}
     >
-      <DynamicImage image={image} style={styles.imageWrapper} />
+      <DynamicImage image={image} style={styles.imageWrapper as ImageStyle} />
     </CoSign>
   ) : (
     <DynamicImage
       image={image}
-      style={[styles.coverArt, styles.imageWrapper]}
+      style={[styles.coverArt, styles.imageWrapper] as ImageStyle[]}
     />
   )
 
   return (
-    <View style={styles.trackHeader}>
-      {isUnlisted ? (
+    <View style={styles.root}>
+      {is_unlisted ? (
         <View style={styles.hiddenTrackHeaderWrapper}>
           {/* <HiddenTrackHeader /> */}
         </View>
@@ -275,42 +382,39 @@ export const TrackHeader = ({
         </View>
       )}
       {imageElement}
-      <h1 style={styles.title}>{title}</h1>
+      <Text style={styles.title}>{title}</Text>
       <TouchableHighlight style={styles.artist} onPress={onPressArtistName}>
-        <Text>{artistName}</Text>
+        <Text>{user.name}</Text>
         <UserBadges style={styles.verified} badgeSize={16} user={user} />
       </TouchableHighlight>
       <View style={styles.buttonSection}>
         <Button
-          style={[styles.playAllButton, styles.buttonFormatting]}
+          style={styles.playAllButton}
           title={messages.pause}
-          renderIcon={() => (props.playing ? <IconPause /> : <IconPlay />)}
-          onPress={props.onPlay}
+          renderIcon={() => (isPlaying ? <IconPause /> : <IconPlay />)}
+          onPress={onPlay}
         />
-        <TrackScreenActions
-          showRepost={!isUnlisted}
-          showFavorite={!isUnlisted}
-          showShare={!isUnlisted || fieldVisibility.share}
-          showOverflow
-          shareToastDisabled
+        <TrackScreenActionButtons
+          hasReposted={has_current_user_reposted}
+          hasSaved={has_current_user_saved}
+          isFollowing={user.does_current_user_follow}
           isOwner={isOwner}
-          isReposted={isReposted}
-          isSaved={isSaved}
-          onPressOverflow={onPressOverflow}
-          onRepost={onRepost}
-          onFavorite={onSaveHeroTrack}
-          onShare={onShare}
+          isUnlisted={is_unlisted}
+          showFavorite={!is_unlisted}
+          showOverflow
+          showRepost={!is_unlisted}
+          showShare={!is_unlisted || !!field_visibility?.share}
+          trackId={track_id}
         />
       </View>
       <TrackScreenStats
-        showListenCount={!isUnlisted || fieldVisibility.play_count}
-        showFavoriteCount={!isUnlisted}
-        showRepostCount={!isUnlisted}
-        listenCount={listenCount}
-        favoriteCount={saveCount}
-        repostCount={repostCount}
-        onPressFavorites={onPressFavorites}
-        onPressReposts={onPressReposts}
+        favoriteCount={save_count}
+        playCount={play_count}
+        repostCount={repost_count}
+        showFavoriteCount={!is_unlisted}
+        showListenCount={!is_unlisted || !field_visibility?.play_count}
+        showRepostCount={!is_unlisted}
+        trackId={track_id}
       />
       {description ? (
         // https://github.com/Soapbox/linkifyjs/issues/292
@@ -322,9 +426,7 @@ export const TrackHeader = ({
       <View
         style={[
           styles.infoSection,
-          {
-            [styles.noStats]: isUnlisted && !fieldVisibility.play_count
-          }
+          is_unlisted && !field_visibility?.play_count && styles.noStats
         ]}
       >
         {renderTrackLabels()}

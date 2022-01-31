@@ -1,6 +1,25 @@
 import React from 'react'
 
+import {
+  FavoriteSource,
+  RepostSource,
+  ShareSource
+} from 'audius-client/src/common/models/Analytics'
+import { ID } from 'audius-client/src/common/models/Identifiers'
+import {
+  repostTrack,
+  saveTrack,
+  undoRepostTrack,
+  unsaveTrack
+} from 'audius-client/src/common/store/social/tracks/actions'
+import {
+  OverflowAction,
+  OverflowSource
+} from 'audius-client/src/common/store/ui/mobile-overflow-menu/types'
+import { requestOpen as requestOpenShareModal } from 'audius-client/src/common/store/ui/share-modal/slice'
+import { open as openOverflowMenu } from 'common/store/ui/mobile-overflow-menu/slice'
 import { StyleSheet, View } from 'react-native'
+import { useDispatch } from 'react-redux'
 
 import IconKebabHorizontal from 'app/assets/images/iconKebabHorizontal.svg'
 import IconShare from 'app/assets/images/iconShare.svg'
@@ -8,24 +27,24 @@ import FavoriteButton from 'app/components/favorite-button'
 import IconButton from 'app/components/icon-button/IconButton'
 import LoadingSpinner from 'app/components/loading-spinner'
 import RepostButton from 'app/components/repost-button'
+import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
 import { flexRowCentered } from 'app/styles'
 import { ThemeColors, useThemeColors } from 'app/utils/theme'
 
 type ActionButtonRowProps = {
-  isOwner: boolean
   hasReposted: boolean
   hasSaved: boolean
+  isFollowing: boolean
+  isOwner: boolean
   isPublished?: boolean
   isPublishing?: boolean
-  showRepost: boolean
-  onToggleRepost?: () => void
-  onToggleSave?: () => void
-  onShare?: () => void
-  onPressOverflow?: () => void
+  isUnlisted: boolean
   showFavorite: boolean
-  showShare: boolean
   showOverflow: boolean
+  showRepost: boolean
+  showShare: boolean
+  trackId: ID
 }
 
 const createStyles = (themeColors: ThemeColors) =>
@@ -70,22 +89,80 @@ const createStyles = (themeColors: ThemeColors) =>
  * The action buttons on track and playlist screens
  */
 export const TrackScreenActionButtons = ({
-  showRepost,
-  isOwner,
-  hasSaved,
   hasReposted,
+  hasSaved,
+  isFollowing,
+  isOwner,
   isPublished = true,
   isPublishing = false,
+  isUnlisted,
   showFavorite,
-  showShare,
   showOverflow,
-  onToggleRepost = () => {},
-  onToggleSave = () => {},
-  onShare = () => {},
-  onPressOverflow = () => {}
+  showRepost,
+  showShare,
+  trackId
 }: ActionButtonRowProps) => {
   const styles = useThemedStyles(createStyles)
   const { neutralLight4, neutralLight8 } = useThemeColors()
+  const dispatch = useDispatch()
+  const dispatchWeb = useDispatchWeb()
+
+  const onToggleSave = () => {
+    if (!isOwner) {
+      if (hasSaved) {
+        dispatchWeb(unsaveTrack(trackId, FavoriteSource.TRACK_PAGE))
+      } else {
+        dispatchWeb(saveTrack(trackId, FavoriteSource.TRACK_PAGE))
+      }
+    }
+  }
+
+  const onToggleRepost = () => {
+    if (!isOwner) {
+      if (hasReposted) {
+        dispatchWeb(undoRepostTrack(trackId, RepostSource.TRACK_PAGE))
+      } else {
+        dispatchWeb(repostTrack(trackId, RepostSource.TRACK_PAGE))
+      }
+    }
+  }
+
+  const onShare = () => {
+    dispatch(
+      requestOpenShareModal({
+        type: 'track',
+        trackId,
+        source: ShareSource.PAGE
+      })
+    )
+  }
+  const onPressOverflow = () => {
+    const overflowActions = [
+      isOwner || isUnlisted
+        ? null
+        : hasReposted
+        ? OverflowAction.UNREPOST
+        : OverflowAction.REPOST,
+      isOwner || isUnlisted
+        ? null
+        : hasSaved
+        ? OverflowAction.UNFAVORITE
+        : OverflowAction.FAVORITE,
+      OverflowAction.ADD_TO_PLAYLIST,
+      isFollowing
+        ? OverflowAction.UNFOLLOW_ARTIST
+        : OverflowAction.FOLLOW_ARTIST,
+      OverflowAction.VIEW_ARTIST_PAGE
+    ].filter(Boolean) as OverflowAction[]
+
+    dispatchWeb(
+      openOverflowMenu({
+        source: OverflowSource.TRACKS,
+        id: trackId,
+        overflowActions
+      })
+    )
+  }
 
   const repostButton = (
     <RepostButton
