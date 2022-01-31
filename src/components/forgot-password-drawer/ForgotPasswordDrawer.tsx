@@ -42,7 +42,7 @@ const createStyles = (themeColors: ThemeColors) =>
     },
 
     restoreAccount: {
-      fontWeight: '700',
+      fontWeight: '600',
       fontSize: 16,
       lineHeight: 24,
       textAlign: 'center',
@@ -103,7 +103,7 @@ const createStyles = (themeColors: ThemeColors) =>
 const messages = {
   forgotPassword: 'Forgot Your Password',
   restoreAccess:
-    'To restore access to your account, search for the email we sent when you first signed up.',
+    'To restore access to your account, please search for the email we sent when you first signed up.',
   fromHeader: 'From:',
   subjectHeader: 'Subject:',
   from: 'recovery@audius.co',
