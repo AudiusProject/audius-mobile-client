@@ -14,3 +14,11 @@ export const fontByWeight = {
 export const font = (weight: keyof typeof fontByWeight): TextStyle => ({
   fontFamily: fontByWeight[weight]
 })
+
+export const typography: Record<'h1', TextStyle> = {
+  h1: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    fontFamily: fontByWeight.bold
+  }
+}
