@@ -42,7 +42,6 @@ const createStyles = (themeColors: ThemeColors) =>
     },
 
     restoreAccount: {
-      fontWeight: '600',
       fontSize: 16,
       lineHeight: 24,
       textAlign: 'center',
@@ -129,7 +128,9 @@ const ForgotPasswordDrawer = () => {
           <Text style={styles.title}>{messages.forgotPassword}</Text>
         </View>
         <View style={styles.bodyView}>
-          <Text style={styles.restoreAccount}>{messages.restoreAccess}</Text>
+          <Text style={styles.restoreAccount} weight='demiBold'>
+            {messages.restoreAccess}
+          </Text>
           <View style={styles.emailView}>
             <View style={styles.emailSubHeadings}>
               <Text style={styles.fromHeader}>{messages.fromHeader}</Text>
