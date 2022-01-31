@@ -35,6 +35,10 @@ const createStyles = (themeColors: ThemeColors) =>
       display: 'flex',
       alignItems: 'center'
     },
+    animatedIcon: {
+      width: 28,
+      height: 28
+    },
     icon: {
       width: 24,
       height: 24
@@ -74,7 +78,7 @@ export const ActionsBar = () => {
         iconDarkJSON={[IconRepostOnDark, IconRepostOffDark]}
         onPress={() => {}}
         style={styles.button}
-        wrapperStyle={styles.icon}
+        wrapperStyle={styles.animatedIcon}
       />
     )
   }
@@ -86,7 +90,7 @@ export const ActionsBar = () => {
         iconDarkJSON={[IconFavoriteOnDark, IconFavoriteOffDark]}
         onPress={() => {}}
         style={styles.button}
-        wrapperStyle={styles.icon}
+        wrapperStyle={styles.animatedIcon}
       />
     )
   }
