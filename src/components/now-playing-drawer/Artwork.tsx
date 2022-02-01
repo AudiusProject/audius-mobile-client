@@ -1,6 +1,5 @@
 import React from 'react'
 
-import { useTrackCoverArt } from 'audius-client/src/common/hooks/useImageSize'
 import { SquareSizes } from 'audius-client/src/common/models/ImageSizes'
 import { Track } from 'audius-client/src/common/models/Track'
 import { getDominantColorsByTrack } from 'audius-client/src/common/store/average-color/slice'
@@ -10,6 +9,7 @@ import { Shadow } from 'react-native-shadow-2'
 import DynamicImage from 'app/components/dynamic-image'
 import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
+import { useTrackCoverArt } from 'app/hooks/useTrackCoverArt'
 import { ThemeColors } from 'app/utils/theme'
 
 const dimensions = Dimensions.get('window')
