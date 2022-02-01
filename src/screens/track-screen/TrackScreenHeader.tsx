@@ -1,7 +1,8 @@
-import React, { ReactNode } from 'react'
+import React, { ReactNode, useCallback } from 'react'
 
 // import DownloadButtons from 'app/components/download-buttons'
-import { useTheme } from '@react-navigation/native'
+import { useNavigation, useTheme } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { useTrackCoverArt } from 'audius-client/src/common/hooks/useImageSize'
 import { Name, PlaybackSource } from 'audius-client/src/common/models/Analytics'
 import { ID, UID } from 'audius-client/src/common/models/Identifiers'
@@ -22,6 +23,7 @@ import {
   Pressable,
   StyleSheet,
   TouchableHighlight,
+  TouchableOpacity,
   View
 } from 'react-native'
 import HyperLink from 'react-native-hyperlink'
@@ -30,6 +32,7 @@ import { useSelector } from 'react-redux'
 
 import IconPause from 'app/assets/images/iconPause.svg'
 import IconPlay from 'app/assets/images/iconPlay.svg'
+import { BaseStackParamList } from 'app/components/app-navigator/types'
 import Button from 'app/components/button'
 import CoSign from 'app/components/co-sign/CoSign'
 import { Size } from 'app/components/co-sign/types'
@@ -244,6 +247,10 @@ export const TrackScreenHeader = ({
 }: TrackHeaderProps) => {
   const dispatchWeb = useDispatchWeb()
   const styles = useThemedStyles(createStyles)
+  const navigation = useNavigation<
+    NativeStackNavigationProp<BaseStackParamList>
+  >()
+
   // const image = useTrackCoverArt(
   //   track_id,
   //   _cover_art_sizes,
@@ -291,10 +298,9 @@ export const TrackScreenHeader = ({
     }
   }
 
-  const onPressArtistName = () => {
-    // TODO: navigate to profile screen
-    // goToProfilePage(user ? user.handle : '')
-  }
+  const onPressArtistName = useCallback(() => {
+    navigation.navigate('profile', { handle: user.handle })
+  }, [navigation, user])
 
   const onPressTag = (tag: string) => {
     // TODO: navigate to search screen
@@ -431,7 +437,7 @@ export const TrackScreenHeader = ({
         <Text style={styles.title} weight='bold'>
           {title}
         </Text>
-        <TouchableHighlight onPress={onPressArtistName}>
+        <TouchableOpacity onPress={onPressArtistName}>
           <View style={styles.artistContainer}>
             <Text style={styles.artist}>{user.name}</Text>
             <UserBadges
@@ -441,7 +447,7 @@ export const TrackScreenHeader = ({
               hideName
             />
           </View>
-        </TouchableHighlight>
+        </TouchableOpacity>
         <View style={styles.buttonSection}>
           <Button
             style={styles.playButton}

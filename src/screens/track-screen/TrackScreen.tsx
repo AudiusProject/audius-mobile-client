@@ -10,13 +10,16 @@ import {
   getUser
 } from 'audius-client/src/common/store/pages/track/selectors'
 import { isEqual } from 'lodash'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 
 import { BaseStackParamList } from 'app/components/app-navigator/types'
 import Button from 'app/components/button'
 import { Lineup } from 'app/components/lineup'
+import Text from 'app/components/text'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
+import { useThemedStyles } from 'app/hooks/useThemedStyles'
+import { ThemeColors, useThemeColors } from 'app/utils/theme'
 
 import { TrackScreenHeader } from './TrackScreenHeader'
 
@@ -26,22 +29,41 @@ type Props = NativeStackScreenProps<BaseStackParamList, 'track'>
 
 const getMoreByArtistLineup = makeGetLineupMetadatas(getLineup)
 
-const styles = StyleSheet.create({
-  root: {
-    padding: 12
-  }
-})
+const messages = {
+  moreBy: 'More By',
+  originalTrack: 'Original Track',
+  viewOtherRemixes: 'View Other Remixes'
+}
+
+const createStyles = (themeColors: ThemeColors) =>
+  StyleSheet.create({
+    root: {
+      padding: 12
+    },
+    headerContainer: {
+      padding: 12,
+      paddingBottom: 0
+    },
+    lineupHeader: {
+      width: '100%',
+      textAlign: 'center',
+      color: themeColors.neutralLight3,
+      fontSize: 14,
+      marginTop: 36,
+      textTransform: 'uppercase'
+    }
+  })
 
 const TrackScreen = ({ route, navigation }: Props) => {
-  // const handlePress = useCallback(() => {
-  //   navigation.navigate('profile', { id: 1 })
-  // }, [navigation])
+  const styles = useThemedStyles(createStyles)
 
   const dispatchWeb = useDispatchWeb()
   const track = useSelectorWeb(getTrack)
   const user = useSelectorWeb(getUser)
   const currentUserId = useSelectorWeb(getUserId)
   const moreByArtistLineup = useSelectorWeb(getMoreByArtistLineup, isEqual)
+
+  const remixParentTrackId = track?.remix_of?.tracks?.[0]?.parent_track_id
 
   const playTrack = (uid?: string) => {
     dispatchWeb(tracksActions.play(uid))
@@ -51,6 +73,15 @@ const TrackScreen = ({ route, navigation }: Props) => {
     dispatchWeb(tracksActions.pause())
   }
 
+  const renderMoreByTitle = () =>
+    (remixParentTrackId && moreByArtistLineup.entries.length > 2) ||
+    (!remixParentTrackId && moreByArtistLineup.entries.length > 1) ? (
+      <Text
+        style={styles.lineupHeader}
+        weight='bold'
+      >{`${messages.moreBy} ${user?.name}`}</Text>
+    ) : null
+
   return (
     <View>
       <Lineup
@@ -58,13 +89,14 @@ const TrackScreen = ({ route, navigation }: Props) => {
         header={
           track &&
           user && (
-            <View style={{ padding: 12 }}>
+            <View style={styles.headerContainer}>
               <TrackScreenHeader
                 track={track}
                 user={user}
                 uid={moreByArtistLineup?.entries?.[0]?.uid}
                 currentUserId={currentUserId}
               />
+              {renderMoreByTitle()}
             </View>
           )
         }
