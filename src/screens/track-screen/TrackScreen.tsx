@@ -10,7 +10,7 @@ import {
   getUser
 } from 'audius-client/src/common/store/pages/track/selectors'
 import { isEqual } from 'lodash'
-import { Text, View } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 
 import { BaseStackParamList } from 'app/components/app-navigator/types'
 import Button from 'app/components/button'
@@ -25,6 +25,12 @@ import { TrackScreenHeader } from './TrackScreenHeader'
 type Props = NativeStackScreenProps<BaseStackParamList, 'track'>
 
 const getMoreByArtistLineup = makeGetLineupMetadatas(getLineup)
+
+const styles = StyleSheet.create({
+  root: {
+    padding: 12
+  }
+})
 
 const TrackScreen = ({ route, navigation }: Props) => {
   // const handlePress = useCallback(() => {
@@ -46,17 +52,20 @@ const TrackScreen = ({ route, navigation }: Props) => {
   }
 
   return (
-    <View style={{ display: 'flex', flexDirection: 'column' }}>
-      {track && user && (
-        <TrackScreenHeader
-          track={track}
-          user={user}
-          uid={moreByArtistLineup?.entries?.[0]?.uid}
-          currentUserId={currentUserId}
-        />
-      )}
+    <View style={styles.root}>
       <Lineup
         actions={tracksActions}
+        header={
+          track &&
+          user && (
+            <TrackScreenHeader
+              track={track}
+              user={user}
+              uid={moreByArtistLineup?.entries?.[0]?.uid}
+              currentUserId={currentUserId}
+            />
+          )
+        }
         lineup={moreByArtistLineup}
         pauseTrack={pauseTrack}
         playTrack={playTrack}

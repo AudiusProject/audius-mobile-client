@@ -47,7 +47,6 @@ export const TrackTile = (props: TrackTileProps) => {
   // not being preserved when syncing redux state from client.
   // This can be removed when no longer dependent on web client
   const track = useSelectorWeb(state => getTrack(state, { uid }), isEqual)
-  console.log(track)
   const user = useSelectorWeb(
     state => getUserFromTrack(state, { uid }),
     isEqual

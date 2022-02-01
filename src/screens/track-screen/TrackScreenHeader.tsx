@@ -1,8 +1,7 @@
 import React, { ReactNode } from 'react'
 
-import IconPause from 'app/assets/images/iconPause.svg'
-import IconPlay from 'app/assets/images/iconPlay.svg'
 // import DownloadButtons from 'app/components/download-buttons'
+import { useTheme } from '@react-navigation/native'
 import { useTrackCoverArt } from 'audius-client/src/common/hooks/useImageSize'
 import { Name, PlaybackSource } from 'audius-client/src/common/models/Analytics'
 import { ID, UID } from 'audius-client/src/common/models/Identifiers'
@@ -25,8 +24,11 @@ import {
   View
 } from 'react-native'
 import HyperLink from 'react-native-hyperlink'
+import { Shadow } from 'react-native-shadow-2'
 import { useSelector } from 'react-redux'
 
+import IconPause from 'app/assets/images/iconPause.svg'
+import IconPlay from 'app/assets/images/iconPlay.svg'
 import Button from 'app/components/button'
 import CoSign from 'app/components/co-sign/CoSign'
 import { Size } from 'app/components/co-sign/types'
@@ -42,7 +44,7 @@ import { moodMap } from 'app/utils/moods'
 
 // import HiddenTrackHeader from '../HiddenTrackHeader'
 
-import { ThemeColors } from 'app/utils/theme'
+import { ThemeColors, useThemeColors } from 'app/utils/theme'
 
 import { TrackScreenActionButtons } from './TrackScreenActionButtons'
 import { TrackScreenStats } from './TrackScreenStats'
@@ -68,7 +70,7 @@ const createStyles = (themeColors: ThemeColors) =>
       paddingHorizontal: 24,
       width: '100%',
       alignItems: 'center',
-      background: themeColors.white,
+      backgroundColor: themeColors.white,
       borderWidth: 1,
       borderColor: themeColors.neutralLight8,
       borderRadius: 6,
@@ -84,7 +86,7 @@ const createStyles = (themeColors: ThemeColors) =>
       marginBottom: 15,
       height: 18,
       color: themeColors.neutralLight4,
-      fontSize: 12,
+      fontSize: 14,
       textAlign: 'center',
       textTransform: 'uppercase'
     },
@@ -95,17 +97,20 @@ const createStyles = (themeColors: ThemeColors) =>
     },
 
     title: {
-      fontSize: 16,
+      fontSize: 18,
       textAlign: 'center',
       marginBottom: 8
     },
 
-    artist: {
-      color: themeColors.secondary,
-      fontSize: 16,
-      textAlign: 'center',
+    artistContainer: {
       marginBottom: 16,
       ...flexRowCentered()
+    },
+
+    artist: {
+      color: themeColors.secondary,
+      fontSize: 18,
+      textAlign: 'center'
     },
 
     verified: {
@@ -127,11 +132,14 @@ const createStyles = (themeColors: ThemeColors) =>
       marginBottom: 12
     },
 
-    playAllButton: {
+    playButton: {
       width: '100%',
       ...flexRowCentered(),
-      height: 40
+      justifyContent: 'center',
+      height: 40,
+      padding: 0
     },
+
     tags: {
       borderTopWidth: 1,
       borderTopColor: themeColors.neutralLight7,
@@ -225,11 +233,11 @@ export const TrackScreenHeader = ({
 }: TrackHeaderProps) => {
   const dispatchWeb = useDispatchWeb()
   const styles = useThemedStyles(createStyles)
-  const image = useTrackCoverArt(
-    track_id,
-    _cover_art_sizes,
-    SquareSizes.SIZE_480_BY_480
-  )
+  // const image = useTrackCoverArt(
+  //   track_id,
+  //   _cover_art_sizes,
+  //   SquareSizes.SIZE_480_BY_480
+  // )
 
   const isPlaying = useSelector(getPlaying)
   const playingUid = useSelector(getPlayingUid)
@@ -352,87 +360,115 @@ export const TrackScreenHeader = ({
     })
   }
 
-  const imageElement = _co_sign ? (
-    <CoSign
-      size={Size.LARGE}
-      // hasFavorited={coSign.has_remix_author_saved}
-      // hasReposted={coSign.has_remix_author_reposted}
-      // coSignName={coSign.user.name}
-      style={styles.coverArt}
-      // userId={coSign.user.user_id}
-    >
-      <DynamicImage image={image} style={styles.imageWrapper as ImageStyle} />
-    </CoSign>
-  ) : (
-    <DynamicImage
-      image={image}
-      style={[styles.coverArt, styles.imageWrapper] as ImageStyle[]}
-    />
-  )
+  // const imageElement = _co_sign ? (
+  //   <CoSign
+  //     size={Size.LARGE}
+  //     // hasFavorited={coSign.has_remix_author_saved}
+  //     // hasReposted={coSign.has_remix_author_reposted}
+  //     // coSignName={coSign.user.name}
+  //     style={styles.coverArt}
+  //     // userId={coSign.user.user_id}
+  //   >
+  //     <DynamicImage image={image} style={styles.imageWrapper as ImageStyle} />
+  //   </CoSign>
+  // ) : (
+  //   <DynamicImage
+  //     image={image}
+  //     style={[styles.coverArt, styles.imageWrapper] as ImageStyle[]}
+  //   />
+  // )
 
   return (
-    <View style={styles.root}>
-      {is_unlisted ? (
-        <View style={styles.hiddenTrackHeaderWrapper}>
-          {/* <HiddenTrackHeader /> */}
+    <Shadow
+      offset={[0, 2]}
+      viewStyle={{ alignSelf: 'stretch' }}
+      distance={4}
+      startColor='rgba(133,129,153,0.05)'
+    >
+      <View style={styles.root}>
+        {is_unlisted ? (
+          <View style={styles.hiddenTrackHeaderWrapper}>
+            {/* <HiddenTrackHeader /> */}
+          </View>
+        ) : (
+          <Text style={styles.typeLabel}>
+            {isRemix ? messages.remix : messages.track}
+          </Text>
+        )}
+        {/* {imageElement} */}
+        <Text style={styles.title} weight='bold'>
+          {title}
+        </Text>
+        <TouchableHighlight
+          style={styles.artistContainer}
+          onPress={onPressArtistName}
+        >
+          <View>
+            <Text style={styles.artist}>{user.name}</Text>
+            <UserBadges
+              style={styles.verified}
+              badgeSize={16}
+              user={user}
+              hideName
+            />
+          </View>
+        </TouchableHighlight>
+        <View style={styles.buttonSection}>
+          <Button
+            style={styles.playButton}
+            title={isPlaying ? messages.pause : messages.play}
+            iconPosition='left'
+            renderIcon={fill =>
+              isPlaying ? (
+                <IconPause fill={fill as string} />
+              ) : (
+                <IconPlay fill={fill as string} />
+              )
+            }
+            onPress={onPlay}
+          />
+          <TrackScreenActionButtons
+            hasReposted={has_current_user_reposted}
+            hasSaved={has_current_user_saved}
+            isFollowing={user.does_current_user_follow}
+            isOwner={isOwner}
+            isUnlisted={is_unlisted}
+            showFavorite={!is_unlisted}
+            showOverflow
+            showRepost={!is_unlisted}
+            showShare={!is_unlisted || !!field_visibility?.share}
+            trackId={track_id}
+          />
         </View>
-      ) : (
-        <View style={styles.typeLabel}>
-          {isRemix ? messages.remix : messages.track}
-        </View>
-      )}
-      {imageElement}
-      <Text style={styles.title}>{title}</Text>
-      <TouchableHighlight style={styles.artist} onPress={onPressArtistName}>
-        <Text>{user.name}</Text>
-        <UserBadges style={styles.verified} badgeSize={16} user={user} />
-      </TouchableHighlight>
-      <View style={styles.buttonSection}>
-        <Button
-          style={styles.playAllButton}
-          title={messages.pause}
-          renderIcon={() => (isPlaying ? <IconPause /> : <IconPlay />)}
-          onPress={onPlay}
-        />
-        <TrackScreenActionButtons
-          hasReposted={has_current_user_reposted}
-          hasSaved={has_current_user_saved}
-          isFollowing={user.does_current_user_follow}
-          isOwner={isOwner}
-          isUnlisted={is_unlisted}
-          showFavorite={!is_unlisted}
-          showOverflow
-          showRepost={!is_unlisted}
-          showShare={!is_unlisted || !!field_visibility?.share}
+        <TrackScreenStats
+          favoriteCount={save_count}
+          playCount={play_count}
+          repostCount={repost_count}
+          showFavoriteCount={!is_unlisted}
+          showListenCount={!is_unlisted || !field_visibility?.play_count}
+          showRepostCount={!is_unlisted}
           trackId={track_id}
         />
+        {description ? (
+          // https://github.com/Soapbox/linkifyjs/issues/292
+          // @ts-ignore
+          <HyperLink options={{ attributes: { onPress: onExternalLinkClick } }}>
+            <Text style={styles.description}>
+              {squashNewLines(description)}
+            </Text>
+          </HyperLink>
+        ) : null}
+        <View
+          style={[
+            styles.infoSection,
+            is_unlisted && !field_visibility?.play_count && styles.noStats
+          ]}
+        >
+          {renderTrackLabels()}
+        </View>
+        {renderDownloadButtons()}
+        {renderTags()}
       </View>
-      <TrackScreenStats
-        favoriteCount={save_count}
-        playCount={play_count}
-        repostCount={repost_count}
-        showFavoriteCount={!is_unlisted}
-        showListenCount={!is_unlisted || !field_visibility?.play_count}
-        showRepostCount={!is_unlisted}
-        trackId={track_id}
-      />
-      {description ? (
-        // https://github.com/Soapbox/linkifyjs/issues/292
-        // @ts-ignore
-        <HyperLink options={{ attributes: { onPress: onExternalLinkClick } }}>
-          <Text style={styles.description}>{squashNewLines(description)}</Text>
-        </HyperLink>
-      ) : null}
-      <View
-        style={[
-          styles.infoSection,
-          is_unlisted && !field_visibility?.play_count && styles.noStats
-        ]}
-      >
-        {renderTrackLabels()}
-      </View>
-      {renderDownloadButtons()}
-      {renderTags()}
-    </View>
+    </Shadow>
   )
 }

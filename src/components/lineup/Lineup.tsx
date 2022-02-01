@@ -82,8 +82,7 @@ const useItemCounts = (variant: LineupVariant) =>
 
 const styles = StyleSheet.create({
   item: {
-    padding: 12,
-    paddingBottom: 0
+    paddingTop: 12
   }
 })
 
