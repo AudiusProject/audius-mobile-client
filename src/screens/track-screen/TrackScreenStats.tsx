@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 
 import { ID } from 'audius-client/src/common/models/Identifiers'
 import { StyleSheet, View } from 'react-native'
