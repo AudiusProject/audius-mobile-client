@@ -19,26 +19,23 @@ import {
 import { requestOpen as requestOpenShareModal } from 'audius-client/src/common/store/ui/share-modal/slice'
 import { open as openOverflowMenu } from 'common/store/ui/mobile-overflow-menu/slice'
 import { StyleSheet, View } from 'react-native'
-import { useDispatch } from 'react-redux'
 
 import IconKebabHorizontal from 'app/assets/images/iconKebabHorizontal.svg'
 import IconShare from 'app/assets/images/iconShare.svg'
 import FavoriteButton from 'app/components/favorite-button'
 import IconButton from 'app/components/icon-button/IconButton'
-import LoadingSpinner from 'app/components/loading-spinner'
 import RepostButton from 'app/components/repost-button'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
 import { flexRowCentered } from 'app/styles'
 import { ThemeColors, useThemeColors } from 'app/utils/theme'
 
-type ActionButtonRowProps = {
+type TrackScreenActionButtonsProps = {
   hasReposted: boolean
   hasSaved: boolean
   isFollowing: boolean
   isOwner: boolean
   isPublished?: boolean
-  isPublishing?: boolean
   isUnlisted: boolean
   showFavorite: boolean
   showOverflow: boolean
@@ -94,17 +91,15 @@ export const TrackScreenActionButtons = ({
   isFollowing,
   isOwner,
   isPublished = true,
-  isPublishing = false,
   isUnlisted,
   showFavorite,
   showOverflow,
   showRepost,
   showShare,
   trackId
-}: ActionButtonRowProps) => {
+}: TrackScreenActionButtonsProps) => {
   const styles = useThemedStyles(createStyles)
   const { neutralLight4, neutralLight8 } = useThemeColors()
-  const dispatch = useDispatch()
   const dispatchWeb = useDispatchWeb()
 
   const onToggleSave = () => {
@@ -128,7 +123,7 @@ export const TrackScreenActionButtons = ({
   }
 
   const onShare = () => {
-    dispatch(
+    dispatchWeb(
       requestOpenShareModal({
         type: 'track',
         trackId,
@@ -196,8 +191,6 @@ export const TrackScreenActionButtons = ({
     />
   )
 
-  const spinner = <LoadingSpinner style={styles.actionButton} />
-
   const overflowMenu = (
     <IconButton
       style={styles.actionButton}
@@ -212,7 +205,7 @@ export const TrackScreenActionButtons = ({
     <View style={styles.root}>
       {showRepost && repostButton}
       {showFavorite && favoriteButton}
-      {showShare && (isPublishing ? spinner : shareButton)}
+      {showShare && shareButton}
       {showOverflow && overflowMenu}
     </View>
   )

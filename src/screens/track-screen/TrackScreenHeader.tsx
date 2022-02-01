@@ -129,6 +129,10 @@ const createStyles = (themeColors: ThemeColors) =>
       marginLeft: 4
     },
 
+    descriptionContainer: {
+      width: '100%'
+    },
+
     description: {
       fontSize: 16,
       textAlign: 'left',
@@ -495,7 +499,7 @@ export const TrackScreenHeader = ({
           showRepostCount={!is_unlisted}
           trackId={track_id}
         />
-        <View style={{ width: '100%' }}>
+        <View style={styles.descriptionContainer}>
           {description ? (
             <HyperLink onPress={onExternalLinkClick} linkStyle={styles.link}>
               <Text style={styles.description} suppressHighlighting>
