@@ -52,18 +52,20 @@ const TrackScreen = ({ route, navigation }: Props) => {
   }
 
   return (
-    <View style={styles.root}>
+    <View>
       <Lineup
         actions={tracksActions}
         header={
           track &&
           user && (
-            <TrackScreenHeader
-              track={track}
-              user={user}
-              uid={moreByArtistLineup?.entries?.[0]?.uid}
-              currentUserId={currentUserId}
-            />
+            <View style={{ padding: 12 }}>
+              <TrackScreenHeader
+                track={track}
+                user={user}
+                uid={moreByArtistLineup?.entries?.[0]?.uid}
+                currentUserId={currentUserId}
+              />
+            </View>
           )
         }
         lineup={moreByArtistLineup}

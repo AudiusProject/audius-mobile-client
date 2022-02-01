@@ -17,6 +17,7 @@ import {
 import { Nullable } from 'audius-client/src/common/utils/typeUtils'
 import { tracksActions } from 'common/store/pages/track/lineup/actions'
 import {
+  Image,
   ImageStyle,
   Pressable,
   StyleSheet,
@@ -103,18 +104,17 @@ const createStyles = (themeColors: ThemeColors) =>
     },
 
     artistContainer: {
-      marginBottom: 16,
-      ...flexRowCentered()
+      ...flexRowCentered(),
+      marginBottom: 16
     },
 
     artist: {
       color: themeColors.secondary,
-      fontSize: 18,
-      textAlign: 'center'
+      fontSize: 18
     },
 
-    verified: {
-      marginLeft: 8
+    badge: {
+      marginLeft: 4
     },
 
     description: {
@@ -158,13 +158,15 @@ const createStyles = (themeColors: ThemeColors) =>
       paddingHorizontal: 8,
       color: themeColors.white,
       fontSize: 10,
-      textTransform: 'uppercase'
+      textTransform: 'uppercase',
+      overflow: 'hidden'
     },
 
     infoSection: {
       borderTopWidth: 1,
       borderTopColor: themeColors.neutralLight7,
       flexWrap: 'wrap',
+      flexDirection: 'row',
       width: '100%',
       paddingTop: 24,
       paddingBottom: 8
@@ -175,24 +177,23 @@ const createStyles = (themeColors: ThemeColors) =>
     },
 
     infoFact: {
-      flex: 1,
-      textAlign: 'left',
-      marginBottom: 16,
-      width: '50%'
+      ...flexRowCentered(),
+      flexBasis: '50%',
+      marginBottom: 16
     },
 
     infoLabel: {
+      ...flexRowCentered(),
       color: themeColors.neutralLight5,
-      fontSize: 12,
+      fontSize: 14,
       textTransform: 'uppercase',
-      marginRight: 8,
-      ...flexRowCentered()
+      marginRight: 8
     },
 
     infoValue: {
+      ...flexRowCentered(),
       color: themeColors.neutral,
-      fontSize: 12,
-      ...flexRowCentered()
+      fontSize: 14
     },
 
     imageWrapper: {
@@ -200,6 +201,16 @@ const createStyles = (themeColors: ThemeColors) =>
       borderColor: themeColors.neutralLight8,
       borderRadius: 4,
       overflow: 'hidden'
+    },
+
+    infoIcon: {
+      marginTop: -4
+    },
+
+    moodEmoji: {
+      marginLeft: 4,
+      width: 20,
+      height: 20
     }
   })
 
@@ -302,26 +313,42 @@ export const TrackScreenHeader = ({
 
   const filteredTags = (tags || '').split(',').filter(Boolean)
 
-  const trackLabels: { value: ReactNode; label: string }[] = [
+  const trackLabels: {
+    value: ReactNode
+    label: string
+    icon?: ReactNode
+  }[] = [
     { value: formatSeconds(duration), label: 'Duration' },
     { value: getCannonicalName(genre), label: 'Genre' },
     { value: formatDate(release_date || created_at), label: 'Released' },
     {
-      value: mood && mood in moodMap ? moodMap[mood] : mood,
+      value: mood,
+      icon:
+        mood && mood in moodMap ? (
+          <Image
+            source={moodMap[mood]}
+            style={styles.moodEmoji as ImageStyle}
+          />
+        ) : null,
       label: 'Mood'
     },
     { value: credits_splits, label: 'Credit' }
   ].filter(info => !!info.value)
 
   const renderTags = () => {
-    if (is_unlisted && !field_visibility?.tags) return null
+    if (is_unlisted && !field_visibility?.tags) {
+      return null
+    }
+
     return (
       <>
         {filteredTags.length > 0 ? (
           <View style={styles.tags}>
             {filteredTags.map(tag => (
               <Pressable key={tag} onPress={() => onPressTag(tag)}>
-                <Text style={styles.tag}>{tag}</Text>
+                <Text style={styles.tag} weight='bold'>
+                  {tag}
+                </Text>
               </Pressable>
             ))}
           </View>
@@ -353,8 +380,13 @@ export const TrackScreenHeader = ({
         return null
       return (
         <View key={infoFact.label} style={styles.infoFact}>
-          <Text style={styles.infoLabel}>{infoFact.label}</Text>
-          <Text style={styles.infoValue}>{infoFact.value}</Text>
+          <Text style={styles.infoLabel} weight='bold'>
+            {infoFact.label}
+          </Text>
+          <Text style={styles.infoValue} weight='demiBold'>
+            {infoFact.value}
+          </Text>
+          <View style={styles.infoIcon}>{infoFact.icon}</View>
         </View>
       )
     })
@@ -399,14 +431,11 @@ export const TrackScreenHeader = ({
         <Text style={styles.title} weight='bold'>
           {title}
         </Text>
-        <TouchableHighlight
-          style={styles.artistContainer}
-          onPress={onPressArtistName}
-        >
-          <View>
+        <TouchableHighlight onPress={onPressArtistName}>
+          <View style={styles.artistContainer}>
             <Text style={styles.artist}>{user.name}</Text>
             <UserBadges
-              style={styles.verified}
+              style={styles.badge}
               badgeSize={16}
               user={user}
               hideName

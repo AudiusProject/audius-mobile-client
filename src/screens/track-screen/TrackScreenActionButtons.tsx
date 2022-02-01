@@ -63,22 +63,22 @@ const createStyles = (themeColors: ThemeColors) =>
 
     actionButton: {
       ...flexRowCentered(),
-      width: 40,
+      width: 30,
       height: '100%',
       justifyContent: 'center',
       position: 'relative',
       bottom: 1,
-      marginHorizontal: 12
+      marginHorizontal: 16
     },
 
     icon: {
-      height: 40,
-      width: 40
+      height: 30,
+      width: 30
     },
 
     iconWrapper: {
       ...flexRowCentered(),
-      width: 40,
+      width: 30,
       height: '100%',
       overflow: 'visible',
       marginHorizontal: 12
@@ -166,7 +166,7 @@ export const TrackScreenActionButtons = ({
 
   const repostButton = (
     <RepostButton
-      style={styles.actionButton}
+      wrapperStyle={styles.actionButton}
       onPress={onToggleRepost ?? (() => {})}
       isActive={hasReposted}
       isDisabled={isOwner}
@@ -175,7 +175,7 @@ export const TrackScreenActionButtons = ({
 
   const favoriteButton = (
     <FavoriteButton
-      style={styles.actionButton}
+      wrapperStyle={styles.actionButton}
       onPress={onToggleSave ?? (() => {})}
       isActive={hasSaved}
       isDisabled={isOwner}
@@ -186,7 +186,11 @@ export const TrackScreenActionButtons = ({
     <IconButton
       style={styles.actionButton}
       icon={() => (
-        <IconShare fill={!isPublished ? neutralLight8 : neutralLight4} />
+        <IconShare
+          fill={!isPublished ? neutralLight8 : neutralLight4}
+          height={24}
+          width={24}
+        />
       )}
       onPress={isPublished ? onShare : () => {}}
     />
@@ -197,7 +201,9 @@ export const TrackScreenActionButtons = ({
   const overflowMenu = (
     <IconButton
       style={styles.actionButton}
-      icon={() => <IconKebabHorizontal fill={neutralLight4} />}
+      icon={() => (
+        <IconKebabHorizontal fill={neutralLight4} height={30} width={30} />
+      )}
       onPress={onPressOverflow}
     />
   )
