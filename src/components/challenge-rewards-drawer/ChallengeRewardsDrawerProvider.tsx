@@ -80,6 +80,12 @@ const messages = {
     'Invite your Friends! You’ll earn 1 $AUDIO for each friend who joins with your link (and they’ll get an $AUDIO too)',
   referralsProgressLabel: 'Invites Sent',
 
+  // Verified Referrals
+  referreralsVerifiedTitle: 'Invite your Fans',
+  referralsVerifiedDescription:
+    'Invite your fans! You’ll earn 1 $AUDIO for each friend who joins with your link (and they’ll get an $AUDIO too)',
+  referralsVerifiedProgressLabel: 'Invites Sent',
+
   // Track Upload
   trackUploadTitle: 'Upload 5 Tracks',
   trackUploadDescription: 'Upload 5 tracks to your profile',
@@ -149,9 +155,9 @@ const challengesConfig: Omit<
   },
   'referrals-verified': {
     icon: IncomingEnvelope,
-    title: messages.referreralsTitle,
-    description: messages.referralsDescription,
-    progressLabel: messages.referralsProgressLabel
+    title: messages.referreralsVerifiedTitle,
+    description: messages.referralsVerifiedDescription,
+    progressLabel: messages.referralsVerifiedProgressLabel
   },
   'track-upload': {
     icon: MultipleMusicalNotes,
