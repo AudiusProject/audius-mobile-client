@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { useTrackCoverArt } from 'audius-client/src/common/hooks/useImageSize'
 import { FavoriteSource } from 'audius-client/src/common/models/Analytics'
