@@ -13,13 +13,12 @@ import { isEqual } from 'lodash'
 import { StyleSheet, View } from 'react-native'
 
 import { BaseStackParamList } from 'app/components/app-navigator/types'
-import Button from 'app/components/button'
 import { Lineup } from 'app/components/lineup'
 import Text from 'app/components/text'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
-import { ThemeColors, useThemeColors } from 'app/utils/theme'
+import { ThemeColors } from 'app/utils/theme'
 
 import { TrackScreenHeader } from './TrackScreenHeader'
 
@@ -54,7 +53,10 @@ const createStyles = (themeColors: ThemeColors) =>
     }
   })
 
-const TrackScreen = ({ route, navigation }: Props) => {
+/**
+ * `TrackScreen` displays a single track and a Lineup of more tracks by the artist
+ */
+export const TrackScreen = ({ route, navigation }: Props) => {
   const styles = useThemedStyles(createStyles)
 
   const dispatchWeb = useDispatchWeb()
@@ -65,15 +67,18 @@ const TrackScreen = ({ route, navigation }: Props) => {
 
   const remixParentTrackId = track?.remix_of?.tracks?.[0]?.parent_track_id
 
-  const playTrack = (uid?: string) => {
-    dispatchWeb(tracksActions.play(uid))
-  }
+  const playTrack = useCallback(
+    (uid?: string) => {
+      dispatchWeb(tracksActions.play(uid))
+    },
+    [dispatchWeb]
+  )
 
-  const pauseTrack = () => {
+  const pauseTrack = useCallback(() => {
     dispatchWeb(tracksActions.pause())
-  }
+  }, [dispatchWeb])
 
-  const renderMoreByTitle = () =>
+  const moreByArtistTitle =
     (remixParentTrackId && moreByArtistLineup.entries.length > 2) ||
     (!remixParentTrackId && moreByArtistLineup.entries.length > 1) ? (
       <Text
@@ -96,7 +101,7 @@ const TrackScreen = ({ route, navigation }: Props) => {
                 uid={moreByArtistLineup?.entries?.[0]?.uid}
                 currentUserId={currentUserId}
               />
-              {renderMoreByTitle()}
+              {moreByArtistTitle}
             </View>
           )
         }
@@ -107,5 +112,3 @@ const TrackScreen = ({ route, navigation }: Props) => {
     </View>
   )
 }
-
-export default TrackScreen

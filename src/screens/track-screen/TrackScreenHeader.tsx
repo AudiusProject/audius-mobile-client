@@ -20,6 +20,7 @@ import { tracksActions } from 'common/store/pages/track/lineup/actions'
 import {
   Image,
   ImageStyle,
+  Linking,
   Pressable,
   StyleSheet,
   TouchableHighlight,
@@ -79,7 +80,6 @@ const createStyles = (themeColors: ThemeColors) =>
       borderColor: themeColors.neutralLight8,
       borderRadius: 6,
       overflow: 'hidden'
-      // TODO: shadow
     },
 
     hiddenTrackHeaderWrapper: {
@@ -121,11 +121,8 @@ const createStyles = (themeColors: ThemeColors) =>
     },
 
     description: {
-      fontSize: 14,
+      fontSize: 16,
       textAlign: 'left',
-      whiteSpace: 'pre-line',
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
       width: '100%',
       marginBottom: 24
     },
@@ -214,6 +211,10 @@ const createStyles = (themeColors: ThemeColors) =>
       marginLeft: 4,
       width: 20,
       height: 20
+    },
+
+    link: {
+      color: themeColors.primary
     }
   })
 
@@ -266,7 +267,7 @@ export const TrackScreenHeader = ({
 
   const isOwner = owner_id === currentUserId
 
-  const onPlay = () => {
+  const onPlay = useCallback(() => {
     const trackPlay = () =>
       track(
         make({
@@ -296,26 +297,31 @@ export const TrackScreenHeader = ({
       dispatchWeb(tracksActions.play(uid))
       trackPlay()
     }
-  }
+  }, [track_id, uid, dispatchWeb, isPlaying, playingUid, queueTrack])
 
   const onPressArtistName = useCallback(() => {
     navigation.navigate('profile', { handle: user.handle })
   }, [navigation, user])
 
-  const onPressTag = (tag: string) => {
+  const onPressTag = useCallback((tag: string) => {
     // TODO: navigate to search screen
     // goToSearchResultsPage(`#${tag}`)
-  }
+  }, [])
 
-  const onExternalLinkClick = event => {
-    track(
-      make({
-        eventName: Name.LINK_CLICKING,
-        url: event.target.href,
-        source: 'track page' as const
-      })
-    )
-  }
+  const onExternalLinkClick = useCallback(url => {
+    Linking.canOpenURL(url).then(supported => {
+      if (supported) {
+        Linking.openURL(url)
+        track(
+          make({
+            eventName: Name.LINK_CLICKING,
+            url,
+            source: 'track page' as const
+          })
+        )
+      }
+    })
+  }, [])
 
   const filteredTags = (tags || '').split(',').filter(Boolean)
 
@@ -484,15 +490,15 @@ export const TrackScreenHeader = ({
           showRepostCount={!is_unlisted}
           trackId={track_id}
         />
-        {description ? (
-          // https://github.com/Soapbox/linkifyjs/issues/292
-          // @ts-ignore
-          <HyperLink options={{ attributes: { onPress: onExternalLinkClick } }}>
-            <Text style={styles.description}>
-              {squashNewLines(description)}
-            </Text>
-          </HyperLink>
-        ) : null}
+        <View style={{ width: '100%' }}>
+          {description ? (
+            <HyperLink onPress={onExternalLinkClick} linkStyle={styles.link}>
+              <Text style={styles.description} suppressHighlighting>
+                {squashNewLines(description)}
+              </Text>
+            </HyperLink>
+          ) : null}
+        </View>
         <View
           style={[
             styles.infoSection,
