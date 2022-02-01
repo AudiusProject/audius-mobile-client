@@ -20,8 +20,8 @@ export const makeStyles = <T extends NamedStyles<T>>(styles: Styles<T>) => {
     const themeColors = useThemeColors()
     const palette = { mode: themeMode, ...themeColors }
     const theme: Theme = { palette, typography }
-    const styleProps = styles(theme)
-    return StyleSheet.create(styleProps)
+    const namedStyles = styles(theme)
+    return StyleSheet.create(namedStyles)
   }
   return useStyles
 }
