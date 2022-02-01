@@ -153,7 +153,7 @@ const challengesConfig: Omit<
     description: messages.referralsDescription,
     progressLabel: messages.referralsProgressLabel
   },
-  'referrals-verified': {
+  'ref-v': {
     icon: IncomingEnvelope,
     title: messages.referreralsVerifiedTitle,
     description: messages.referralsVerifiedDescription,
@@ -239,6 +239,7 @@ export const ChallengeRewardsDrawerProvider = () => {
   let contents: Maybe<React.ReactElement>
   switch (modalType) {
     case 'referrals':
+    case 'ref-v':
       contents = <ReferralLinkCopyButton />
       break
     case 'track-upload':

@@ -27,7 +27,7 @@ const createStyles = (themeColors: ThemeColors) =>
       borderRadius: 6
     },
     copyPromptContent: {
-      padding: 16
+      padding: 20
     },
     copyPrompt: {
       marginBottom: 12,
@@ -51,7 +51,7 @@ const createStyles = (themeColors: ThemeColors) =>
     iconCopy: {
       color: themeColors.staticWhite,
       lineHeight: 16,
-      marginLeft: 8
+      marginRight: 8
     }
   })
 
@@ -85,18 +85,16 @@ export const ReferralLinkCopyButton = () => {
       >
         <LinearGradient
           style={[styles.borderRadius, styles.copyPromptContent]}
+          angleCenter={{ x: 0.5, y: 0.5 }}
+          angle={-1.5}
           useAngle={true}
-          angle={338}
           colors={[pageHeaderGradientColor1, pageHeaderGradientColor2]}
         >
-          <Text weight={'bold'} style={styles.copyPrompt}>
-            {messages.copyPrompt}
-          </Text>
           <View style={styles.copyText}>
-            <Text weight={'bold'} style={styles.referralUrl}>
-              {referralUrl}
-            </Text>
             <IconCopy style={styles.iconCopy} width={16} height={16} />
+            <Text weight={'bold'} style={styles.referralUrl}>
+              {messages.copyPrompt}
+            </Text>
           </View>
         </LinearGradient>
       </TouchableHighlight>
