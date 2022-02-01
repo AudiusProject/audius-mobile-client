@@ -1,17 +1,14 @@
 import React, { useCallback } from 'react'
 
 import { ID } from 'audius-client/src/common/models/Identifiers'
-import { formatCount } from 'audius-client/src/common/utils/formatUtil'
-import { Pressable, StyleSheet, View } from 'react-native'
-import { SvgProps } from 'react-native-svg'
+import { StyleSheet, View } from 'react-native'
 
 import IconFavorite from 'app/assets/images/iconHeart.svg'
 import IconRepost from 'app/assets/images/iconRepost.svg'
 import Text from 'app/components/text'
-import { usePressScaleAnimation } from 'app/hooks/usePressScaleAnimation'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
 import { flexRowCentered } from 'app/styles'
-import { ThemeColors, useThemeColors } from 'app/utils/theme'
+import { ThemeColors } from 'app/utils/theme'
 
 import { TrackScreenStat } from './TrackScreenStat'
 

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext } from 'react'
+import React, { useCallback } from 'react'
 
 import {
   FavoriteSource,
@@ -18,13 +18,7 @@ import {
 } from 'audius-client/src/common/store/ui/mobile-overflow-menu/types'
 import { requestOpen as requestOpenShareModal } from 'audius-client/src/common/store/ui/share-modal/slice'
 import { open as openOverflowMenu } from 'common/store/ui/mobile-overflow-menu/slice'
-import {
-  ImageStyle,
-  Pressable,
-  StyleSheet,
-  TouchableOpacity,
-  View
-} from 'react-native'
+import { ImageStyle, StyleSheet, View } from 'react-native'
 
 import IconKebabHorizontal from 'app/assets/images/iconKebabHorizontal.svg'
 import IconShare from 'app/assets/images/iconShare.svg'
