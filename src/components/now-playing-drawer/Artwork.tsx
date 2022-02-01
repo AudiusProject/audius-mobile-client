@@ -38,14 +38,14 @@ const createStyles = (themeColors: ThemeColors) =>
   })
 
 type ArtworkProps = {
-  track: Track | null
+  track: Track
 }
 
 export const Artwork = ({ track }: ArtworkProps) => {
   const styles = useThemedStyles(createStyles)
   const image = useTrackCoverArt(
-    track?.track_id ?? null,
-    track?._cover_art_sizes ?? null,
+    track.track_id,
+    track._cover_art_sizes,
     SquareSizes.SIZE_480_BY_480
   )
 
@@ -58,6 +58,7 @@ export const Artwork = ({ track }: ArtworkProps) => {
   const shadowColor = dominantColor
     ? `rgba(${dominantColor.r},${dominantColor.g},${dominantColor.b},0.1)`
     : 'rgba(0,0,0,0)'
+
   return (
     <View style={styles.root}>
       <Shadow

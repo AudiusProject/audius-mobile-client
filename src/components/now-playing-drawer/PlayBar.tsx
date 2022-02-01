@@ -99,8 +99,8 @@ const createStyles = (themeColors: ThemeColors) =>
   })
 
 type PlayBarProps = {
-  track: Track | null
-  user: User | null
+  track: Track
+  user: User
   onPress: () => void
   /**
    * Opacity animation to fade out play bar as
@@ -220,7 +220,11 @@ export const PlayBar = ({
             <Text numberOfLines={1} weight='bold' style={styles.title}>
               {track?.title ?? ''}
             </Text>
-            <Text weight='bold' style={styles.separator}>
+            <Text
+              weight='bold'
+              style={styles.separator}
+              accessibilityElementsHidden
+            >
               {track ? '•' : ''}
             </Text>
             <Text numberOfLines={1} weight='medium' style={styles.artist}>

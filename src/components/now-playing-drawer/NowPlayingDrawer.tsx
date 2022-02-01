@@ -200,29 +200,33 @@ const NowPlayingDrawer = ({
       onPanResponderMove={onPanResponderMove}
     >
       <View style={styles.container}>
-        <PlayBar
-          track={track}
-          user={user}
-          onPress={onDrawerOpen}
-          opacityAnim={playBarOpacityAnim}
-        />
-        <Logo opacityAnim={playBarOpacityAnim} />
-        <View style={styles.titleBarContainer}>
-          <TitleBar onClose={onDrawerClose} />
-        </View>
-        <View style={styles.artworkContainer}>
-          <Artwork track={track} />
-        </View>
-        <View style={styles.trackInfoContainer}>
-          <TrackInfo track={track} user={user} />
-        </View>
-        <View style={styles.scrubberContainer}>
-          <Scrubber mediaKey='1' />
-        </View>
-        <View style={styles.controlsContainer}>
-          <AudioControls />
-          <ActionsBar />
-        </View>
+        {track && user && (
+          <>
+            <PlayBar
+              track={track}
+              user={user}
+              onPress={onDrawerOpen}
+              opacityAnim={playBarOpacityAnim}
+            />
+            <Logo opacityAnim={playBarOpacityAnim} />
+            <View style={styles.titleBarContainer}>
+              <TitleBar onClose={onDrawerClose} />
+            </View>
+            <View style={styles.artworkContainer}>
+              <Artwork track={track} />
+            </View>
+            <View style={styles.trackInfoContainer}>
+              <TrackInfo track={track} user={user} />
+            </View>
+            <View style={styles.scrubberContainer}>
+              <Scrubber mediaKey='1' />
+            </View>
+            <View style={styles.controlsContainer}>
+              <AudioControls />
+              <ActionsBar />
+            </View>
+          </>
+        )}
       </View>
     </Drawer>
   )

@@ -97,21 +97,25 @@ const attachToDx = (animation: Animated.Value, newValue: number) => (
     [
       null,
       {
-        dy: animation
+        dx: animation
       }
     ],
     { useNativeDriver: false }
-  )(e, { dy: newValue })
+  )(e, { dx: newValue })
 }
 
 type ScrubberProps = {
   mediaKey: string
 }
 
-// Memoize because the Scrubber is sensitive to parent rerenders
-// due to its gesture handler use.
-// useSelectorWeb (used to connect the now playing drawer) induces
-// rerenders that normally should be harmless.
+/**
+ * Scrubber component to control track playback & seek.
+ *
+ * Memoize because the Scrubber is sensitive to parent rerenders
+ * due to its gesture handler use.
+ * useSelectorWeb (used to connect the now playing drawer) induces
+ * rerenders that normally should be harmless.
+ */
 export const Scrubber = memo(({ mediaKey }: ScrubberProps) => {
   const styles = useThemedStyles(createStyles)
   const { primaryLight2, primaryDark2 } = useThemeColors()
@@ -125,7 +129,7 @@ export const Scrubber = memo(({ mediaKey }: ScrubberProps) => {
     handlePressOut: handlePressHandleOut
   } = usePressScaleAnimation(HANDLE_GROW_SCALE)
 
-  const railRef = React.createRef<View>()
+  const railRef = useRef<View>()
   // The rail component's width
   const [railWidth, setRailWidth] = useState(0)
   // The rail component's distance from the left
@@ -158,7 +162,7 @@ export const Scrubber = memo(({ mediaKey }: ScrubberProps) => {
     [railPageX, setHandlePosition, translationAnim, handlePressHandleIn]
   )
 
-  const onReleaseRail = (e: GestureResponderEvent) => {
+  const onReleaseRail = () => {
     handlePressHandleOut()
   }
 
@@ -213,8 +217,7 @@ export const Scrubber = memo(({ mediaKey }: ScrubberProps) => {
           ref={railRef}
           {...panResponder.panHandlers}
           onLayout={e => {
-            const { x, y, width } = e.nativeEvent.layout
-            console.log({ x, y, width })
+            const { width } = e.nativeEvent.layout
             setRailWidth(width)
           }}
           style={styles.rail}

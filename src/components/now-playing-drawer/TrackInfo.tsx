@@ -27,8 +27,8 @@ const createStyles = (themeColors: ThemeColors) =>
   })
 
 type TrackInfoProps = {
-  track: Track | null
-  user: User | null
+  track: Track
+  user: User
 }
 
 export const TrackInfo = ({ track, user }: TrackInfoProps) => {
