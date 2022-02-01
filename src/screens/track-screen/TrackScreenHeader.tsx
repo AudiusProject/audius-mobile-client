@@ -1,9 +1,8 @@
 import React, { ReactNode, useCallback } from 'react'
 
 // import DownloadButtons from 'app/components/download-buttons'
-import { useNavigation, useTheme } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { useTrackCoverArt } from 'audius-client/src/common/hooks/useImageSize'
 import { Name, PlaybackSource } from 'audius-client/src/common/models/Analytics'
 import { ID, UID } from 'audius-client/src/common/models/Identifiers'
 import { SquareSizes } from 'audius-client/src/common/models/ImageSizes'
@@ -23,7 +22,6 @@ import {
   Linking,
   Pressable,
   StyleSheet,
-  TouchableHighlight,
   TouchableOpacity,
   View
 } from 'react-native'
@@ -42,6 +40,7 @@ import Text from 'app/components/text'
 import UserBadges from 'app/components/user-badges'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
+import { useTrackCoverArt } from 'app/hooks/useTrackCoverArt'
 import { getPlaying, getPlayingUid, getTrack } from 'app/store/audio/selectors'
 import { flexRowCentered } from 'app/styles'
 import { make, track } from 'app/utils/analytics'
@@ -49,7 +48,7 @@ import { moodMap } from 'app/utils/moods'
 
 // import HiddenTrackHeader from '../HiddenTrackHeader'
 
-import { ThemeColors, useThemeColors } from 'app/utils/theme'
+import { ThemeColors } from 'app/utils/theme'
 
 import { TrackScreenActionButtons } from './TrackScreenActionButtons'
 import { TrackScreenStats } from './TrackScreenStats'
@@ -94,10 +93,20 @@ const createStyles = (themeColors: ThemeColors) =>
       textAlign: 'center',
       textTransform: 'uppercase'
     },
-    coverArt: {
+
+    coverArtWrapper: {
+      borderWidth: 1,
+      borderColor: themeColors.neutralLight8,
+      borderRadius: 4,
+      overflow: 'hidden',
       height: 195,
       width: 195,
       marginBottom: 23
+    },
+
+    coverArt: {
+      borderRadius: 4,
+      overflow: 'hidden'
     },
 
     title: {
@@ -196,13 +205,6 @@ const createStyles = (themeColors: ThemeColors) =>
       fontSize: 14
     },
 
-    imageWrapper: {
-      borderWidth: 1,
-      borderColor: themeColors.neutralLight8,
-      borderRadius: 4,
-      overflow: 'hidden'
-    },
-
     infoIcon: {
       marginTop: -4
     },
@@ -252,11 +254,11 @@ export const TrackScreenHeader = ({
     NativeStackNavigationProp<BaseStackParamList>
   >()
 
-  // const image = useTrackCoverArt(
-  //   track_id,
-  //   _cover_art_sizes,
-  //   SquareSizes.SIZE_480_BY_480
-  // )
+  const image = useTrackCoverArt(
+    track_id,
+    _cover_art_sizes,
+    SquareSizes.SIZE_480_BY_480
+  )
 
   const isPlaying = useSelector(getPlaying)
   const playingUid = useSelector(getPlayingUid)
@@ -404,23 +406,26 @@ export const TrackScreenHeader = ({
     })
   }
 
-  // const imageElement = _co_sign ? (
-  //   <CoSign
-  //     size={Size.LARGE}
-  //     // hasFavorited={coSign.has_remix_author_saved}
-  //     // hasReposted={coSign.has_remix_author_reposted}
-  //     // coSignName={coSign.user.name}
-  //     style={styles.coverArt}
-  //     // userId={coSign.user.user_id}
-  //   >
-  //     <DynamicImage image={image} style={styles.imageWrapper as ImageStyle} />
-  //   </CoSign>
-  // ) : (
-  //   <DynamicImage
-  //     image={image}
-  //     style={[styles.coverArt, styles.imageWrapper] as ImageStyle[]}
-  //   />
-  // )
+  const imageElement = _co_sign ? (
+    <CoSign
+      size={Size.LARGE}
+      // hasFavorited={coSign.has_remix_author_saved}
+      // hasReposted={coSign.has_remix_author_reposted}
+      // coSignName={coSign.user.name}
+      style={styles.coverArt}
+      // userId={coSign.user.user_id}
+    >
+      <DynamicImage
+        image={{ uri: image }}
+        style={[styles.coverArt] as ImageStyle[]}
+      />
+    </CoSign>
+  ) : (
+    <DynamicImage
+      image={{ uri: image }}
+      style={[styles.coverArt] as ImageStyle[]}
+    />
+  )
 
   return (
     <Shadow
@@ -439,7 +444,7 @@ export const TrackScreenHeader = ({
             {isRemix ? messages.remix : messages.track}
           </Text>
         )}
-        {/* {imageElement} */}
+        <View style={styles.coverArtWrapper}>{imageElement}</View>
         <Text style={styles.title} weight='bold'>
           {title}
         </Text>

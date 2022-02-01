@@ -79,14 +79,14 @@ export const TrackTileMetadata = ({
   const { primary } = useThemeColors()
   return (
     <View style={styles.metadata}>
-      {/* <TrackTileArt
+      <TrackTileArt
         id={id}
         isTrack={true}
         onLoad={() => setArtworkLoaded(true)}
         coverArtSizes={coverArtSizes}
         coSign={coSign}
         style={trackTileStyles.imageContainer}
-      /> */}
+      />
       <View style={trackTileStyles.titles}>
         <Pressable style={trackTileStyles.title} onPress={goToTrackPage}>
           <Text
