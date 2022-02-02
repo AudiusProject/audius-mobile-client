@@ -14,9 +14,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 0
   },
-  mainContent: {
-    flex: 1
-  },
   metadata: {
     flexDirection: 'row'
   },
