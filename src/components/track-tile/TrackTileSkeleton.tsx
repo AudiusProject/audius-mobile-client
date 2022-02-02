@@ -1,6 +1,5 @@
 import { StyleSheet, View } from 'react-native'
 
-import { Tile } from 'app/components/core'
 import { ImageSkeleton } from 'app/components/image-skeleton'
 import Skeleton from 'app/components/skeleton'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
