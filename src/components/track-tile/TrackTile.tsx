@@ -134,7 +134,7 @@ const TrackTileComponent = ({
       {showArtistPick && _artist_pick === track_id && (
         <TrackBannerIcon type={TrackBannerIconType.STAR} />
       )}
-      {true && <TrackBannerIcon type={TrackBannerIconType.HIDDEN} />}
+      {is_unlisted && <TrackBannerIcon type={TrackBannerIconType.HIDDEN} />}
       <Animated.View style={fadeIn}>
         <TrackTileTopRight
           duration={duration}
