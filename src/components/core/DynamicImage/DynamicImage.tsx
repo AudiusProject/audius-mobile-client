@@ -10,18 +10,24 @@ import {
   ImageSourcePropType,
   ImageStyle,
   ImageURISource,
+  LayoutChangeEvent,
   StyleProp,
   StyleSheet,
-  View
+  View,
+  ViewStyle
 } from 'react-native'
 
 import { ImageSkeleton } from 'app/components/image-skeleton'
 
 export type DynamicImageProps = {
   // Image source
-  image?: ImageSourcePropType
-  // Style to apply to the image itself
-  style?: StyleProp<ImageStyle>
+  source?: ImageSourcePropType
+  styles?: {
+    root?: ViewStyle
+    imageContainer?: ViewStyle
+    image?: StyleProp<ImageStyle>
+  }
+  style?: ViewStyle
   // Whether or not to immediately animate
   immediate?: boolean
   // Whether or not to use the default placeholder
@@ -29,7 +35,7 @@ export type DynamicImageProps = {
 }
 
 const styles = StyleSheet.create({
-  image: {
+  imageContainer: {
     position: 'absolute',
     top: 0,
     right: 0,
@@ -65,24 +71,35 @@ const isImageEqual = (
   return false
 }
 
-const ImageWithPlaceholder = ({ usePlaceholder, image, style }) => {
-  if (image) {
-    return <Image source={image} style={style} />
+type ImageWithPlaceholderProps = {
+  usePlaceholder: boolean
+  source?: ImageSourcePropType
+  style: StyleProp<ImageStyle>
+}
+
+const ImageWithPlaceholder = ({
+  usePlaceholder,
+  source,
+  style
+}: ImageWithPlaceholderProps) => {
+  if (source) {
+    return <Image source={source} style={style} />
   }
 
   if (usePlaceholder) {
-    return <ImageSkeleton styles={{ root: style }} />
+    return <ImageSkeleton styles={{ root: style as ViewStyle }} />
   }
 
-  return <Image source={transparentPlaceholderImg} />
+  return <Image source={transparentPlaceholderImg} style={style} />
 }
 
 /**
  * A dynamic image that transitions between changes to the `image` prop.
  */
 const DynamicImage = ({
-  image,
+  source,
   style,
+  styles: stylesProp,
   immediate,
   usePlaceholder = true
 }: DynamicImageProps) => {
@@ -114,20 +131,20 @@ const DynamicImage = ({
   useEffect(() => {
     // Skip animation for subsequent loads where the image hasn't changed
     const previousImage = getPrevImage()
-    if (previousImage !== null && isImageEqual(previousImage, image)) {
+    if (previousImage !== null && isImageEqual(previousImage, source)) {
       return
     }
 
-    setPrevImage(image ?? null)
+    setPrevImage(source ?? null)
 
     if (isFirstImageActive) {
       setIsFirstImageActive(false)
-      setFirstImage(image)
+      setFirstImage(source)
       animateTo(firstOpacity, 1)
       animateTo(secondOpacity, 0)
     } else {
       setIsFirstImageActive(true)
-      setSecondImage(image)
+      setSecondImage(source)
       animateTo(firstOpacity, 0)
       animateTo(secondOpacity, 1)
     }
@@ -135,35 +152,48 @@ const DynamicImage = ({
     animateTo,
     firstOpacity,
     getPrevImage,
-    image,
+    source,
     isFirstImageActive,
     secondOpacity,
     setIsFirstImageActive,
     setPrevImage
   ])
 
+  const handleSetFirstSize = useCallback((event: LayoutChangeEvent) => {
+    setFirstSize(event.nativeEvent.layout.width)
+  }, [])
+
+  const handleSetSecondSize = useCallback((event: LayoutChangeEvent) => {
+    setSecondSize(event.nativeEvent.layout.width)
+  }, [])
+
   return (
-    <View>
+    <View style={[style, stylesProp?.root]}>
       <Animated.View
-        style={[styles.image, { opacity: firstOpacity }]}
-        onLayout={e => setFirstSize(e.nativeEvent.layout.width)}
+        style={[
+          stylesProp?.imageContainer,
+          styles.imageContainer,
+          { opacity: firstOpacity }
+        ]}
+        onLayout={handleSetFirstSize}
       >
         <ImageWithPlaceholder
-          image={firstImage}
-          style={[{ width: firstSize, height: firstSize }, style]}
+          source={firstImage}
+          style={[{ width: firstSize, height: firstSize }, stylesProp?.image]}
           usePlaceholder={usePlaceholder}
         />
       </Animated.View>
       <Animated.View
         style={[
-          styles.image,
+          stylesProp?.imageContainer,
+          styles.imageContainer,
           { opacity: secondOpacity, zIndex: isFirstImageActive ? -1 : 0 }
         ]}
-        onLayout={e => setSecondSize(e.nativeEvent.layout.width)}
+        onLayout={handleSetSecondSize}
       >
         <ImageWithPlaceholder
-          image={secondImage}
-          style={[{ width: secondSize, height: secondSize }, style]}
+          source={secondImage}
+          style={[{ width: secondSize, height: secondSize }, stylesProp?.image]}
           usePlaceholder={usePlaceholder}
         />
       </Animated.View>
@@ -171,4 +201,6 @@ const DynamicImage = ({
   )
 }
 
-export default memo(DynamicImage)
+const MemoizedDynamicImage = memo(DynamicImage)
+
+export default MemoizedDynamicImage
