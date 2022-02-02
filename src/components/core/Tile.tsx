@@ -13,6 +13,9 @@ const useStyles = makeStyles(({ palette }) => ({
     backgroundColor: palette.white,
     borderWidth: 1,
     borderRadius: 8
+  },
+  pressRoot: {
+    flex: 1
   }
 }))
 
@@ -32,7 +35,9 @@ export const Tile = ({ children, onPress, style }: TileProps) => {
       startColor='rgba(133,129,153,0.05)'
     >
       <View style={[style, styles.root]}>
-        <Pressable onPress={onPress}>{children}</Pressable>
+        <Pressable style={styles.pressRoot} onPress={onPress}>
+          {children}
+        </Pressable>
       </View>
     </Shadow>
   )
