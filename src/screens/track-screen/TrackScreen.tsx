@@ -66,6 +66,9 @@ export const TrackScreen = ({ route, navigation }: Props) => {
   const moreByArtistLineup = useSelectorWeb(getMoreByArtistLineup, isEqual)
 
   const remixParentTrackId = track?.remix_of?.tracks?.[0]?.parent_track_id
+  const showMoreByArtistTitle =
+    (remixParentTrackId && moreByArtistLineup.entries.length > 2) ||
+    (!remixParentTrackId && moreByArtistLineup.entries.length > 1)
 
   const playTrack = useCallback(
     (uid?: string) => {
@@ -78,14 +81,12 @@ export const TrackScreen = ({ route, navigation }: Props) => {
     dispatchWeb(tracksActions.pause())
   }, [dispatchWeb])
 
-  const moreByArtistTitle =
-    (remixParentTrackId && moreByArtistLineup.entries.length > 2) ||
-    (!remixParentTrackId && moreByArtistLineup.entries.length > 1) ? (
-      <Text
-        style={styles.lineupHeader}
-        weight='bold'
-      >{`${messages.moreBy} ${user?.name}`}</Text>
-    ) : null
+  const moreByArtistTitle = showMoreByArtistTitle && (
+    <Text
+      style={styles.lineupHeader}
+      weight='bold'
+    >{`${messages.moreBy} ${user?.name}`}</Text>
+  )
 
   return (
     <View>

@@ -160,7 +160,7 @@ export const TrackScreenActionButtons = ({
   const repostButton = (
     <RepostButton
       wrapperStyle={styles.actionButton}
-      onPress={onToggleRepost ?? (() => {})}
+      onPress={onToggleRepost}
       isActive={hasReposted}
       isDisabled={isOwner}
     />
@@ -169,7 +169,7 @@ export const TrackScreenActionButtons = ({
   const favoriteButton = (
     <FavoriteButton
       wrapperStyle={styles.actionButton}
-      onPress={onToggleSave ?? (() => {})}
+      onPress={onToggleSave}
       isActive={hasSaved}
       isDisabled={isOwner}
     />
