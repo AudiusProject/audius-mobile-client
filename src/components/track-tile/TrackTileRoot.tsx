@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 import { Tile, TileProps } from '../core'
 
 const styles = StyleSheet.create({
-  root: {
+  tile: {
     minHeight: 152,
     maxWidth: 400
   }
@@ -12,5 +12,5 @@ const styles = StyleSheet.create({
 type TrackTileRootProps = TileProps
 
 export const TrackTileRoot = (props: TrackTileRootProps) => {
-  return <Tile {...props} style={styles.root} />
+  return <Tile {...props} styles={{ tile: styles.tile }} />
 }
