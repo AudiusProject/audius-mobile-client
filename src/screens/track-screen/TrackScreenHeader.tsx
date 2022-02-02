@@ -90,6 +90,7 @@ const createStyles = (themeColors: ThemeColors) =>
       height: 18,
       color: themeColors.neutralLight4,
       fontSize: 14,
+      letterSpacing: 2,
       textAlign: 'center',
       textTransform: 'uppercase'
     },
@@ -444,7 +445,7 @@ export const TrackScreenHeader = ({
             {/* <HiddenTrackHeader /> */}
           </View>
         ) : (
-          <Text style={styles.typeLabel}>
+          <Text style={styles.typeLabel} weight='demiBold'>
             {isRemix ? messages.remix : messages.track}
           </Text>
         )}
