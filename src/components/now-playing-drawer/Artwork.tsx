@@ -69,7 +69,7 @@ export const Artwork = ({ track }: ArtworkProps) => {
         startColor={shadowColor}
       >
         <View style={styles.image}>
-          <DynamicImage usePlaceholder source={{ uri: image }} />
+          <DynamicImage source={{ uri: image }} />
         </View>
       </Shadow>
     </View>

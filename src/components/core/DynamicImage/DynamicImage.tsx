@@ -1,4 +1,11 @@
-import { memo, useCallback, useEffect, useRef, useState } from 'react'
+import {
+  memo,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useRef,
+  useState
+} from 'react'
 
 import transparentPlaceholderImg from 'audius-client/src/common/assets/image/1x1-transparent.png'
 import useInstanceVar from 'audius-client/src/common/hooks/useInstanceVar'
@@ -32,6 +39,8 @@ export type DynamicImageProps = {
   immediate?: boolean
   // Whether or not to use the default placeholder
   usePlaceholder?: boolean
+  // overlays rendered above image
+  children?: ReactNode
 }
 
 const styles = StyleSheet.create({
@@ -101,7 +110,8 @@ const DynamicImage = ({
   style,
   styles: stylesProp,
   immediate,
-  usePlaceholder = true
+  usePlaceholder = true,
+  children
 }: DynamicImageProps) => {
   const [firstSize, setFirstSize] = useState(0)
   const [secondSize, setSecondSize] = useState(0)
@@ -197,6 +207,7 @@ const DynamicImage = ({
           usePlaceholder={usePlaceholder}
         />
       </Animated.View>
+      {children}
     </View>
   )
 }
