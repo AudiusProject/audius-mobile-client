@@ -35,7 +35,7 @@ import { BaseStackParamList } from 'app/components/app-navigator/types'
 import Button from 'app/components/button'
 import CoSign from 'app/components/co-sign/CoSign'
 import { Size } from 'app/components/co-sign/types'
-import DynamicImage from 'app/components/dynamic-image'
+import { DynamicImage } from 'app/components/core'
 import Text from 'app/components/text'
 import UserBadges from 'app/components/user-badges'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
@@ -419,14 +419,14 @@ export const TrackScreenHeader = ({
       // userId={coSign.user.user_id}
     >
       <DynamicImage
-        image={{ uri: image }}
-        style={[styles.coverArt] as ImageStyle[]}
+        source={{ uri: image }}
+        styles={{ image: styles.coverArt as ImageStyle }}
       />
     </CoSign>
   ) : (
     <DynamicImage
-      image={{ uri: image }}
-      style={[styles.coverArt] as ImageStyle[]}
+      source={{ uri: image }}
+      styles={{ image: styles.coverArt as ImageStyle }}
     />
   )
 
@@ -468,7 +468,11 @@ export const TrackScreenHeader = ({
             title={isPlaying ? messages.pause : messages.play}
             iconPosition='left'
             renderIcon={fill =>
-              isPlaying ? <IconPause fill={fill} /> : <IconPlay fill={fill} />
+              isPlaying ? (
+                <IconPause fill={fill as string} />
+              ) : (
+                <IconPlay fill={fill as string} />
+              )
             }
             onPress={onPlay}
           />
