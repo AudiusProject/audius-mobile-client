@@ -34,7 +34,7 @@
     "typecheck:watch": "tsc --watch",
     "typecheck:trace": "tsc --generateTrace tsc_trace",
     "pre-commit": "npm run typecheck & npm run lint",
-    "prepare": "husky install "
+    "prepare": "husky install"
   },
   "dependencies": {
     "@amplitude/react-native": "2.6.0",
