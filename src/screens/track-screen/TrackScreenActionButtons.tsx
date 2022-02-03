@@ -84,7 +84,7 @@ export const TrackScreenActionButtons = ({
   trackId
 }: TrackScreenActionButtonsProps) => {
   const styles = useThemedStyles(createStyles)
-  const { neutralLight4, neutralLight8 } = useThemeColors()
+  const { neutralLight4 } = useThemeColors()
   const dispatchWeb = useDispatchWeb()
 
   const onToggleSave = () => {

@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback } from 'react'
+import { ReactNode, useCallback } from 'react'
 
 // import DownloadButtons from 'app/components/download-buttons'
 import { useNavigation } from '@react-navigation/native'
@@ -35,7 +35,7 @@ import { BaseStackParamList } from 'app/components/app-navigator/types'
 import Button from 'app/components/button'
 import CoSign from 'app/components/co-sign/CoSign'
 import { Size } from 'app/components/co-sign/types'
-import DynamicImage from 'app/components/dynamic-image'
+import { DynamicImage } from 'app/components/core'
 import Text from 'app/components/text'
 import UserBadges from 'app/components/user-badges'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
@@ -421,14 +421,14 @@ export const TrackScreenHeader = ({
       // userId={coSign.user.user_id}
     >
       <DynamicImage
-        image={{ uri: image }}
-        style={[styles.coverArt] as ImageStyle[]}
+        source={{ uri: image }}
+        styles={{ image: styles.coverArt as ImageStyle }}
       />
     </CoSign>
   ) : (
     <DynamicImage
-      image={{ uri: image }}
-      style={[styles.coverArt] as ImageStyle[]}
+      source={{ uri: image }}
+      styles={{ image: styles.coverArt as ImageStyle }}
     />
   )
 
