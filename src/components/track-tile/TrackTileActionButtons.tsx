@@ -22,13 +22,14 @@ import { ImageStyle, StyleSheet, View } from 'react-native'
 
 import IconKebabHorizontal from 'app/assets/images/iconKebabHorizontal.svg'
 import IconShare from 'app/assets/images/iconShare.svg'
-import { IconButton } from 'app/components/core'
 import FavoriteButton from 'app/components/favorite-button'
 import RepostButton from 'app/components/repost-button'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
 import { flexRowCentered } from 'app/styles'
 import { ThemeColors, useThemeColors } from 'app/utils/theme'
+
+import IconButton from '../icon-button'
 
 type Props = {
   disabled?: boolean
@@ -164,21 +165,35 @@ export const TrackTileActionButtons = ({
 
   const shareButton = (
     <IconButton
-      fill={neutralLight4}
-      icon={IconShare}
       isDisabled={disabled}
       onPress={onPressShare}
-      styles={{ root: styles.button }}
+      icon={() => (
+        <IconShare
+          height={18}
+          width={18}
+          fill={neutralLight4}
+          style={[styles.button, disabled ? { opacity: 0.5 } : {}]}
+        />
+      )}
     />
   )
 
   const moreButton = (
     <IconButton
-      fill={neutralLight4}
-      icon={IconKebabHorizontal}
-      isDisabled={disabled}
       onPress={onPressOverflow}
-      styles={{ root: styles.lastButton, icon: { height: 22, width: 22 } }}
+      isDisabled={disabled}
+      icon={() => (
+        <IconKebabHorizontal
+          height={22}
+          width={22}
+          fill={neutralLight4}
+          style={[
+            styles.button,
+            styles.lastButton,
+            disabled ? { opacity: 0.5 } : {}
+          ]}
+        />
+      )}
     />
   )
 
