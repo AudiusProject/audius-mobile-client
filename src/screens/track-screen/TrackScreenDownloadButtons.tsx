@@ -9,8 +9,7 @@ import { Name } from 'audius-client/src/common/models/Analytics'
 import { CID, ID } from 'audius-client/src/common/models/Identifiers'
 import { User } from 'audius-client/src/common/models/User'
 import { downloadTrack } from 'audius-client/src/common/store/social/tracks/actions'
-import { StyleSheet, View } from 'react-native'
-import { Color } from 'react-native-svg'
+import { ImageStyle, StyleProp, TextStyle, View, ViewStyle } from 'react-native'
 import { useSelector } from 'react-redux'
 
 import IconDownload from 'app/assets/images/iconDownload.svg'
@@ -38,11 +37,20 @@ export const messages = {
 }
 
 const useStyles = makeStyles(({ palette }) => ({
-  button: {
+  buttonContainer: {
+    alignSelf: 'center',
     marginBottom: 6
+  },
+  button: {
+    paddingVertical: 4,
+    paddingHorizontal: 8
+  },
+  icon: {
+    marginRight: 4
   },
   label: {
     fontSize: 14,
+    padding: 0,
     textTransform: 'uppercase',
     ...font('bold'),
     color: palette.neutralLight4
@@ -57,16 +65,20 @@ const DownloadButton = ({
   const styles = useStyles()
   const isDisabled =
     state === ButtonState.PROCESSING || state === ButtonState.REQUIRES_FOLLOW
-  console.log(isDisabled, state)
+
+  const onPress = useCallback(() => {}, [])
+
   return (
     <Button
-      //   type={ButtonType.COMMON}
-      renderIcon={fill => <IconDownload fill={fill as Color} />}
+      type={ButtonType.COMMON}
+      renderIcon={fill => <IconDownload fill={fill} height={18} width={18} />}
       iconPosition='left'
-      disabled={isDisabled}
+      //   disabled={isDisabled}
       title={messages.addDownloadPrefix(label)}
+      style={styles.button}
+      containerStyle={[styles.buttonContainer, isDisabled && { opacity: 0.5 }]}
       textStyle={styles.label}
-      containerStyle={styles.button}
+      iconStyle={styles.icon}
       onPress={onClick}
     />
   )
@@ -119,5 +131,5 @@ export const TrackScreenDownloadButtons = ({
     return null
   }
 
-  return <View>{buttons.map(DownloadButton)}</View>
+  return <View style={{ marginBottom: 12 }}>{buttons.map(DownloadButton)}</View>
 }

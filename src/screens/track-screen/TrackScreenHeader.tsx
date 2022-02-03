@@ -468,11 +468,7 @@ export const TrackScreenHeader = ({
             title={isPlaying ? messages.pause : messages.play}
             iconPosition='left'
             renderIcon={fill =>
-              isPlaying ? (
-                <IconPause fill={fill as string} />
-              ) : (
-                <IconPlay fill={fill as string} />
-              )
+              isPlaying ? <IconPause fill={fill} /> : <IconPlay fill={fill} />
             }
             onPress={onPlay}
           />
