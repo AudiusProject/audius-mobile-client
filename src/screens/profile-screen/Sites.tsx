@@ -31,6 +31,7 @@ export const Sites = ({ profile }: SitesProps) => {
   const styles = useStyles()
   const { neutral } = useThemeColors()
   const { website, donation } = profile
+
   const iconProps = {
     height: 20,
     width: 20,

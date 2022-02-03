@@ -20,6 +20,7 @@ type CoverPhotoProps = {
 
 export const CoverPhoto = ({ profile }: CoverPhotoProps) => {
   const styles = useStyles()
+
   const coverPhoto = useUserCoverPhoto(
     profile?.user_id ?? null,
     profile?._cover_photo_sizes ?? null,

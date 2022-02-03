@@ -10,15 +10,19 @@ import TopTabNavigator from 'app/components/app-navigator/TopTabNavigator'
 const TracksTab = () => {
   return <Text>Tracks Tab</Text>
 }
+
 const RepostsTab = () => {
   return <Text>Reposts Tab</Text>
 }
+
 const AlbumsTab = () => {
   return <Text>Albums Tab</Text>
 }
+
 const PlaylistsTab = () => {
   return <Text>Playlists Tab</Text>
 }
+
 const CollectiblesTab = () => {
   return <Text>Collectibles Tab</Text>
 }

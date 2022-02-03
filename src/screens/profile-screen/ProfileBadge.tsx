@@ -1,5 +1,5 @@
 import { ProfileUser } from 'audius-client/src/pages/profile-page/store/types'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text } from 'react-native'
 
 import { Tile } from 'app/components/core'
 import { badgeByTier } from 'app/components/user-badges/UserBadges'
@@ -49,7 +49,9 @@ export const ProfileBadge = ({ profile }: ProfileBadgeProps) => {
   const tier = getBadgeTier(profile)
   const tierLevel = getTierLevel(tier)
   const Badge = badgeByTier[tier]
+
   if (!Badge) return null
+
   return (
     <Tile styles={{ root: styles.root, content: styles.content }}>
       <Badge height={28} width={28} style={styles.badge} />

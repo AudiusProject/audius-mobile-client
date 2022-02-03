@@ -1,11 +1,10 @@
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import { ProfileUser } from 'audius-client/src/pages/profile-page/store/types'
 import {
   Pressable,
   View,
   Text,
-  Animated,
   LayoutChangeEvent,
   LayoutAnimation
 } from 'react-native'
@@ -42,11 +41,11 @@ const useStyles = makeStyles(({ palette, typography, spacing }) => ({
 type ExpandableBioProps = {
   profile: ProfileUser
 }
+
 export const ExpandableBio = ({ profile }: ExpandableBioProps) => {
   const { bio, website, donation } = profile
   const styles = useStyles()
   const [fullHeight, setFullHeight] = useState(0)
-  const expandAnim = useRef(new Animated.Value(0)).current
   const hasSites = Boolean(website || donation) || true
   const [shouldShowMore, setShouldShowMore] = useState(hasSites)
   const [isExpanded, setIsExpanded] = useToggle(false)
@@ -54,15 +53,13 @@ export const ExpandableBio = ({ profile }: ExpandableBioProps) => {
   const handleBioLayout = useCallback(
     (event: LayoutChangeEvent) => {
       const { height } = event.nativeEvent.layout
-      console.log('calling!', height)
       if (!fullHeight) {
         setFullHeight(height)
-        expandAnim.setValue(height)
       } else if (fullHeight > height) {
         setShouldShowMore(true)
       }
     },
-    [fullHeight, expandAnim]
+    [fullHeight]
   )
 
   const handleToggleExpanded = useCallback(() => {
