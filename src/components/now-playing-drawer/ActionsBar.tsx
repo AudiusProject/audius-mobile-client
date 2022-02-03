@@ -55,14 +55,14 @@ export const ActionsBar = () => {
       return (
         <IconButton
           icon={IconAirplay}
-          style={{ icon: styles.icon, root: styles.button }}
+          styles={{ icon: styles.icon, root: styles.button }}
         />
       )
     }
     return (
       <IconButton
         icon={IconChromecast}
-        style={{ icon: styles.icon, root: styles.button }}
+        styles={{ icon: styles.icon, root: styles.button }}
       />
     )
   }
@@ -94,7 +94,7 @@ export const ActionsBar = () => {
     return (
       <IconButton
         icon={IconShare}
-        style={{ icon: styles.icon, root: styles.button }}
+        styles={{ icon: styles.icon, root: styles.button }}
       />
     )
   }
@@ -102,7 +102,7 @@ export const ActionsBar = () => {
     return (
       <IconButton
         icon={IconKebabHorizontal}
-        style={{ icon: styles.icon, root: styles.button }}
+        styles={{ icon: styles.icon, root: styles.button }}
       />
     )
   }

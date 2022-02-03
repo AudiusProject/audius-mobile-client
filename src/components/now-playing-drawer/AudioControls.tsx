@@ -76,7 +76,7 @@ export const AudioControls = () => {
     return (
       <IconButton
         icon={IconPrev}
-        style={{ root: styles.button, icon: styles.nextPrevIcons }}
+        styles={{ root: styles.button, icon: styles.nextPrevIcons }}
       />
     )
   }
@@ -96,7 +96,7 @@ export const AudioControls = () => {
     return (
       <IconButton
         icon={IconNext}
-        style={{ root: styles.button, icon: styles.nextPrevIcons }}
+        styles={{ root: styles.button, icon: styles.nextPrevIcons }}
       />
     )
   }

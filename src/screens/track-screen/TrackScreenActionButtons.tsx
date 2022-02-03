@@ -176,7 +176,7 @@ export const TrackScreenActionButtons = ({
       icon={IconShare}
       isDisabled={!isPublished}
       onPress={onShare}
-      style={{ icon: [styles.actionButton, { height: 24, width: 24 }] }}
+      styles={{ icon: [styles.actionButton, { height: 24, width: 24 }] }}
     />
   )
 
@@ -185,7 +185,7 @@ export const TrackScreenActionButtons = ({
       fill={neutralLight4}
       icon={IconKebabHorizontal}
       onPress={onPressOverflow}
-      style={{ icon: styles.actionButton }}
+      styles={{ icon: styles.actionButton }}
     />
   )
 

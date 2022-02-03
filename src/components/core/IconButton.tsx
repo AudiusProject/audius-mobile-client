@@ -15,7 +15,7 @@ export type IconButtonProps = {
   >
   isDisabled?: boolean
   onPress?: () => void
-  style?: {
+  styles?: {
     root?: StyleProp<ViewStyle>
     icon?: StyleProp<ViewStyle>
   }
@@ -33,14 +33,14 @@ const useStyles = makeStyles(() => ({
  * icon. Different from a Button in that it has no
  * container.
  *
- * The default size is 18x18 but this can be overridden via style.icon
+ * The default size is 18x18 but this can be overridden via styles.icon
  */
 export const IconButton = ({
   fill: inputFill,
   icon: Icon,
   isDisabled,
   onPress,
-  style
+  styles: stylesProp
 }: IconButtonProps) => {
   const styles = useStyles()
   const { scale, handlePressIn, handlePressOut } = usePressScaleAnimation(0.9)
@@ -49,7 +49,7 @@ export const IconButton = ({
   const fill = inputFill ?? neutral
 
   return (
-    <Animated.View style={[{ transform: [{ scale }] }, style?.root]}>
+    <Animated.View style={[{ transform: [{ scale }] }, stylesProp?.root]}>
       <TouchableOpacity
         onPress={onPress}
         onPressIn={handlePressIn}
@@ -59,7 +59,11 @@ export const IconButton = ({
         hitSlop={{ top: 12, right: 12, bottom: 12, left: 12 }}
       >
         <View
-          style={[styles.icon, isDisabled && { opacity: 0.5 }, style?.icon]}
+          style={[
+            styles.icon,
+            isDisabled && { opacity: 0.5 },
+            stylesProp?.icon
+          ]}
         >
           <Icon fill={fill} height='100%' width='100%' />
         </View>
