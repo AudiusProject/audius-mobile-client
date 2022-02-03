@@ -65,14 +65,6 @@ const createStyles = (themeColors: ThemeColors) =>
       bottom: 1,
       marginHorizontal: 16
     }
-
-    // iconWrapper: {
-    //   ...flexRowCentered(),
-    //   width: 30,
-    //   height: '100%',
-    //   overflow: 'visible',
-    //   marginHorizontal: 12
-    // }
   })
 
 /**

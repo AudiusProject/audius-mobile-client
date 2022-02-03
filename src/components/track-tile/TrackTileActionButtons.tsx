@@ -168,7 +168,7 @@ export const TrackTileActionButtons = ({
       icon={IconShare}
       isDisabled={disabled}
       onPress={onPressShare}
-      style={{ root: styles.button }}
+      styles={{ root: styles.button }}
     />
   )
 
@@ -178,7 +178,7 @@ export const TrackTileActionButtons = ({
       icon={IconKebabHorizontal}
       isDisabled={disabled}
       onPress={onPressOverflow}
-      style={{ root: styles.lastButton, icon: { height: 22, width: 22 } }}
+      styles={{ root: styles.lastButton, icon: { height: 22, width: 22 } }}
     />
   )
 
