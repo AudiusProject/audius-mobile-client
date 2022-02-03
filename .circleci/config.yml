@@ -24,7 +24,7 @@ commands:
 
       - restore_cache:
           keys:
-            - dependency-cache-{{ checksum "../audius-client/package.json" }}
+            - dependency-cache-{{ checksum "../audius-client/package-lock.json" }}
             # fallback to using the latest cache if no exact match is found
             - dependency-cache-
       # We would like to use npm ci here, but because audius-client is a dep,
@@ -32,7 +32,7 @@ commands:
       - run: cd ../audius-client && npm install
 
       - save_cache:
-          key: dependency-cache-{{ checksum "../audius-client/package.json" }}
+          key: dependency-cache-{{ checksum "../audius-client/package-lock.json" }}
           paths:
             - ../audius-client/node_modules
 
@@ -202,13 +202,13 @@ jobs:
       # Download and cache dependencies
       - restore_cache:
           keys:
-            - dependency-cache-{{ checksum "package.json" }}
+            - dependency-cache-{{ checksum "package-lock.json" }}
             # fallback to using the latest cache if no exact match is found
             - dependency-cache-
       - run: npm ci
 
       - save_cache:
-          key: dependency-cache-{{ checksum "package.json" }}
+          key: dependency-cache-{{ checksum "package-lock.json" }}
           paths:
             - ./node_modules
       - run:
