@@ -25,16 +25,17 @@ import {
 } from 'react-native'
 
 import { ImageSkeleton } from 'app/components/image-skeleton'
+import { StylesProp } from 'app/styles'
 
 export type DynamicImageProps = {
   // Image source
   source?: ImageSourcePropType
-  styles?: {
-    root?: ViewStyle
-    imageContainer?: ViewStyle
-    image?: StyleProp<ImageStyle>
-  }
-  style?: ViewStyle
+  styles?: StylesProp<{
+    root: ViewStyle
+    imageContainer: ViewStyle
+    image: ImageStyle
+  }>
+  style?: StyleProp<ViewStyle>
   // Whether or not to immediately animate
   immediate?: boolean
   // Whether or not to use the default placeholder
