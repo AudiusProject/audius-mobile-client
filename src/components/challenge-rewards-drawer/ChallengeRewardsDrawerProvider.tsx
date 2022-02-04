@@ -6,8 +6,7 @@ import {
 } from 'audius-client/src/common/services/remote-config'
 import {
   getChallengeRewardsModalType,
-  getClaimStatus,
-  getUserChallenges
+  getClaimStatus
 } from 'audius-client/src/common/store/pages/audio-rewards/selectors'
 import {
   ChallengeRewardsModalType,
@@ -21,6 +20,7 @@ import {
   setVisibility
 } from 'audius-client/src/common/store/ui/modals/slice'
 import { Maybe } from 'audius-client/src/common/utils/typeUtils'
+import { useOptimisticUserChallenges } from 'audius-client/src/pages/audio-rewards-page/hooks'
 import {
   ACCOUNT_VERIFICATION_SETTINGS_PAGE,
   AUDIO_PAGE,
@@ -189,7 +189,7 @@ export const ChallengeRewardsDrawerProvider = () => {
     getModalVisibility(state, MODAL_NAME)
   )
   const modalType = useSelectorWeb(getChallengeRewardsModalType)
-  const userChallenges = useSelectorWeb(getUserChallenges)
+  const userChallenges = useOptimisticUserChallenges()
   const onClose = useCallback(() => {
     dispatchWeb(resetAndCancelClaimReward())
     dispatchWeb(setVisibility({ modal: MODAL_NAME, visible: false }))
@@ -200,6 +200,8 @@ export const ChallengeRewardsDrawerProvider = () => {
 
   const challenge = userChallenges ? userChallenges[modalType] : null
   const config = challengesConfig[modalType]
+  const hasChallengeCompleted =
+    challenge?.state === 'completed' || challenge?.state === 'disbursed'
   const goToRoute = useCallback(() => {
     if (!config.buttonInfo?.link) {
       return
@@ -253,7 +255,11 @@ export const ChallengeRewardsDrawerProvider = () => {
           title={messages.trackUploadButton}
           renderIcon={renderUploadIcon}
           iconPosition='right'
-          type={challenge?.is_complete ? ButtonType.COMMON : ButtonType.PRIMARY}
+          type={
+            challenge?.state === 'completed' || challenge?.state === 'disbursed'
+              ? ButtonType.COMMON
+              : ButtonType.PRIMARY
+          }
           onPress={openUploadModal}
         />
       )
@@ -261,7 +267,7 @@ export const ChallengeRewardsDrawerProvider = () => {
     case 'profile-completion':
       contents = (
         <ProfileCompletionChecks
-          isComplete={!!challenge?.is_complete}
+          isComplete={hasChallengeCompleted}
           onClose={onClose}
         />
       )
@@ -273,7 +279,7 @@ export const ChallengeRewardsDrawerProvider = () => {
           title={config.buttonInfo.label}
           renderIcon={config.buttonInfo.renderIcon}
           iconPosition={config.buttonInfo.iconPosition}
-          type={challenge?.is_complete ? ButtonType.COMMON : ButtonType.PRIMARY}
+          type={hasChallengeCompleted ? ButtonType.COMMON : ButtonType.PRIMARY}
           onPress={goToRoute}
         />
       )
@@ -293,10 +299,9 @@ export const ChallengeRewardsDrawerProvider = () => {
       description={config.description}
       progressLabel={config.progressLabel ?? 'Completed'}
       amount={challenge.amount}
-      isComplete={challenge.is_complete}
+      challengeState={challenge.state}
       currentStep={challenge.current_step_count}
       stepCount={challenge.max_steps}
-      isDisbursed={challenge.is_disbursed}
       claimStatus={claimStatus}
       onClaim={hasConfig ? onClaim : undefined}
       isVerifiedChallenge={config.isVerifiedChallenge}

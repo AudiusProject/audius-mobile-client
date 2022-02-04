@@ -1,6 +1,7 @@
 import React from 'react'
 
 import { ClaimStatus } from 'audius-client/src/common/store/pages/audio-rewards/slice'
+import { UserChallengeState } from 'audius-client/src/pages/audio-rewards-page/hooks'
 import { StyleSheet, View, ImageSourcePropType } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 
@@ -220,10 +221,7 @@ type ChallengeRewardsDrawerProps = {
   amount: number
   /** The label to use for the in-progress status */
   progressLabel: string
-  /** Whether the challenge reward has already been disbursed */
-  isDisbursed: boolean
-  /** Whether the challenge is completed */
-  isComplete: boolean
+  challengeState: UserChallengeState
   /** The status of the rewards being claimed */
   claimStatus: ClaimStatus
   /** Callback that runs on the claim rewards button being clicked */
@@ -242,21 +240,22 @@ export const ChallengeRewardsDrawer = ({
   currentStep,
   stepCount = 1,
   progressLabel,
-  isDisbursed,
-  isComplete,
+  challengeState,
   claimStatus,
   onClaim,
   isVerifiedChallenge,
   children
 }: ChallengeRewardsDrawerProps) => {
   const styles = useThemedStyles(createStyles)
-  const isInProgress = currentStep > 0 && !isComplete
+  const isInProgress = challengeState === 'in_progress'
   const claimInProgress =
     claimStatus === ClaimStatus.CLAIMING ||
     claimStatus === ClaimStatus.WAITING_FOR_RETRY
   const claimError = claimStatus === ClaimStatus.ERROR
 
-  const statusText = isComplete
+  const hasCompleted =
+    challengeState === 'completed' || challengeState === 'disbursed'
+  const statusText = hasCompleted
     ? messages.complete
     : isInProgress
     ? `${currentStep}/${stepCount} ${progressLabel}`
@@ -310,13 +309,13 @@ export const ChallengeRewardsDrawer = ({
           <View
             style={[
               styles.statusCell,
-              isComplete ? styles.statusCellComplete : {}
+              hasCompleted ? styles.statusCellComplete : {}
             ]}
           >
             <Text
               style={[
                 styles.subheader,
-                isComplete ? styles.statusTextComplete : {},
+                hasCompleted ? styles.statusTextComplete : {},
                 isInProgress ? styles.statusTextInProgress : {}
               ]}
               weight='heavy'
@@ -326,7 +325,7 @@ export const ChallengeRewardsDrawer = ({
           </View>
         </View>
         {children}
-        {!isDisbursed && isComplete && onClaim && (
+        {challengeState === 'completed' && onClaim && (
           <View style={styles.claimRewardsContainer}>
             <Button
               containerStyle={styles.claimButtonContainer}
