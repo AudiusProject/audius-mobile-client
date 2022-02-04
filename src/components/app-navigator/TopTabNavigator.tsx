@@ -68,26 +68,18 @@ type ScreenInfo = {
   name: string
   label?: string
   component: ComponentType<any>
-  icon?: ComponentType
+  Icon: ComponentType
 }
 
 type TopTabsProps = {
-  initialScreen?: string
+  initialScreenName?: string
   screens?: ScreenInfo[]
 }
 
-const TopTabNavigator = ({ initialScreen, screens }: TopTabsProps) => {
+const TopTabNavigator = ({ initialScreenName, screens }: TopTabsProps) => {
   return (
-    <TabNavigator initialScreenName={initialScreen}>
-      {screens?.map(({ name, component, label, icon: Icon }) =>
-        tabScreen({
-          key: name,
-          name,
-          component,
-          label,
-          Icon: Icon ?? (() => null)
-        })
-      )}
+    <TabNavigator initialScreenName={initialScreenName}>
+      {screens?.map(screen => tabScreen({ key: screen.name, ...screen }))}
     </TabNavigator>
   )
 }
