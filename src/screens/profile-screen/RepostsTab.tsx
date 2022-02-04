@@ -44,7 +44,7 @@ export const RepostsTab = () => {
   return (
     <Lineup
       actions={feedActions}
-      lineup={lineup as any}
+      lineup={lineup}
       playTrack={handlePlayTrack}
       pauseTrack={handlePauseTrack}
     />
