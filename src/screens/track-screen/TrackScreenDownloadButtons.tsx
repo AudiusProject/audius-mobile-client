@@ -14,6 +14,7 @@ import { useSelector } from 'react-redux'
 
 import IconDownload from 'app/assets/images/iconDownload.svg'
 import Button, { ButtonType } from 'app/components/button'
+import LoadingSpinner from 'app/components/loading-spinner'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 import { useToast } from 'app/hooks/useToast'
@@ -29,11 +30,7 @@ export type DownloadButtonProps = {
 }
 
 export const messages = {
-  downloadableTrack: 'Download this Track',
-  downloadableStem: 'Download this source file',
   followToDownload: 'Must follow artist to download',
-  processingTrack: 'Processing',
-  processingStem: 'Uploading',
   addDownloadPrefix: (label: string) => `Download ${label}`
 }
 
@@ -67,6 +64,7 @@ const DownloadButton = ({
 
   const styles = useStyles()
   const requiresFollow = state === ButtonState.REQUIRES_FOLLOW
+  const isProcessing = state === ButtonState.PROCESSING
   const isDisabled = state === ButtonState.PROCESSING || requiresFollow
 
   const onPress = useCallback(() => {
@@ -86,7 +84,16 @@ const DownloadButton = ({
   return (
     <Button
       type={ButtonType.COMMON}
-      renderIcon={fill => <IconDownload fill={fill} height={18} width={18} />}
+      renderIcon={fill =>
+        isProcessing ? (
+          <LoadingSpinner
+            color={fill as string}
+            style={{ height: 18, width: 18 }}
+          />
+        ) : (
+          <IconDownload fill={fill} height={18} width={18} />
+        )
+      }
       iconPosition='left'
       title={messages.addDownloadPrefix(label)}
       style={styles.button}
