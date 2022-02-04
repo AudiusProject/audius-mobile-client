@@ -37,6 +37,7 @@ export const TabNavigator = ({
 }
 
 type TabScreenConfig = {
+  key?: string
   name: string
   label?: string
   Icon: ComponentType
@@ -44,6 +45,7 @@ type TabScreenConfig = {
 }
 
 export const tabScreen = ({
+  key,
   name,
   label,
   Icon,
@@ -51,6 +53,7 @@ export const tabScreen = ({
 }: TabScreenConfig) => {
   return (
     <Tab.Screen
+      key={key}
       name={name}
       component={component}
       options={{
@@ -76,17 +79,15 @@ type TopTabsProps = {
 const TopTabNavigator = ({ initialScreen, screens }: TopTabsProps) => {
   return (
     <TabNavigator initialScreenName={initialScreen}>
-      {screens?.map(({ name, component, label, icon: Icon }) => (
-        <Tab.Screen
-          key={name}
-          name={name}
-          component={component}
-          options={{
-            tabBarLabel: label ?? name,
-            tabBarIcon: Icon ? () => <Icon /> : undefined
-          }}
-        />
-      ))}
+      {screens?.map(({ name, component, label, icon: Icon }) =>
+        tabScreen({
+          key: name,
+          name,
+          component,
+          label,
+          Icon: Icon ?? (() => null)
+        })
+      )}
     </TabNavigator>
   )
 }
