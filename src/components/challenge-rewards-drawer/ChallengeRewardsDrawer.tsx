@@ -5,6 +5,7 @@ import { StyleSheet, View, ImageSourcePropType } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 
 import IconCheck from 'app/assets/images/iconCheck.svg'
+import IconVerified from 'app/assets/images/iconVerified.svg'
 import Button, { ButtonType } from 'app/components/button'
 import Drawer from 'app/components/drawer'
 import GradientText from 'app/components/gradient-text'
@@ -15,6 +16,7 @@ import { ThemeColors, useThemeColors } from 'app/utils/theme'
 
 const messages = {
   task: 'Task',
+  taskVerified: 'Verified Challenge',
   reward: 'Reward',
   progress: 'Progress',
   audio: '$AUDIO',
@@ -116,10 +118,19 @@ const createStyles = (themeColors: ThemeColors) =>
       textTransform: 'uppercase',
       marginBottom: 12
     },
+    subheaderIcon: {
+      marginBottom: 12,
+      marginRight: 10
+    },
     task: {
       width: '100%',
       padding: 24,
       paddingTop: 0
+    },
+    taskHeaderVerified: {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center'
     },
     taskText: {
       fontSize: 16
@@ -217,6 +228,8 @@ type ChallengeRewardsDrawerProps = {
   claimStatus: ClaimStatus
   /** Callback that runs on the claim rewards button being clicked */
   onClaim?: () => void
+  /** Whether the challenge is for verified users only */
+  isVerifiedChallenge: boolean
   children?: React.ReactChild
 }
 export const ChallengeRewardsDrawer = ({
@@ -233,6 +246,7 @@ export const ChallengeRewardsDrawer = ({
   isComplete,
   claimStatus,
   onClaim,
+  isVerifiedChallenge,
   children
 }: ChallengeRewardsDrawerProps) => {
   const styles = useThemedStyles(createStyles)
@@ -259,9 +273,18 @@ export const ChallengeRewardsDrawer = ({
     >
       <View style={styles.content}>
         <View style={styles.task}>
-          <Text style={styles.subheader} weight='heavy'>
-            {messages.task}
-          </Text>
+          {isVerifiedChallenge ? (
+            <View style={styles.taskHeaderVerified}>
+              <IconVerified style={styles.subheaderIcon} />
+              <Text style={styles.subheader} weight='heavy'>
+                {messages.taskVerified}
+              </Text>
+            </View>
+          ) : (
+            <Text style={styles.subheader} weight='heavy'>
+              {messages.task}
+            </Text>
+          )}
           <Text weight='bold' style={styles.taskText}>
             {description}
           </Text>

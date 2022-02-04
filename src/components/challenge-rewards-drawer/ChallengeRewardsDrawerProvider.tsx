@@ -47,7 +47,7 @@ import { ToastContext } from '../toast/ToastContext'
 
 import { ChallengeRewardsDrawer } from './ChallengeRewardsDrawer'
 import { ProfileCompletionChecks } from './ProfileCompletionChecks'
-import { ReferralLinkCopyButton } from './ReferralLinkCopyButton'
+import { ReferralRewardContents } from './ReferralRewardContents'
 
 const messages = {
   // Connect Verified
@@ -102,6 +102,7 @@ type ChallengeConfig = {
   title: string
   description: string
   progressLabel?: string
+  isVerifiedChallenge?: boolean
   buttonInfo?: {
     link: string
     label: string
@@ -157,7 +158,8 @@ const challengesConfig: Omit<
     icon: IncomingEnvelope,
     title: messages.referreralsVerifiedTitle,
     description: messages.referralsVerifiedDescription,
-    progressLabel: messages.referralsVerifiedProgressLabel
+    progressLabel: messages.referralsVerifiedProgressLabel,
+    isVerifiedChallenge: true
   },
   'track-upload': {
     icon: MultipleMusicalNotes,
@@ -240,7 +242,9 @@ export const ChallengeRewardsDrawerProvider = () => {
   switch (modalType) {
     case 'referrals':
     case 'ref-v':
-      contents = <ReferralLinkCopyButton />
+      contents = (
+        <ReferralRewardContents isVerified={config.isVerifiedChallenge} />
+      )
       break
     case 'track-upload':
       contents = (
@@ -295,6 +299,7 @@ export const ChallengeRewardsDrawerProvider = () => {
       isDisbursed={challenge.is_disbursed}
       claimStatus={claimStatus}
       onClaim={hasConfig ? onClaim : undefined}
+      isVerifiedChallenge={config.isVerifiedChallenge}
     >
       {contents}
     </ChallengeRewardsDrawer>
