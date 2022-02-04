@@ -45,10 +45,9 @@ import { getPlaying, getPlayingUid, getTrack } from 'app/store/audio/selectors'
 import { flexRowCentered } from 'app/styles'
 import { make, track } from 'app/utils/analytics'
 import { moodMap } from 'app/utils/moods'
+import { ThemeColors } from 'app/utils/theme'
 
 // import HiddenTrackHeader from '../HiddenTrackHeader'
-
-import { ThemeColors } from 'app/utils/theme'
 
 import { TrackScreenActionButtons } from './TrackScreenActionButtons'
 import { TrackScreenDownloadButtons } from './TrackScreenDownloadButtons'
