@@ -36,21 +36,19 @@ export const TabNavigator = ({
   )
 }
 
-type TabScreenConfig = {
-  key?: string
+type ScreenConfig = {
   name: string
   label?: string
+  component: ComponentType<any>
   Icon: ComponentType
-  component: ComponentType
 }
 
-export const tabScreen = ({
-  key,
-  name,
-  label,
-  Icon,
-  component
-}: TabScreenConfig) => {
+type TabScreenConfig = ScreenConfig & {
+  key?: string
+}
+
+export const tabScreen = (config: TabScreenConfig) => {
+  const { key, name, label, Icon, component } = config
   return (
     <Tab.Screen
       key={key}
@@ -64,16 +62,9 @@ export const tabScreen = ({
   )
 }
 
-type ScreenInfo = {
-  name: string
-  label?: string
-  component: ComponentType<any>
-  Icon: ComponentType
-}
-
 type TopTabsProps = {
   initialScreenName?: string
-  screens?: ScreenInfo[]
+  screens?: ScreenConfig[]
 }
 
 const TopTabNavigator = ({ initialScreenName, screens }: TopTabsProps) => {

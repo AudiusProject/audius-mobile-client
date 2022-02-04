@@ -124,7 +124,7 @@ export const TopTabBar = ({ state, descriptors, navigation, position }) => {
       {state.routes.map((route, index) => {
         const { options } = descriptors[route.key]
         const label = options.tabBarLabel ?? options.title ?? route.name
-        const icon = options.tabBarIcon?.()
+        const icon = options.tabBarIcon()
 
         const inputRange = state.routes.map((_, i) => i)
         const opacity = position.interpolate({
@@ -143,9 +143,7 @@ export const TopTabBar = ({ state, descriptors, navigation, position }) => {
               style={styles.tab}
               testID={options.tabBarTestID}
             >
-              {icon && (
-                <Animated.View style={{ opacity }}>{icon}</Animated.View>
-              )}
+              <Animated.View style={{ opacity }}>{icon}</Animated.View>
               <Animated.Text style={[styles.tabText, { opacity }]}>
                 {label}
               </Animated.Text>
