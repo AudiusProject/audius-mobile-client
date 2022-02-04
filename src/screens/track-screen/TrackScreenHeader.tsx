@@ -1,4 +1,4 @@
-import React, { ReactNode, useCallback } from 'react'
+import { ReactNode, useCallback } from 'react'
 
 // import DownloadButtons from 'app/components/download-buttons'
 import { useNavigation } from '@react-navigation/native'
@@ -9,7 +9,7 @@ import { SquareSizes } from 'audius-client/src/common/models/ImageSizes'
 import { Track } from 'audius-client/src/common/models/Track'
 import { User } from 'audius-client/src/common/models/User'
 import { squashNewLines } from 'audius-client/src/common/utils/formatUtil'
-import { getCannonicalName } from 'audius-client/src/common/utils/genres'
+import { getCanonicalName } from 'audius-client/src/common/utils/genres'
 import {
   formatSeconds,
   formatDate
@@ -338,7 +338,7 @@ export const TrackScreenHeader = ({
     icon?: ReactNode
   }[] = [
     { value: formatSeconds(duration), label: 'Duration' },
-    { value: getCannonicalName(genre), label: 'Genre' },
+    { value: getCanonicalName(genre), label: 'Genre' },
     { value: formatDate(release_date || created_at), label: 'Released' },
     {
       value: mood,
