@@ -67,7 +67,7 @@ const DownloadButton = ({
   const isProcessing = state === ButtonState.PROCESSING
   const isDisabled = state === ButtonState.PROCESSING || requiresFollow
 
-  const onPress = useCallback(() => {
+  const handlePress = useCallback(() => {
     if (requiresFollow) {
       toast({ content: messages.followToDownload })
     }
@@ -100,7 +100,7 @@ const DownloadButton = ({
       containerStyle={[styles.buttonContainer, isDisabled && { opacity: 0.5 }]}
       textStyle={styles.label}
       iconStyle={styles.icon}
-      onPress={onPress}
+      onPress={handlePress}
     />
   )
 }
@@ -139,6 +139,7 @@ export const TrackScreenDownloadButtons = ({
     },
     [dispatchWeb, user]
   )
+
   const buttons = useDownloadTrackButtons({
     trackId,
     onDownload,
@@ -152,5 +153,11 @@ export const TrackScreenDownloadButtons = ({
     return null
   }
 
-  return <View style={{ marginBottom: 12 }}>{buttons.map(DownloadButton)}</View>
+  return (
+    <View style={{ marginBottom: 12 }}>
+      {buttons.map(props => (
+        <DownloadButton {...props} key={props.label} />
+      ))}
+    </View>
+  )
 }
