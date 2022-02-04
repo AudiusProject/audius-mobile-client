@@ -11,7 +11,7 @@ export enum LineupVariant {
 }
 
 export type LineupItem = {
-  _loading: false
+  _loading?: false
   id: ID
   kind: Kind
   track_id?: ID

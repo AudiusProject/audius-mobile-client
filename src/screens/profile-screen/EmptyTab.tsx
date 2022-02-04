@@ -13,7 +13,6 @@ const useStyles = makeStyles(({ spacing }) => ({
     paddingHorizontal: spacing(6)
   },
   emptyTabContent: {
-    display: 'flex',
     alignItems: 'center'
   }
 }))

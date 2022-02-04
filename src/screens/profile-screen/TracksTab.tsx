@@ -11,6 +11,10 @@ import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 import { EmptyTab } from './EmptyTab'
 import { getProfile } from './selectors'
 
+const messages = {
+  emptyTabText: "You haven't created any tracks yet"
+}
+
 export const TracksTab = () => {
   const { profile } = useSelectorWeb(getProfile)
   const lineup = useSelectorWeb(getProfileTracksLineup)
@@ -32,7 +36,7 @@ export const TracksTab = () => {
   if (profile.track_count === 0) {
     return (
       <EmptyTab>
-        <Text>{"You haven't created any tracks yet"}</Text>
+        <Text>{messages.emptyTabText}</Text>
       </EmptyTab>
     )
   }
@@ -40,7 +44,7 @@ export const TracksTab = () => {
   return (
     <Lineup
       actions={tracksActions}
-      lineup={lineup as any}
+      lineup={lineup}
       playTrack={handlePlayTrack}
       pauseTrack={handlePauseTrack}
     />

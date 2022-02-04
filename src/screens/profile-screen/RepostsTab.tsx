@@ -11,6 +11,10 @@ import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 import { EmptyTab } from './EmptyTab'
 import { getProfile } from './selectors'
 
+const messages = {
+  emptyTabText: "You haven't reposted anything yet"
+}
+
 export const RepostsTab = () => {
   const { profile } = useSelectorWeb(getProfile)
   const lineup = useSelectorWeb(getProfileFeedLineup)
@@ -32,7 +36,7 @@ export const RepostsTab = () => {
   if (profile.repost_count === 0) {
     return (
       <EmptyTab>
-        <Text>{"You haven't reposted anything yet"}</Text>
+        <Text>{messages.emptyTabText}</Text>
       </EmptyTab>
     )
   }
