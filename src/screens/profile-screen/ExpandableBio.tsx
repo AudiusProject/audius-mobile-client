@@ -45,7 +45,7 @@ type ExpandableBioProps = {
 export const ExpandableBio = ({ profile }: ExpandableBioProps) => {
   const { bio, website, donation } = profile
   const styles = useStyles()
-  const [fullHeight, setFullHeight] = useState(0)
+  const [fullBioHeight, setFullBioHeight] = useState(0)
   const hasSites = Boolean(website || donation) || true
   const [shouldShowMore, setShouldShowMore] = useState(hasSites)
   const [isExpanded, setIsExpanded] = useToggle(false)
@@ -53,13 +53,13 @@ export const ExpandableBio = ({ profile }: ExpandableBioProps) => {
   const handleBioLayout = useCallback(
     (event: LayoutChangeEvent) => {
       const { height } = event.nativeEvent.layout
-      if (!fullHeight) {
-        setFullHeight(height)
-      } else if (fullHeight > height) {
+      if (!fullBioHeight) {
+        setFullBioHeight(height)
+      } else if (fullBioHeight > height) {
         setShouldShowMore(true)
       }
     },
-    [fullHeight]
+    [fullBioHeight]
   )
 
   const handleToggleExpanded = useCallback(() => {
@@ -71,7 +71,7 @@ export const ExpandableBio = ({ profile }: ExpandableBioProps) => {
     <View style={styles.root}>
       <View>
         <Text
-          numberOfLines={fullHeight && !isExpanded ? 1 : 0}
+          numberOfLines={fullBioHeight && !isExpanded ? 1 : 0}
           style={styles.bio}
           onLayout={handleBioLayout}
         >

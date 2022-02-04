@@ -6,7 +6,7 @@ import { DynamicImage } from 'app/components/core'
 import { useUserCoverPhoto } from 'app/hooks/useUserCoverPhoto'
 import { makeStyles } from 'app/styles/makeStyles'
 
-const useStyles = makeStyles(({ palette, typography, spacing }) => ({
+const useStyles = makeStyles(({ spacing }) => ({
   artistBadge: {
     position: 'absolute',
     top: spacing(5),
@@ -20,16 +20,19 @@ type CoverPhotoProps = {
 
 export const CoverPhoto = ({ profile }: CoverPhotoProps) => {
   const styles = useStyles()
+  const { user_id, _cover_photo_sizes, track_count } = profile
 
   const coverPhoto = useUserCoverPhoto(
-    profile?.user_id ?? null,
-    profile?._cover_photo_sizes ?? null,
+    user_id,
+    _cover_photo_sizes,
     WidthSizes.SIZE_2000
   )
 
+  const isArtist = track_count > 0
+
   return (
     <DynamicImage source={{ uri: coverPhoto }} style={{ height: 96 }}>
-      <BadgeArtist style={styles.artistBadge} />
+      {isArtist ? <BadgeArtist style={styles.artistBadge} /> : null}
     </DynamicImage>
   )
 }

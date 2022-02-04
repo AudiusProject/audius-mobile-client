@@ -6,10 +6,10 @@ import { makeStyles } from 'app/styles/makeStyles'
 
 import { CoverPhoto } from './CoverPhoto'
 import { ExpandableBio } from './ExpandableBio'
-import { ProfileMetrics } from './Metrics'
+import { ProfileMetrics } from './ProfileMetrics'
 import { ProfilePhoto } from './ProfilePhoto'
+import { ProfileSocials } from './ProfileSocials'
 import { ProfileTabNavigator } from './ProfileTabNavigator'
-import { ProfileSocials } from './Socials'
 
 const getProfile = makeGetProfile()
 

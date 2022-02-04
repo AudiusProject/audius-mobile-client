@@ -3,15 +3,19 @@ import { Text, View } from 'react-native'
 
 import { makeStyles } from 'app/styles/makeStyles'
 
+const messages = {
+  tracks: 'tracks',
+  followers: 'followers',
+  following: 'following'
+}
+
 const useStyles = makeStyles(({ typography, palette, spacing }) => ({
   root: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'flex-start',
     marginBottom: spacing(2)
   },
   metric: {
-    display: 'flex',
     flexDirection: 'row',
     alignItems: 'center',
     marginRight: spacing(4)
@@ -25,7 +29,8 @@ const useStyles = makeStyles(({ typography, palette, spacing }) => ({
   label: {
     fontSize: 14,
     fontFamily: typography.fontByWeight.demiBold,
-    color: palette.neutralLight4
+    color: palette.neutralLight4,
+    textTransform: 'capitalize'
   }
 }))
 
@@ -40,15 +45,15 @@ export const ProfileMetrics = ({ profile }: ProfileMetricsProps) => {
     <View style={styles.root}>
       <View style={styles.metric}>
         <Text style={styles.value}>{profile.track_count}</Text>
-        <Text style={styles.label}>Tracks</Text>
+        <Text style={styles.label}>{messages.tracks}</Text>
       </View>
       <View style={styles.metric}>
         <Text style={styles.value}>{profile.follower_count}</Text>
-        <Text style={styles.label}>Followers</Text>
+        <Text style={styles.label}>{messages.followers}</Text>
       </View>
       <View style={styles.metric}>
         <Text style={styles.value}>{profile.followee_count}</Text>
-        <Text style={styles.label}>Following</Text>
+        <Text style={styles.label}>{messages.following}</Text>
       </View>
     </View>
   )
