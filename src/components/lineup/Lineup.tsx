@@ -227,6 +227,7 @@ export const Lineup = ({
         // TODO: Playlist tile
       }
     }
+    return null
   }
 
   // Calculate the sections of data to provide to SectionList
