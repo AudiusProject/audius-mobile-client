@@ -9,13 +9,14 @@ import { Name } from 'audius-client/src/common/models/Analytics'
 import { CID, ID } from 'audius-client/src/common/models/Identifiers'
 import { User } from 'audius-client/src/common/models/User'
 import { downloadTrack } from 'audius-client/src/common/store/social/tracks/actions'
-import { ImageStyle, StyleProp, TextStyle, View, ViewStyle } from 'react-native'
+import { View } from 'react-native'
 import { useSelector } from 'react-redux'
 
 import IconDownload from 'app/assets/images/iconDownload.svg'
 import Button, { ButtonType } from 'app/components/button'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
 import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
+import { useToast } from 'app/hooks/useToast'
 import { font } from 'app/styles'
 import { makeStyles } from 'app/styles/makeStyles'
 import { make, track } from 'app/utils/analytics'
@@ -62,24 +63,37 @@ const DownloadButton = ({
   state,
   onClick = () => {}
 }: DownloadButtonProps) => {
+  const { toast } = useToast()
+
   const styles = useStyles()
-  const isDisabled =
-    state === ButtonState.PROCESSING || state === ButtonState.REQUIRES_FOLLOW
+  const requiresFollow = state === ButtonState.REQUIRES_FOLLOW
+  const isDisabled = state === ButtonState.PROCESSING || requiresFollow
 
-  const onPress = useCallback(() => {}, [])
+  const onPress = useCallback(() => {
+    if (requiresFollow) {
+      toast({ content: messages.followToDownload })
+    }
 
+    if (isDisabled) {
+      return
+    }
+
+    onClick()
+  }, [isDisabled, onClick, requiresFollow, toast])
+
+  // Manually handling disabled state in order to show a toast
+  // when a follow is required
   return (
     <Button
       type={ButtonType.COMMON}
       renderIcon={fill => <IconDownload fill={fill} height={18} width={18} />}
       iconPosition='left'
-      //   disabled={isDisabled}
       title={messages.addDownloadPrefix(label)}
       style={styles.button}
       containerStyle={[styles.buttonContainer, isDisabled && { opacity: 0.5 }]}
       textStyle={styles.label}
       iconStyle={styles.icon}
-      onPress={onClick}
+      onPress={onPress}
     />
   )
 }
