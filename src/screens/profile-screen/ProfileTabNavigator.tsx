@@ -1,5 +1,3 @@
-import { useCallback } from 'react'
-
 import { ProfileUser } from 'audius-client/src/common/store/pages/profile/types'
 import { Text } from 'react-native'
 
@@ -12,7 +10,6 @@ import {
   TabNavigator,
   tabScreen
 } from 'app/components/app-navigator/TopTabNavigator'
-import { useThemeColors } from 'app/utils/theme'
 
 import { useShouldShowCollectiblesTab } from './utils'
 
@@ -41,14 +38,9 @@ type ProfileTabNavigatiorProps = {
 }
 
 export const ProfileTabNavigator = ({ profile }: ProfileTabNavigatiorProps) => {
-  const { neutral } = useThemeColors()
   const isArtist = profile.track_count > 0
 
   const showCollectiblesTab = useShouldShowCollectiblesTab(profile)
-
-  const IconRepostFixed = useCallback(() => <IconRepost fill={neutral} />, [
-    neutral
-  ])
 
   const trackScreen = tabScreen({
     name: 'tracks',
@@ -70,7 +62,7 @@ export const ProfileTabNavigator = ({ profile }: ProfileTabNavigatiorProps) => {
 
   const repostsScreen = tabScreen({
     name: 'reposts',
-    Icon: IconRepostFixed,
+    Icon: IconRepost,
     component: RepostsTab
   })
 

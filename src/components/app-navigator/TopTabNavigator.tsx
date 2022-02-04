@@ -1,10 +1,10 @@
 import { ComponentType, ReactNode } from 'react'
 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import { SvgProps } from 'react-native-svg'
 
 import { TopTabBar } from 'app/components/top-tab-bar'
 import { makeStyles } from 'app/styles'
-import { useThemeColors } from 'app/utils/theme'
 
 const Tab = createMaterialTopTabNavigator()
 
@@ -24,13 +24,11 @@ export const TabNavigator = ({
   children
 }: TabNavigatorProps) => {
   const styles = useStyles()
-  const { primary } = useThemeColors()
   return (
     <Tab.Navigator
       initialRouteName={initialScreenName}
       tabBar={props => <TopTabBar {...props} />}
       screenOptions={{
-        tabBarActiveTintColor: primary,
         tabBarStyle: styles.root,
         tabBarLabelStyle: styles.label,
         tabBarIndicatorStyle: styles.indicator
@@ -45,7 +43,7 @@ type ScreenConfig = {
   name: string
   label?: string
   component: ComponentType<any>
-  Icon: ComponentType
+  Icon: ComponentType<SvgProps>
 }
 
 type TabScreenConfig = ScreenConfig & {
@@ -61,7 +59,7 @@ export const tabScreen = (config: TabScreenConfig) => {
       component={component}
       options={{
         tabBarLabel: label ?? name,
-        tabBarIcon: () => <Icon />
+        tabBarIcon: ({ color }) => <Icon fill={color} />
       }}
     />
   )
