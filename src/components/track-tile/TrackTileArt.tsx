@@ -1,10 +1,4 @@
-import React from 'react'
-
-import {
-  useTrackCoverArt,
-  useCollectionCoverArt,
-  useLoadImageWithTimeout
-} from 'audius-client/src/common/hooks/useImageSize'
+import { useLoadImageWithTimeout } from 'audius-client/src/common/hooks/useImageSize'
 import { ID } from 'audius-client/src/common/models/Identifiers'
 import {
   CoverArtSizes,
@@ -14,8 +8,10 @@ import { Remix } from 'audius-client/src/common/models/Track'
 import { ImageStyle, StyleProp, View, ViewStyle } from 'react-native'
 
 import CoSign, { Size } from 'app/components/co-sign'
-import DynamicImage from 'app/components/dynamic-image'
+import { DynamicImage } from 'app/components/core'
+import { useCollectionCoverArt } from 'app/hooks/useCollectionCoverArt'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
+import { useTrackCoverArt } from 'app/hooks/useTrackCoverArt'
 
 import { createStyles } from './styles'
 
@@ -43,7 +39,10 @@ export const TrackTileArt = ({
   useLoadImageWithTimeout(image, onLoad)
 
   const imageElement = (
-    <DynamicImage image={{ uri: image }} style={styles.image as ImageStyle} />
+    <DynamicImage
+      source={{ uri: image }}
+      styles={{ image: styles.image as ImageStyle }}
+    />
   )
 
   return coSign ? (

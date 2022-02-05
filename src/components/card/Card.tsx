@@ -1,9 +1,3 @@
-import React from 'react'
-
-import {
-  useCollectionCoverArt,
-  useUserProfilePicture
-} from 'audius-client/src/common/hooks/useImageSize'
 import {
   CoverArtSizes,
   ProfilePictureSizes,
@@ -20,9 +14,11 @@ import {
 } from 'react-native'
 import { Shadow } from 'react-native-shadow-2'
 
-import DynamicImage from 'app/components/dynamic-image'
+import { DynamicImage } from 'app/components/core'
 import UserBadges from 'app/components/user-badges/UserBadges'
+import { useCollectionCoverArt } from 'app/hooks/useCollectionCoverArt'
 import { ThemeColors, useThemedStyles } from 'app/hooks/useThemedStyles'
+import { useUserProfilePicture } from 'app/hooks/useUserProfilePicture'
 import { ID } from 'app/store/notifications/types'
 import { font } from 'app/styles'
 
@@ -104,7 +100,7 @@ const CardImage = ({ id, type, imageSize }: CardImageProps) => {
     type === 'user' ? useUserProfilePicture : useCollectionCoverArt
   const image = useImage(id, imageSize, SquareSizes.SIZE_150_BY_150)
 
-  return <DynamicImage image={{ uri: image }} />
+  return <DynamicImage source={{ uri: image }} />
 }
 
 export const Card = ({

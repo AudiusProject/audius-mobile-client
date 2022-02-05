@@ -1,22 +1,17 @@
-import React from 'react'
-
 import { StyleSheet, View } from 'react-native'
 
 import { ImageSkeleton } from 'app/components/image-skeleton'
 import Skeleton from 'app/components/skeleton'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
 
-import { TrackTileBottomButtons } from './TrackTileBottomButtons'
-import { TrackTileContainer } from './TrackTileContainer'
+import { TrackTileActionButtons } from './TrackTileActionButtons'
+import { TrackTileRoot } from './TrackTileRoot'
 import { createStyles } from './styles'
 
 const styles = StyleSheet.create({
   skeleton: {
     position: 'absolute',
     top: 0
-  },
-  mainContent: {
-    flex: 1
   },
   metadata: {
     flexDirection: 'row'
@@ -31,27 +26,25 @@ const styles = StyleSheet.create({
 export const TrackTileSkeleton = () => {
   const trackTileStyles = useThemedStyles(createStyles)
   return (
-    <TrackTileContainer>
-      <View style={styles.mainContent}>
-        <View style={styles.metadata}>
-          <View style={[trackTileStyles.imageContainer, trackTileStyles.image]}>
-            <ImageSkeleton styles={{ root: trackTileStyles.image }} />
-          </View>
-
-          <View style={[trackTileStyles.titles]}>
-            <View style={trackTileStyles.title}>
-              <Skeleton style={styles.skeleton} width='80%' height='80%' />
-            </View>
-            <View style={[trackTileStyles.artist, { width: '100%' }]}>
-              <Skeleton style={styles.skeleton} width='60%' height='80%' />
-            </View>
-          </View>
+    <TrackTileRoot>
+      <View style={styles.metadata}>
+        <View style={[trackTileStyles.imageContainer, trackTileStyles.image]}>
+          <ImageSkeleton styles={{ root: trackTileStyles.image }} />
         </View>
 
-        <View style={styles.bottomButtons}>
-          <TrackTileBottomButtons />
+        <View style={[trackTileStyles.titles]}>
+          <View style={trackTileStyles.title}>
+            <Skeleton style={styles.skeleton} width='80%' height='80%' />
+          </View>
+          <View style={[trackTileStyles.artist, { width: '100%' }]}>
+            <Skeleton style={styles.skeleton} width='60%' height='80%' />
+          </View>
         </View>
       </View>
-    </TrackTileContainer>
+
+      <View style={styles.bottomButtons}>
+        <TrackTileActionButtons />
+      </View>
+    </TrackTileRoot>
   )
 }

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { ID } from 'audius-client/src/common/models/Identifiers'
 import { CoverArtSizes } from 'audius-client/src/common/models/ImageSizes'
 import { Remix } from 'audius-client/src/common/models/Track'
@@ -8,7 +6,7 @@ import { Pressable, StyleSheet, View } from 'react-native'
 
 import IconVolume from 'app/assets/images/iconVolume.svg'
 import Text from 'app/components/text'
-import UserBadges from 'app/components/user-badges/UserBadges'
+import UserBadges from 'app/components/user-badges'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
 import { GestureResponderHandler } from 'app/types/gesture'
 import { ThemeColors, useThemeColors } from 'app/utils/theme'

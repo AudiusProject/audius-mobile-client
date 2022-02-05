@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { User } from 'audius-client/src/common/models/User'
 import { EXPLORE_PAGE, profilePage } from 'audius-client/src/utils/route'
 import { StyleProp, ViewStyle } from 'react-native'
@@ -15,7 +13,7 @@ const formatProfileCardSecondaryText = (followers: number) => {
 
 type ArtistCardProps = {
   artist: User
-  style: StyleProp<ViewStyle>
+  style?: StyleProp<ViewStyle>
 }
 
 export const ArtistCard = ({ artist, style }: ArtistCardProps) => {

@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { View, StyleSheet } from 'react-native'
 
 import IconFavoriteOffDark from 'app/assets/animations/iconFavoriteOffDark.json'
@@ -15,7 +13,7 @@ import IconChromecast from 'app/assets/images/iconChromecast.svg'
 import IconKebabHorizontal from 'app/assets/images/iconKebabHorizontal.svg'
 import IconShare from 'app/assets/images/iconShare.svg'
 import AnimatedButtonProvider from 'app/components/animated-button/AnimatedButtonProvider'
-import IconButton from 'app/components/icon-button'
+import { IconButton } from 'app/components/core'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
 import { Theme, ThemeColors, useThemeVariant } from 'app/utils/theme'
 
@@ -35,6 +33,10 @@ const createStyles = (themeColors: ThemeColors) =>
       display: 'flex',
       alignItems: 'center'
     },
+    animatedIcon: {
+      width: 28,
+      height: 28
+    },
     icon: {
       width: 24,
       height: 24
@@ -53,16 +55,14 @@ export const ActionsBar = () => {
       return (
         <IconButton
           icon={IconAirplay}
-          containerStyle={styles.button}
-          style={styles.icon}
+          styles={{ icon: styles.icon, root: styles.button }}
         />
       )
     }
     return (
       <IconButton
         icon={IconChromecast}
-        containerStyle={styles.button}
-        style={styles.icon}
+        styles={{ icon: styles.icon, root: styles.button }}
       />
     )
   }
@@ -74,7 +74,7 @@ export const ActionsBar = () => {
         iconDarkJSON={[IconRepostOnDark, IconRepostOffDark]}
         onPress={() => {}}
         style={styles.button}
-        wrapperStyle={styles.icon}
+        wrapperStyle={styles.animatedIcon}
       />
     )
   }
@@ -86,7 +86,7 @@ export const ActionsBar = () => {
         iconDarkJSON={[IconFavoriteOnDark, IconFavoriteOffDark]}
         onPress={() => {}}
         style={styles.button}
-        wrapperStyle={styles.icon}
+        wrapperStyle={styles.animatedIcon}
       />
     )
   }
@@ -94,8 +94,7 @@ export const ActionsBar = () => {
     return (
       <IconButton
         icon={IconShare}
-        containerStyle={styles.button}
-        style={styles.icon}
+        styles={{ icon: styles.icon, root: styles.button }}
       />
     )
   }
@@ -103,8 +102,7 @@ export const ActionsBar = () => {
     return (
       <IconButton
         icon={IconKebabHorizontal}
-        containerStyle={styles.button}
-        style={styles.icon}
+        styles={{ icon: styles.icon, root: styles.button }}
       />
     )
   }

@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import { useCallback } from 'react'
 
 import { getAccountUser } from 'audius-client/src/common/store/account/selectors'
 import { getHasFavoritedItem } from 'audius-client/src/common/store/challenges/selectors/profile-progress'

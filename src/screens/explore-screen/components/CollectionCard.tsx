@@ -1,5 +1,3 @@
-import React from 'react'
-
 import { UserCollection } from 'audius-client/src/common/models/Collection'
 import {
   albumPage,
@@ -20,7 +18,7 @@ const formatPlaylistCardSecondaryText = (saves: number, tracks: number) => {
 
 type CollectionCardProps = {
   collection: UserCollection
-  style: StyleProp<ViewStyle>
+  style?: StyleProp<ViewStyle>
 }
 
 export const CollectionCard = ({ collection, style }: CollectionCardProps) => {

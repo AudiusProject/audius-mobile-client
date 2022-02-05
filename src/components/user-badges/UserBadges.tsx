@@ -1,4 +1,4 @@
-import React from 'react'
+import { ComponentType } from 'react'
 
 import { User } from 'audius-client/src/common/models/User'
 import { Nullable } from 'audius-client/src/common/utils/typeUtils'
@@ -35,7 +35,10 @@ const styles = StyleSheet.create({
   }
 })
 
-export const badgeByTier: Record<BadgeTier, Nullable<React.FC<SvgProps>>> = {
+export const badgeByTier: Record<
+  BadgeTier,
+  Nullable<ComponentType<SvgProps>>
+> = {
   none: null,
   bronze: IconBronzeBadge,
   silver: IconSilverBadge,

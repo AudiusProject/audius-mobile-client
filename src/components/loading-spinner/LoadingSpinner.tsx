@@ -1,7 +1,5 @@
-import React from 'react'
-
 import LottieView from 'lottie-react-native'
-import { StyleSheet, ViewStyle } from 'react-native'
+import { StyleProp, StyleSheet, ViewStyle } from 'react-native'
 
 import loadingSpinner from 'app/assets/animations/loadingSpinner.json'
 import { useThemeColors } from 'app/utils/theme'
@@ -21,7 +19,7 @@ type LoadingSpinnerProps = {
   /**
    * Style to apply to the spinner
    */
-  style?: ViewStyle
+  style?: StyleProp<ViewStyle>
 }
 
 const LoadingSpinner = (props: LoadingSpinnerProps) => {
