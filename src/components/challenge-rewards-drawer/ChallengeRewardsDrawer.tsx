@@ -1,7 +1,7 @@
 import React from 'react'
 
+import { UserChallengeState } from 'audius-client/src/common/models/AudioRewards'
 import { ClaimStatus } from 'audius-client/src/common/store/pages/audio-rewards/slice'
-import { UserChallengeState } from 'audius-client/src/pages/audio-rewards-page/hooks'
 import { StyleSheet, View, ImageSourcePropType } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 

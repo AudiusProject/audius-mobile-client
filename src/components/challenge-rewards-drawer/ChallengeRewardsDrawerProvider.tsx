@@ -4,6 +4,7 @@ import {
   IntKeys,
   StringKeys
 } from 'audius-client/src/common/services/remote-config'
+import { getOptimisticUserChallenges } from 'audius-client/src/common/store/challenges/selectors/optimistic-challenges'
 import {
   getChallengeRewardsModalType,
   getClaimStatus
@@ -20,7 +21,6 @@ import {
   setVisibility
 } from 'audius-client/src/common/store/ui/modals/slice'
 import { Maybe } from 'audius-client/src/common/utils/typeUtils'
-import { useOptimisticUserChallenges } from 'audius-client/src/pages/audio-rewards-page/hooks'
 import {
   ACCOUNT_VERIFICATION_SETTINGS_PAGE,
   AUDIO_PAGE,
@@ -189,7 +189,7 @@ export const ChallengeRewardsDrawerProvider = () => {
     getModalVisibility(state, MODAL_NAME)
   )
   const modalType = useSelectorWeb(getChallengeRewardsModalType)
-  const userChallenges = useOptimisticUserChallenges()
+  const userChallenges = useSelectorWeb(getOptimisticUserChallenges)
   const onClose = useCallback(() => {
     dispatchWeb(resetAndCancelClaimReward())
     dispatchWeb(setVisibility({ modal: MODAL_NAME, visible: false }))
