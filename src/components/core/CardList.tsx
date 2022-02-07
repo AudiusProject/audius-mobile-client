@@ -6,8 +6,11 @@ import {
   ListRenderItemInfo,
   ViewStyle,
   StyleProp,
-  ListRenderItem
+  ListRenderItem,
+  Text
 } from 'react-native'
+
+import { EmptyCard } from './EmptyCard'
 
 type ListProps<ItemT> = Omit<FlatListProps<ItemT>, 'renderItem'>
 
@@ -17,10 +20,11 @@ type CardListRenderItemInfo<ItemT> = ListRenderItemInfo<ItemT> & {
 
 export type CardListProps<ItemT> = ListProps<ItemT> & {
   renderItem: (info: CardListRenderItemInfo<ItemT>) => ReactElement | null
+  emptyListText?: string
 }
 
-export function CardList<ItemT>(props: CardListProps<ItemT>) {
-  const { renderItem, ...other } = props
+export const CardList = <ItemT,>(props: CardListProps<ItemT>) => {
+  const { renderItem, emptyListText, ...other } = props
 
   const handleRenderItem: ListRenderItem<ItemT> = useCallback(
     info => {
@@ -36,5 +40,18 @@ export function CardList<ItemT>(props: CardListProps<ItemT>) {
     [renderItem]
   )
 
-  return <FlatList renderItem={handleRenderItem} numColumns={2} {...other} />
+  return (
+    <FlatList
+      renderItem={handleRenderItem}
+      numColumns={2}
+      ListEmptyComponent={
+        emptyListText ? (
+          <EmptyCard>
+            <Text>{emptyListText}</Text>
+          </EmptyCard>
+        ) : undefined
+      }
+      {...other}
+    />
+  )
 }
