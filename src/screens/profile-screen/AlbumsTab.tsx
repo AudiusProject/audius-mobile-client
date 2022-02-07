@@ -14,8 +14,9 @@ export const AlbumsTab = () => {
   const { profile, albums } = useSelectorWeb(getProfile)
 
   const userAlbums = useMemo(() => {
-    if (profile && albums)
+    if (profile && albums) {
       return albums.map(album => ({ ...album, user: profile }))
+    }
   }, [profile, albums])
 
   if (!userAlbums) return null

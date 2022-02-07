@@ -14,8 +14,9 @@ export const PlaylistsTab = () => {
   const { profile, playlists } = useSelectorWeb(getProfile)
 
   const userPlaylists = useMemo(() => {
-    if (profile && playlists)
+    if (profile && playlists) {
       return playlists.map(album => ({ ...album, user: profile }))
+    }
   }, [profile, playlists])
 
   if (!userPlaylists) return null
