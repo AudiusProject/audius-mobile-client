@@ -8,6 +8,7 @@ import { ID, UID } from 'audius-client/src/common/models/Identifiers'
 import { SquareSizes } from 'audius-client/src/common/models/ImageSizes'
 import { Track } from 'audius-client/src/common/models/Track'
 import { User } from 'audius-client/src/common/models/User'
+import { tracksActions } from 'audius-client/src/common/store/pages/track/lineup/actions'
 import { squashNewLines } from 'audius-client/src/common/utils/formatUtil'
 import { getCanonicalName } from 'audius-client/src/common/utils/genres'
 import {
@@ -15,7 +16,6 @@ import {
   formatDate
 } from 'audius-client/src/common/utils/timeUtil'
 import { Nullable } from 'audius-client/src/common/utils/typeUtils'
-import { tracksActions } from 'common/store/pages/track/lineup/actions'
 import {
   Image,
   ImageStyle,
@@ -47,10 +47,11 @@ import { make, track } from 'app/utils/analytics'
 import { moodMap } from 'app/utils/moods'
 import { ThemeColors } from 'app/utils/theme'
 
-import { TrackScreenActionButtons } from './TrackScreenActionButtons'
-import { TrackScreenStats } from './TrackScreenStats'
-
 // import HiddenTrackHeader from '../HiddenTrackHeader'
+
+import { TrackScreenActionButtons } from './TrackScreenActionButtons'
+import { TrackScreenDownloadButtons } from './TrackScreenDownloadButtons'
+import { TrackScreenStats } from './TrackScreenStats'
 
 const messages = {
   track: 'TRACK',
@@ -376,17 +377,14 @@ export const TrackScreenHeader = ({
   }
 
   const renderDownloadButtons = () => {
-    // return (
-    //   <DownloadButtons
-    //     style={styles.downloadButtonsContainer}
-    //     trackId={trackId}
-    //     isOwner={isOwner}
-    //     following={isFollowing}
-    //     onDownload={onDownload}
-    //   />
-    // )
-    // TODO
-    return null
+    return (
+      <TrackScreenDownloadButtons
+        following={user.does_current_user_follow}
+        isOwner={isOwner}
+        trackId={track_id}
+        user={user}
+      />
+    )
   }
 
   const renderTrackLabels = () => {
