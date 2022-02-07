@@ -48,7 +48,13 @@ const FeedScreen = ({ navigation }: Props) => {
   }
 
   return (
-    <View style={{ display: 'flex', flexDirection: 'column' }}>
+    <View
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        backgroundColor: '#F3F0F7'
+      }}
+    >
       <Lineup
         actions={feedActions}
         delineate
