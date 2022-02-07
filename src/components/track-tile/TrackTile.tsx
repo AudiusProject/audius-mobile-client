@@ -107,14 +107,14 @@ const TrackTileComponent = ({
 
   const goToTrackPage = useCallback(
     (e: GestureResponderEvent) => {
-      // pushRouteWeb(permalink)
+      pushRouteWeb(permalink)
       navigation.navigate('track', { id: track_id })
     },
     [pushRouteWeb, permalink, navigation, track_id]
   )
 
   const goToArtistPage = (e: GestureResponderEvent) => {
-    navigation.navigate('profile', { id: track_id })
+    navigation.navigate('profile', { handle: user.handle })
   }
 
   const onPressReposts = (e: GestureResponderEvent) => {

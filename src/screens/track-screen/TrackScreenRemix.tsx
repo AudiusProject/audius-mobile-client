@@ -37,11 +37,7 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => ({
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: spacing(2)
-    //   width: 128
   },
-
-  imagesContainer: {},
-  images: {},
 
   coverArt: {
     width: 121,
@@ -73,10 +69,9 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => ({
   },
 
   name: {
-    ...flexRowCentered(),
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    maxHeight: 36
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    maxWidth: 128
   },
 
   artistName: {
@@ -86,9 +81,7 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => ({
   badges: {
     marginLeft: spacing(1),
     top: spacing(0.5)
-  },
-
-  by: {}
+  }
 }))
 
 export const TrackScreenRemix = ({ id }: TrackScreenRemixProps) => {
@@ -143,7 +136,7 @@ const TrackScreenRemixComponent = ({
   }, [handle, navigation, pushRouteWeb])
 
   const images = (
-    <View style={styles.images}>
+    <View>
       <View style={styles.profilePicture}>
         <DynamicImage source={{ uri: profilePictureImage }} />
       </View>
@@ -155,25 +148,15 @@ const TrackScreenRemixComponent = ({
 
   return (
     <View style={styles.root}>
-      <Pressable style={styles.imagesContainer} onPress={goToTrackPage}>
-        {_co_sign ? (
-          <CoSign
-            size={Size.MEDIUM}
-            coSignName={_co_sign.user.name}
-            hasFavorited={_co_sign.has_remix_author_saved}
-            hasReposted={_co_sign.has_remix_author_reposted}
-            userId={_co_sign.user?.user_id ?? 0}
-          >
-            {images}
-          </CoSign>
-        ) : (
-          images
-        )}
+      <Pressable onPress={goToTrackPage}>
+        {_co_sign ? <CoSign size={Size.MEDIUM}>{images}</CoSign> : images}
       </Pressable>
       <Pressable style={styles.artist} onPress={goToArtistPage}>
         <View style={styles.name}>
-          <Text style={styles.by}>{messages.by}</Text>
-          <Text style={styles.artistName}>{name}</Text>
+          <Text>{messages.by}</Text>
+          <Text style={styles.artistName} numberOfLines={1}>
+            {name}
+          </Text>
           <View style={styles.badges}>
             <UserBadges user={user} badgeSize={12} hideName />
           </View>

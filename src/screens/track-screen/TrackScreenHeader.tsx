@@ -26,7 +26,6 @@ import {
   View
 } from 'react-native'
 import HyperLink from 'react-native-hyperlink'
-import { Shadow } from 'react-native-shadow-2'
 import { useSelector } from 'react-redux'
 
 import IconPause from 'app/assets/images/iconPause.svg'
@@ -35,7 +34,7 @@ import { BaseStackParamList } from 'app/components/app-navigator/types'
 import Button from 'app/components/button'
 import CoSign from 'app/components/co-sign/CoSign'
 import { Size } from 'app/components/co-sign/types'
-import { DynamicImage } from 'app/components/core'
+import { DynamicImage, Tile } from 'app/components/core'
 import Text from 'app/components/text'
 import UserBadges from 'app/components/user-badges'
 import { useDispatchWeb } from 'app/hooks/useDispatchWeb'
@@ -430,12 +429,7 @@ export const TrackScreenHeader = ({
   )
 
   return (
-    <Shadow
-      offset={[0, 2]}
-      viewStyle={{ alignSelf: 'stretch' }}
-      distance={4}
-      startColor='rgba(133,129,153,0.05)'
-    >
+    <Tile>
       <View style={styles.root}>
         {is_unlisted ? (
           <View style={styles.hiddenTrackHeaderWrapper}>
@@ -517,6 +511,6 @@ export const TrackScreenHeader = ({
         {renderDownloadButtons()}
         {renderTags()}
       </View>
-    </Shadow>
+    </Tile>
   )
 }
