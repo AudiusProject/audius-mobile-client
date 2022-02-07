@@ -71,16 +71,18 @@ const CardImage = ({ id, type, imageSize }: CardImageProps) => {
   return <DynamicImage source={{ uri: image }} />
 }
 
-export const Card = ({
-  id,
-  imageSize,
-  onPress,
-  primaryText,
-  secondaryText,
-  style,
-  type = 'user',
-  user
-}: CardProps) => {
+export const Card = (props: CardProps) => {
+  const {
+    id,
+    imageSize,
+    onPress,
+    primaryText,
+    secondaryText,
+    style,
+    type = 'user',
+    user
+  } = props
+
   const styles = useStyles()
 
   return (
@@ -97,16 +99,7 @@ export const Card = ({
         <Text numberOfLines={1} style={styles.primaryText}>
           {primaryText}
           {type === 'user' ? (
-            <UserBadges
-              user={{
-                balance: user.balance,
-                associated_wallets_balance: user.associated_wallets_balance,
-                name: user.name,
-                is_verified: user.is_verified
-              }}
-              badgeSize={12}
-              hideName
-            />
+            <UserBadges user={user} badgeSize={12} hideName />
           ) : null}
         </Text>
         <Text numberOfLines={1} style={styles.secondaryText}>
