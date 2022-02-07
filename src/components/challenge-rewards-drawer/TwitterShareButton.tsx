@@ -1,6 +1,7 @@
 import React, { useCallback } from 'react'
 
-import { ColorValue, Linking, StyleSheet } from 'react-native'
+import { Linking, StyleSheet } from 'react-native'
+import { Color } from 'react-native-svg'
 
 import IconTwitterBird from 'app/assets/images/iconTwitterBird.svg'
 import Button from 'app/components/button'
@@ -23,7 +24,7 @@ const makeStyles = (themeColors: ThemeColors) =>
     }
   })
 
-const renderIcon = (color: ColorValue) => (
+const renderIcon = (color: Color) => (
   <IconTwitterBird fill={'white'} width={24} height={24} />
 )
 
