@@ -35,13 +35,14 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => ({
   },
 
   headerText: {
+    lineHeight: 30,
     fontSize: 28
   },
 
   iconRemix: {
     height: spacing(12),
     width: spacing(12),
-    marginRight: spacing(4)
+    marginRight: spacing(2)
   },
 
   tracks: {
