@@ -147,13 +147,7 @@ export const TrackScreen = ({ route, navigation }: Props) => {
         header={
           track &&
           user && (
-            <>
-              <TrackScreenMainContent
-                track={track}
-                user={user}
-                lineup={lineup}
-              />
-            </>
+            <TrackScreenMainContent track={track} user={user} lineup={lineup} />
           )
         }
         lineup={lineup}
