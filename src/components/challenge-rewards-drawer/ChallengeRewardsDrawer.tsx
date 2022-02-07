@@ -13,6 +13,7 @@ import GradientText from 'app/components/gradient-text'
 import LoadingSpinner from 'app/components/loading-spinner'
 import Text from 'app/components/text'
 import { useThemedStyles } from 'app/hooks/useThemedStyles'
+import { flexRowCentered } from 'app/styles'
 import { ThemeColors, useThemeColors } from 'app/utils/theme'
 
 const messages = {
@@ -109,7 +110,6 @@ const createStyles = (themeColors: ThemeColors) =>
   StyleSheet.create({
     content: {
       padding: 16,
-      display: 'flex',
       alignItems: 'center'
     },
     subheader: {
@@ -129,9 +129,7 @@ const createStyles = (themeColors: ThemeColors) =>
       paddingTop: 0
     },
     taskHeaderVerified: {
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center'
+      ...flexRowCentered()
     },
     taskText: {
       fontSize: 16
@@ -142,12 +140,10 @@ const createStyles = (themeColors: ThemeColors) =>
       borderWidth: 1,
       width: '100%',
       marginBottom: 24,
-      display: 'flex',
       flexDirection: 'column'
     },
     statusGridColumns: {
       padding: 16,
-      display: 'flex',
       flexDirection: 'row'
     },
     rewardCell: {
@@ -160,7 +156,6 @@ const createStyles = (themeColors: ThemeColors) =>
       borderColor: themeColors.neutralLight8
     },
     statusCell: {
-      display: 'flex',
       alignItems: 'center',
       paddingLeft: 32,
       paddingRight: 32,
