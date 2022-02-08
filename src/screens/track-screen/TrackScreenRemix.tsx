@@ -10,7 +10,7 @@ import { getTrack } from 'audius-client/src/common/store/cache/tracks/selectors'
 import { getUserFromTrack } from 'audius-client/src/common/store/cache/users/selectors'
 import { profilePage } from 'audius-client/src/utils/route'
 import { isEqual } from 'lodash'
-import { Pressable, View } from 'react-native'
+import { Pressable, StyleProp, View, ViewStyle } from 'react-native'
 
 import { BaseStackParamList } from 'app/components/app-navigator/types'
 import CoSign from 'app/components/co-sign/CoSign'
@@ -22,7 +22,7 @@ import { usePushRouteWeb } from 'app/hooks/usePushRouteWeb'
 import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 import { useTrackCoverArt } from 'app/hooks/useTrackCoverArt'
 import { useUserProfilePicture } from 'app/hooks/useUserProfilePicture'
-import { flexRowCentered, makeStyles } from 'app/styles'
+import { flexRowCentered, makeStyles, StylesProp } from 'app/styles'
 
 const messages = {
   by: 'By '
@@ -30,7 +30,7 @@ const messages = {
 
 type TrackScreenRemixProps = {
   id: ID
-}
+} & Omit<TrackScreenRemixComponentProps, 'track' | 'user'>
 
 const useStyles = makeStyles(({ palette, spacing, typography }) => ({
   root: {
@@ -84,7 +84,7 @@ const useStyles = makeStyles(({ palette, spacing, typography }) => ({
   }
 }))
 
-export const TrackScreenRemix = ({ id }: TrackScreenRemixProps) => {
+export const TrackScreenRemix = ({ id, ...props }: TrackScreenRemixProps) => {
   const track = useSelectorWeb(state => getTrack(state, { id }), isEqual)
   const user = useSelectorWeb(state => getUserFromTrack(state, { id }), isEqual)
 
@@ -95,16 +95,24 @@ export const TrackScreenRemix = ({ id }: TrackScreenRemixProps) => {
     return null
   }
 
-  return <TrackScreenRemixComponent track={track} user={user} />
+  return <TrackScreenRemixComponent {...props} track={track} user={user} />
+}
+
+type TrackScreenRemixComponentProps = {
+  style?: StyleProp<ViewStyle>
+  styles?: StylesProp<{
+    root: ViewStyle
+  }>
+  track: Track
+  user: User
 }
 
 const TrackScreenRemixComponent = ({
+  style,
+  styles: stylesProp,
   track,
   user
-}: {
-  track: Track
-  user: User
-}) => {
+}: TrackScreenRemixComponentProps) => {
   const styles = useStyles()
 
   const { _co_sign, permalink, track_id } = track
@@ -136,18 +144,18 @@ const TrackScreenRemixComponent = ({
   }, [handle, navigation, pushRouteWeb])
 
   const images = (
-    <View>
+    <>
       <View style={styles.profilePicture}>
         <DynamicImage source={{ uri: profilePictureImage }} />
       </View>
       <View style={styles.coverArt}>
         <DynamicImage source={{ uri: coverArtImage }} />
       </View>
-    </View>
+    </>
   )
 
   return (
-    <View style={styles.root}>
+    <View style={[styles.root, style, stylesProp?.root]}>
       <Pressable onPress={goToTrackPage}>
         {_co_sign ? <CoSign size={Size.MEDIUM}>{images}</CoSign> : images}
       </Pressable>

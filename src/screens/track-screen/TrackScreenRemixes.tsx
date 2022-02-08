@@ -89,11 +89,7 @@ export const TrackScreenRemixes = ({
       </View>
       <View style={styles.tracks}>
         {trackIds.map(id => {
-          return (
-            <View key={id} style={styles.track}>
-              <TrackScreenRemix id={id} />
-            </View>
-          )
+          return <TrackScreenRemix id={id} key={id} style={styles.track} />
         })}
       </View>
       <Button

@@ -77,8 +77,8 @@ const TrackScreenMainContent = ({
 
   const currentUserId = useSelectorWeb(getUserId)
 
-  const remixParentTrackId = track?.remix_of?.tracks?.[0]?.parent_track_id
-  const remixTrackIds = track?._remixes?.map(({ track_id }) => track_id) ?? null
+  const remixParentTrackId = track.remix_of?.tracks?.[0]?.parent_track_id
+  const remixTrackIds = track._remixes?.map(({ track_id }) => track_id) ?? null
   const showMoreByArtistTitle =
     (remixParentTrackId && lineup.entries.length > 2) ||
     (!remixParentTrackId && lineup.entries.length > 1)
@@ -145,10 +145,9 @@ export const TrackScreen = ({ route, navigation }: Props) => {
       <Lineup
         actions={tracksActions}
         header={
-          track &&
-          user && (
+          track && user ? (
             <TrackScreenMainContent track={track} user={user} lineup={lineup} />
-          )
+          ) : null
         }
         lineup={lineup}
         pauseTrack={pauseTrack}

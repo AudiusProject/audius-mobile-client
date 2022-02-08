@@ -429,88 +429,86 @@ export const TrackScreenHeader = ({
   )
 
   return (
-    <Tile>
-      <View style={styles.root}>
-        {is_unlisted ? (
-          <View style={styles.hiddenTrackHeaderWrapper}>
-            {/* <HiddenTrackHeader /> */}
-          </View>
-        ) : (
-          <Text style={styles.typeLabel} weight='demiBold'>
-            {isRemix ? messages.remix : messages.track}
-          </Text>
-        )}
-        <View style={styles.coverArtWrapper}>{imageElement}</View>
-        <Text style={styles.title} weight='bold'>
-          {title}
+    <Tile styles={{ content: styles.root }}>
+      {is_unlisted ? (
+        <View style={styles.hiddenTrackHeaderWrapper}>
+          {/* <HiddenTrackHeader /> */}
+        </View>
+      ) : (
+        <Text style={styles.typeLabel} weight='demiBold'>
+          {isRemix ? messages.remix : messages.track}
         </Text>
-        <TouchableOpacity onPress={onPressArtistName}>
-          <View style={styles.artistContainer}>
-            <Text style={styles.artist}>{user.name}</Text>
-            <UserBadges
-              style={styles.badge}
-              badgeSize={16}
-              user={user}
-              hideName
-            />
-          </View>
-        </TouchableOpacity>
-        <View style={styles.buttonSection}>
-          <Button
-            style={styles.playButton}
-            title={isPlaying ? messages.pause : messages.play}
-            iconPosition='left'
-            renderIcon={fill =>
-              isPlaying ? (
-                <IconPause fill={fill as string} />
-              ) : (
-                <IconPlay fill={fill as string} />
-              )
-            }
-            onPress={onPlay}
-          />
-          <TrackScreenActionButtons
-            hasReposted={has_current_user_reposted}
-            hasSaved={has_current_user_saved}
-            isFollowing={user.does_current_user_follow}
-            isOwner={isOwner}
-            isUnlisted={is_unlisted}
-            showFavorite={!is_unlisted}
-            showOverflow
-            showRepost={!is_unlisted}
-            showShare={!is_unlisted || !!field_visibility?.share}
-            trackId={track_id}
+      )}
+      <View style={styles.coverArtWrapper}>{imageElement}</View>
+      <Text style={styles.title} weight='bold'>
+        {title}
+      </Text>
+      <TouchableOpacity onPress={onPressArtistName}>
+        <View style={styles.artistContainer}>
+          <Text style={styles.artist}>{user.name}</Text>
+          <UserBadges
+            style={styles.badge}
+            badgeSize={16}
+            user={user}
+            hideName
           />
         </View>
-        <TrackScreenStats
-          favoriteCount={save_count}
-          playCount={play_count}
-          repostCount={repost_count}
-          showFavoriteCount={!is_unlisted}
-          showListenCount={!is_unlisted || !field_visibility?.play_count}
-          showRepostCount={!is_unlisted}
+      </TouchableOpacity>
+      <View style={styles.buttonSection}>
+        <Button
+          style={styles.playButton}
+          title={isPlaying ? messages.pause : messages.play}
+          iconPosition='left'
+          renderIcon={fill =>
+            isPlaying ? (
+              <IconPause fill={fill as string} />
+            ) : (
+              <IconPlay fill={fill as string} />
+            )
+          }
+          onPress={onPlay}
+        />
+        <TrackScreenActionButtons
+          hasReposted={has_current_user_reposted}
+          hasSaved={has_current_user_saved}
+          isFollowing={user.does_current_user_follow}
+          isOwner={isOwner}
+          isUnlisted={is_unlisted}
+          showFavorite={!is_unlisted}
+          showOverflow
+          showRepost={!is_unlisted}
+          showShare={!is_unlisted || !!field_visibility?.share}
           trackId={track_id}
         />
-        <View style={styles.descriptionContainer}>
-          {description ? (
-            <HyperLink onPress={onExternalLinkClick} linkStyle={styles.link}>
-              <Text style={styles.description} suppressHighlighting>
-                {squashNewLines(description)}
-              </Text>
-            </HyperLink>
-          ) : null}
-        </View>
-        <View
-          style={[
-            styles.infoSection,
-            is_unlisted && !field_visibility?.play_count && styles.noStats
-          ]}
-        >
-          {renderTrackLabels()}
-        </View>
-        {renderDownloadButtons()}
-        {renderTags()}
       </View>
+      <TrackScreenStats
+        favoriteCount={save_count}
+        playCount={play_count}
+        repostCount={repost_count}
+        showFavoriteCount={!is_unlisted}
+        showListenCount={!is_unlisted || !field_visibility?.play_count}
+        showRepostCount={!is_unlisted}
+        trackId={track_id}
+      />
+      <View style={styles.descriptionContainer}>
+        {description ? (
+          <HyperLink onPress={onExternalLinkClick} linkStyle={styles.link}>
+            <Text style={styles.description} suppressHighlighting>
+              {squashNewLines(description)}
+            </Text>
+          </HyperLink>
+        ) : null}
+      </View>
+      <View
+        style={[
+          styles.infoSection,
+          is_unlisted && !field_visibility?.play_count && styles.noStats
+        ]}
+      >
+        {renderTrackLabels()}
+      </View>
+      {renderDownloadButtons()}
+      {renderTags()}
     </Tile>
   )
 }
