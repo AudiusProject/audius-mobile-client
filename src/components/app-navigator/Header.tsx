@@ -78,7 +78,7 @@ export const Header = ({ children }: HeaderProps) => {
       <IconButton
         icon={AudiusLogo}
         fill={neutralLight4}
-        styles={{ icon: styles.audiusLogo }}
+        styles={{ icon: styles.audiusLogo, root: { paddingRight: 10 } }}
         onPress={handlePressHome}
       />
       <IconButton

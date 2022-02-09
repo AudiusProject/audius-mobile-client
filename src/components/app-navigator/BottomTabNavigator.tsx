@@ -18,6 +18,7 @@ import { TrackScreen } from 'app/screens/track-screen'
 import TrendingScreen from 'app/screens/trending-screen'
 
 import { Header } from './Header'
+import { HeaderBackArrow } from './HeaderArrowBack'
 import {
   BaseStackParamList,
   ExploreStackParamList,
@@ -58,7 +59,9 @@ const createStackScreen = <StackParamList extends ParamListBase>(
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         gestureEnabled: true,
         gestureResponseDistance: 1000,
-        headerTitle: props => <Header {...props} />
+        headerTitle: props => <Header {...props} />,
+        headerBackTitleVisible: false,
+        headerBackImage: HeaderBackArrow
       }}
     >
       {baseScreen(Stack)}
