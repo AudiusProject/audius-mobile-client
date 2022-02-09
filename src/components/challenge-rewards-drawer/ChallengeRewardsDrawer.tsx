@@ -210,7 +210,6 @@ const createStyles = (themeColors: ThemeColors) =>
     },
     claimedAmount: {
       marginTop: 16,
-      // marginBottom: 32,
       textAlign: 'center',
       textTransform: 'uppercase',
       color: themeColors.neutralLight4
@@ -390,7 +389,7 @@ export const ChallengeRewardsDrawer = ({
               {claimedAmountText}
             </Text>
           ) : null}
-          {claimError || true ? (
+          {claimError ? (
             <Text style={styles.claimRewardsError} weight='bold'>
               {messages.claimErrorMessage}
             </Text>
