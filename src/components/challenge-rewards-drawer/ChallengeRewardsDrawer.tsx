@@ -206,7 +206,7 @@ const createStyles = (themeColors: ThemeColors) =>
       color: themeColors.staticAccentGreenLight1
     },
     claimedAmount: {
-      marginVertical: 16,
+      marginTop: 16,
       textAlign: 'center',
       textTransform: 'uppercase',
       color: themeColors.neutralLight4
