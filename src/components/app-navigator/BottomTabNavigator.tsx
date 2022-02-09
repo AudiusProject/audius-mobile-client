@@ -17,7 +17,7 @@ import ProfileScreen from 'app/screens/profile-screen'
 import { TrackScreen } from 'app/screens/track-screen'
 import TrendingScreen from 'app/screens/trending-screen'
 
-import { Header } from './Header'
+import { Header } from './TopBar'
 import {
   BaseStackParamList,
   ExploreStackParamList,

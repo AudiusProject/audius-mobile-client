@@ -17,7 +17,7 @@ import { useThemeColors } from 'app/utils/theme'
 
 import { IconButton } from '../core/IconButton'
 
-import { HeaderBackArrow } from './HeaderArrowBack'
+import { HeaderBackArrow } from './TopBarArrowBack'
 
 const useStyles = makeStyles(({ palette, spacing }) => ({
   root: {
