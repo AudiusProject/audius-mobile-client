@@ -18,7 +18,6 @@ import { TrackScreen } from 'app/screens/track-screen'
 import TrendingScreen from 'app/screens/trending-screen'
 
 import { Header } from './Header'
-import { HeaderBackArrow } from './HeaderArrowBack'
 import {
   BaseStackParamList,
   ExploreStackParamList,
@@ -59,9 +58,9 @@ const createStackScreen = <StackParamList extends ParamListBase>(
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         gestureEnabled: true,
         gestureResponseDistance: 1000,
-        headerTitle: props => <Header {...props} />,
-        headerBackTitleVisible: false,
-        headerBackImage: HeaderBackArrow
+        header: props => <Header {...props} />,
+        headerStyle: { height: 87 },
+        headerMode: 'float'
       }}
     >
       {baseScreen(Stack)}
@@ -125,8 +124,6 @@ const BottomTabNavigator = ({
       routePath.push(currentState.routeNames[currentState.index])
       currentState = currentState.routes[currentState.index].state
     }
-
-    console.log({ routePath })
   }
 
   // Set handlers for the NowPlayingDrawer and BottomTabBar
