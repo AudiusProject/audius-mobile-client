@@ -199,6 +199,9 @@ const createStyles = (themeColors: ThemeColors) =>
     claimButtonContainer: {
       width: '100%'
     },
+    claimButton: {
+      paddingVertical: 12
+    },
     claimableAmount: {
       marginVertical: 16,
       textAlign: 'center',
@@ -207,6 +210,7 @@ const createStyles = (themeColors: ThemeColors) =>
     },
     claimedAmount: {
       marginTop: 16,
+      // marginBottom: 32,
       textAlign: 'center',
       textTransform: 'uppercase',
       color: themeColors.neutralLight4
@@ -363,6 +367,7 @@ export const ChallengeRewardsDrawer = ({
                 <Button
                   key='claimButton'
                   containerStyle={styles.claimButtonContainer}
+                  style={styles.claimButton}
                   type={
                     claimInProgress ? ButtonType.COMMON : ButtonType.PRIMARY
                   }
@@ -385,7 +390,7 @@ export const ChallengeRewardsDrawer = ({
               {claimedAmountText}
             </Text>
           ) : null}
-          {claimError ? (
+          {claimError || true ? (
             <Text style={styles.claimRewardsError} weight='bold'>
               {messages.claimErrorMessage}
             </Text>
