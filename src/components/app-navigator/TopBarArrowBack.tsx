@@ -16,7 +16,7 @@ const useStyles = makeStyles(() => ({
   }
 }))
 
-export const HeaderBackArrow = ({ onPress }) => {
+export const TopBarArrowBack = ({ onPress }) => {
   const styles = useStyles()
   const { neutralLight4 } = useThemeColors()
   const fadeAnim = useRef(new Animated.Value(0)).current

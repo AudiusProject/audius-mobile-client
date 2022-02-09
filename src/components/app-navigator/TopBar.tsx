@@ -27,7 +27,7 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
     backgroundColor: palette.white,
     zIndex: 15
   },
-  header: {
+  topBar: {
     position: 'absolute',
     bottom: 0,
     flexDirection: 'row',
@@ -53,10 +53,10 @@ const useStyles = makeStyles(({ palette, spacing }) => ({
   }
 }))
 
-type HeaderProps = StackHeaderProps
+type TopBarProps = StackHeaderProps
 
-export const Header = memo(
-  ({ navigation: headerNavigation, back }: HeaderProps) => {
+export const TopBar = memo(
+  ({ navigation: headerNavigation, back }: TopBarProps) => {
     const styles = useStyles()
     const { neutralLight4 } = useThemeColors()
     const navigation = useNavigation()
@@ -81,7 +81,7 @@ export const Header = memo(
 
     return (
       <View style={styles.root}>
-        <View style={styles.header}>
+        <View style={styles.topBar}>
           {back ? (
             <HeaderBackArrow onPress={headerNavigation.goBack} />
           ) : (
