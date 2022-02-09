@@ -17,6 +17,7 @@ import ProfileScreen from 'app/screens/profile-screen'
 import { TrackScreen } from 'app/screens/track-screen'
 import TrendingScreen from 'app/screens/trending-screen'
 
+import { Header } from './Header'
 import {
   BaseStackParamList,
   ExploreStackParamList,
@@ -56,7 +57,8 @@ const createStackScreen = <StackParamList extends ParamListBase>(
         cardOverlayEnabled: true,
         cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         gestureEnabled: true,
-        gestureResponseDistance: 1000
+        gestureResponseDistance: 1000,
+        headerTitle: props => <Header {...props} />
       }}
     >
       {baseScreen(Stack)}
@@ -149,34 +151,32 @@ const BottomTabNavigator = ({
   )
 
   return (
-    <>
-      <View style={styles.tabNavigator}>
-        <Tab.Navigator
-          tabBar={props => (
-            <>
-              <NowPlayingDrawer
-                onOpen={onNowPlayingDrawerOpen}
-                onClose={onNowPlayingDrawerClose}
-                bottomBarTranslationAnim={bottomBarTranslationAnim}
-              />
-              <BottomTabBar
-                {...props}
-                onLayout={onBottomTabBarLayout}
-                display={bottomBarDisplay}
-                translationAnim={bottomBarTranslationAnim}
-              />
-            </>
-          )}
-          screenOptions={{ headerShown: false }}
-        >
-          {screen('feed', FeedStackScreen)}
-          {screen('trending', TrendingStackScreen)}
-          {screen('explore', ExploreStackScreen)}
-          {screen('favorites', FavoritesStackScreen)}
-          {screen('profile', ProfileStackScreen)}
-        </Tab.Navigator>
-      </View>
-    </>
+    <View style={styles.tabNavigator}>
+      <Tab.Navigator
+        tabBar={props => (
+          <>
+            <NowPlayingDrawer
+              onOpen={onNowPlayingDrawerOpen}
+              onClose={onNowPlayingDrawerClose}
+              bottomBarTranslationAnim={bottomBarTranslationAnim}
+            />
+            <BottomTabBar
+              {...props}
+              onLayout={onBottomTabBarLayout}
+              display={bottomBarDisplay}
+              translationAnim={bottomBarTranslationAnim}
+            />
+          </>
+        )}
+        screenOptions={{ headerShown: false }}
+      >
+        {screen('feed', FeedStackScreen)}
+        {screen('trending', TrendingStackScreen)}
+        {screen('explore', ExploreStackScreen)}
+        {screen('favorites', FavoritesStackScreen)}
+        {screen('profile', ProfileStackScreen)}
+      </Tab.Navigator>
+    </View>
   )
 }
 
