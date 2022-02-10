@@ -1,17 +1,29 @@
-import { ComponentType } from 'react'
+import { ComponentType, useCallback, useState } from 'react'
 
 import { merge } from 'lodash'
-import { Pressable, Text, ButtonProps as RNButtonProps } from 'react-native'
+import {
+  Pressable,
+  Text,
+  ButtonProps as RNButtonProps,
+  Animated,
+  PressableProps,
+  ViewStyle
+} from 'react-native'
 import { SvgProps } from 'react-native-svg'
 
-import { makeStyles } from 'app/styles'
+import { useColorAnimation } from 'app/hooks/usePressColorAnimation'
+import { usePressScaleAnimation } from 'app/hooks/usePressScaleAnimation'
+import { makeStyles, StylesProp } from 'app/styles'
+import { GestureResponderHandler } from 'app/types/gesture'
+import { useThemeColors } from 'app/utils/theme'
 
 const useStyles = makeStyles(
-  ({ typography, palette, spacing }, { variant }) => {
+  ({ typography, palette, spacing }, { variant, isPressing }) => {
     const variantStyles = {
       primary: {
         root: {
-          backgroundColor: palette.primary
+          backgroundColor: palette.primary,
+          borderWidth: 0
         },
         text: {
           color: palette.white
@@ -32,17 +44,38 @@ const useStyles = makeStyles(
         leftIcon: {
           color: palette.primary
         }
+      },
+      common: {
+        root: {
+          borderColor: palette.neutral,
+          borderWidth: 1,
+          backgroundColor: palette.white
+        },
+        text: {
+          color: palette.neutral
+        },
+        leftIcon: {
+          color: palette.neutral
+        }
       }
+    }
+
+    const variantPressingStyles = {
+      secondary: variantStyles.primary,
+      common: variantStyles.primary
     }
 
     const baseStyles = {
       root: {
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
         borderRadius: 4,
         height: spacing(8),
-        paddingHorizontal: spacing(4)
+        paddingHorizontal: spacing(2),
+        justifyContent: 'center',
+        alignItems: 'center'
+      },
+      button: {
+        flexDirection: 'row',
+        alignItems: 'center'
       },
       text: {
         fontSize: 11,
@@ -54,24 +87,108 @@ const useStyles = makeStyles(
       }
     }
 
-    return merge(baseStyles, variantStyles[variant])
+    return merge(
+      baseStyles,
+      variantStyles[variant],
+      isPressing && variantPressingStyles[variant]
+    )
   }
 )
 
-type ButtonProps = RNButtonProps & {
-  iconLeft?: ComponentType<SvgProps>
-  variant: 'primary' | 'secondary'
-}
+type ButtonProps = RNButtonProps &
+  PressableProps & {
+    iconLeft?: ComponentType<SvgProps>
+    variant: 'primary' | 'secondary' | 'common'
+    noText?: boolean
+    styles?: StylesProp<{
+      root: ViewStyle
+      icon: ViewStyle
+    }>
+    IconProps?: SvgProps
+  }
 
 export const Button = (props: ButtonProps) => {
-  const { title, iconLeft: IconLeft, variant, ...other } = props
-  const styles = useStyles({ variant })
+  const {
+    title,
+    iconLeft: IconLeft,
+    variant,
+    onPressIn,
+    onPressOut,
+    noText,
+    style,
+    styles: stylesProp,
+    IconProps,
+    ...other
+  } = props
+
+  const [isPressing, setIsPressing] = useState(false)
+  const styles = useStyles({ variant, isPressing })
+  const {
+    scale,
+    handlePressIn: handlePressInScale,
+    handlePressOut: handlePressOutScale
+  } = usePressScaleAnimation()
+
+  const { primaryDark1 } = useThemeColors()
+
+  const {
+    color,
+    handlePressIn: handlePressInColor,
+    handlePressOut: handlePressOutColor
+  } = useColorAnimation(styles.root.backgroundColor, primaryDark1)
+
+  const handlePressIn: GestureResponderHandler = useCallback(
+    event => {
+      onPressIn?.(event)
+      setIsPressing(true)
+      handlePressInScale()
+      handlePressInColor()
+    },
+    [onPressIn, handlePressInScale, handlePressInColor]
+  )
+
+  const handlePressOut: GestureResponderHandler = useCallback(
+    event => {
+      onPressOut?.(event)
+      setIsPressing(false)
+      handlePressOutScale()
+      handlePressOutColor()
+    },
+    [onPressOut, handlePressOutScale, handlePressOutColor]
+  )
+
   return (
-    <Pressable style={styles.root} {...other} accessibilityRole='button'>
-      {IconLeft ? (
-        <IconLeft style={styles.leftIcon} fill={styles.leftIcon.color} />
-      ) : null}
-      <Text style={styles.text}>{title}</Text>
-    </Pressable>
+    <Animated.View
+      style={[
+        styles.root,
+        { transform: [{ scale }], backgroundColor: color },
+        style,
+        stylesProp?.root
+      ]}
+    >
+      <Pressable
+        style={styles.button}
+        accessibilityRole='button'
+        accessibilityLabel={noText ? title : undefined}
+        onPressIn={handlePressIn}
+        onPressOut={handlePressOut}
+        {...other}
+      >
+        {IconLeft ? (
+          <IconLeft
+            style={[
+              styles.leftIcon,
+              stylesProp?.icon,
+              noText && { marginRight: 0 }
+            ]}
+            fill={styles.leftIcon.color}
+            height={20}
+            width={20}
+            {...IconProps}
+          />
+        ) : null}
+        {noText ? null : <Text style={styles.text}>{title}</Text>}
+      </Pressable>
+    </Animated.View>
   )
 }

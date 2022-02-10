@@ -5,7 +5,9 @@ import { View, Text } from 'react-native'
 import { useSelectorWeb } from 'app/hooks/useSelectorWeb'
 import { makeStyles } from 'app/styles'
 
+import { Button } from './Button'
 import { FollowButton } from './FollowButton'
+import { SubscribeButton } from './SubscribeButton'
 
 const useStyles = makeStyles(({ typography, palette, spacing }) => ({
   username: {
@@ -32,6 +34,7 @@ type ProfileInfoProps = {
 
 export const ProfileInfo = ({ profile }: ProfileInfoProps) => {
   const styles = useStyles()
+  const { does_current_user_follow } = profile
   const accountUser = useSelectorWeb(getAccountUser)
   const isOwner = accountUser?.user_id === profile.user_id
 
@@ -43,8 +46,11 @@ export const ProfileInfo = ({ profile }: ProfileInfoProps) => {
         </Text>
         <Text style={styles.handle}>@{profile.handle}</Text>
       </View>
-      {isOwner ? null : (
+      {isOwner ? (
+        <Button title='Edit Profile' variant='secondary' />
+      ) : (
         <View style={styles.actionButtons}>
+          {does_current_user_follow ? <SubscribeButton /> : null}
           <FollowButton profile={profile} />
         </View>
       )}

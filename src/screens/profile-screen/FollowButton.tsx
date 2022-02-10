@@ -16,14 +16,16 @@ type FollowButtonsProps = {
 
 export const FollowButton = ({ profile }: FollowButtonsProps) => {
   const { does_current_user_follow } = profile
-  const isFollowing = !does_current_user_follow
+  const isFollowing = does_current_user_follow
 
   const IconLeft = isFollowing ? IconFollowing : IconFollow
+
+  const variant = isFollowing ? 'primary' : 'secondary'
 
   return (
     <Button
       title={isFollowing ? messages.following : messages.follow}
-      variant={isFollowing ? 'primary' : 'secondary'}
+      variant={variant}
       iconLeft={IconLeft}
     />
   )

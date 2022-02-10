@@ -10,7 +10,7 @@ export const usePressScaleAnimation = (scaleTo = 0.97) => {
       toValue: scaleTo,
       duration: 70,
       delay: 0,
-      useNativeDriver: true
+      useNativeDriver: false
     }).start()
   }, [scale, scaleTo])
 
@@ -19,7 +19,7 @@ export const usePressScaleAnimation = (scaleTo = 0.97) => {
       toValue: 1,
       duration: 70,
       delay: 0,
-      useNativeDriver: true
+      useNativeDriver: false
     }).start()
   }, [scale])
 
