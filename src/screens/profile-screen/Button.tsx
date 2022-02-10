@@ -127,7 +127,7 @@ export const Button = (props: ButtonProps) => {
     scale,
     handlePressIn: handlePressInScale,
     handlePressOut: handlePressOutScale
-  } = usePressScaleAnimation()
+  } = usePressScaleAnimation(0.97, false)
 
   const { primaryDark1 } = useThemeColors()
 
