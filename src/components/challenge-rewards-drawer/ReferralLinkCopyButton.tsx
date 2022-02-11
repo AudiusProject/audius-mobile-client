@@ -78,8 +78,7 @@ export const ReferralLinkCopyButton = ({
           angle={315}
           useAngle={true}
           colors={[pageHeaderGradientColor1, pageHeaderGradientColor2]}
-          locations={[0.5, 0.5]}
-          // locations={[0.0204, 1]}
+          locations={[0.0204, 1]}
         >
           <View style={styles.copyTextContainer}>
             <IconCopy style={styles.iconCopy} width={24} height={24} />
