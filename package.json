@@ -75,7 +75,7 @@
     "react-native-haptic-feedback": "1.11.0",
     "react-native-hyperlink": "0.0.19",
     "react-native-image-picker": "4.0.6",
-    "react-native-linear-gradient": "2.5.6",
+    "react-native-linear-gradient": "github:rickyrombo/react-native-linear-gradient#571d9eb3909bd5e6a017474a1ea9e10aca0f692a",
     "react-native-markdown-display": "7.0.0-alpha.2",
     "react-native-modal": "11.5.4",
     "react-native-music-control": "1.4.0",
