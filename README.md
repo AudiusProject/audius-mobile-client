@@ -7,50 +7,29 @@ The native project can be built & run against a local client (serving at localho
 
 ## Setup
 
-Copy the environment variables and replace missing values. (You will need an FCM sender id as well as a Segment write key for those services to work properly, but any value will suffice if the data is not important to you.)
-
 ```bash
-cp .env.dev.tmpl .env.dev
-cp .env.stage.tmpl .env.stage
-cp .env.prod.tmpl .env.prod
+make setup
 ```
 
 ### iOS
 
 ```bash
-# install cocoapods
-sudo gem install cocoapods
-# install local dependencies
-npm install
-
-cd ios
-pod install
-cd ..
-
-# Create main.jsbundle
-npm run bundle:ios
+make setup_ios
 ```
 
 ### Android
 
 ```bash
-# install local dependencies
-npm install
+make setup_android
 ```
 
 ## Running against localhost
-
-To run against localhost, specify `URL_OVERRIDE` in the `.env` file you intend to use.
-
-```
-URL_OVERRIDE=http://localhost:3001
-```
 
 > The WebView will be pointed at the url contained in `URL_OVERRIDE`
 
 This URL should be a serving a mobile audius-client with either
 
-`npm run start:mobile-stage` or `npm run start:mobile-prod`
+`make run_local_stage` or `make run_local_prod`
 
 ## Running against a local static build
 
@@ -59,19 +38,11 @@ To run against a local staging or production build, build the client and copy th
 ```bash
 # staging
 
-# audius-client
-npm run build:mobile-stage
-
-# audius-mobile-client
-npm run copy:local-staging
+make run_static_local_stage
 
 # production
 
-# audius-client
-npm run build:mobile-prod
-
-# audius-mobile-client
-npm run copy:local-production
+make run_static_local_prod
 ```
 
 ## Running against a remote static build
@@ -82,10 +53,10 @@ To run against a remote staging or production build, pull a the latest dapp from
 
 ```bash
 # staging
-npm run copy:remote-staging
+make run_remote_static_stage
 
 # production
-npm run copy:remote-production
+make run_remote_static_prod
 ```
 
 ## iOS
@@ -150,8 +121,7 @@ adb logcat '*:V'
 - If you feel like debugging the actual static app contained in the build, you can:
 
 ```bash
-npm install -g serve --user
-serve -s web-app/Web.bundle/build -p 9000
+make run_debug
 ```
 
 - If your app is crashing after running for a second, or crashing on startup with no error message, it's probably an environment variable problem, and you should check to make sure you have them all. Debug using XCode.
